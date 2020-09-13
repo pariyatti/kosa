@@ -1,0 +1,3 @@
+{:crux {:data-dir #profile {:default "dev/data/"
+                            :dev     "dev/data/"
+                            :test    "dev/test/data"}}}
