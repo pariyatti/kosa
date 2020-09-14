@@ -3,17 +3,16 @@
   (:require [mount.core :refer [defstate]]
             [crux.api :as crux]
             [crux.kv.rocksdb :as rocks]
-            [kosa-crux.config :as config]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io]
+            [kosa-crux.config :refer [config]]))
 
 (defstate crux-node
   :start   (crux/start-node
-            {:crux.node/topology '[crux.standalone/topology
-	                                 crux.kv.rocksdb/kv-store]
-	           :crux.standalone/event-log-dir (io/file (get-in config/config [:crux :data-dir]) "event-log")
-	           :crux.standalone/event-log-kv-store 'crux.kv.rocksdb/kv
-	           :crux.kv/db-dir (io/file (get-in config/config [:crux :data-dir]) "indexes")})
-
+            {:crux.node/topology                 '[crux.standalone/topology
+	                                           crux.kv.rocksdb/kv-store]
+	     :crux.standalone/event-log-dir      (io/file (get-in config [:crux :data-dir]) "event-log")
+	     :crux.standalone/event-log-kv-store 'crux.kv.rocksdb/kv
+	     :crux.kv/db-dir                     (io/file (get-in config [:crux :data-dir]) "indexes")})
   :stop (.close crux-node))
 
 (defn insert [datum]

@@ -1,11 +1,11 @@
 (ns kosa-crux.core
   (:require [mount.core :as mount]
-            [kosa-crux.config :as config]
-            [kosa-crux.crux :as crux]))
+            [kosa-crux.config :refer [config]]
+            [kosa-crux.crux :refer [crux-node]]))
 
 (defn start []
-  (-> (mount/only #{#'config/config
-                    #'crux/crux-node})
+  (-> (mount/only #{#'config
+                    #'crux-node})
       (mount/start)))
 
 (defn stop []
