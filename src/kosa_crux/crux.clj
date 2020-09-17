@@ -8,16 +8,12 @@
 
 (defstate crux-node
   :start   (crux/start-node
-            {:crux/tx-log         {:kv-store
-                                   {:crux/module `rocks/->kv-store,
-                                    :db-dir      (io/file (get-in config/config [:crux :data-dir]) "tx-log")}}
-             :crux/document-store {:kv-store
-                                   {:crux/module `rocks/->kv-store,
-                                    :db-dir      (io/file  (get-in config/config [:crux :data-dir]) "doc-store")}}
-             :crux/indexer        {:kv-store
-                                   {:crux/module `rocks/->kv-store
-                                    :db-dir      (io/file  (get-in config/config [:crux :data-dir]) "indexes")}}
-             :crux.node/topology  '[crux.standalone/topology]})
+            {:crux.node/topology '[crux.standalone/topology
+	                                 crux.kv.rocksdb/kv-store]
+	           :crux.standalone/event-log-dir (io/file (get-in config/config [:crux :data-dir]) "event-log")
+	           :crux.standalone/event-log-kv-store 'crux.kv.rocksdb/kv
+	           :crux.kv/db-dir (io/file (get-in config/config [:crux :data-dir]) "indexes")})
+
   :stop (.close crux-node))
 
 (defn insert [datum]
