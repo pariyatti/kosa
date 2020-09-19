@@ -21,6 +21,10 @@
 (defn get [id]
   (crux/entity (crux/db crux-node) id))
 
+(defn query [q]
+  (let [result-set (crux/q (crux/db crux-node) q)]
+    (map #(-> % first get) result-set)))
+
 (comment
   (insert {:crux.db/id :steve :name "Steven Deobald" :place "Jammu & Kashmir"})
   (get :steve))

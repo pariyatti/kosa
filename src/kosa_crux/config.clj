@@ -5,3 +5,6 @@
 
 (defstate config
   :start (-> "config.edn" io/resource aero/read-config))
+
+(defn supported-languages []
+  (-> config (get :supported-languages) set))
