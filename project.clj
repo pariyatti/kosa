@@ -7,12 +7,14 @@
                  [mount "0.1.16"]
                  [aero "1.1.6"]
                  [bidi "2.1.6"]
-                 [ring/ring-core "1.6.3"]
+                 [ring/ring-core "1.7.1"]
                  [ring/ring-jetty-adapter "1.6.3"]
                  [ring/ring-json "0.5.0"]
                  [org.clojure/data.json "1.0.0"]
-                 [juxt/crux-core "20.09-1.11.0-beta"]
-                 [juxt/crux-rocksdb "20.09-1.11.0-beta"]]
+                 [org.clojure/tools.logging "1.1.0"]
+                 [ch.qos.logback/logback-classic "1.1.3"]
+                 [juxt/crux-core "20.09-1.11.0-beta" :exclusions [org.slf4j/slf4j-api]]
+                 [juxt/crux-rocksdb "20.09-1.11.0-beta" :exclusions [org.slf4j/slf4j-api]]]
   :main ^:skip-aot kosa-crux.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot      :all
