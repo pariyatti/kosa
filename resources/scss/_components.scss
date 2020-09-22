@@ -1,0 +1,200 @@
+@import 'base';
+
+/*
+This file has high level classes that are repeated and used everywhere
+*/
+
+/*
+-----------------
+#################
+Flash Message - This element is the flash message that appears on success or error
+This is temporarily moved here, depending on further layout implementations, and whether the following css holds true, we'll decide where to move this
+#################
+-----------------
+*/
+#flash {
+    position: fixed;
+    top: 1.5rem; //24px
+    left: 50%;
+
+    .flash {
+        position: relative;
+        left: -50%;
+        padding: 0.5rem; //8px
+        background: $red;
+        color: $white;
+        box-shadow: 0 0 12px rgba($color: $black, $alpha: 0.24);
+    }
+}
+
+/*
+-----------------
+#################
+Main Container - This element is the highest parent
+#################
+-----------------
+*/
+.main-container {
+    max-width: 100%;
+    background: $white;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.15),
+                0 2px 3px rgba(0,0,0,.2);
+    padding: 1rem; //16px
+    margin-top: 1rem; //16px
+    border-radius: 2px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/*
+-----------------
+#################
+Header - This includes, logo, links, and user actions. Is the same on every page
+#################
+-----------------
+*/
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 3rem; //48px
+
+    .header-logo {
+        display: flex;
+        align-items: center;
+
+        a {
+            display: inline-block;
+            border-bottom: none;
+        }
+
+        span {
+            margin-left: 0.5rem; //8px
+            color: $logo-dark;
+            @include fs-r; //16px
+        }
+    }
+
+    .header-user {
+        display: flex;
+        align-items: center;
+
+        p.user-email {
+            @include fs-r;
+            margin: 0;
+            padding: 0;
+        }
+
+        .link {
+            margin: 0 1rem;
+
+            &.link-settings {
+                margin-left: 0;
+            }
+        }
+
+        input[type="submit"] {
+            margin-bottom: 0;
+        }
+    }
+}
+
+/*
+-----------------
+#################
+Info - These are non-dismissible info bars.
+There are four types:
+- success
+- warning
+- error
+- neutral
+#################
+-----------------
+*/
+.info {
+    padding: 0.5rem 1rem; //8px 16px
+    border-radius: 2px;
+
+    &.warning {
+        background: lighten($color: $yellow, $amount: 45%);
+        border: 1px solid $yellow;
+    }
+
+    &.success {
+        background: lighten($color: $green, $amount: 45%);
+        border: 1px solid $green;
+    }
+
+    &.error {
+        background: lighten($color: $red, $amount: 45%);
+        border: 1px solid $red;
+    }
+
+    &.neutral {
+        background: lighten($color: $brown, $amount: 45%);
+        border: 1px solid $brown;
+    }
+}
+
+.btn {
+    width: 100%;
+    min-height: 2.5rem;
+
+    padding: 0.5rem 0.75rem;
+
+    border-radius: 2px;
+    outline: none;
+
+    @include fs-r; // 16px
+
+    &.btn-primary {
+        // primary action
+        background: $green;
+        color: $white;
+        border: 1px solid darken($color: $green, $amount: 20%);
+
+        transition: background 150ms ease-out;
+
+        &:hover {
+            cursor: pointer;
+            background: darken($color: $green, $amount: 5%);
+        }
+    }
+}
+
+/*
+-----------------
+#################
+Breadcrumb and Page Header
+#################
+-----------------
+*/
+.breadcrumb {
+    a.link {
+        @include fs-s;
+        margin-left: 2px;
+    }
+}
+
+.page-heading {
+    padding-bottom: 1rem; //16px
+    border-bottom: 1px solid $logo-sand;
+
+    h1.page-header {
+        @include fs-l;
+        color: rgba($color: $black, $alpha: 0.87);
+    }
+
+    span.page-sub-title {
+        @include fs-r;
+        color: rgba($color: $black, $alpha: 0.64);
+    }
+
+    .header-and-link {
+        justify-content: space-between;
+        align-items: center;
+    }
+}

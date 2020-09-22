@@ -1,0 +1,162 @@
+
+@import 'colors';
+@import 'base';
+
+/*
+This file has all page related scss
+*/
+
+/*
+-----------------
+#################
+Publisher index
+#################
+-----------------
+*/
+.section-all-cards {
+
+  .card-types {
+    display: flex;
+    margin-top: 1rem;
+
+    .card-type {
+      flex: 1;
+      padding: 1rem 2rem; //16px 31px
+      margin: 0 0.5rem; //8px
+      
+      text-align: center;
+      
+      background: $off-white;
+      border-radius: 3px;
+
+      h3 {
+        // card-title
+        @include fs-m;
+        font-weight: 300;
+      }
+
+      p {
+        // card-description
+        @include fs-r;
+        font-weight: normal;
+        color: rgba($color: $black, $alpha: 0.64);
+        margin: 0.5rem 0;
+      }
+
+      a.link {
+        // manage card
+        display: inline-block;
+        margin-bottom: 1rem;
+      }
+
+      a.btn.btn-primary {
+        // create card
+        display: block;
+      }
+
+      &:first-child {
+        // first card
+        margin-left: 0;
+      }
+
+      &:last-child {
+        // last card
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+/*
+-----------------
+#################
+Login
+#################
+-----------------
+*/
+
+.meditate-illustration {
+  position: fixed;
+  bottom: -150px;
+  left: 50%;
+  z-index: -10;
+
+  .meditate {
+    position: relative;
+    bottom: 0;
+    left: -50%;
+  }
+}
+
+#clearance.sign-in {
+  display: flex;
+  flex-direction: column;
+
+  width: 40%;
+  align-self: center;
+  padding: 2rem 0; //32px 0
+
+  h2 {
+    @include fs-l;
+    line-height: 1.44em;
+    color: $logo-dark;
+
+    margin-bottom: 0.25rem;
+  }
+
+  .form-sign-in {
+    width: 100%;
+    margin-top: 1rem; //16px
+
+    label {
+      @include fs-xs; //10px
+      color: rgba($color: $black, $alpha: 0.64);
+    }
+
+    .other-links {
+      text-align: center;
+    }
+  }
+}
+
+/*
+-----------------
+#################
+Settings
+#################
+-----------------
+*/
+
+.settings-section {
+  padding: 1rem 0; //16px
+
+  h3 {
+    font-weight: 300;
+  }
+}
+
+/*
+-----------------
+#################
+Change password, reset password, create a new user
+#################
+-----------------
+*/
+
+.form.form-centered {
+  max-width: 40%;
+  margin: 2rem auto;
+  margin-bottom: 0;
+}
+
+/*
+-----------------
+#################
+User page
+#################
+-----------------
+*/
+
+.section-user-account {
+  margin-top: 1rem;
+}

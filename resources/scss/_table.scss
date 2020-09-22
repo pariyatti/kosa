@@ -1,0 +1,32 @@
+@import 'colors';
+@import 'typography';
+
+table { 
+    width: 80%;
+    border-collapse: collapse;
+    border: 1px solid $cream;
+    margin: 2rem auto;
+
+    @include fs-r;
+}
+
+/* Zebra striping */
+tr {
+    border-bottom: 1px solid $cream;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+th { 
+    background: $cream;
+    color: rgba($color: $black, $alpha: 0.64);
+    font-weight: normal;
+}
+
+td, th { 
+    padding: 10px;
+    text-align: left;
+    font-size: 18px;
+}
