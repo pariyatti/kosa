@@ -20,7 +20,6 @@
   (start))
 
 (defn -main
-  "I don't do a whole lot."
   [& _args]
   (info "Starting the server")
   (start))

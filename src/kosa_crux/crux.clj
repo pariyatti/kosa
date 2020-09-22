@@ -15,7 +15,7 @@
 	     :crux.kv/db-dir                     (io/file (get-in config [:crux :data-dir]) "indexes")})
   :stop (.close crux-node))
 
-(defn insert [datum]
+(defn put [datum]
   (crux/submit-tx crux-node [[:crux.tx/put datum]]))
 
 (defn get [id]
@@ -26,5 +26,5 @@
     (map #(-> % first get) result-set)))
 
 (comment
-  (insert {:crux.db/id :steve :name "Steven Deobald" :place "Jammu & Kashmir"})
+  (put {:crux.db/id :steve :name "Steven Deobald" :place "Jammu & Kashmir"})
   (get :steve))

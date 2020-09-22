@@ -10,5 +10,8 @@
 
 (def routes
   ["/" [["ping" pong]
+        ["publisher/today/pali_word_cards" pali-word-handler/index]
+        ["publisher/today/pali_word_card/new" pali-word-handler/new]
+        ["publisher/today/pali_word_card/create" pali-word-handler/create]
         ["api/v1/today.json" pali-word-handler/list]
         [true not-found]]])

@@ -2,8 +2,10 @@
   (:refer-clojure :exclude [list])
   (:require [clojure.spec.alpha :as s]
             [clojure.string]
+            [clojure.tools.logging :refer [info]]
             [ring.util.response :as resp]
-            [kosa-crux.entity.pali-word.db :as pali-word-db]))
+            [kosa-crux.entity.pali-word.db :as pali-word-db]
+            [kosa-crux.entity.pali-word.views :as views]))
 
 (s/def :pali-word/published-at inst?)
 (s/def :pali-word/bookmarkable boolean?)
@@ -36,6 +38,21 @@
                    :pali-word/audio
                    :pali-word/translations]))
 
-(defn list []
+(defn index [_request]
+  (let [cards (pali-word-db/list)]
+    (resp/response
+     (views/index cards))))
+
+(defn new [_request]
+  (resp/response
+   (views/new)))
+
+(defn create [request]
+  (info "request is " request)
+  (let [card (pali-word-db/put (:params request))]
+    (resp/response
+     (str "maybe your card was saved? " card))))
+
+(defn list [_request]
   (resp/response
    (pali-word-db/list)))
