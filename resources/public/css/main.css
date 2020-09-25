@@ -1,0 +1,1584 @@
+@import '@clr/icons/clr-icons.min.css';
+/*
+This file has font related elements
+Naming convention:
+fs: font size
+xl: extra large
+l : large
+m : medium
+r : regular
+s : small
+xs: extra small
+*/
+/*
+This file has font related elements
+Naming convention:
+fs: font size
+xl: extra large
+l : large
+m : medium
+r : regular
+s : small
+xs: extra small
+*/
+@import '@clr/icons/clr-icons.min.css';
+@import '@clr/icons/clr-icons.min.css';
+@import '@clr/icons/clr-icons.min.css';
+table {
+  width: 80%;
+  border-collapse: collapse;
+  border: 1px solid #E5DAC9;
+  margin: 2rem auto;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+
+/* Zebra striping */
+tr {
+  border-bottom: 1px solid #E5DAC9;
+}
+tr:last-child {
+  border-bottom: none;
+}
+
+th {
+  background: #E5DAC9;
+  color: rgba(0, 0, 0, 0.64);
+  font-weight: normal;
+}
+
+td, th {
+  padding: 10px;
+  text-align: left;
+  font-size: 18px;
+}
+
+/*
+This file should have only element level css. Ideally shouldn't have classes and should not have children elements
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  max-width: 1024px;
+  margin: 0 auto;
+  background: #f2ede5;
+}
+
+h1 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 2.368rem;
+  line-height: 1em;
+  font-weight: 300;
+}
+
+h2 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1.776rem;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1.333rem;
+  line-height: 1.5em;
+}
+
+h4 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+
+h5, h6 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.65em;
+}
+
+a, p, li, span, div.flash {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+
+label {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.65em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.64);
+}
+
+.flex {
+  display: flex !important;
+}
+.flex.row {
+  flex-direction: row !important;
+}
+.flex.col {
+  flex-direction: column !important;
+}
+
+.m-0 {
+  margin: 0 !important;
+}
+
+.mt-0 {
+  margin-top: 0 !important;
+}
+
+.mr-0 {
+  margin-right: 0 !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.ml-0 {
+  margin-left: 0 !important;
+}
+
+.p-0 {
+  padding: 0 !important;
+}
+
+.pt-0 {
+  padding-top: 0 !important;
+}
+
+.pr-0 {
+  padding-right: 0 !important;
+}
+
+.pb-0 {
+  padding-bottom: 0 !important;
+}
+
+.pl-0 {
+  padding-left: 0 !important;
+}
+
+/*
+-----------------
+#################
+Links and its states
+#################
+-----------------
+*/
+a {
+  color: #207868;
+  padding: 1px 0;
+  text-decoration: none;
+  border-bottom: 1px dashed;
+}
+a:hover {
+  background: rgba(32, 120, 104, 0.12);
+}
+
+/*
+-----------------
+#################
+Input and button elements
+#################
+-----------------
+*/
+textarea {
+  width: 100%;
+  min-height: 20rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 2px;
+  outline: none;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+
+input {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 2px;
+  outline: none;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+input[type=submit] {
+  background: #207868;
+  color: #FFF;
+  border: 1px solid #0b2722;
+  transition: background 150ms ease-out;
+}
+input[type=submit]:hover {
+  cursor: pointer;
+  background: #1b6457;
+}
+input:focus {
+  border: 1px solid #207868;
+  box-shadow: 0 0 3px rgba(32, 120, 104, 0.24);
+}
+
+/*
+-----------------
+#################
+List items
+#################
+-----------------
+*/
+ul li {
+  list-style-type: none;
+}
+
+.checkmark {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  transform: rotate(45deg);
+  position: absolute;
+  left: 60px;
+  top: 60px;
+}
+
+.checkmark_stem {
+  position: absolute;
+  width: 12px;
+  height: 40px;
+  background-color: #F6F2ED;
+  border: 2px solid rgba(0, 0, 0, 0.64);
+  left: 11px;
+  top: -14px;
+}
+
+.checkmark_kick {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: #F6F2ED;
+  border: 2px solid rgba(0, 0, 0, 0.64);
+  border-right: 0;
+  left: 1px;
+  top: 14px;
+}
+
+/*
+This file has font related elements
+Naming convention:
+fs: font size
+xl: extra large
+l : large
+m : medium
+r : regular
+s : small
+xs: extra small
+*/
+/*
+This file has font related elements
+Naming convention:
+fs: font size
+xl: extra large
+l : large
+m : medium
+r : regular
+s : small
+xs: extra small
+*/
+/*
+This file has font related elements
+Naming convention:
+fs: font size
+xl: extra large
+l : large
+m : medium
+r : regular
+s : small
+xs: extra small
+*/
+table {
+  width: 80%;
+  border-collapse: collapse;
+  border: 1px solid #E5DAC9;
+  margin: 2rem auto;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+
+/* Zebra striping */
+tr {
+  border-bottom: 1px solid #E5DAC9;
+}
+tr:last-child {
+  border-bottom: none;
+}
+
+th {
+  background: #E5DAC9;
+  color: rgba(0, 0, 0, 0.64);
+  font-weight: normal;
+}
+
+td, th {
+  padding: 10px;
+  text-align: left;
+  font-size: 18px;
+}
+
+/*
+This file should have only element level css. Ideally shouldn't have classes and should not have children elements
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  max-width: 1024px;
+  margin: 0 auto;
+  background: #f2ede5;
+}
+
+h1 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 2.368rem;
+  line-height: 1em;
+  font-weight: 300;
+}
+
+h2 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1.776rem;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1.333rem;
+  line-height: 1.5em;
+}
+
+h4 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+
+h5, h6 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.65em;
+}
+
+a, p, li, span, div.flash {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+
+label {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.65em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.64);
+}
+
+.flex {
+  display: flex !important;
+}
+.flex.row {
+  flex-direction: row !important;
+}
+.flex.col {
+  flex-direction: column !important;
+}
+
+.m-0 {
+  margin: 0 !important;
+}
+
+.mt-0 {
+  margin-top: 0 !important;
+}
+
+.mr-0 {
+  margin-right: 0 !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.ml-0 {
+  margin-left: 0 !important;
+}
+
+.p-0 {
+  padding: 0 !important;
+}
+
+.pt-0 {
+  padding-top: 0 !important;
+}
+
+.pr-0 {
+  padding-right: 0 !important;
+}
+
+.pb-0 {
+  padding-bottom: 0 !important;
+}
+
+.pl-0 {
+  padding-left: 0 !important;
+}
+
+/*
+-----------------
+#################
+Links and its states
+#################
+-----------------
+*/
+a {
+  color: #207868;
+  padding: 1px 0;
+  text-decoration: none;
+  border-bottom: 1px dashed;
+}
+a:hover {
+  background: rgba(32, 120, 104, 0.12);
+}
+
+/*
+-----------------
+#################
+Input and button elements
+#################
+-----------------
+*/
+textarea {
+  width: 100%;
+  min-height: 20rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 2px;
+  outline: none;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+
+input {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 2px;
+  outline: none;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+input[type=submit] {
+  background: #207868;
+  color: #FFF;
+  border: 1px solid #0b2722;
+  transition: background 150ms ease-out;
+}
+input[type=submit]:hover {
+  cursor: pointer;
+  background: #1b6457;
+}
+input:focus {
+  border: 1px solid #207868;
+  box-shadow: 0 0 3px rgba(32, 120, 104, 0.24);
+}
+
+/*
+-----------------
+#################
+List items
+#################
+-----------------
+*/
+ul li {
+  list-style-type: none;
+}
+
+.checkmark {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  transform: rotate(45deg);
+  position: absolute;
+  left: 60px;
+  top: 60px;
+}
+
+.checkmark_stem {
+  position: absolute;
+  width: 12px;
+  height: 40px;
+  background-color: #F6F2ED;
+  border: 2px solid rgba(0, 0, 0, 0.64);
+  left: 11px;
+  top: -14px;
+}
+
+.checkmark_kick {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: #F6F2ED;
+  border: 2px solid rgba(0, 0, 0, 0.64);
+  border-right: 0;
+  left: 1px;
+  top: 14px;
+}
+
+/*
+This file has high level classes that are repeated and used everywhere
+*/
+/*
+-----------------
+#################
+Flash Message - This element is the flash message that appears on success or error
+This is temporarily moved here, depending on further layout implementations, and whether the following css holds true, we'll decide where to move this
+#################
+-----------------
+*/
+#flash {
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+}
+#flash .flash {
+  position: relative;
+  left: -50%;
+  padding: 0.5rem;
+  background: #BA5626;
+  color: #FFF;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.24);
+}
+
+/*
+-----------------
+#################
+Main Container - This element is the highest parent
+#################
+-----------------
+*/
+.main-container {
+  max-width: 100%;
+  background: #FFF;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 2px 3px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/*
+-----------------
+#################
+Header - This includes, logo, links, and user actions. Is the same on every page
+#################
+-----------------
+*/
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 3rem;
+}
+.header .header-logo {
+  display: flex;
+  align-items: center;
+}
+.header .header-logo a {
+  display: inline-block;
+  border-bottom: none;
+}
+.header .header-logo span {
+  margin-left: 0.5rem;
+  color: #75592F;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+.header .header-user {
+  display: flex;
+  align-items: center;
+}
+.header .header-user p.user-email {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+  margin: 0;
+  padding: 0;
+}
+.header .header-user .link {
+  margin: 0 1rem;
+}
+.header .header-user .link.link-settings {
+  margin-left: 0;
+}
+.header .header-user input[type=submit] {
+  margin-bottom: 0;
+}
+
+/*
+-----------------
+#################
+Info - These are non-dismissible info bars.
+There are four types:
+- success
+- warning
+- error
+- neutral
+#################
+-----------------
+*/
+.info {
+  padding: 0.5rem 1rem;
+  border-radius: 2px;
+}
+.info.warning {
+  background: #f9f1df;
+  border: 1px solid #CE9925;
+}
+.info.success {
+  background: #9ae4d6;
+  border: 1px solid #207868;
+}
+.info.error {
+  background: #f5dcd0;
+  border: 1px solid #BA5626;
+}
+.info.neutral {
+  background: #ebe8e2;
+  border: 1px solid #897A5F;
+}
+
+.btn {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 2px;
+  outline: none;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+.btn.btn-primary {
+  background: #207868;
+  color: #FFF;
+  border: 1px solid #0b2722;
+  transition: background 150ms ease-out;
+}
+.btn.btn-primary:hover {
+  cursor: pointer;
+  background: #1b6457;
+}
+
+/*
+-----------------
+#################
+Breadcrumb and Page Header
+#################
+-----------------
+*/
+.breadcrumb a.link {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.65em;
+  margin-left: 2px;
+}
+
+.page-heading {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #DCD3C0;
+}
+.page-heading h1.page-header {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1.776rem;
+  line-height: 1.4em;
+  color: rgba(0, 0, 0, 0.87);
+}
+.page-heading span.page-sub-title {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+  color: rgba(0, 0, 0, 0.64);
+}
+.page-heading .header-and-link {
+  justify-content: space-between;
+  align-items: center;
+}
+
+/*
+This file has font related elements
+Naming convention:
+fs: font size
+xl: extra large
+l : large
+m : medium
+r : regular
+s : small
+xs: extra small
+*/
+table {
+  width: 80%;
+  border-collapse: collapse;
+  border: 1px solid #E5DAC9;
+  margin: 2rem auto;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+
+/* Zebra striping */
+tr {
+  border-bottom: 1px solid #E5DAC9;
+}
+tr:last-child {
+  border-bottom: none;
+}
+
+th {
+  background: #E5DAC9;
+  color: rgba(0, 0, 0, 0.64);
+  font-weight: normal;
+}
+
+td, th {
+  padding: 10px;
+  text-align: left;
+  font-size: 18px;
+}
+
+/*
+This file has font related elements
+Naming convention:
+fs: font size
+xl: extra large
+l : large
+m : medium
+r : regular
+s : small
+xs: extra small
+*/
+/*
+This file has font related elements
+Naming convention:
+fs: font size
+xl: extra large
+l : large
+m : medium
+r : regular
+s : small
+xs: extra small
+*/
+table {
+  width: 80%;
+  border-collapse: collapse;
+  border: 1px solid #E5DAC9;
+  margin: 2rem auto;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+
+/* Zebra striping */
+tr {
+  border-bottom: 1px solid #E5DAC9;
+}
+tr:last-child {
+  border-bottom: none;
+}
+
+th {
+  background: #E5DAC9;
+  color: rgba(0, 0, 0, 0.64);
+  font-weight: normal;
+}
+
+td, th {
+  padding: 10px;
+  text-align: left;
+  font-size: 18px;
+}
+
+/*
+This file should have only element level css. Ideally shouldn't have classes and should not have children elements
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  max-width: 1024px;
+  margin: 0 auto;
+  background: #f2ede5;
+}
+
+h1 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 2.368rem;
+  line-height: 1em;
+  font-weight: 300;
+}
+
+h2 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1.776rem;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1.333rem;
+  line-height: 1.5em;
+}
+
+h4 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+
+h5, h6 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.65em;
+}
+
+a, p, li, span, div.flash {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+
+label {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.65em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.64);
+}
+
+.flex {
+  display: flex !important;
+}
+.flex.row {
+  flex-direction: row !important;
+}
+.flex.col {
+  flex-direction: column !important;
+}
+
+.m-0 {
+  margin: 0 !important;
+}
+
+.mt-0 {
+  margin-top: 0 !important;
+}
+
+.mr-0 {
+  margin-right: 0 !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.ml-0 {
+  margin-left: 0 !important;
+}
+
+.p-0 {
+  padding: 0 !important;
+}
+
+.pt-0 {
+  padding-top: 0 !important;
+}
+
+.pr-0 {
+  padding-right: 0 !important;
+}
+
+.pb-0 {
+  padding-bottom: 0 !important;
+}
+
+.pl-0 {
+  padding-left: 0 !important;
+}
+
+/*
+-----------------
+#################
+Links and its states
+#################
+-----------------
+*/
+a {
+  color: #207868;
+  padding: 1px 0;
+  text-decoration: none;
+  border-bottom: 1px dashed;
+}
+a:hover {
+  background: rgba(32, 120, 104, 0.12);
+}
+
+/*
+-----------------
+#################
+Input and button elements
+#################
+-----------------
+*/
+textarea {
+  width: 100%;
+  min-height: 20rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 2px;
+  outline: none;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+
+input {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 2px;
+  outline: none;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+input[type=submit] {
+  background: #207868;
+  color: #FFF;
+  border: 1px solid #0b2722;
+  transition: background 150ms ease-out;
+}
+input[type=submit]:hover {
+  cursor: pointer;
+  background: #1b6457;
+}
+input:focus {
+  border: 1px solid #207868;
+  box-shadow: 0 0 3px rgba(32, 120, 104, 0.24);
+}
+
+/*
+-----------------
+#################
+List items
+#################
+-----------------
+*/
+ul li {
+  list-style-type: none;
+}
+
+.checkmark {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  transform: rotate(45deg);
+  position: absolute;
+  left: 60px;
+  top: 60px;
+}
+
+.checkmark_stem {
+  position: absolute;
+  width: 12px;
+  height: 40px;
+  background-color: #F6F2ED;
+  border: 2px solid rgba(0, 0, 0, 0.64);
+  left: 11px;
+  top: -14px;
+}
+
+.checkmark_kick {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: #F6F2ED;
+  border: 2px solid rgba(0, 0, 0, 0.64);
+  border-right: 0;
+  left: 1px;
+  top: 14px;
+}
+
+/*
+This file has all page related scss
+*/
+/*
+-----------------
+#################
+Publisher index
+#################
+-----------------
+*/
+.section-all-cards .card-types {
+  display: flex;
+  margin-top: 1rem;
+}
+.section-all-cards .card-types .card-type {
+  flex: 1;
+  padding: 1rem 2rem;
+  margin: 0 0.5rem;
+  text-align: center;
+  background: #F6F2ED;
+  border-radius: 3px;
+}
+.section-all-cards .card-types .card-type h3 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1.333rem;
+  line-height: 1.5em;
+  font-weight: 300;
+}
+.section-all-cards .card-types .card-type p {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+  font-weight: normal;
+  color: rgba(0, 0, 0, 0.64);
+  margin: 0.5rem 0;
+}
+.section-all-cards .card-types .card-type a.link {
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+.section-all-cards .card-types .card-type a.btn.btn-primary {
+  display: block;
+}
+.section-all-cards .card-types .card-type:first-child {
+  margin-left: 0;
+}
+.section-all-cards .card-types .card-type:last-child {
+  margin-right: 0;
+}
+
+/*
+-----------------
+#################
+Login
+#################
+-----------------
+*/
+.meditate-illustration {
+  position: fixed;
+  bottom: -150px;
+  left: 50%;
+  z-index: -10;
+}
+.meditate-illustration .meditate {
+  position: relative;
+  bottom: 0;
+  left: -50%;
+}
+
+#clearance.sign-in {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  align-self: center;
+  padding: 2rem 0;
+}
+#clearance.sign-in h2 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1.776rem;
+  line-height: 1.4em;
+  line-height: 1.44em;
+  color: #75592F;
+  margin-bottom: 0.25rem;
+}
+#clearance.sign-in .form-sign-in {
+  width: 100%;
+  margin-top: 1rem;
+}
+#clearance.sign-in .form-sign-in label {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1.65em;
+  color: rgba(0, 0, 0, 0.64);
+}
+#clearance.sign-in .form-sign-in .other-links {
+  text-align: center;
+}
+
+/*
+-----------------
+#################
+Settings
+#################
+-----------------
+*/
+.settings-section {
+  padding: 1rem 0;
+}
+.settings-section h3 {
+  font-weight: 300;
+}
+
+/*
+-----------------
+#################
+Change password, reset password, create a new user
+#################
+-----------------
+*/
+.form.form-centered {
+  max-width: 40%;
+  margin: 2rem auto;
+  margin-bottom: 0;
+}
+
+/*
+-----------------
+#################
+User page
+#################
+-----------------
+*/
+.section-user-account {
+  margin-top: 1rem;
+}
+
+/*
+This file has font related elements
+Naming convention:
+fs: font size
+xl: extra large
+l : large
+m : medium
+r : regular
+s : small
+xs: extra small
+*/
+/*
+This file has font related elements
+Naming convention:
+fs: font size
+xl: extra large
+l : large
+m : medium
+r : regular
+s : small
+xs: extra small
+*/
+table {
+  width: 80%;
+  border-collapse: collapse;
+  border: 1px solid #E5DAC9;
+  margin: 2rem auto;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+
+/* Zebra striping */
+tr {
+  border-bottom: 1px solid #E5DAC9;
+}
+tr:last-child {
+  border-bottom: none;
+}
+
+th {
+  background: #E5DAC9;
+  color: rgba(0, 0, 0, 0.64);
+  font-weight: normal;
+}
+
+td, th {
+  padding: 10px;
+  text-align: left;
+  font-size: 18px;
+}
+
+/*
+This file should have only element level css. Ideally shouldn't have classes and should not have children elements
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  max-width: 1024px;
+  margin: 0 auto;
+  background: #f2ede5;
+}
+
+h1 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 2.368rem;
+  line-height: 1em;
+  font-weight: 300;
+}
+
+h2 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1.776rem;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1.333rem;
+  line-height: 1.5em;
+}
+
+h4 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+
+h5, h6 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.65em;
+}
+
+a, p, li, span, div.flash {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+
+label {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.65em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.64);
+}
+
+.flex {
+  display: flex !important;
+}
+.flex.row {
+  flex-direction: row !important;
+}
+.flex.col {
+  flex-direction: column !important;
+}
+
+.m-0 {
+  margin: 0 !important;
+}
+
+.mt-0 {
+  margin-top: 0 !important;
+}
+
+.mr-0 {
+  margin-right: 0 !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.ml-0 {
+  margin-left: 0 !important;
+}
+
+.p-0 {
+  padding: 0 !important;
+}
+
+.pt-0 {
+  padding-top: 0 !important;
+}
+
+.pr-0 {
+  padding-right: 0 !important;
+}
+
+.pb-0 {
+  padding-bottom: 0 !important;
+}
+
+.pl-0 {
+  padding-left: 0 !important;
+}
+
+/*
+-----------------
+#################
+Links and its states
+#################
+-----------------
+*/
+a {
+  color: #207868;
+  padding: 1px 0;
+  text-decoration: none;
+  border-bottom: 1px dashed;
+}
+a:hover {
+  background: rgba(32, 120, 104, 0.12);
+}
+
+/*
+-----------------
+#################
+Input and button elements
+#################
+-----------------
+*/
+textarea {
+  width: 100%;
+  min-height: 20rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 2px;
+  outline: none;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+
+input {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 2px;
+  outline: none;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+input[type=submit] {
+  background: #207868;
+  color: #FFF;
+  border: 1px solid #0b2722;
+  transition: background 150ms ease-out;
+}
+input[type=submit]:hover {
+  cursor: pointer;
+  background: #1b6457;
+}
+input:focus {
+  border: 1px solid #207868;
+  box-shadow: 0 0 3px rgba(32, 120, 104, 0.24);
+}
+
+/*
+-----------------
+#################
+List items
+#################
+-----------------
+*/
+ul li {
+  list-style-type: none;
+}
+
+.checkmark {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  transform: rotate(45deg);
+  position: absolute;
+  left: 60px;
+  top: 60px;
+}
+
+.checkmark_stem {
+  position: absolute;
+  width: 12px;
+  height: 40px;
+  background-color: #F6F2ED;
+  border: 2px solid rgba(0, 0, 0, 0.64);
+  left: 11px;
+  top: -14px;
+}
+
+.checkmark_kick {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: #F6F2ED;
+  border: 2px solid rgba(0, 0, 0, 0.64);
+  border-right: 0;
+  left: 1px;
+  top: 14px;
+}
+
+.form-and-preview {
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.form .image-selector {
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 2px;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.card-index-content {
+  padding-top: 2rem;
+  justify-content: center;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  border-radius: 1rem;
+  background-color: #F6F2ED;
+}
+.card .card-header {
+  padding: 0.5rem 1rem;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+  text-align: center;
+}
+.card .card-footer > * {
+  flex: 1;
+  text-align: center;
+  padding: 0.5rem 0;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.65em;
+}
+.card .card-image-and-text {
+  position: relative;
+}
+.card .card-image-and-text .card-overlay-image {
+  max-width: 100%;
+  height: 350px;
+}
+.card .card-image-and-text .card-overlay-text {
+  position: absolute;
+  bottom: 0;
+  padding: 1rem;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+.card .card-image-and-text .card-stacked-image {
+  max-width: 100%;
+  height: 350px;
+}
+.card .card-image-and-text .card-stacked-text {
+  position: relative;
+  max-width: 350px;
+  padding: 1rem;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+.card .pali-word {
+  padding-top: 1rem;
+  border-top: 1px solid #DCD3C0;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1.776rem;
+  line-height: 1.4em;
+  text-align: center;
+}
+.card .pali-word-translations {
+  padding: 1rem;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+}
+.card .pali-word-translations span {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.65em;
+  color: rgba(0, 0, 0, 0.64);
+}
+
+.card-action-links {
+  margin-left: 1rem;
+}
+.card-action-links .card-action-link {
+  margin-bottom: 0.5rem;
+}
+.card-action-links .card-action-link .destroy {
+  color: #BA5626;
+}
+
+#notice {
+  color: green;
+}
+
+.field_with_errors {
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+
+#error_explanation {
+  width: 450px;
+  border: 2px solid red;
+  padding: 7px 7px 0;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+#error_explanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px -7px 0;
+  background-color: #c00;
+  color: #fff;
+}
+
+#error_explanation ul li {
+  font-size: 12px;
+  list-style: square;
+}
+
+label {
+  display: block;
+}
+
+/*# sourceMappingURL=main.css.map */
