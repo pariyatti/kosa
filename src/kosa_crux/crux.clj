@@ -2,18 +2,20 @@
   (:refer-clojure :exclude [get])
   (:require [mount.core :refer [defstate]]
             [crux.api :as crux]
-            [crux.kv.rocksdb :as rocks]
+            [crux.rocksdb :as rocks]
             [clojure.java.io :as io]
             [kosa-crux.config :refer [config]]))
 
 (defstate crux-node
   :start   (crux/start-node
-            {:crux.node/topology                 '[crux.standalone/topology
-	                                           crux.kv.rocksdb/kv-store]
-	     :crux.standalone/event-log-dir      (io/file (get-in config [:crux :data-dir]) "event-log")
-	     :crux.standalone/event-log-kv-store 'crux.kv.rocksdb/kv
-	     :crux.kv/db-dir                     (io/file (get-in config [:crux :data-dir]) "indexes")})
-  :stop (.close crux-node))
+            {:rdb {:crux/module 'crux.rocksdb/->kv-store
+	                 :db-dir (io/file (get-in config [:crux :data-dir]) "event-log")
+                   :sync? true}
+	           :crux/tx-log {:kv-store :rdb}
+	           :crux/document-store {:kv-store :rdb}
+             :crux/index-store {:kv-store :rdb}})
+
+  :stop    (.close crux-node))
 
 (defn put [datum]
   (crux/submit-tx crux-node [[:crux.tx/put datum]]))

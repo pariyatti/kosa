@@ -4,7 +4,7 @@
             [kosa-crux.views.layout :as layout]))
 
 (defn show [card]
-  (layout/application
+  (layout/application "Show Pali Word Card"
    [:table
     [:tr
      [:td "Bookmarkable?"]
@@ -47,7 +47,7 @@
 )
 
 (defn new []
-  (layout/application
+  (layout/application "New Pali Word Card"
    [:div {:class "page-heading"}
     [:div {:class "breadcrumb"}
      ;; TODO: use `path-for` to get URLs from the router
@@ -61,7 +61,7 @@
     ]))
 
 (defn index [cards]
-  (layout/application
+  (layout/application "Pali Word Card Index"
    [:p {:id "notice"}
     "&lt;%= notice %&gt;"]
    [:div {:class "page-heading"}
