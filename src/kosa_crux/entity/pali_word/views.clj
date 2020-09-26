@@ -25,8 +25,8 @@
   (f/form-to [:post "/publisher/today/pali_word_card/create"]
              [:div {:class "field"}
               (f/hidden-field :card_type "pali_word")
-              (f/hidden-field :bookmarkable true)
-              (f/hidden-field :shareable true)]
+              (f/hidden-field :bookmarkable :true)
+              (f/hidden-field :shareable :true)]
              [:div {:class "field"}
               (f/label :pali "Pali")
               (f/text-field :pali)]
