@@ -1,6 +1,7 @@
 (ns kosa-crux.routes
   (:require [ring.util.response :as resp]
             [bidi.ring]
+            [kosa-crux.middleware :refer [wrap-spec-validation]]
             [kosa-crux.entity.pali-word.handler :as pali-word-handler]))
 
 (defn not-found [_request]
@@ -16,6 +17,6 @@
          ]
         ["publisher/today/pali_word_cards" pali-word-handler/index]
         ["publisher/today/pali_word_card/new" pali-word-handler/new]
-        ["publisher/today/pali_word_card/create" pali-word-handler/create]
+        ["publisher/today/pali_word_card/create" (wrap-spec-validation :entity/pali-word-request pali-word-handler/create)]
         ["api/v1/today.json" pali-word-handler/list]
         [true not-found]]])

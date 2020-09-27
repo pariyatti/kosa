@@ -24,9 +24,16 @@
   ;; TODO: use `path-for` to get URLs from the router
   (f/form-to [:post "/publisher/today/pali_word_card/create"]
              [:div {:class "field"}
-              (f/hidden-field :card_type "pali_word")
-              (f/hidden-field :bookmarkable :true)
-              (f/hidden-field :shareable :true)]
+              (f/hidden-field :card-type "pali_word")]
+             [:div {:class "field"}
+              (f/label :bookmarkable "Bookmarkable?")
+              (f/check-box :bookmarkable)]
+             [:div {:class "field"}
+              (f/label :shareable "Shareable?")
+              (f/check-box :shareable)]
+             [:div {:class "field"}
+              (f/label :header "Header")
+              (f/text-field :header)]
              [:div {:class "field"}
               (f/label :pali "Pali")
               (f/text-field :pali)]
