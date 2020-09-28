@@ -21,7 +21,7 @@ git clone git@github.com:pariyatti/kosa-crux.git
 cd kosa-crux
 lein deps
 lein scss :development auto
-lein run # Or `lein repl` for interactive programming
+lein run # Or `lein repl` for interactive programming: run `(start)` to start the server in that case
 ```
 
 ## License and Copyright
