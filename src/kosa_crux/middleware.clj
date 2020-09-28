@@ -5,8 +5,5 @@
 (defn wrap-spec-validation [spec handler]
   (fn [request]
     (if (s/invalid? (s/conform spec (:params request)))
-      (do
-        (prn "\n\nWhat crap\n\n")
-        (prn (s/explain spec (:params request)))
-        (resp/bad-request "Invalid parameters"))
+      (resp/bad-request (str "Invalid parameters: " (s/explain-str spec (:params request))))
       (handler request))))

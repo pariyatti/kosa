@@ -39,6 +39,6 @@
 
 (s/def :entity/pali-word-request
   (s/keys :req-un [:pali-word/header
-                   :pali-word/bookmarkable
-                   :pali-word/shareable
-                   :pali-word/pali]))
+                   :pali-word/pali]
+          :opt-un [:pali-word/bookmarkable
+                   :pali-word/shareable]))
