@@ -1,4 +1,4 @@
-(ns kosa-crux.entity.pali-word.spec
+(ns kosa-crux.publisher.entity.pali-word.spec
   (:require [clojure.string]
             [clojure.spec.alpha :as s]))
 

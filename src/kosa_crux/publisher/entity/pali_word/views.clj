@@ -1,4 +1,4 @@
-(ns kosa-crux.entity.pali-word.views
+(ns kosa-crux.publisher.entity.pali-word.views
   (:require [hiccup.core :as h]
             [hiccup.form :as f]
             [kosa-crux.layouts.publisher :as p]))

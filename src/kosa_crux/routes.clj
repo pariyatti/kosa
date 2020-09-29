@@ -2,9 +2,9 @@
   (:require [ring.util.response :as resp]
             [bidi.ring]
             [kosa-crux.publisher.handler]
-            [kosa-crux.entity.pali-word.spec]
+            [kosa-crux.publisher.entity.pali-word.spec]
             [kosa-crux.middleware :refer [wrap-spec-validation]]
-            [kosa-crux.entity.pali-word.handler :as pali-word-handler]))
+            [kosa-crux.publisher.entity.pali-word.handler :as pali-word-handler]))
 
 (defn not-found [_request]
   (resp/not-found {:message "not-found"}))

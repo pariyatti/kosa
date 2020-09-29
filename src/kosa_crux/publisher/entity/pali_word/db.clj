@@ -1,6 +1,6 @@
-(ns kosa-crux.entity.pali-word.db
+(ns kosa-crux.publisher.entity.pali-word.db
   (:refer-clojure :exclude [list])
-   (:require [kosa-crux.crux :as crux]))
+  (:require [kosa-crux.crux :as crux]))
 
 (defn list []
   (let [list-pali-words-query {:find  '[e]

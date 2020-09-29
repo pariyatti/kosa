@@ -1,8 +1,8 @@
-(ns kosa-crux.entity.pali-word.handler
+(ns kosa-crux.publisher.entity.pali-word.handler
   (:refer-clojure :exclude [list])
   (:require [ring.util.response :as resp]
-            [kosa-crux.entity.pali-word.db :as pali-word-db]
-            [kosa-crux.entity.pali-word.views :as views]))
+            [kosa-crux.publisher.entity.pali-word.db :as pali-word-db]
+            [kosa-crux.publisher.entity.pali-word.views :as views]))
 
 (defn index [_request]
   (let [cards (pali-word-db/list)]

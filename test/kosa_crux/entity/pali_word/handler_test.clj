@@ -1,8 +1,8 @@
-(ns kosa-crux.entity.pali-word.handler-test
+(ns kosa-crux.publisher.entity.pali-word.handler-test
   (:require [clojure.test :refer :all]
             [kosa-crux.fixtures :as fixtures]
             [kosa-crux.crux :as crux]
-            [kosa-crux.entity.pali-word.handler :as handler]))
+            [kosa-crux.publisher.entity.pali-word.handler :as handler]))
 
 (use-fixtures :once fixtures/load-states)
 
