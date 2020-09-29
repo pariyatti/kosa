@@ -1,10 +1,10 @@
 (ns kosa-crux.entity.pali-word.views
   (:require [hiccup.core :as h]
             [hiccup.form :as f]
-            [kosa-crux.views.layout :as layout]))
+            [kosa-crux.layouts.publisher :as p]))
 
 (defn show [card]
-  (layout/application "Show Pali Word Card"
+  (p/app "Show Pali Word Card"
    [:table
     [:tr
      [:td "Bookmarkable?"]
@@ -54,7 +54,7 @@
 )
 
 (defn new []
-  (layout/application "New Pali Word Card"
+  (p/app "New Pali Word Card"
    [:div {:class "page-heading"}
     [:div {:class "breadcrumb"}
      ;; TODO: use `path-for` to get URLs from the router
@@ -68,7 +68,7 @@
     ]))
 
 (defn index [cards]
-  (layout/application "Pali Word Card Index"
+  (p/app "Pali Word Card Index"
    [:p {:id "notice"}
     "&lt;%= notice %&gt;"]
    [:div {:class "page-heading"}
