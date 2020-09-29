@@ -8,11 +8,11 @@
 
 (defstate crux-node
   :start   (crux/start-node
-            {:rdb                 {:crux/module 'crux.rocksdb/->kv-store
-	                           :db-dir      (io/file (get-in config [:crux :data-dir]) "event-log")
-                                   :sync?       true}
-	     :crux/tx-log         {:kv-store :rdb}
-	     :crux/document-store {:kv-store :rdb}
+            {:rdb {:crux/module 'crux.rocksdb/->kv-store
+	                 :db-dir      (io/file (get-in config [:crux :data-dir]) "event-log")
+                   :sync?       true}
+	           :crux/tx-log         {:kv-store :rdb}
+	           :crux/document-store {:kv-store :rdb}
              :crux/index-store    {:kv-store :rdb}})
 
   :stop    (.close crux-node))

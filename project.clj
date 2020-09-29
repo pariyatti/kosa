@@ -14,8 +14,8 @@
                  [org.clojure/data.json "1.0.0"]
                  [org.clojure/tools.logging "1.1.0"]
                  [ch.qos.logback/logback-classic "1.1.3"]
-                 [juxt/crux-core "20.09-1.12.0-beta" :exclusions [org.slf4j/slf4j-api]]
-                 [juxt/crux-rocksdb "20.09-1.12.0-beta" :exclusions [org.slf4j/slf4j-api]]]
+                 [juxt/crux-core "20.09-1.12.1-beta" :exclusions [org.slf4j/slf4j-api]]
+                 [juxt/crux-rocksdb "20.09-1.12.1-beta" :exclusions [org.slf4j/slf4j-api]]]
   :plugins [[lein-scss "0.3.0"]]
 
   :scss {:builds
