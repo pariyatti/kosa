@@ -1,5 +1,5 @@
 (ns kosa-crux.publisher.entity.pali-word.db
-  (:refer-clojure :exclude [list])
+  (:refer-clojure :exclude [list get])
   (:require [kosa-crux.crux :as crux]))
 
 (defn list []
@@ -8,8 +8,10 @@
     (crux/query list-pali-words-query)))
 
 (defn put [params]
-  ;; :params {:card-type pali_word, :bookmarkable value, :shareable value, :pali zig, :submit Save}
   (let [db-params (select-keys params [:card-type :bookmarkable :shareable :pali])
-        ;; TODO: obviously we'll use real IDs later
-        id        (:pali db-params)]
-    (crux/put (assoc db-params :crux.db/id id))))
+        id        (crux/uuid)
+        tx        (crux/put (assoc db-params :crux.db/id id))]
+    (assoc tx :crux.db/id id)))
+
+(defn get [id]
+  (crux/get id))

@@ -17,6 +17,8 @@
 
   :stop    (.close crux-node))
 
+(defn uuid [] (str (java.util.UUID/randomUUID)))
+
 (defn put [datum]
   (crux/submit-tx crux-node [[:crux.tx/put datum]]))
 

@@ -3,26 +3,29 @@
             [hiccup.form :as f]
             [kosa-crux.layouts.publisher :as p]))
 
+(defn show* [card]
+  (h/html [:table
+           [:tr
+            [:td "Bookmarkable?"]
+            [:td (:bookmarkable card)]]
+           [:tr
+            [:td "Shareable?"]
+            [:td (:shareable card)]]
+           [:tr
+            [:td "Pali Word:"]
+            [:td (:pali card)]]]
+          [:ul {:class "card-action-links"}
+           [:li {:class "card-action-link"} "Show"]
+           [:li {:class "card-action-link"} "Edit"]
+           [:li {:class "card-action-link"} "Destroy"]]))
+
 (defn show [card]
   (p/app "Show Pali Word Card"
-   [:table
-    [:tr
-     [:td "Bookmarkable?"]
-     [:td (:bookmarkable card)]]
-    [:tr
-     [:td "Shareable?"]
-     [:td (:shareable card)]]
-    [:tr
-     [:td "Pali Word:"]
-     [:td (:pali card)]]]
-   [:ul {:class "card-action-links"}
-    [:li {:class "card-action-link"} "Show"]
-    [:li {:class "card-action-link"} "Edit"]
-    [:li {:class "card-action-link"} "Destroy"]]))
+         (show* card)))
 
 (defn new-form []
   ;; TODO: use `path-for` to get URLs from the router
-  (f/form-to [:post "/publisher/today/pali_word_card/create"]
+  (f/form-to [:post "/publisher/today/pali_word_card"]
              [:div {:class "field"}
               (f/hidden-field :card-type "pali_word")]
              [:div {:class "field"}
@@ -83,4 +86,4 @@
       "Create Pali Word Card"]]]
    (for [card cards]
      [:div {:class "card-index-content flex"}
-      (show card)])))
+      (show* card)])))
