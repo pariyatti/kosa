@@ -11,17 +11,22 @@
              :artist     "The Who"})
 
 (deftest crux-insert-operations
-  (testing "Can insert and query records"
-    (let [inserted-record (crux/insert record)]
-      (crux.api/await-tx crux/crux-node inserted-record)
-      (is (= record (crux/get :record-id))))))
+  (testing "Can insert a raw datum"
+    (let [tx (crux/put* record)]
+      (crux.api/await-tx crux/crux-node tx)
+      (is (= record (crux/get :record-id)))))
+
+  (testing "sync-put returns the record inserted"
+    (let [inserted (crux/sync-put record [:record :artist])]
+      (is (= (:record record) (:record inserted)))
+      (is (= (:record record) (:record inserted))))))
 
 (deftest crux-update-operations
-  (testing "Can update records"
-    (let [_               (crux/insert record)
+  (testing "Can update raw datums"
+    (let [_               (crux/put* record)
           new-record      (-> record
                               (assoc :artist "the kinks" :song "Lola"))
-          inserted-record (crux/insert new-record)]
+          inserted-record (crux/put* new-record)]
       (crux.api/await-tx crux/crux-node inserted-record)
       (is (= (crux/get :record-id)
              new-record)))))

@@ -19,11 +19,25 @@
 
 (defn uuid [] (str (java.util.UUID/randomUUID)))
 
-(defn put [datum]
-  (crux/submit-tx crux-node [[:crux.tx/put datum]]))
-
 (defn get [id]
   (crux/entity (crux/db crux-node) id))
+
+(defn put* [datum]
+  (crux/submit-tx crux-node [[:crux.tx/put datum]]))
+
+(defn put [e restricted-keys]
+  (let [db-params (select-keys e restricted-keys)
+        id        (uuid)
+        tx        (put* (assoc db-params :crux.db/id id))]
+    (assoc tx :crux.db/id id)))
+
+;; TODO: `sync-put` should really behave like a regular db insert wrt
+;;       keys/schema -- this should throw an exception if `e` is badly formed.
+(defn sync-put [e restricted-keys]
+  (let [tx   (put e restricted-keys)
+        _    (crux/await-tx crux-node tx)
+        card (get (:crux.db/id tx))]
+    card))
 
 (defn query [q]
   (let [result-set (crux/q (crux/db crux-node) q)]
