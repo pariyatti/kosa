@@ -16,10 +16,8 @@
 (def routes
   ["/" [["" (bidi.ring/->Redirect 307 kosa-crux.publisher.handler/index)]
         ["ping" pong]
-        ["css" (bidi.ring/->Files {:dir "resources/public/css"})
-         ;; (bidi.ring/->Resources {:prefix "resources/public/css"})
-         ]
-        ["images" (bidi.ring/->Files {:dir "resources/public/images"})]
+        ["css" (bidi.ring/->Resources {:prefix "resources/public/css"})]
+        ["images" (bidi.ring/->Resources {:dir "resources/public/images"})]
         ["api/v1/today.json" pali-word-handler/list]
 
         ;; TODO: rails-ify / crud-ify / rest-ify resource routes
