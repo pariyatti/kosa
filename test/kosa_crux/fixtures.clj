@@ -44,6 +44,9 @@
          (throw-lock-error))
        (catch java.lang.RuntimeException e
          (throw-lock-error)))
+  ;; TODO: stopping the crux node like this saves the repl but breaks
+  ;;       the browser. you can't run tests and click-test at the same
+  ;;       time with this approach.
   ;; release the connection in case we run a `lein test` on the command
   ;; line while the repl is still open:
   (mount/stop #'crux/crux-node))

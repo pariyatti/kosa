@@ -43,11 +43,6 @@
   (mount/stop)
   (log/info "Kosa stopped."))
 
-(defn restart []
-  (log/info "Restarting the server...")
-  (stop)
-  (start))
-
 (defn load-config! [config-file]
   (mount/stop #'config/config)
   (-> (mount/with-args {:options {:config-file config-file}})

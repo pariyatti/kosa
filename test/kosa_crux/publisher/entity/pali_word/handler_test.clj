@@ -15,17 +15,17 @@
                        :translation translation
                        :language "en"}]]
     {:id (java.util.UUID/randomUUID)
+     :published-at (java.util.Date.)
      :header "sticky header"
      :bookmarkable true
      :shareable true
      :card-type "pali_word"
      :pali word
-     :published-at (java.util.Date.)
      :audio audio
      :translations translations}))
 
 (deftest pali-word-listing-operation
-  (testing "Can list pali words"
+  (testing "Can list pali words in reverse chronological order"
     (let [word-1 (db/sync-put (pali-word "word-1" "translation-1"))
           word-2 (db/sync-put (pali-word "word-2" "translation-2"))]
       (is (= [word-2 word-1] (db/list))))))

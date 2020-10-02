@@ -4,18 +4,31 @@
             [kosa-crux.core :as core]
             [kosa-crux.config :as config]))
 
+(def dev-opts {:options {:config-file "config/config.dev.edn"}})
+(def test-opts {:options {:config-file "config/config.test.edn"}})
+
 (defn start!
   "Behaves like `-main` and provides default dev command line opts."
-  []
-  (core/mount-init!)
-  (core/start {:options {:config-file "config/config.dev.edn"}}))
+  ([] (start! dev-opts))
+  ([opts]
+   (core/mount-init!)
+   (core/start opts)))
 
 (defn stop! []
   (core/stop))
 
-(defn restart! []
-  (core/restart))
+(defn restart!
+  "Restart with the given opts (config) or default to dev."
+  ([] restart! dev-opts)
+  ([opts]
+   (stop!)
+   (start! opts)))
 
-(defn load-config!
-  ([] (load-config! "config/config.dev.edn"))
-  ([config-file] (core/load-config! config-file)))
+(defn dev-mode! []
+  (restart! dev-opts))
+
+(defn test-mode! []
+  (restart! test-opts))
+
+(defn current []
+  (prn "current config is: " config/config))
