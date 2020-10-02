@@ -1,3 +1,3 @@
-{:db-spec {:data-dir "test/data/"}
+{:db-spec {:data-dir "data/test/"}
  :port 3000
  :supported-languages ["hi" "en" "cn"]}
