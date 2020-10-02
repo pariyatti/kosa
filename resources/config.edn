@@ -1,6 +1,0 @@
-{:crux {:data-dir #profile {:default    "dev/data/"
-                            :dev        "dev/data/"
-                            :test       "dev/test/data/"
-                            :production "data/"}}
- :server {:port #profile {:default 3000}}
- :supported-languages ["hi" "en" "cn"]}
