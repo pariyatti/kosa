@@ -4,7 +4,9 @@
   :license {:name "GNU Affero General Public License 3.0"
             :url  "https://www.gnu.org/licenses/agpl-3.0.en.html"}
   :dependencies [[org.clojure/clojure "1.10.1"]
+                 [org.clojure/tools.cli "1.0.194"]
                  [mount "0.1.16"]
+                 [tolitius/mount-up "0.1.3"]
                  [aero "1.1.6"]
                  [bidi "2.1.6"]
                  [hiccup "1.0.5"]
@@ -31,6 +33,8 @@
 
   :main ^:skip-aot kosa-crux.core
   :target-path "target/%s"
+
+  :repl-options {:init-ns dev.repl}
   :profiles {:uberjar {:aot      :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}
              :dev     {:dependencies [[org.clojure/test.check "1.1.0"]]}})

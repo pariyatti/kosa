@@ -4,18 +4,25 @@
             [crux.api :as crux]
             [crux.rocksdb :as rocks]
             [clojure.java.io :as io]
-            [kosa-crux.config :refer [config]]))
+            [kosa-crux.config :as config]))
+
+(def crux-node)
+
+(defn start-crux! []
+  (crux/start-node
+   {:rdb {:crux/module 'crux.rocksdb/->kv-store
+	        :db-dir      (io/file (get-in config/config [:db-spec :data-dir]) "event-log")
+          :sync?       true}
+	  :crux/tx-log         {:kv-store :rdb}
+	  :crux/document-store {:kv-store :rdb}
+    :crux/index-store    {:kv-store :rdb}}))
+
+(defn stop-crux! []
+  (.close crux-node))
 
 (defstate crux-node
-  :start   (crux/start-node
-            {:rdb {:crux/module 'crux.rocksdb/->kv-store
-	                 :db-dir      (io/file (get-in config [:crux :data-dir]) "event-log")
-                   :sync?       true}
-	           :crux/tx-log         {:kv-store :rdb}
-	           :crux/document-store {:kv-store :rdb}
-             :crux/index-store    {:kv-store :rdb}})
-
-  :stop    (.close crux-node))
+  :start (start-crux!)
+  :stop  (stop-crux!))
 
 (defn uuid [] (str (java.util.UUID/randomUUID)))
 

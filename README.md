@@ -10,8 +10,8 @@ Install `clojure` as described [here](https://www.clojure.org/guides/getting_sta
 ### Install Leinengen
 Install `lein` as described [here](https://leiningen.org/#install)
 
-### Install Sass
-`sudo npm install -g sass`
+### Install NPM
+Install `npm` (nodejs LTS) as described [here](https://nodejs.org/en/download/). Sorry.
 
 
 ## Getting Started
@@ -19,9 +19,13 @@ Install `lein` as described [here](https://leiningen.org/#install)
 ```shell
 git clone git@github.com:pariyatti/kosa-crux.git
 cd kosa-crux
-lein deps
-lein scss :development auto
-lein run # Or `lein repl` for interactive programming: run `(start)` to start the server in that case
+
+make help # see all the build commands
+make init # setup your system
+
+make test # run the tests
+make run  # run the server
+make repl # run the server interactively
 ```
 
 ## License and Copyright

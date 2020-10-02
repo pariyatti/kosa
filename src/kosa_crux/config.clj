@@ -1,10 +1,31 @@
 (ns kosa-crux.config
   (:require [clojure.java.io :as io]
+            [clojure.spec.alpha :as s]
             [aero.core :as aero]
-            [mount.core :refer [defstate]]))
+            [mount.core :as mount :refer [defstate]]))
+
+(s/def :db-spec/data-dir string?)
+
+(s/def ::db-spec
+  (s/keys :req-un
+          [:db-spec/data-dir]))
+
+(s/def ::port int?)
+(s/def ::supported-languages (s/coll-of string? :kind vector?))
+
+(s/def ::config (s/keys :req-un [::db-spec ::port ::supported-languages]))
+
+(defn start-config! []
+  (let [config-file (get-in (mount/args) [:options :config-file])
+        _ (println (format "Reading config from '%s'." config-file))
+        config-read (aero/read-config config-file)]
+    (if (s/valid? ::config config-read)
+      config-read
+      (throw (ex-info "Failed to validate config" {})))))
 
 (defstate config
-  :start (-> "config.edn" io/resource aero/read-config))
+  :start (start-config!)
+  :stop nil)
 
 (defn supported-languages []
   (-> config (get :supported-languages) set))

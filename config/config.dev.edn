@@ -1,0 +1,3 @@
+{:db-spec {:data-dir "dev/data/"}
+ :port 3000
+ :supported-languages ["hi" "en" "cn"]}

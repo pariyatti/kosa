@@ -2,11 +2,13 @@
   (:refer-clojure :exclude [list get])
   (:require [kosa-crux.crux :as crux]))
 
-(def fields [:card-type :bookmarkable :shareable :pali])
+(def fields [:card-type :published-at :bookmarkable :shareable :pali])
 
 (defn list []
-  (let [list-pali-words-query {:find  '[e]
-                               :where '[[e :card-type "pali_word"]]}]
+  (let [list-pali-words-query '{:find     [e published-at]
+                                :where    [[e :card-type "pali_word"]
+                                           [e :published-at published-at]]
+                                :order-by [[published-at :desc]]}]
     (crux/query list-pali-words-query)))
 
 (defn put [e]

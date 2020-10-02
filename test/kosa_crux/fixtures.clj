@@ -1,10 +1,49 @@
 (ns kosa-crux.fixtures
-  (:require [mount.core :as mount]
+  (:require [clojure.java.io :as io]
+            [mount.core :as mount]
             [crux.api]
-            [kosa-crux.config :refer [config]]
-            [kosa-crux.crux :refer [crux-node]]))
+            [kosa-crux.config :as config]
+            [kosa-crux.crux :as crux]))
+
+(defn rm-rf
+  "Recursively delete a directory."
+  [^java.io.File file & [silently]]
+  (when (.isDirectory file)
+    (doseq [file-in-dir (.listFiles file)]
+      (rm-rf file-in-dir)))
+  (io/delete-file file silently))
+
+(defn reset-db! []
+  (let [data-dir (get-in config/config [:db-spec :data-dir])
+        crux-log (io/file data-dir "event-log")
+        crux-idx (io/file data-dir "indexes")]
+    (rm-rf crux-log true)
+    (rm-rf crux-idx true)))
+
+(defn get-test-config []
+  {:options {:config-file (or (System/getenv "TEST_CONFIG_FILE")
+                              "config/config.test.edn")}})
+
+(defn start-test-db []
+  (-> (mount/with-args (get-test-config))
+      (mount/only #{#'config/config #'crux/crux-node})
+      mount/start))
+
+(defn throw-lock-error []
+  (let [msg "RocksDB is locked. Do you have a repl connected somewhere?"]
+    (prn msg)
+    (throw (ex-info msg {}))))
 
 (defn load-states [t]
-  (-> (mount/only #{#'config #'crux-node})
-      mount/start)
-  (t))
+  (mount/stop #'crux/crux-node)
+  ;; TODO: this is unbelievably janky... there has to be a better way.
+  (reset-db!)
+  (try (start-test-db)
+       (t)
+       (catch org.rocksdb.RocksDBException e
+         (throw-lock-error))
+       (catch java.lang.RuntimeException e
+         (throw-lock-error)))
+  ;; release the connection in case we run a `lein test` on the command
+  ;; line while the repl is still open:
+  (mount/stop #'crux/crux-node))
