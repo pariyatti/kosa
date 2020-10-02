@@ -78,12 +78,14 @@
     [:div {:class "breadcrumb"}
      ;; TODO: use `path-for` to get URLs from the router
      [:a {:href "/publisher"}
-      "Back to Publisher"]]
+      [:clr-icon {:shape "grid-view" :size "24"}]
+      "&nbsp;Back to Publisher"]]
     [:div {:class "header-and-link flex"}
      [:h1 {:class "page-header"} "Pali Cards"]
      ;; TODO: use `path-for` to get URLs from the router
      [:a {:href "/publisher/today/pali_word_card/new"}
-      "Create Pali Word Card"]]]
+      [:clr-icon {:shape "plus-circle" :size "24"}]
+      "&nbsp;Create Pali Word Card"]]]
    (for [card cards]
      [:div {:class "card-index-content flex"}
       (show* card)])))

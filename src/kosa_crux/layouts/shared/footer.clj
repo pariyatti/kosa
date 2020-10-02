@@ -1,4 +1,6 @@
-(ns kosa-crux.layouts.shared.footer)
+(ns kosa-crux.layouts.shared.footer
+  (:require [hiccup.core :as hc]))
 
 (defn render []
-  [:div.meditate-illustration])
+  (hc/html
+   [:div.meditate-illustration]))

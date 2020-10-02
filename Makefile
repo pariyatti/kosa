@@ -1,5 +1,5 @@
 env = sandbox
-.PHONY: help sass tools deps assets init test run repl
+.PHONY: help sass icons tools deps assets init test run repl
 # HELP sourced from https://gist.github.com/prwhite/8168133
 
 # Add help text after each target name starting with '\#\#'
@@ -26,8 +26,18 @@ sass:
 	$(info Installing Sass...)
 	sudo npm install -g sass
 
+# Hidden@Setup Clarity Icons
+icons:
+	$(info Installing Clarity Icons...)
+	npm install @webcomponents/custom-elements@1.0.0 --save
+	cp node_modules/@webcomponents/custom-elements/custom-elements.min.js resources/public/js/custom-elements.min.js
+	npm install @clr/icons@4.0.3 --save
+	cp node_modules/@clr/icons/clr-icons.min.css resources/public/css/clr-icons.min.css
+	cp node_modules/@clr/icons/clr-icons.min.js resources/public/js/clr-icons.min.js
+	rm -rf node_modules
+
 # Hidden@Setup Install Tools
-tools: sass
+tools: sass icons
 
 deps: ##@Development Pull JVM deps
 	lein deps

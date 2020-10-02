@@ -17,6 +17,7 @@
   ["/" [["" (bidi.ring/->Redirect 307 kosa-crux.publisher.handler/index)]
         ["ping" pong]
         ["css" (bidi.ring/->Resources {:prefix "resources/public/css"})]
+        ["js" (bidi.ring/->Resources {:prefix "resources/public/js"})]
         ["images" (bidi.ring/->Resources {:dir "resources/public/images"})]
         ["api/v1/today.json" pali-word-handler/list]
 

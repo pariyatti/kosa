@@ -1,7 +1,9 @@
-(ns kosa-crux.layouts.shared.flash)
+(ns kosa-crux.layouts.shared.flash
+  (:require [hiccup.core :as hc]))
 
 (defn render [flashes]
-  [:div#flash
-   (for [[k v] flashes]
-     [:div {:class (format "flash %s" k)}
-      v])])
+  (hc/html
+   [:div#flash
+    (for [[k v] flashes]
+      [:div {:class (format "flash %s" k)}
+       v])]))

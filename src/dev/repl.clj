@@ -19,7 +19,7 @@
 
 (defn restart!
   "Restart with the given opts (config) or default to dev."
-  ([] restart! dev-opts)
+  ([] (restart! dev-opts))
   ([opts]
    (stop!)
    (start! opts)))

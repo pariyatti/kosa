@@ -13,3 +13,12 @@ pom.xml.asc
 .nrepl-port
 .cpcache/
 /data/
+/node_modules/
+
+resources/public/css/main.css.map
+resources/public/css/audiences.css*
+resources/public/css/authors.css*
+resources/public/css/cards.css*
+resources/public/css/excerpts.css*
+resources/public/css/layout.css*
+resources/public/css/scaffolds.css*

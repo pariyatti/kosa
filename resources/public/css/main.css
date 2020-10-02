@@ -1,4 +1,3 @@
-@import '@clr/icons/clr-icons.min.css';
 /*
 This file has font related elements
 Naming convention:
@@ -21,9 +20,6 @@ r : regular
 s : small
 xs: extra small
 */
-@import '@clr/icons/clr-icons.min.css';
-@import '@clr/icons/clr-icons.min.css';
-@import '@clr/icons/clr-icons.min.css';
 table {
   width: 80%;
   border-collapse: collapse;

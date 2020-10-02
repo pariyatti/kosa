@@ -1,9 +1,14 @@
 (ns kosa-crux.layouts.shared.head
-  (:require [hiccup.page :as h]))
+  (:require [hiccup.core :as hc]
+            [hiccup.page :as hp]))
 
 (defn render []
-  ;; (h/include-js "js/script.js")
-  (h/include-css "/css/main.css"))
+  (hc/html
+   ;; (h/include-js "js/script.js")
+   (hp/include-css "/css/main.css")
+   (hp/include-css "/css/clr-icons.min.css")
+   (hp/include-js "/js/custom-elements.min.js")
+   (hp/include-js "/js/clr-icons.min.js")))
 
   ;; TODO: from rails --
   ;; <%= csrf_meta_tags %>
