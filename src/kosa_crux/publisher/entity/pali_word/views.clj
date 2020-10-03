@@ -1,6 +1,8 @@
 (ns kosa-crux.publisher.entity.pali-word.views
-  (:require [hiccup.core :as h]
+  (:require [bidi.bidi :as bidi]
+            [hiccup.core :as h]
             [hiccup.form :as f]
+            [kosa-crux.routes :as routes]
             [kosa-crux.layouts.publisher :as p]))
 
 (defn show* [card]
@@ -21,7 +23,8 @@
 
 (defn show [card]
   (p/app "Show Pali Word Card"
-         (show* card)))
+         (show* card)
+         [:a {:href "/publisher/today/pali_word_cards"} "Go Back"]))
 
 (defn new-form []
   ;; TODO: use `path-for` to get URLs from the router
