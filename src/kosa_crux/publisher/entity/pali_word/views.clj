@@ -1,8 +1,7 @@
 (ns kosa-crux.publisher.entity.pali-word.views
-  (:require [bidi.bidi :as bidi]
-            [hiccup.core :as h]
+  (:require [hiccup.core :as h]
             [hiccup.form :as f]
-            [kosa-crux.routes :as routes]
+            [kosa-crux.views :as v]
             [kosa-crux.layouts.publisher :as p]))
 
 (defn show* [card]
@@ -15,20 +14,18 @@
             [:td (:shareable card)]]
            [:tr
             [:td "Pali Word:"]
-            [:td (:pali card)]]]
-          [:ul {:class "card-action-links"}
-           [:li {:class "card-action-link"} "Show"]
-           [:li {:class "card-action-link"} "Edit"]
-           [:li {:class "card-action-link"} "Destroy"]]))
+            [:td (:pali card)]]]))
 
 (defn show [card]
   (p/app "Show Pali Word Card"
          (show* card)
+         [:ul {:class "card-action-links"}
+           [:li {:class "card-action-link"} "Edit"]
+           [:li {:class "card-action-link"} "Destroy"]]
          [:a {:href "/publisher/today/pali_word_cards"} "Go Back"]))
 
-(defn new-form []
-  ;; TODO: use `path-for` to get URLs from the router
-  (f/form-to [:post "/publisher/today/pali_word_card"]
+(defn new-form [req]
+  (f/form-to [:post (v/path-for req :kosa-crux.routes/pali-word-create)]
              [:div {:class "field"}
               (f/hidden-field :card-type "pali_word")]
              [:div {:class "field"}
@@ -59,36 +56,37 @@
 ;; [:div {:class "field"} "&lt;%= form.label :translation %&gt;\n    &lt;%= form.text_field :translation %&gt;"]
 )
 
-(defn new []
+(defn new [req]
   (p/app "New Pali Word Card"
    [:div {:class "page-heading"}
     [:div {:class "breadcrumb"}
-     ;; TODO: use `path-for` to get URLs from the router
-     [:a {:href "/publisher"}
+     [:a {:href (v/path-for req :kosa-crux.routes/publisher)}
       "Back to Publisher"]]
     [:div {:class "header-and-link flex"}
      [:h1 {:class "page-header"} "New Pali Word Card"]]]
    [:div {:class "form-and-preview flex row"}
-    (new-form)
+    (new-form req)
     ;; (show card) ;; TODO: requires javascript to do anything meaningful
     ]))
 
-(defn index [cards]
+(defn index [req cards]
   (p/app "Pali Word Card Index"
    [:p {:id "notice"}
     "&lt;%= notice %&gt;"]
    [:div {:class "page-heading"}
     [:div {:class "breadcrumb"}
-     ;; TODO: use `path-for` to get URLs from the router
-     [:a {:href "/publisher"}
+     [:a {:href (v/path-for req :kosa-crux.routes/publisher)}
       [:clr-icon {:shape "grid-view" :size "24"}]
       "&nbsp;Back to Publisher"]]
     [:div {:class "header-and-link flex"}
      [:h1 {:class "page-header"} "Pali Cards"]
-     ;; TODO: use `path-for` to get URLs from the router
-     [:a {:href "/publisher/today/pali_word_card/new"}
+     [:a {:href (v/path-for req :kosa-crux.routes/pali-word-new)}
       [:clr-icon {:shape "plus-circle" :size "24"}]
       "&nbsp;Create Pali Word Card"]]]
    (for [card cards]
      [:div {:class "card-index-content flex"}
-      (show* card)])))
+      (show* card)
+      [:ul {:class "card-action-links"}
+           [:li {:class "card-action-link"} "Show"]
+           [:li {:class "card-action-link"} "Edit"]
+           [:li {:class "card-action-link"} "Destroy"]]])))

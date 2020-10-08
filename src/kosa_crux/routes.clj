@@ -1,34 +1,50 @@
 (ns kosa-crux.routes
   (:require [ring.util.response :as resp]
-            [bidi.bidi :as bidi]
-            [bidi.ring]
+            [reitit.ring :as rr]
             [kosa-crux.publisher.handler]
             [kosa-crux.publisher.entity.pali-word.spec]
             [kosa-crux.middleware :refer [wrap-spec-validation]]
             [kosa-crux.publisher.entity.pali-word.handler :as pali-word-handler]))
 
-(defn not-found [_request]
-  (resp/not-found {:message "not-found"}))
-
 (defn pong [_request]
   (resp/response "pong"))
 
-(def routes
-  ["/" [["" (bidi.ring/->Redirect 307 kosa-crux.publisher.handler/index)]
-        ["ping" pong]
-        ["css" (bidi.ring/->Resources {:prefix "resources/public/css"})]
-        ["js" (bidi.ring/->Resources {:prefix "resources/public/js"})]
-        ["images" (bidi.ring/->Resources {:dir "resources/public/images"})]
-        ["api/v1/today.json" pali-word-handler/list]
+(defn redirect [location]
+  {:status  307
+   :headers {"Location" location}
+   :body    (str "Redirect to " location)})
 
-        ;; TODO: rails-ify / crud-ify / rest-ify resource routes
-        ["publisher" [["" kosa-crux.publisher.handler/index]
-                      ["/today" [["/pali_word_cards" pali-word-handler/index]
-                                 ["/pali_word_card/new" pali-word-handler/new]
-                                 [:post [[["/pali_word_card"] (wrap-spec-validation :entity/pali-word-request pali-word-handler/create)]]]
-                                 [:get  [[["/pali_word_card/" :id] pali-word-handler/show]]]]]]]
+(def default-handler
+  (rr/routes
+   (rr/create-resource-handler {:path "/css"    :root "public/css"})
+   (rr/create-resource-handler {:path "/js"     :root "public/js"})
+   (rr/create-resource-handler {:path "/images" :root "public/images"})
+   (rr/create-default-handler
+    {:not-found (constantly {:status 404, :body "404 Not Found"})})))
 
-        [true not-found]]])
+(def router
+  (rr/router
+   ["/" [["" {:name    ::root
+              :handler (fn [req] (redirect "/publisher"))}]
+         ["ping" {:name    ::ping
+                  :handler pong}]
+         ["api/v1/today.json" {:name    :kosa-crux.routes.api/today
+                               :handler pali-word-handler/list}]
+
+         ;; TODO: rails-ify / crud-ify / rest-ify resource routes
+         ["publisher" [["" {:name    ::publisher
+                            :handler kosa-crux.publisher.handler/index}]
+                       ["/today" [["/pali_word_cards" {:name ::pali-word-index
+                                                       :get  pali-word-handler/index}]
+                                  ["/pali_word_card/new" {:name ::pali-word-new
+                                                          :get  pali-word-handler/new}]
+                                  ["/pali_word_card" {:name ::pali-word-create
+                                                      :post (wrap-spec-validation :entity/pali-word-request pali-word-handler/create)}]
+                                  ["/pali_word_card/:id" {:name ::pali-word-show
+                                                          :get  pali-word-handler/show}]]]]]]]
+   ;; CRUD resources conflict between /new and /:id
+   ;; consider {:conflicting true} instead, once we abstract CRUDs
+   {:conflicts nil}))
 
 ;; example crud-ful routes:
 

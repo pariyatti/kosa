@@ -39,7 +39,7 @@ icons:
 # Hidden@Setup Install Tools
 tools: sass icons
 
-deps: ##@Development Pull JVM deps
+deps: ##@Development Run `lein deps`
 	lein deps
 
 assets: ##@Development Rebuild web assets (CSS)

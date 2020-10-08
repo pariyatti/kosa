@@ -8,7 +8,7 @@
                  [mount "0.1.16"]
                  [tolitius/mount-up "0.1.3"]
                  [aero "1.1.6"]
-                 [bidi "2.1.6"]
+                 [metosin/reitit "0.5.6"]
                  [hiccup "1.0.5"]
                  [ring/ring-core "1.7.1"]
                  [ring/ring-jetty-adapter "1.6.3"]

@@ -4,14 +4,16 @@
             [kosa-crux.publisher.entity.pali-word.db :as pali-word-db]
             [kosa-crux.publisher.entity.pali-word.views :as views]))
 
-(defn index [_request]
+(defn index [request]
   (let [cards (pali-word-db/list)]
     (resp/response
-     (views/index cards))))
+     (views/index request cards))))
 
-(defn new [_request]
+(defn new [request]
+  (prn (str "router? " (:reitit.core/router request)))
+  (prn (str ":router? " (:router request)))
   (resp/response
-   (views/new)))
+   (views/new request)))
 
 (defn create [{:keys [params]}]
   (let [card (pali-word-db/sync-put (assoc params :published-at (java.util.Date.)))]
@@ -20,8 +22,8 @@
       (resp/response
        (str "It looks like your card wasn't saved? 'crux/sync-put' returned nil.")))))
 
-(defn show [{:keys [route-params]}]
-  (let [card (pali-word-db/get (:id route-params))]
+(defn show [{:keys [path-params]}]
+  (let [card (pali-word-db/get (:id path-params))]
     (if card
       (resp/response (views/show card))
       (resp/response "Card not found in Crux."))))
