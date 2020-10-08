@@ -7,7 +7,8 @@
             [ring.middleware.resource :refer [wrap-resource]]
             [reitit.ring :as rring]
             [kosa-crux.config :as config]
-            [kosa-crux.routes :as routes]))
+            [kosa-crux.routes :as routes]
+            [kosa-crux.middleware :refer [wrap-router]]))
 
 (def server)
 
@@ -15,25 +16,15 @@
   (rring/ring-handler routes/router
                       routes/default-handler))
 
-(defn wrap-router [h]
-  (let [router (rring/get-router h)]
-    (fn [req]
-      (h (assoc req :router router)))))
-
 (def app
-;;  (handler)
   (-> (handler)
       wrap-router
       wrap-keyword-params
       wrap-params
-      ;; TODO: put this back -- I just wanted to demonstrate that
-      ;;       reitit.ring/create-resource-handler works properly in kosa-crux.routes -sd
-      ;; (wrap-resource "public")
+      (wrap-resource "public")
       wrap-json-body
       wrap-json-params
-      wrap-json-response
-      )
-  )
+      wrap-json-response))
 
 (defn start-server! []
   (jetty/run-jetty app

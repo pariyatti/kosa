@@ -16,9 +16,6 @@
 
 (def default-handler
   (rr/routes
-   (rr/create-resource-handler {:path "/css"    :root "public/css"})
-   (rr/create-resource-handler {:path "/js"     :root "public/js"})
-   (rr/create-resource-handler {:path "/images" :root "public/images"})
    (rr/create-default-handler
     {:not-found (constantly {:status 404, :body "404 Not Found"})})))
 
