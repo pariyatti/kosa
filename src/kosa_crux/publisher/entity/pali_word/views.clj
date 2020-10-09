@@ -28,18 +28,27 @@
   (f/form-to [:post (v/path-for req :kosa-crux.routes/pali-word-create)]
              [:div {:class "field"}
               (f/hidden-field :card-type "pali_word")]
-             [:div {:class "field"}
-              (f/label :bookmarkable "Bookmarkable?")
-              (f/check-box :bookmarkable)]
-             [:div {:class "field"}
-              (f/label :shareable "Shareable?")
-              (f/check-box :shareable)]
-             [:div {:class "field"}
-              (f/label :header "Header")
-              (f/text-field :header)]
+             [:a {:href "#"
+                  :onclick "document.getElementById('defaults').classList.toggle('form-defaults-hidden');"}
+              "Show / Hide Defaults"]
+             [:div#defaults {:class "form-defaults-hidden"}
+              [:div {:class "field"}
+               (f/label :bookmarkable "Bookmarkable?")
+               (f/check-box :bookmarkable :checked)]
+              [:div {:class "field"}
+               (f/label :shareable "Shareable?")
+               (f/check-box :shareable :checked)]
+              [:div {:class "field"}
+               (f/label :header "Header")
+               (f/text-field :header "Pali Word")]]
              [:div {:class "field"}
               (f/label :pali "Pali")
               (f/text-field :pali)]
+             ;; TODO: include these fields also
+;; [:div {:class "field"} "&lt;%= form.label :audio_file, &quot;Audio clip to upload:&quot; %&gt;\n    &lt;%= form.file_field :audio_file %&gt;"]
+;; [:div {:class "field"} "&lt;%= form.label :language %&gt;\n    &lt;%= form.text_field :language %&gt;"]
+;; [:div {:class "field"} "&lt;%= form.label :translation %&gt;\n    &lt;%= form.text_field :translation %&gt;"]
+
              [:div {:class "actions"}
               (f/submit-button {:name "submit"} "Save")])
 
@@ -50,10 +59,6 @@
   ;;  [:ul "&lt;% card.errors.full_messages.each do |message| %&gt;"
   ;;   [:li "&lt;%= message %&gt;"]"&lt;% end %&gt;"]]
 
-;; TODO: include these fields also
-;; [:div {:class "field"} "&lt;%= form.label :audio_file, &quot;Audio clip to upload:&quot; %&gt;\n    &lt;%= form.file_field :audio_file %&gt;"]
-;; [:div {:class "field"} "&lt;%= form.label :language %&gt;\n    &lt;%= form.text_field :language %&gt;"]
-;; [:div {:class "field"} "&lt;%= form.label :translation %&gt;\n    &lt;%= form.text_field :translation %&gt;"]
 )
 
 (defn new [req]

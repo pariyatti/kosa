@@ -768,6 +768,10 @@ td, th {
   font-size: 18px;
 }
 
+.form-defaults-hidden {
+  display: none;
+}
+
 /*
 This file has font related elements
 Naming convention:
