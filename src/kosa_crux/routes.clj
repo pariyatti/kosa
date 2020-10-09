@@ -1,6 +1,7 @@
 (ns kosa-crux.routes
   (:require [ring.util.response :as resp]
             [reitit.ring :as rr]
+            [muuntaja.core :as m]
             [kosa-crux.publisher.handler]
             [kosa-crux.publisher.entity.pali-word.spec]
             [kosa-crux.middleware :refer [wrap-spec-validation]]
@@ -16,6 +17,10 @@
 
 (def default-handler
   (rr/routes
+   (rr/create-resource-handler {:path "/css"    :root "public/css"})
+   (rr/create-resource-handler {:path "/js"     :root "public/js"})
+   (rr/create-resource-handler {:path "/images" :root "public/images"})
+   (rr/create-resource-handler {:path "/"       :root "public"})
    (rr/create-default-handler
     {:not-found (constantly {:status 404, :body "404 Not Found"})})))
 
@@ -41,7 +46,8 @@
                                                           :get  pali-word-handler/show}]]]]]]]
    ;; CRUD resources conflict between /new and /:id
    ;; consider {:conflicting true} instead, once we abstract CRUDs
-   {:conflicts nil}))
+   {:conflicts nil
+    :data {:muuntaja m/instance}}))
 
 ;; example crud-ful routes:
 

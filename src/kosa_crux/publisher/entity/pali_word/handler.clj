@@ -10,8 +10,6 @@
      (views/index request cards))))
 
 (defn new [request]
-  (prn (str "router? " (:reitit.core/router request)))
-  (prn (str ":router? " (:router request)))
   (resp/response
    (views/new request)))
 

@@ -6,10 +6,10 @@
             [kosa-crux.layouts.shared.footer :as footer]))
 
 (defn app [title & content]
-  (h/html5 {:lang "en"}
-           [:head
-            [:title title]
-            (head/render)]
+  (h/html5 {:lang "en"
+            :encoding "UTF-8"}
+           (head/render
+            [:title title])
 
            [:body
             (header/render "Pariyatti Publisher")

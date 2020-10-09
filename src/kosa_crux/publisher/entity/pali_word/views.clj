@@ -44,6 +44,14 @@
              [:div {:class "field"}
               (f/label :pali "Pali")
               (f/text-field :pali)]
+
+             [:div#translations
+              [:a {:href "#"
+                   :onclick "addInput('translations-list', 'translation-');"}
+               [:clr-icon {:shape "plus-circle" :size "24"}]
+               "&nbsp; Add Translation"]
+              [:div#translations-list]]
+
              ;; TODO: include these fields also
 ;; [:div {:class "field"} "&lt;%= form.label :audio_file, &quot;Audio clip to upload:&quot; %&gt;\n    &lt;%= form.file_field :audio_file %&gt;"]
 ;; [:div {:class "field"} "&lt;%= form.label :language %&gt;\n    &lt;%= form.text_field :language %&gt;"]

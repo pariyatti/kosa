@@ -4,7 +4,7 @@
             [ring.middleware.json :refer [wrap-json-response wrap-json-body wrap-json-params]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.params :refer [wrap-params]]
-            [ring.middleware.resource :refer [wrap-resource]]
+            [ring.middleware.content-type :refer [wrap-content-type]]
             [reitit.ring :as rring]
             [kosa-crux.config :as config]
             [kosa-crux.routes :as routes]
@@ -21,7 +21,6 @@
       wrap-router
       wrap-keyword-params
       wrap-params
-      (wrap-resource "public")
       wrap-json-body
       wrap-json-params
       wrap-json-response))
