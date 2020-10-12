@@ -13,3 +13,11 @@
   (let [router (rring/get-router h)]
     (fn [req]
       (h (assoc req :router router)))))
+
+(defn wrap-println-request
+  "Just some lazy debugging trash"
+  [h]
+  (fn [req]
+    (prn "REQUEST:")
+    (prn req)
+    (h req)))

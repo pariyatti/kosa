@@ -14,6 +14,7 @@
                  [ring/ring-core "1.7.1"]
                  [ring/ring-jetty-adapter "1.6.3"]
                  [ring/ring-json "0.5.0"]
+                 [ring-logger "1.0.1"]
                  [org.clojure/data.json "1.0.0"]
                  [org.clojure/tools.logging "1.1.0"]
                  [ch.qos.logback/logback-classic "1.1.3"]

@@ -772,6 +772,15 @@ td, th {
   display: none;
 }
 
+.language {
+  width: 50px;
+  display: inline-block;
+}
+
+.translation {
+  display: inline-block;
+}
+
 /*
 This file has font related elements
 Naming convention:

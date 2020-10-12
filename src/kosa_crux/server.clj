@@ -1,6 +1,7 @@
 (ns kosa-crux.server
   (:require [mount.core :refer [defstate]]
             [ring.adapter.jetty :as jetty]
+            [ring.logger :refer [wrap-log-request-start wrap-log-response wrap-log-request-params]]
             [ring.middleware.json :refer [wrap-json-response wrap-json-body wrap-json-params]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.params :refer [wrap-params]]
@@ -8,7 +9,7 @@
             [reitit.ring :as rring]
             [kosa-crux.config :as config]
             [kosa-crux.routes :as routes]
-            [kosa-crux.middleware :refer [wrap-router]]))
+            [kosa-crux.middleware :refer [wrap-router wrap-println-request]]))
 
 (def server)
 
@@ -19,11 +20,14 @@
 (def app
   (-> (handler)
       wrap-router
+      wrap-log-response
+      (wrap-log-request-params {:transform-fn #(assoc % :level :info)})
       wrap-keyword-params
       wrap-params
       wrap-json-body
       wrap-json-params
-      wrap-json-response))
+      wrap-json-response
+      wrap-log-request-start))
 
 (defn start-server! []
   (jetty/run-jetty app

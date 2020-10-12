@@ -13,8 +13,15 @@
   (resp/response
    (views/new request)))
 
+(defn params->doc [p]
+  (-> p
+      (assoc :translations (map vector (:language p) (:translation p)))
+      (dissoc :language :translation)
+      (assoc :published-at (java.util.Date.))))
+
 (defn create [{:keys [params]}]
-  (let [card (pali-word-db/sync-put (assoc params :published-at (java.util.Date.)))]
+  (let [doc (params->doc params)
+        card (pali-word-db/sync-put doc)]
     (if card
       (resp/redirect (format "/publisher/today/pali_word_card/%s" (:crux.db/id card)))
       (resp/response

@@ -1,20 +1,27 @@
 (ns kosa-crux.publisher.entity.pali-word.views
   (:require [hiccup.core :as h]
             [hiccup.form :as f]
+            [kosa-crux.config :as config]
             [kosa-crux.views :as v]
             [kosa-crux.layouts.publisher :as p]))
 
 (defn show* [card]
-  (h/html [:table
-           [:tr
-            [:td "Bookmarkable?"]
-            [:td (:bookmarkable card)]]
-           [:tr
-            [:td "Shareable?"]
-            [:td (:shareable card)]]
-           [:tr
-            [:td "Pali Word:"]
-            [:td (:pali card)]]]))
+  (prn "card: " card)
+  (h/html
+   [:table
+    [:tr
+     [:td "Bookmarkable?"]
+     [:td (:bookmarkable card)]]
+    [:tr
+     [:td "Shareable?"]
+     [:td (:shareable card)]]
+    [:tr
+     [:td "Pali Word:"]
+     [:td (:pali card)]]
+    (for [t (:translations card)]
+      [:tr
+       [:td (first t)]
+       [:td (second t)]])]))
 
 (defn show [card]
   (p/app "Show Pali Word Card"
@@ -45,17 +52,17 @@
               (f/label :pali "Pali")
               (f/text-field :pali)]
 
-             [:div#translations
-              [:a {:href "#"
-                   :onclick "addInput('translations-list', 'translation-');"}
-               [:clr-icon {:shape "plus-circle" :size "24"}]
-               "&nbsp; Add Translation"]
-              [:div#translations-list]]
+             [:div#translations-list
+              (for [lang (:supported-languages config/config)]
+                [:div
+                 [:div {:class "field language"}
+                  (f/text-field {:readonly "readonly"} :language lang)]
+                 [:div {:class "field translation"}
+                  (f/text-field :translation)]])]
 
              ;; TODO: include these fields also
 ;; [:div {:class "field"} "&lt;%= form.label :audio_file, &quot;Audio clip to upload:&quot; %&gt;\n    &lt;%= form.file_field :audio_file %&gt;"]
 ;; [:div {:class "field"} "&lt;%= form.label :language %&gt;\n    &lt;%= form.text_field :language %&gt;"]
-;; [:div {:class "field"} "&lt;%= form.label :translation %&gt;\n    &lt;%= form.text_field :translation %&gt;"]
 
              [:div {:class "actions"}
               (f/submit-button {:name "submit"} "Save")])

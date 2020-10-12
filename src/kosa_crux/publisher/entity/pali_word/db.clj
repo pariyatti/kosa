@@ -2,7 +2,8 @@
   (:refer-clojure :exclude [list get])
   (:require [kosa-crux.crux :as crux]))
 
-(def fields [:card-type :modified-at :published-at :bookmarkable :shareable :pali])
+(def fields [:card-type :modified-at :published-at :bookmarkable :shareable
+             :pali :translations])
 
 (defn list []
   (let [list-pali-words-query '{:find     [e modified-at]

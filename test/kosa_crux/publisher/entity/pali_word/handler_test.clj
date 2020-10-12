@@ -1,5 +1,6 @@
 (ns kosa-crux.publisher.entity.pali-word.handler-test
   (:require [clojure.test :refer :all]
+            [clojure.string :as str]
             [kosa-crux.fixtures :as fixtures]
             [kosa-crux.config :as config]
             [kosa-crux.publisher.entity.pali-word.db :as db]
@@ -29,3 +30,21 @@
     (let [word-1 (db/sync-put (pali-word "word-1" "translation-1"))
           word-2 (db/sync-put (pali-word "word-2" "translation-2"))]
       (is (= [word-2 word-1] (db/list))))))
+
+(deftest http-params->crux-document
+  (testing "Zips languages and translations"
+    (let [params {:card-type "pali_word", :bookmarkable "true", :shareable "true", :header "Pali Word",
+                  :pali "rani", :language ["hi" "en" "cn"], :translation ["rani" "queen" "wx"], :submit "Save"}]
+      (is (= [["hi" "rani"] ["en" "queen"] ["cn" "wx"]]
+             (:translations (handler/params->doc params))))))
+
+  (testing "Saves params to db"
+    (let [params {:card-type "pali_word", :bookmarkable "true", :shareable "true", :header "Pali Word",
+                  :pali "rani", :language ["hi" "en" "cn"], :translation ["rani" "queen" "wx"], :submit "Save"}
+          req {:params params}
+          response (handler/create req)
+          uuid (-> response :headers (get "Location") (clojure.string/split #"\/") last)
+          doc (db/get uuid)]
+      ;; TODO: ignore datetimes and assert on the entire doc
+      (is (= [["hi" "rani"] ["en" "queen"] ["cn" "wx"]]
+             (:translations doc))))))
