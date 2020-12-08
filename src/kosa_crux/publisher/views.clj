@@ -9,7 +9,7 @@
  [:div {:class "page-heading"}
   [:div {:class "header-and-link"}
    [:h1 {:class "page-header"} "Mobile App"]
-   [:span {:class "page-sub-title"} "Use the links below to create and publish content to the Pariyatti mobile app."]]]
+   [:span {:class "page-subtitle"} "Use the links below to create and publish content to the Pariyatti mobile app."]]]
  [:ul {:class "card-types"}
   [:li {:class "card-type"}
    [:h3 "Overlay Inspiration Card"]

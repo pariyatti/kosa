@@ -9,10 +9,10 @@
   (h/html5 {:lang "en"
             :encoding "UTF-8"}
            (head/render
-            [:title title])
+            [:title (str "Pariyatti " title)])
 
            [:body
-            (header/render "Pariyatti Publisher")
+            (header/render (str "Pariyatti " title))
             [:div {:class "main-container"}
            ;; TODO: pass a flash map
              (flash/render {})

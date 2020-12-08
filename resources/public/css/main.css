@@ -716,7 +716,7 @@ Breadcrumb and Page Header
   line-height: 1.4em;
   color: rgba(0, 0, 0, 0.87);
 }
-.page-heading span.page-sub-title {
+.page-heading span.page-subtitle {
   font-family: "Inter", Arial, Helvetica, sans-serif;
   font-size: 1rem;
   line-height: 1.65em;

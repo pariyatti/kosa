@@ -33,6 +33,9 @@
          ["api/v1/today.json" {:name    :kosa-crux.routes.api/today
                                :handler pali-word-handler/list}]
 
+         ["library" [["" {:name    ::library
+                          :handler kosa-crux.library.handler/index}]]]
+
          ;; TODO: rails-ify / crud-ify / rest-ify resource routes
          ["publisher" [["" {:name    ::publisher
                             :handler kosa-crux.publisher.handler/index}]
