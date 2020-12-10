@@ -1,11 +1,11 @@
 (ns kosa-crux.layouts.shared.header
   (:require [hiccup.core :as hc]))
 
-(defn render [title]
+(defn render [title home-url]
   (hc/html
    [:header {:class "header"}
     [:div {:class "header-logo"}
-     [:a {:href "/publisher"}
+     [:a {:href home-url}
       [:img {:src "/images/pariyatti-logo-256-solid.png"
              :width "40"
              :height "40"}]

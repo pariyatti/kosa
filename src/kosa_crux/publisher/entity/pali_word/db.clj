@@ -6,11 +6,11 @@
              :pali :translations])
 
 (defn list []
-  (let [list-pali-words-query '{:find     [e modified-at]
-                                :where    [[e :card-type "pali_word"]
-                                           [e :modified-at modified-at]]
-                                :order-by [[modified-at :desc]]}]
-    (crux/query list-pali-words-query)))
+  (let [list-query '{:find     [e modified-at]
+                     :where    [[e :card-type "pali_word"]
+                                [e :modified-at modified-at]]
+                     :order-by [[modified-at :desc]]}]
+    (crux/query list-query)))
 
 (defn put [e]
   (crux/put e fields))

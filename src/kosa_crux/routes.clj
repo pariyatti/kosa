@@ -4,7 +4,9 @@
             [muuntaja.core :as m]
             [kosa-crux.publisher.handler]
             [kosa-crux.publisher.entity.pali-word.spec]
+            [kosa-crux.library.artefacts.image.spec]
             [kosa-crux.middleware :refer [wrap-spec-validation]]
+            [kosa-crux.library.artefacts.image.handler :as image-handler]
             [kosa-crux.publisher.entity.pali-word.handler :as pali-word-handler]))
 
 (defn pong [_request]
@@ -17,10 +19,12 @@
 
 (def default-handler
   (rr/routes
-   (rr/create-resource-handler {:path "/css"    :root "public/css"})
-   (rr/create-resource-handler {:path "/js"     :root "public/js"})
-   (rr/create-resource-handler {:path "/images" :root "public/images"})
-   (rr/create-resource-handler {:path "/"       :root "public"})
+   (rr/create-resource-handler {:path "/css"     :root "public/css"})
+   (rr/create-resource-handler {:path "/js"      :root "public/js"})
+   (rr/create-resource-handler {:path "/images"  :root "public/images"})
+   ;; TODO: move `uploads` _out_ of `/public`? -sd
+   (rr/create-resource-handler {:path "/uploads" :root "public/uploads"})
+   (rr/create-resource-handler {:path "/"        :root "public"})
    (rr/create-default-handler
     {:not-found (constantly {:status 404, :body "404 Not Found"})})))
 
@@ -34,7 +38,16 @@
                                :handler pali-word-handler/list}]
 
          ["library" [["" {:name    ::library
-                          :handler kosa-crux.library.handler/index}]]]
+                          :handler kosa-crux.library.handler/index}]
+                     ;; TODO: crud-ify resource routes before adding anything after images
+                     ["/artefacts" [["/images" {:name ::images-index
+                                                :get  image-handler/index}]
+                                    ["/image/new" {:name ::image-new
+                                                   :get  image-handler/new}]
+                                    ["/image" {:name ::image-create
+                                               :post (wrap-spec-validation :entity/image-request image-handler/create)}]
+                                    ["/image/:id" {:name ::image-show
+                                                    :get  image-handler/show}]]]]]
 
          ;; TODO: rails-ify / crud-ify / rest-ify resource routes
          ["publisher" [["" {:name    ::publisher

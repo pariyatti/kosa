@@ -4,7 +4,7 @@
             [kosa-crux.layouts.publisher :as p]))
 
 (defn index []
-  (p/app "Publisher"
+  (p/app "Home"
          [:div {:class "section-all-cards"}
  [:div {:class "page-heading"}
   [:div {:class "header-and-link"}

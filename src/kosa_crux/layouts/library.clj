@@ -1,4 +1,4 @@
-(ns kosa-crux.layouts.publisher
+(ns kosa-crux.layouts.library
   (:require [hiccup.page :as h]
             [kosa-crux.layouts.shared.head :as head]
             [kosa-crux.layouts.shared.header :as header]
@@ -9,11 +9,11 @@
   (h/html5 {:lang "en"
             :encoding "UTF-8"}
            (head/render
-            [:title (str "Pariyatti Mobile - " title)])
+            [:title (str "Pariyatti Library - " title)])
 
            [:body
-            (header/render "Pariyatti Mobile"
-                           "/publisher")
+            (header/render "Pariyatti Library"
+                           "/library")
             [:div {:class "main-container"}
            ;; TODO: pass a flash map
              (flash/render {})

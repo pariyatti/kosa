@@ -5,6 +5,7 @@
             [ring.middleware.json :refer [wrap-json-response wrap-json-body wrap-json-params]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.params :refer [wrap-params]]
+            [ring.middleware.multipart-params :refer [wrap-multipart-params]]
             [ring.middleware.content-type :refer [wrap-content-type]]
             [reitit.ring :as rring]
             [kosa-crux.config :as config]
@@ -24,6 +25,7 @@
       (wrap-log-request-params {:transform-fn #(assoc % :level :info)})
       wrap-keyword-params
       wrap-params
+      wrap-multipart-params
       wrap-json-body
       wrap-json-params
       wrap-json-response

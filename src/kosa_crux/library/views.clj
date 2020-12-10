@@ -1,10 +1,10 @@
 (ns kosa-crux.library.views
   (:require [hiccup.core :as h]
             [hiccup.form :as f]
-            [kosa-crux.layouts.publisher :as p]))
+            [kosa-crux.layouts.library :as l]))
 
 (defn index []
-  (p/app "Library"
+  (l/app "Home"
          [:div {:class "section-all-cards"}
 
           [:div {:class "page-heading"}
