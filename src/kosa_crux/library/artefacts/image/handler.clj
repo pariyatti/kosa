@@ -25,7 +25,7 @@
 
 (defn local-file-from [h]
   ;; TODO: local file root from config
-  (io/file (format "/home/steven/work/pariyatti/kosa-crux/resources/public/uploads/img%s" h)))
+  (io/file (format "/Users/steven/work/pariyatti/kosa/resources/public/uploads/img%s" h)))
 
 (defn file->bytes [file]
   (with-open [xin (io/input-stream file)

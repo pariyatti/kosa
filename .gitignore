@@ -15,6 +15,7 @@ pom.xml.asc
 /data/
 /node_modules/
 
+resources/public/uploads/*
 resources/public/css/main.css.map
 resources/public/css/audiences.css*
 resources/public/css/authors.css*
