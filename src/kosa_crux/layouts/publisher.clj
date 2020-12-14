@@ -12,8 +12,8 @@
             [:title (str "Pariyatti Mobile - " title)])
 
            [:body
-            (header/render "Pariyatti Mobile"
-                           "/publisher")
+            (header/render "Pariyatti Mobile" "/publisher"
+                           "Pariyatti Library" "/library")
             [:div {:class "main-container"}
            ;; TODO: pass a flash map
              (flash/render {})
