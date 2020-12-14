@@ -32,7 +32,7 @@ a, p, li, span, div.flash {
     @include fs-r;
 }
 
-label {
+form label {
     @include fs-s;
     text-transform: uppercase;
     color: rgba($color: $black, $alpha: 0.64);

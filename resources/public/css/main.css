@@ -102,7 +102,7 @@ a, p, li, span, div.flash {
   line-height: 1.65em;
 }
 
-label {
+form label {
   font-family: "Inter", Arial, Helvetica, sans-serif;
   font-size: 0.75rem;
   line-height: 1.65em;
@@ -381,7 +381,7 @@ a, p, li, span, div.flash {
   line-height: 1.65em;
 }
 
-label {
+form label {
   font-family: "Inter", Arial, Helvetica, sans-serif;
   font-size: 0.75rem;
   line-height: 1.65em;
@@ -582,7 +582,6 @@ Main Container - This element is the highest parent
   background: #FFF;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 2px 3px rgba(0, 0, 0, 0.2);
   padding: 1rem;
-  margin-top: 1rem;
   border-radius: 2px;
   display: flex;
   flex-direction: column;
@@ -600,14 +599,18 @@ Header - This includes, logo, links, and user actions. Is the same on every page
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 3rem;
+  margin-top: 2rem;
+  padding: 0.7rem;
 }
 .header .header-logo {
   display: flex;
   align-items: center;
+  text-align: center;
 }
 .header .header-logo a {
   display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
   border-bottom: none;
 }
 .header .header-logo span {
@@ -691,6 +694,16 @@ There are four types:
   cursor: pointer;
   background: #1b6457;
 }
+.btn.btn-secondary {
+  background: #BA5626;
+  color: #FFF;
+  border: 1px solid #652f15;
+  transition: background 150ms ease-out;
+}
+.btn.btn-secondary:hover {
+  cursor: pointer;
+  background: #a54c22;
+}
 
 /*
 -----------------
@@ -734,26 +747,6 @@ Menu Dropdowns
 #################
 -----------------
 */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  padding: 12px 16px;
-  z-index: 1;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-/* ----- */
 div.menu-wrapper {
   position: relative;
   display: inline-block;
@@ -766,6 +759,9 @@ input.menu, ul.submenu {
 
 /*position the label*/
 label.menu {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
   position: relative;
   display: block;
   cursor: pointer;
@@ -940,7 +936,7 @@ a, p, li, span, div.flash {
   line-height: 1.65em;
 }
 
-label {
+form label {
   font-family: "Inter", Arial, Helvetica, sans-serif;
   font-size: 0.75rem;
   line-height: 1.65em;
@@ -1346,7 +1342,7 @@ a, p, li, span, div.flash {
   line-height: 1.65em;
 }
 
-label {
+form label {
   font-family: "Inter", Arial, Helvetica, sans-serif;
   font-size: 0.75rem;
   line-height: 1.65em;

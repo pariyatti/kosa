@@ -40,7 +40,6 @@ Main Container - This element is the highest parent
     box-shadow: 0 0 0 1px rgba(0,0,0,.15),
                 0 2px 3px rgba(0,0,0,.2);
     padding: 1rem; //16px
-    margin-top: 1rem; //16px
     border-radius: 2px;
 
     display: flex;
@@ -60,14 +59,18 @@ Header - This includes, logo, links, and user actions. Is the same on every page
     justify-content: space-between;
     align-items: center;
 
-    margin-top: 3rem; //48px
+    margin-top: 2rem; //32px
+    padding: 0.7rem;
 
     .header-logo {
         display: flex;
         align-items: center;
+        text-align: center;
 
         a {
             display: inline-block;
+            vertical-align: middle;
+            line-height: normal;
             border-bottom: none;
         }
 
@@ -163,6 +166,20 @@ There are four types:
             background: darken($color: $green, $amount: 5%);
         }
     }
+
+    &.btn-secondary {
+        // primary action
+        background: $red;
+        color: $white;
+        border: 1px solid darken($color: $red, $amount: 20%);
+
+        transition: background 150ms ease-out;
+
+        &:hover {
+            cursor: pointer;
+            background: darken($color: $red, $amount: 5%);
+        }
+    }
 }
 
 /*
@@ -207,26 +224,6 @@ Menu Dropdowns
 #################
 -----------------
 */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  padding: 12px 16px;
-  z-index: 1;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-/* ----- */
 
 div.menu-wrapper {
   position: relative;
@@ -240,6 +237,7 @@ input.menu, ul.submenu {
 
 /*position the label*/
 label.menu {
+  @include fs-r;
   position: relative;
   display: block;
   cursor: pointer;
