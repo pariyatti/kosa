@@ -17,12 +17,15 @@
      [:td "Original URL:"]
      [:td (:original-url image)]]]))
 
-(defn show [image]
+(defn show [req image]
   (l/app "Show Image Artefact"
          (show* image)
          [:ul {:class "card-action-links"}
-           [:li {:class "card-action-link"} "Images cannot be edited"]
-           [:li {:class "card-action-link"} "Destroy"]]
+          [:li {:class "card-action-link"} "Images cannot be edited"]
+          [:li {:class "card-action-link"}
+           [:form {:method "POST"
+                   :action (v/path-for req :kosa-crux.routes/image-destroy (:crux.db/id image))}
+            (f/submit-button {:name "submit"} "Delete!")]]]
          [:a {:href "/library/artefacts/images"} "Go Back"]))
 
 (defn new-form* [req]
@@ -67,5 +70,5 @@
           (for [img images]
             [:div
              [:div [:img {:src (:url img) :width "128" :height "128"}]]
-             [:div (:url img)]])
-          ]))
+             [:a {:href (v/path-for req :kosa-crux.routes/image-show (:crux.db/id img))}
+              [:div (:url img)]]])]))

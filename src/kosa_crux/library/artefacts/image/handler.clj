@@ -55,8 +55,17 @@
       (resp/response
        (str "It looks like your image wasn't saved? 'crux/sync-put' returned nil.")))))
 
-(defn show [{:keys [path-params]}]
+(defn show [request]
+  (let [image (db/get (-> request :path-params :id))]
+    (if image
+      (resp/response (views/show request image))
+      (resp/response "Image artefact not found in database."))))
+
+(defn destroy [{:keys [path-params]}]
   (let [image (db/get (:id path-params))]
     (if image
-      (resp/response (views/show image))
+      (do
+        (db/delete image)
+        ;; TODO: add a flash
+        (resp/redirect (format "/library/artefacts/images")))
       (resp/response "Image artefact not found in database."))))

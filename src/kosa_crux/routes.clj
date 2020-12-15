@@ -47,7 +47,14 @@
                                     ["/image" {:name ::image-create
                                                :post (wrap-spec-validation :entity/image-request image-handler/create)}]
                                     ["/image/:id" {:name ::image-show
-                                                    :get  image-handler/show}]]]]]
+                                                   :get  image-handler/show}]
+                                    ;; TODO: edit
+                                    ;; TODO: update
+                                    ["/image/:id/delete" {:name ::image-destroy
+                                                          ;; TODO: need to transform marked POST requests
+                                                          ;;       at `/image/:id` into DELETE requests
+                                                          ;;       instead of this named hack. -sd
+                                                          :post image-handler/destroy}]]]]]
 
          ;; TODO: rails-ify / crud-ify / rest-ify resource routes
          ["publisher" [["" {:name    ::publisher

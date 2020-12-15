@@ -29,3 +29,6 @@
 
 (defn get [id]
   (crux/get id))
+
+(defn delete [e]
+  (crux/delete e))

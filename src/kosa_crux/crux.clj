@@ -46,6 +46,10 @@
         card (get (:crux.db/id tx))]
     card))
 
+(defn delete [e]
+  (let [id (:crux.db/id e)]
+    (crux/submit-tx crux-node [[:crux.tx/delete id]])))
+
 (defn query [q]
   (let [result-set (crux/q (crux/db crux-node) q)]
     (map #(-> % first get) result-set)))
