@@ -44,6 +44,8 @@
          ["library" [["" {:name    ::library
                           :handler kosa-crux.library.handler/index}]
                      ;; TODO: crud-ify resource routes before adding anything after images
+                     ;; see:  https://guides.rubyonrails.org/routing.html#crud-verbs-and-actions
+                     ;; TODO: puralize all nouns.
                      ["/artefacts" [["/images" {:name ::images-index
                                                 :get  image-handler/index}]
                                     ["/image/new" {:name ::image-new
@@ -54,9 +56,8 @@
                                     ;; TODO: edit
                                     ;; TODO: update
                                     ["/image/:id" {:name   ::image-show
+                                                   :aliases {::image-destroy ::image-show}
                                                    :get    image-handler/show
-                                                   ;; TODO: destroy deserves its own name (or at least an alias)
-                                                   ;;       -> see comment in `handler/show`.
                                                    :delete image-handler/destroy}]]]]]
 
          ;; TODO: rails-ify / crud-ify / rest-ify resource routes

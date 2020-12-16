@@ -23,10 +23,7 @@
          [:ul {:class "card-action-links"}
           [:li {:class "card-action-link"} "Images cannot be edited"]
           [:li {:class "card-action-link"}
-           ;; TODO: obviously "delete path-for image-show" is a bit silly, even if it's correct.
-           ;;       check back in #reitit on Clojurians slack for any obvious name aliasing options
-           ;;       ...otherwise create a lookup in `path-for`. -sd
-           (f/form-to [:delete (v/path-for req :kosa-crux.routes/image-show (:crux.db/id image))]
+           (f/form-to [:delete (v/path-for req :kosa-crux.routes/image-destroy (:crux.db/id image))]
                       (f/submit-button {:name "submit"} "Delete Image"))]]
          [:a {:href "/library/artefacts/images"} "Go Back"]))
 
