@@ -3,9 +3,10 @@
 (defn- hidden-method
   "From https://github.com/metosin/reitit/blob/master/doc/ring/RESTful_form_methods.md"
   [request]
-  (keyword
-    (or (get-in request [:form-params "_method"])         ;; look for "_method" field in :form-params
-        (get-in request [:multipart-params "_method"])))) ;; or in :multipart-params
+  (some-> (or (get-in request [:form-params "_method"])         ;; look for "_method" field in :form-params
+              (get-in request [:multipart-params "_method"]))   ;; or in :multipart-params
+          clojure.string/lower-case
+          keyword))
 
 (def wrap-hidden-method
   {:name ::wrap-hidden-method
