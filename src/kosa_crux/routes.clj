@@ -25,8 +25,12 @@
    ;; TODO: move `uploads` _out_ of `/public`? -sd
    (rr/create-resource-handler {:path "/uploads" :root "public/uploads"})
    (rr/create-resource-handler {:path "/"        :root "public"})
-   (rr/create-default-handler
-    {:not-found (constantly {:status 404, :body "404 Not Found"})})))
+   (rr/routes
+    (rr/redirect-trailing-slash-handler {:method :strip})
+    (rr/create-default-handler
+     {:not-found          (constantly {:status 404, :body "404: Not Found."})
+      :method-not-allowed (constantly {:status 405, :body "405: Method Not Allowed."})
+      :not-acceptable     (constantly {:status 406, :body "406: Not Acceptable."})}))))
 
 (def router
   (rr/router
@@ -46,15 +50,14 @@
                                                    :get  image-handler/new}]
                                     ["/image" {:name ::image-create
                                                :post (wrap-spec-validation :entity/image-request image-handler/create)}]
-                                    ["/image/:id" {:name ::image-show
-                                                   :get  image-handler/show}]
+
                                     ;; TODO: edit
                                     ;; TODO: update
-                                    ["/image/:id/delete" {:name ::image-destroy
-                                                          ;; TODO: need to transform marked POST requests
-                                                          ;;       at `/image/:id` into DELETE requests
-                                                          ;;       instead of this named hack. -sd
-                                                          :post image-handler/destroy}]]]]]
+                                    ["/image/:id" {:name   ::image-show
+                                                   :get    image-handler/show
+                                                   ;; TODO: destroy deserves its own name (or at least an alias)
+                                                   ;;       -> see comment in `handler/show`.
+                                                   :delete image-handler/destroy}]]]]]
 
          ;; TODO: rails-ify / crud-ify / rest-ify resource routes
          ["publisher" [["" {:name    ::publisher

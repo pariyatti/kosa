@@ -23,13 +23,15 @@
          [:ul {:class "card-action-links"}
           [:li {:class "card-action-link"} "Images cannot be edited"]
           [:li {:class "card-action-link"}
-           [:form {:method "POST"
-                   :action (v/path-for req :kosa-crux.routes/image-destroy (:crux.db/id image))}
-            (f/submit-button {:name "submit"} "Delete!")]]]
+           ;; TODO: obviously "delete path-for image-show" is a bit silly, even if it's correct.
+           ;;       check back in #reitit on Clojurians slack for any obvious name aliasing options
+           ;;       ...otherwise create a lookup in `path-for`. -sd
+           (f/form-to [:delete (v/path-for req :kosa-crux.routes/image-show (:crux.db/id image))]
+                      (f/submit-button {:name "submit"} "Delete Image"))]]
          [:a {:href "/library/artefacts/images"} "Go Back"]))
 
 (defn new-form* [req]
-  ;; TODO: create an equivalent to `f/form-to`
+  ;; TODO: create an equivalent to `f/form-to` for multipart form data
   [:form {:method "POST"
           :action (v/path-for req :kosa-crux.routes/image-create)
           :enctype "multipart/form-data"}
@@ -43,17 +45,16 @@
 
 (defn new [req]
   (l/app "New Image Artefact"
-   [:div {:class "page-heading"}
-    [:div {:class "breadcrumb"}
-     [:a {:href (v/path-for req :kosa-crux.routes/library)}
-      "Back to Library"]]
-    [:div {:class "header-and-link flex"}
-     [:h1 {:class "page-header"} "New Image Artefact"]]]
-   [:div {:class "form-and-preview flex row"}
-    (new-form* req)]))
+         [:div {:class "page-heading"}
+          [:div {:class "breadcrumb"}
+           [:a {:href (v/path-for req :kosa-crux.routes/library)}
+            "Back to Library"]]
+          [:div {:class "header-and-link flex"}
+           [:h1 {:class "page-header"} "New Image Artefact"]]]
+         [:div {:class "form-and-preview flex row"}
+          (new-form* req)]))
 
 (defn index [req images]
-  (def *images images)
   (l/app "Image Artefacts"
          [:div {:class "page-heading"}
           [:div {:class "breadcrumb"}
