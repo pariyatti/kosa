@@ -29,19 +29,26 @@
 (defn get [id]
   (crux/entity (crux/db crux-node) id))
 
-(defn put* [datum]
+(defn put-async* [datum]
   (crux/submit-tx crux-node [[:crux.tx/put datum]]))
 
-(defn put [e restricted-keys]
-  (let [db-params (select-keys e restricted-keys)
-        id        (uuid)
-        tx        (put* (assoc db-params :crux.db/id id))]
-    (assoc tx :crux.db/id id)))
+(defn put-prepare [raw]
+  (if (:crux.db/id raw)
+    raw
+    (assoc raw :crux.db/id (uuid))))
 
-;; TODO: `sync-put` should really behave like a regular db insert wrt
+(defn put-async
+  "Try not to use me unless you absolutely have to. Prefer `put` (synchronous)."
+  [e restricted-keys]
+  (let [raw (select-keys e (conj restricted-keys :crux.db/id))
+        doc     (put-prepare raw)
+        tx      (put-async* doc)]
+    (assoc tx :crux.db/id (:crux.db/id doc))))
+
+;; TODO: `put` should really behave like a regular db insert wrt
 ;;       keys/schema -- this should throw an exception if `e` is badly formed.
-(defn sync-put [e restricted-keys]
-  (let [tx   (put e restricted-keys)
+(defn put [e restricted-keys]
+  (let [tx   (put-async e restricted-keys)
         _    (crux/await-tx crux-node tx)
         card (get (:crux.db/id tx))]
     card))
@@ -53,7 +60,3 @@
 (defn query [q]
   (let [result-set (crux/q (crux/db crux-node) q)]
     (map #(-> % first get) result-set)))
-
-(comment
-  (put {:crux.db/id :steve :name "Steven Deobald" :place "Jammu & Kashmir"})
-  (get :steve))

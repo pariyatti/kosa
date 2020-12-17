@@ -23,9 +23,131 @@ Publisher index
       flex: 1;
       padding: 1rem 2rem; //16px 31px
       margin: 0 0.5rem; //8px
-      
+
       text-align: center;
-      
+
+      background: $off-white;
+      border-radius: 3px;
+
+      h3 {
+        // card-title
+        @include fs-m;
+        font-weight: 300;
+      }
+
+      p {
+        // card-description
+        @include fs-r;
+        font-weight: normal;
+        color: rgba($color: $black, $alpha: 0.64);
+        margin: 0.5rem 0;
+      }
+
+      a.link {
+        // manage card
+        display: inline-block;
+        margin-bottom: 1rem;
+      }
+
+      a.btn.btn-primary {
+        // create card
+        display: block;
+      }
+
+      &:first-child {
+        // first card
+        margin-left: 0;
+      }
+
+      &:last-child {
+        // last card
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+/*
+-----------------
+#################
+Library index - artefacts
+#################
+-----------------
+*/
+.section-all-artefacts {
+
+  .artefacts-wrapper {
+    display: flex;
+    margin-top: 1rem;
+
+    .artefact {
+      flex: 1;
+      padding: 1rem 2rem; //16px 31px
+      margin: 0 0.5rem; //8px
+
+      text-align: center;
+
+      background: $off-white;
+      border-radius: 3px;
+
+      h3 {
+        // card-title
+        @include fs-m;
+        font-weight: 300;
+      }
+
+      p {
+        // card-description
+        @include fs-r;
+        font-weight: normal;
+        color: rgba($color: $black, $alpha: 0.64);
+        margin: 0.5rem 0;
+      }
+
+      a.link {
+        // manage card
+        display: inline-block;
+        margin-bottom: 1rem;
+      }
+
+      a.btn.btn-primary {
+        // create card
+        display: block;
+      }
+
+      &:first-child {
+        // first card
+        margin-left: 0;
+      }
+
+      &:last-child {
+        // last card
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+/*
+-----------------
+#################
+Library index - metadata
+#################
+-----------------
+*/
+.section-all-metadata {
+
+  .metadata-wrapper {
+    display: flex;
+    margin-top: 1rem;
+
+    .metadatum {
+      flex: 1;
+      padding: 1rem 2rem; //16px 31px
+      margin: 0 0.5rem; //8px
+
+      text-align: center;
+
       background: $off-white;
       border-radius: 3px;
 

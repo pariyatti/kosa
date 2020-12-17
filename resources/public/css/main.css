@@ -1153,6 +1153,100 @@ Publisher index
 /*
 -----------------
 #################
+Library index
+#################
+-----------------
+*/
+.section-all-artefacts .artefacts-wrapper {
+  display: flex;
+  margin-top: 1rem;
+}
+.section-all-artefacts .artefacts-wrapper .artefact {
+  flex: 1;
+  padding: 1rem 2rem;
+  margin: 0 0.5rem;
+  text-align: center;
+  background: #F6F2ED;
+  border-radius: 3px;
+}
+.section-all-artefacts .artefacts-wrapper .artefact h3 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1.333rem;
+  line-height: 1.5em;
+  font-weight: 300;
+}
+.section-all-artefacts .artefacts-wrapper .artefact p {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+  font-weight: normal;
+  color: rgba(0, 0, 0, 0.64);
+  margin: 0.5rem 0;
+}
+.section-all-artefacts .artefacts-wrapper .artefact a.link {
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+.section-all-artefacts .artefacts-wrapper .artefact a.btn.btn-primary {
+  display: block;
+}
+.section-all-artefacts .artefacts-wrapper .artefact:first-child {
+  margin-left: 0;
+}
+.section-all-artefacts .artefacts-wrapper .artefact:last-child {
+  margin-right: 0;
+}
+
+/*
+-----------------
+#################
+Library index
+#################
+-----------------
+*/
+.section-all-metadata .metadata-wrapper {
+  display: flex;
+  margin-top: 1rem;
+}
+.section-all-metadata .metadata-wrapper .metadatum {
+  flex: 1;
+  padding: 1rem 2rem;
+  margin: 0 0.5rem;
+  text-align: center;
+  background: #F6F2ED;
+  border-radius: 3px;
+}
+.section-all-metadata .metadata-wrapper .metadatum h3 {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1.333rem;
+  line-height: 1.5em;
+  font-weight: 300;
+}
+.section-all-metadata .metadata-wrapper .metadatum p {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
+  font-weight: normal;
+  color: rgba(0, 0, 0, 0.64);
+  margin: 0.5rem 0;
+}
+.section-all-metadata .metadata-wrapper .metadatum a.link {
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+.section-all-metadata .metadata-wrapper .metadatum a.btn.btn-primary {
+  display: block;
+}
+.section-all-metadata .metadata-wrapper .metadatum:first-child {
+  margin-left: 0;
+}
+.section-all-metadata .metadata-wrapper .metadatum:last-child {
+  margin-right: 0;
+}
+
+/*
+-----------------
+#################
 Login
 #################
 -----------------

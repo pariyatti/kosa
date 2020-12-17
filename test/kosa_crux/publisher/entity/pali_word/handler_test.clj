@@ -27,8 +27,8 @@
 
 (deftest pali-word-listing-operation
   (testing "Can list pali words in reverse chronological order"
-    (let [word-1 (db/sync-put (pali-word "word-1" "translation-1"))
-          word-2 (db/sync-put (pali-word "word-2" "translation-2"))]
+    (let [word-1 (db/put (pali-word "word-1" "translation-1"))
+          word-2 (db/put (pali-word "word-2" "translation-2"))]
       (is (= [word-2 word-1] (db/list))))))
 
 (deftest http-params->crux-document

@@ -1,4 +1,5 @@
 (ns kosa-crux.library.artefacts.image.handler
+  (:refer-clojure :exclude [update])
   (:require [clojure.java.io :as io]
             [ring.util.response :as resp]
             [kosa-crux.views :as v]
@@ -44,23 +45,37 @@
     (.renameTo tmp-file (local-file-from h))
     h))
 
-(def ^:dynamic *params*)
-
 (defn create [request]
   (let [params (:params request)
         h (save-file! params)
         doc (params->doc params h)
-        image (db/sync-put doc)]
+        image (db/put doc)]
     (if image
-      (resp/redirect (v/path-for request :kosa-crux.routes/image-show (:crux.db/id image)))
+      (resp/redirect (v/path-for request :kosa-crux.routes/images-show (:crux.db/id image)))
       (resp/response
-       (str "It looks like your image wasn't saved? 'crux/sync-put' returned nil.")))))
+       (str "It looks like your image wasn't saved? 'crux/put' returned nil.")))))
 
 (defn show [request]
   (let [image (db/get (-> request :path-params :id))]
     (if image
       (resp/response (views/show request image))
       (resp/response "Image artefact not found in database."))))
+
+(defn edit [request]
+  (let [image (db/get (-> request :path-params :id))]
+    (if image
+      (resp/response (views/edit request image))
+      (resp/response "Image artefact not found in database."))))
+
+(defn update [request]
+  (let [params (assoc (:params request) :crux.db/id (-> request :path-params :id))
+        h (save-file! params)
+        doc (params->doc params h)
+        image (db/put doc)]
+    (if image
+      (resp/redirect (v/path-for request :kosa-crux.routes/images-show (:crux.db/id image)))
+      (resp/response
+       (str "It looks like your image wasn't saved? 'crux/put' returned nil.")))))
 
 (defn destroy [{:keys [path-params]}]
   (let [image (db/get (:id path-params))]

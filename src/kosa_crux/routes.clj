@@ -50,14 +50,18 @@
                                                 :aliases {::images-create ::images-index}
                                                 :get  image-handler/index
                                                 :post (wrap-spec-validation :entity/image-request image-handler/create)}]
-                                    ["/images/new" {:name ::image-new
+                                    ["/images/new" {:name ::images-new
                                                     :get  image-handler/new}]
-                                    ;; TODO: edit
-                                    ;; TODO: update
-                                    ["/images/:id" {:name   ::image-show
-                                                    :aliases {::image-destroy ::image-show}
+                                    ["/images/:id" {:name   ::images-show
+                                                    ;; TODO: this is a bit silly. just get the target from
+                                                    ;;       `:name` and make this a vector. -sd
+                                                    :aliases {::images-update  ::images-show
+                                                              ::images-destroy ::images-show}
                                                     :get    image-handler/show
-                                                    :delete image-handler/destroy}]]]]]
+                                                    :put    image-handler/update
+                                                    :delete image-handler/destroy}]
+                                    ["/images/:id/edit" {:name ::images-edit
+                                                         :get  image-handler/edit}]]]]]
 
          ;; TODO: rails-ify / crud-ify / rest-ify resource routes
          ["publisher" [["" {:name    ::publisher

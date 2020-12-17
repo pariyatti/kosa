@@ -15,9 +15,9 @@
 (defn put [e]
   (crux/put e fields))
 
-(defn sync-put [e]
+(defn put [e]
   ;; TODO: we need a low-level home for applying `:modified-at` to all entities
-  (crux/sync-put (assoc e :modified-at (java.util.Date.)) fields))
+  (crux/put (assoc e :modified-at (java.util.Date.)) fields))
 
 (defn get [id]
   (crux/get id))

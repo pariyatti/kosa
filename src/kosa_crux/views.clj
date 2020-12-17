@@ -17,6 +17,7 @@
       (r/match->path match)
       (throw (Exception. (format "Named route '%s' cannot be found." path-name))))))
 
+;; TODO: create `edit-path`, `delete-path`, etc. wrappers
 (defn path-for
   "Naively assumes someone has attached a router (from `reitit.ring/get-router`) to the request."
   ([request path-name]

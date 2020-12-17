@@ -21,11 +21,11 @@
 
 (defn create [{:keys [params]}]
   (let [doc (params->doc params)
-        card (pali-word-db/sync-put doc)]
+        card (pali-word-db/put doc)]
     (if card
       (resp/redirect (format "/publisher/today/pali_word_card/%s" (:crux.db/id card)))
       (resp/response
-       (str "It looks like your card wasn't saved? 'crux/sync-put' returned nil.")))))
+       (str "It looks like your card wasn't saved? 'crux/put' returned nil.")))))
 
 (defn show [{:keys [path-params]}]
   (let [card (pali-word-db/get (:id path-params))]
