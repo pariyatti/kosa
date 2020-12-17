@@ -47,18 +47,17 @@
                      ;; see:  https://guides.rubyonrails.org/routing.html#crud-verbs-and-actions
                      ;; TODO: puralize all nouns.
                      ["/artefacts" [["/images" {:name ::images-index
-                                                :get  image-handler/index}]
-                                    ["/image/new" {:name ::image-new
-                                                   :get  image-handler/new}]
-                                    ["/image" {:name ::image-create
-                                               :post (wrap-spec-validation :entity/image-request image-handler/create)}]
-
+                                                :aliases {::images-create ::images-index}
+                                                :get  image-handler/index
+                                                :post (wrap-spec-validation :entity/image-request image-handler/create)}]
+                                    ["/images/new" {:name ::image-new
+                                                    :get  image-handler/new}]
                                     ;; TODO: edit
                                     ;; TODO: update
-                                    ["/image/:id" {:name   ::image-show
-                                                   :aliases {::image-destroy ::image-show}
-                                                   :get    image-handler/show
-                                                   :delete image-handler/destroy}]]]]]
+                                    ["/images/:id" {:name   ::image-show
+                                                    :aliases {::image-destroy ::image-show}
+                                                    :get    image-handler/show
+                                                    :delete image-handler/destroy}]]]]]
 
          ;; TODO: rails-ify / crud-ify / rest-ify resource routes
          ["publisher" [["" {:name    ::publisher

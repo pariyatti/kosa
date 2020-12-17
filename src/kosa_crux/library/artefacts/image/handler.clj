@@ -1,6 +1,7 @@
 (ns kosa-crux.library.artefacts.image.handler
   (:require [clojure.java.io :as io]
             [ring.util.response :as resp]
+            [kosa-crux.views :as v]
             [kosa-crux.library.artefacts.image.db :as db]
             [kosa-crux.library.artefacts.image.views :as views]))
 
@@ -45,13 +46,13 @@
 
 (def ^:dynamic *params*)
 
-(defn create [{:keys [params]}]
-  (def ^:dynamic *params* params)
-  (let [h (save-file! params)
+(defn create [request]
+  (let [params (:params request)
+        h (save-file! params)
         doc (params->doc params h)
         image (db/sync-put doc)]
     (if image
-      (resp/redirect (format "/library/artefacts/image/%s" (:crux.db/id image)))
+      (resp/redirect (v/path-for request :kosa-crux.routes/image-show (:crux.db/id image)))
       (resp/response
        (str "It looks like your image wasn't saved? 'crux/sync-put' returned nil.")))))
 

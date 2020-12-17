@@ -30,7 +30,7 @@
 (defn new-form* [req]
   ;; TODO: create an equivalent to `f/form-to` for multipart form data
   [:form {:method "POST"
-          :action (v/path-for req :kosa-crux.routes/image-create)
+          :action (v/path-for req :kosa-crux.routes/images-create)
           :enctype "multipart/form-data"}
    [:div {:class "field"}
     (f/hidden-field :type "image_artefact")]

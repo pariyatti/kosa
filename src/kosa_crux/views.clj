@@ -5,7 +5,7 @@
   (let [alias (->> (r/routes router)
                    (keep #(-> % second :aliases))
                    (not-empty)
-                   (first))]
+                   (apply merge))]
     (if-let [aliased-to (get alias name)]
       aliased-to
       name)))
@@ -13,7 +13,9 @@
 (defn path-for* [request path-name id matcher]
   (let [router (:router request)
         name (replace-alias router path-name)]
-     (r/match->path (matcher router name id))))
+    (if-let [match (matcher router name id)]
+      (r/match->path match)
+      (throw (Exception. (format "Named route '%s' cannot be found." path-name))))))
 
 (defn path-for
   "Naively assumes someone has attached a router (from `reitit.ring/get-router`) to the request."
