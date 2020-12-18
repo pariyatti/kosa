@@ -14,8 +14,7 @@
 (deftest reverse-routing
 
   (let [router (rr/router ["/" [["entities" [["/users/:id" {:name    :kosa-crux.views/users-show
-                                                            :aliases {:kosa-crux.views/users-destroy
-                                                                      :kosa-crux.views/users-show}
+                                                            :aliases [:kosa-crux.views/users-destroy]
                                                             :get     show-stub
                                                             :delete  destroy-stub}]]]]])
         request {:router router}]
@@ -28,8 +27,7 @@
                             (sut/path-for request :this-route-will-not-be-found)))))
 
   (let [router-without-id (rr/router ["/" [["users" {:name    :kosa-crux.views/users-index
-                                                     :aliases {:kosa-crux.views/users-create
-                                                               :kosa-crux.views/users-index}
+                                                     :aliases [:kosa-crux.views/users-create]
                                                      :get     index-stub
                                                      :create  create-stub}]]])
         request {:router router-without-id}]
@@ -45,13 +43,11 @@
       (is (= "/users" (sut/path-for request :kosa-crux.views/users-index)))))
 
   (let [router-with-multiple-aliases (rr/router ["/" [["users/:id" {:name    :kosa-crux.views/users-show
-                                                                     :aliases {:kosa-crux.views/users-destroy
-                                                                               :kosa-crux.views/users-show}
-                                                                     :get     show-stub
-                                                                     :delete  destroy-stub}]
+                                                                    :aliases [:kosa-crux.views/users-destroy]
+                                                                    :get     show-stub
+                                                                    :delete  destroy-stub}]
                                                       ["users" {:name    :kosa-crux.views/users-index
-                                                                :aliases {:kosa-crux.views/users-create
-                                                                          :kosa-crux.views/users-index}
+                                                                :aliases [:kosa-crux.views/users-create]
                                                                 :get     index-stub
                                                                 :create  create-stub}]]])
         request {:router router-with-multiple-aliases}]
@@ -61,15 +57,14 @@
       (is (= "/users" (sut/path-for request :kosa-crux.views/users-create 123)))))
 
   (let [router7 (rr/router ["/" [["users" {:name    :kosa-crux.views/users-index
-                                           :aliases {:kosa-crux.views/users-create
-                                                     :kosa-crux.views/users-index}
+                                           :aliases [:kosa-crux.views/users-create]
                                            :get     index-stub
                                            :create  create-stub}]
                                  ["users/new" {:name :kosa-crux.views/users-new
                                                :get new-stub}]
                                  ["users/:id" {:name    :kosa-crux.views/users-show
-                                               :aliases {:kosa-crux.views/users-update :kosa-crux.views/users-show
-                                                         :kosa-crux.views/users-destroy :kosa-crux.views/users-show}
+                                               :aliases [:kosa-crux.views/users-update
+                                                         :kosa-crux.views/users-destroy]
                                                :get     show-stub
                                                :put     update-stub
                                                :delete  destroy-stub}]
@@ -90,4 +85,18 @@
     (testing "destroy path"
       (is (= "/users/1234" (sut/destroy-path request :users {:crux.db/id "1234"}))))
     (testing "edit path"
-      (is (= "/users/1234/edit" (sut/edit-path request :users {:crux.db/id "1234"}))))))
+      (is (= "/users/1234/edit" (sut/edit-path request :users {:crux.db/id "1234"})))))
+
+  (let [router-with-colliding-aliases (rr/router [["/thing/:id" {:name    :kosa-crux.views/thing-show
+                                                                 :aliases [:kosa-crux.views/thing-destroy]
+                                                                 :get     show-stub
+                                                                 :delete  destroy-stub}]
+                                                  ["/synonym/:id" {:name    :kosa-crux.views/synonym-show
+                                                                   :aliases [:kosa-crux.views/thing-destroy]
+                                                                   :get     show-stub
+                                                                   :delete  destroy-stub}]])
+        request {:router router-with-colliding-aliases}]
+
+    (testing "Barfs (at runtime, sorry) if duplicate aliases are detected"
+      (is (thrown-with-msg? java.lang.Exception #"Alias ':kosa-crux.views/thing-destroy' is colliding."
+                            (sut/path-for request :kosa-crux.views/thing-destroy 123))))))

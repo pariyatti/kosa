@@ -45,16 +45,13 @@
                           :handler kosa-crux.library.handler/index}]
                      ;; TODO: (3) extract into `(resources :images)`
                      ["/artefacts" [["/images" {:name ::images-index
-                                                :aliases {::images-create ::images-index}
+                                                :aliases [::images-create]
                                                 :get  image-handler/index
                                                 :post (wrap-spec-validation :entity/image-request image-handler/create)}]
                                     ["/images/new" {:name ::images-new
                                                     :get  image-handler/new}]
                                     ["/images/:id" {:name   ::images-show
-                                                    ;; TODO: (1) this is a bit silly. just get the target from
-                                                    ;;       `:name` and make this a vector. -sd
-                                                    :aliases {::images-update  ::images-show
-                                                              ::images-destroy ::images-show}
+                                                    :aliases [::images-update ::images-destroy]
                                                     :get    image-handler/show
                                                     :put    image-handler/update
                                                     :delete image-handler/destroy}]

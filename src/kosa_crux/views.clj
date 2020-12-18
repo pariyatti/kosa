@@ -1,12 +1,23 @@
 (ns kosa-crux.views
   (:require [reitit.core :as r]))
 
+(defn contains-val? [v value]
+  (some #{value} v))
+
+(defn fail-on-collision [name coll]
+  (if (< 1 (count coll))
+    (throw (Exception. (format "Alias '%s' is colliding." name)))
+    coll))
+
 (defn replace-alias [router name]
-  (let [alias (->> (r/routes router)
-                   (keep #(-> % second :aliases))
+  (let [routes (r/routes router)
+        route (->> routes
+                   (keep #(-> % second))
+                   (filter #(contains-val? (:aliases %) name))
                    (not-empty)
-                   (apply merge))]
-    (if-let [aliased-to (get alias name)]
+                   (fail-on-collision name)
+                   (first))]
+    (if-let [aliased-to (:name route)]
       aliased-to
       name)))
 
