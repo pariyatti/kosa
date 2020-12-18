@@ -17,12 +17,12 @@
 (defn index-header [req]
   [:div {:class "page-heading"}
    [:div {:class "breadcrumb"}
-    [:a {:href (v/path-for req :kosa-crux.routes/library)}
+    [:a {:href (v/index-path req :library)}
      [:clr-icon {:shape "grid-view" :size "24"}]
      "&nbsp;Back to Library"]]
    [:div {:class "header-and-link flex"}
     [:h1 {:class "page-header"} "Image Artefacts"]
-    [:a {:href (v/path-for req :kosa-crux.routes/images-new)}
+    [:a {:href (v/new-path req :images)}
      [:clr-icon {:shape "plus-circle" :size "24"}]
      "&nbsp;Create Image Artefact"]]])
 
@@ -34,12 +34,12 @@
            (for [img images]
              [:div {:class "artefact"}
               [:div [:img {:src (:url img) :width "128" :height "128"}]]
-              [:a {:href (v/path-for req :kosa-crux.routes/images-show (:crux.db/id img))}
+              [:a {:href (v/show-path req :images img)}
                [:div (:url img)]]])]]))
 
 (defn new-form* [req]
   [:form {:method "POST"
-          :action (v/path-for req :kosa-crux.routes/images-create)
+          :action (v/create-path req :images)
           :enctype "multipart/form-data"}
    [:div {:class "field"}
     (f/hidden-field :type "image_artefact")]
@@ -52,9 +52,9 @@
 (defn new [req]
   (l/app "New Image Artefact"
          (header req "New Image Artefact"
-                 [{:path (v/path-for req :kosa-crux.routes/library)
+                 [{:path (v/index-path req :library)
                    :text "Library"}
-                  {:path (v/path-for req :kosa-crux.routes/images-index)
+                  {:path (v/index-path req :images)
                    :text "Images"}])
          [:div {:class "form-and-preview flex row"}
           (new-form* req)]))
@@ -75,23 +75,23 @@
 (defn show [req image]
   (l/app "Show Image Artefact"
          (header req "Show Image Artefact"
-                 [{:path (v/path-for req :kosa-crux.routes/library)
+                 [{:path (v/index-path req :library)
                    :text "Library"}
-                  {:path (v/path-for req :kosa-crux.routes/images-index)
+                  {:path (v/index-path req :images)
                    :text "Images"}])
          (show* image)
          [:ul {:class "card-action-links"}
           [:li {:class "card-action-link"}
-           [:a {:href (v/path-for req :kosa-crux.routes/images-edit (:crux.db/id image))}
+           [:a {:href (v/edit-path req :images image)}
             "Edit Image"]]
           [:li {:class "card-action-link"}
-           (f/form-to [:delete (v/path-for req :kosa-crux.routes/images-destroy (:crux.db/id image))]
+           (f/form-to [:delete (v/destroy-path req :images image)]
                       (f/submit-button {:name "submit" :class "btn btn-secondary"} "Delete Image"))]]
          [:a {:href "/library/artefacts/images"} "Go Back"]))
 
 (defn edit-form* [req image]
   (f/form-to {:enctype "multipart/form-data"}
-             [:put (v/path-for req :kosa-crux.routes/images-update (:crux.db/id image))]
+             [:put (v/update-path req :images image)]
              [:div {:class "field"}
               (f/hidden-field :type "image_artefact")]
              [:div {:class "field"}
@@ -103,9 +103,9 @@
 (defn edit [req image]
   (l/app "Edit Image Artefact"
          (header req "Edit Image Artefact"
-                 [{:path (v/path-for req :kosa-crux.routes/library)
+                 [{:path (v/index-path req :library)
                    :text "Library"}
-                  {:path (v/path-for req :kosa-crux.routes/images-index)
+                  {:path (v/index-path req :images)
                    :text "Images"}])
          (show* image)
          (edit-form* req image)))

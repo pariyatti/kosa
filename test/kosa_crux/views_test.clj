@@ -3,10 +3,13 @@
             [reitit.ring :as rr]
             [kosa-crux.views :as sut]))
 
-(defn show-stub [_])
-(defn destroy-stub [_])
 (defn index-stub [_])
 (defn create-stub [_])
+(defn new-stub [_])
+(defn show-stub [_])
+(defn update-stub [_])
+(defn destroy-stub [_])
+(defn edit-stub [_])
 
 (deftest reverse-routing
 
@@ -55,4 +58,36 @@
     (testing "Finds alias from first route"
       (is (= "/users/123" (sut/path-for request :kosa-crux.views/users-destroy 123))))
     (testing "Finds alias from second route"
-      (is (= "/users" (sut/path-for request :kosa-crux.views/users-create 123))))))
+      (is (= "/users" (sut/path-for request :kosa-crux.views/users-create 123)))))
+
+  (let [router7 (rr/router ["/" [["users" {:name    :kosa-crux.views/users-index
+                                           :aliases {:kosa-crux.views/users-create
+                                                     :kosa-crux.views/users-index}
+                                           :get     index-stub
+                                           :create  create-stub}]
+                                 ["users/new" {:name :kosa-crux.views/users-new
+                                               :get new-stub}]
+                                 ["users/:id" {:name    :kosa-crux.views/users-show
+                                               :aliases {:kosa-crux.views/users-update :kosa-crux.views/users-show
+                                                         :kosa-crux.views/users-destroy :kosa-crux.views/users-show}
+                                               :get     show-stub
+                                               :put     update-stub
+                                               :delete  destroy-stub}]
+                                 ["users/:id/edit" {:name :kosa-crux.views/users-edit
+                                                    :get  edit-stub}]]]
+                           {:conflicts nil})
+        request {:router router7}]
+    (testing "index path"
+      (is (= "/users" (sut/index-path request :users))))
+    (testing "create path"
+      (is (= "/users" (sut/create-path request :users))))
+    (testing "new path"
+      (is (= "/users/new" (sut/new-path request :users))))
+    (testing "show path"
+      (is (= "/users/1234" (sut/show-path request :users {:crux.db/id "1234"}))))
+    (testing "update path"
+      (is (= "/users/1234" (sut/update-path request :users {:crux.db/id "1234"}))))
+    (testing "destroy path"
+      (is (= "/users/1234" (sut/destroy-path request :users {:crux.db/id "1234"}))))
+    (testing "edit path"
+      (is (= "/users/1234/edit" (sut/edit-path request :users {:crux.db/id "1234"}))))))

@@ -41,11 +41,9 @@
          ["api/v1/today.json" {:name    :kosa-crux.routes.api/today
                                :handler pali-word-handler/list}]
 
-         ["library" [["" {:name    ::library
+         ["library" [["" {:name    ::library-index
                           :handler kosa-crux.library.handler/index}]
-                     ;; TODO: crud-ify resource routes before adding anything after images
-                     ;; see:  https://guides.rubyonrails.org/routing.html#crud-verbs-and-actions
-                     ;; TODO: puralize all nouns.
+                     ;; TODO: (3) extract into `(resources :images)`
                      ["/artefacts" [["/images" {:name ::images-index
                                                 :aliases {::images-create ::images-index}
                                                 :get  image-handler/index
@@ -53,7 +51,7 @@
                                     ["/images/new" {:name ::images-new
                                                     :get  image-handler/new}]
                                     ["/images/:id" {:name   ::images-show
-                                                    ;; TODO: this is a bit silly. just get the target from
+                                                    ;; TODO: (1) this is a bit silly. just get the target from
                                                     ;;       `:name` and make this a vector. -sd
                                                     :aliases {::images-update  ::images-show
                                                               ::images-destroy ::images-show}
@@ -63,7 +61,7 @@
                                     ["/images/:id/edit" {:name ::images-edit
                                                          :get  image-handler/edit}]]]]]
 
-         ;; TODO: rails-ify / crud-ify / rest-ify resource routes
+         ;; TODO: (2) make pali word cards resources like images
          ["publisher" [["" {:name    ::publisher
                             :handler kosa-crux.publisher.handler/index}]
                        ["/today" [["/pali_word_cards" {:name ::pali-word-index

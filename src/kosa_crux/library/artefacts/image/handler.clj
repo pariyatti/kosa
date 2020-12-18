@@ -51,7 +51,7 @@
         doc (params->doc params h)
         image (db/put doc)]
     (if image
-      (resp/redirect (v/path-for request :kosa-crux.routes/images-show (:crux.db/id image)))
+      (resp/redirect (v/show-path request :images image))
       (resp/response
        (str "It looks like your image wasn't saved? 'crux/put' returned nil.")))))
 
@@ -73,7 +73,7 @@
         doc (params->doc params h)
         image (db/put doc)]
     (if image
-      (resp/redirect (v/path-for request :kosa-crux.routes/images-show (:crux.db/id image)))
+      (resp/redirect (v/show-path request :images image))
       (resp/response
        (str "It looks like your image wasn't saved? 'crux/put' returned nil.")))))
 
