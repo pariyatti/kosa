@@ -2,6 +2,6 @@
   (:require [ring.util.response :as resp]
             [kosa-crux.publisher.views :as views]))
 
-(defn index [_request]
+(defn index [request]
   (resp/response
-   (views/index)))
+   (views/index request)))

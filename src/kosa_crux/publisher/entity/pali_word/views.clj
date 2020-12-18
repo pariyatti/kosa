@@ -6,7 +6,6 @@
             [kosa-crux.layouts.publisher :as p]))
 
 (defn show* [card]
-  (prn "card: " card)
   (h/html
    [:table
     [:tr
@@ -23,16 +22,16 @@
        [:td (first t)]
        [:td (second t)]])]))
 
-(defn show [card]
+(defn show [req card]
   (p/app "Show Pali Word Card"
          (show* card)
          [:ul {:class "card-action-links"}
            [:li {:class "card-action-link"} "Edit"]
            [:li {:class "card-action-link"} "Destroy"]]
-         [:a {:href "/publisher/today/pali_word_cards"} "Go Back"]))
+         [:a {:href (v/index-path req :pali-word-cards)} "Go Back"]))
 
 (defn new-form [req]
-  (f/form-to [:post (v/path-for req :kosa-crux.routes/pali-word-create)]
+  (f/form-to [:post (v/create-path req :pali-word-cards)]
              [:div {:class "field"}
               (f/hidden-field :card-type "pali_word")]
              [:a {:href "#"
@@ -80,7 +79,7 @@
   (p/app "New Pali Word Card"
    [:div {:class "page-heading"}
     [:div {:class "breadcrumb"}
-     [:a {:href (v/path-for req :kosa-crux.routes/publisher)}
+     [:a {:href (v/index-path req :publisher)}
       "Back to Publisher"]]
     [:div {:class "header-and-link flex"}
      [:h1 {:class "page-header"} "New Pali Word Card"]]]
@@ -95,12 +94,12 @@
     "&lt;%= notice %&gt;"]
    [:div {:class "page-heading"}
     [:div {:class "breadcrumb"}
-     [:a {:href (v/path-for req :kosa-crux.routes/publisher)}
+     [:a {:href (v/index-path req :publisher)}
       [:clr-icon {:shape "grid-view" :size "24"}]
       "&nbsp;Back to Publisher"]]
     [:div {:class "header-and-link flex"}
      [:h1 {:class "page-header"} "Pali Cards"]
-     [:a {:href (v/path-for req :kosa-crux.routes/pali-word-new)}
+     [:a {:href (v/new-path req :pali-word-cards)}
       [:clr-icon {:shape "plus-circle" :size "24"}]
       "&nbsp;Create Pali Word Card"]]]
    (for [card cards]

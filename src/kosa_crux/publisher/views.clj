@@ -1,9 +1,10 @@
 (ns kosa-crux.publisher.views
   (:require [hiccup.core :as h]
             [hiccup.form :as f]
+            [kosa-crux.views :as v]
             [kosa-crux.layouts.publisher :as p]))
 
-(defn index []
+(defn index [req]
   (p/app "Home"
          [:div {:class "section-all-cards"}
           [:div {:class "page-heading"}
@@ -24,7 +25,7 @@
            [:li {:class "card-type"}
             [:h3 "Pali Word Card"]
             [:p "This card is used to display a Pali word and its translatation for a selected language"]
-            [:a.link {:href "/publisher/today/pali_word_cards"}
+            [:a.link {:href (v/index-path req :pali-word-cards)}
              "Manage Cards"]
-            [:a.btn.btn-primary {:href "/publisher/today/pali_word_card/new"}
+            [:a.btn.btn-primary {:href (v/new-path req :pali-word-cards)}
              "Create Card"]]]]))

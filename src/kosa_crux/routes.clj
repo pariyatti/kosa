@@ -58,17 +58,21 @@
                                     ["/images/:id/edit" {:name ::images-edit
                                                          :get  image-handler/edit}]]]]]
 
-         ;; TODO: (2) make pali word cards resources like images
-         ["publisher" [["" {:name    ::publisher
+         ["publisher" [["" {:name    ::publisher-index
                             :handler kosa-crux.publisher.handler/index}]
-                       ["/today" [["/pali_word_cards" {:name ::pali-word-index
-                                                       :get  pali-word-handler/index}]
-                                  ["/pali_word_card/new" {:name ::pali-word-new
-                                                          :get  pali-word-handler/new}]
-                                  ["/pali_word_card" {:name ::pali-word-create
-                                                      :post (wrap-spec-validation :entity/pali-word-request pali-word-handler/create)}]
-                                  ["/pali_word_card/:id" {:name ::pali-word-show
-                                                          :get  pali-word-handler/show}]]]]]]]
+                       ["/today" [["/pali_word_cards" {:name ::pali-word-cards-index
+                                                       :aliases [::pali-word-cards-create]
+                                                       :get  pali-word-handler/index
+                                                       :post (wrap-spec-validation :entity/pali-word-request pali-word-handler/create)}]
+                                  ["/pali-word-cards/new" {:name ::pali-word-cards-new
+                                                           :get  pali-word-handler/new}]
+                                  ["/pali-word-cards/:id" {:name   ::pali-word-cards-show
+                                                           :aliases [::pali-word-cards-update ::pali-word-cards-destroy]
+                                                           :get    pali-word-handler/show
+                                                           :put    pali-word-handler/update
+                                                           :delete pali-word-handler/destroy}]
+                                  ["/pali-word-cards/:id/edit" {:name ::pali-word-cards-edit
+                                                                :get  pali-word-handler/edit}]]]]]]]
    ;; CRUD resources conflict between /new and /:id
    ;; consider {:conflicting true} instead, once we abstract CRUDs
    {:conflicts nil
