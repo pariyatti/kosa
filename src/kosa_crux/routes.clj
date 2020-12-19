@@ -1,9 +1,12 @@
 (ns kosa-crux.routes
+  (:refer-clojure :exclude [resources])
   (:require [ring.util.response :as resp]
             [reitit.ring :as rr]
             [muuntaja.core :as m]
+            [cages.dispatch :refer [resources]]
             [kosa-crux.publisher.handler]
             [kosa-crux.publisher.entity.pali-word.spec]
+            [kosa-crux.library.handler]
             [kosa-crux.library.artefacts.image.spec]
             [kosa-crux.middleware :refer [wrap-spec-validation]]
             [kosa-crux.library.artefacts.image.handler :as image-handler]
@@ -43,20 +46,7 @@
 
          ["library" [["" {:name    ::library-index
                           :handler kosa-crux.library.handler/index}]
-                     ;; TODO: (3) extract into `(resources :images)`
-                     ["/artefacts" [["/images" {:name ::images-index
-                                                :aliases [::images-create]
-                                                :get  image-handler/index
-                                                :post (wrap-spec-validation :entity/image-request image-handler/create)}]
-                                    ["/images/new" {:name ::images-new
-                                                    :get  image-handler/new}]
-                                    ["/images/:id" {:name   ::images-show
-                                                    :aliases [::images-update ::images-destroy]
-                                                    :get    image-handler/show
-                                                    :put    image-handler/update
-                                                    :delete image-handler/destroy}]
-                                    ["/images/:id/edit" {:name ::images-edit
-                                                         :get  image-handler/edit}]]]]]
+                     ["/artefacts/" (resources :images)]]]
 
          ["publisher" [["" {:name    ::publisher-index
                             :handler kosa-crux.publisher.handler/index}]

@@ -1,9 +1,10 @@
 (ns kosa-crux.library.views
   (:require [hiccup.core :as h]
             [hiccup.form :as f]
+            [kosa-crux.views :as v]
             [kosa-crux.layouts.library :as l]))
 
-(defn index []
+(defn index [req]
   (l/app "Home"
          [:div {:class "section-all-artefacts"}
 
@@ -24,9 +25,9 @@
            [:li {:class "artefact"}
             [:h3 "Images"]
             [:p "Image examples include: photos, artwork, scanned documents"]
-            [:a.link {:href "/library/artefacts/images"}
+            [:a.link {:href (v/index-path req :images)}
              "Manage Images"]
-            [:a.btn.btn-primary {:href "/library/artefacts/image/new"}
+            [:a.btn.btn-primary {:href (v/new-path req :images)}
              "Create Image"]]
            [:li {:class "artefact"}
             [:h3 "Audio"]
