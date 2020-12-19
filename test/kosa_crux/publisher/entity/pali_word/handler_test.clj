@@ -1,10 +1,11 @@
 (ns kosa-crux.publisher.entity.pali-word.handler-test
   (:require [clojure.test :refer :all]
             [clojure.string :as str]
+            [kosa-crux.routes :as routes]
             [kosa-crux.fixtures :as fixtures]
             [kosa-crux.config :as config]
             [kosa-crux.publisher.entity.pali-word.db :as db]
-            [kosa-crux.publisher.entity.pali-word.handler :as handler]))
+            [kosa-crux.publisher.entity.pali-word.handler :as pali-word-handler]))
 
 (use-fixtures :each fixtures/load-states)
 
@@ -36,13 +37,14 @@
     (let [params {:card-type "pali_word", :bookmarkable "true", :shareable "true", :header "Pali Word",
                   :pali "rani", :language ["hi" "en" "cn"], :translation ["rani" "queen" "wx"], :submit "Save"}]
       (is (= [["hi" "rani"] ["en" "queen"] ["cn" "wx"]]
-             (:translations (handler/params->doc params))))))
+             (:translations (pali-word-handler/params->doc params))))))
 
   (testing "Saves params to db"
     (let [params {:card-type "pali_word", :bookmarkable "true", :shareable "true", :header "Pali Word",
                   :pali "rani", :language ["hi" "en" "cn"], :translation ["rani" "queen" "wx"], :submit "Save"}
-          req {:params params}
-          response (handler/create req)
+          req {:params params
+               :router routes/router}
+          response (pali-word-handler/create req)
           uuid (-> response :headers (get "Location") (clojure.string/split #"\/") last)
           doc (db/get uuid)]
       ;; TODO: ignore datetimes and assert on the entire doc

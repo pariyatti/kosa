@@ -1,5 +1,5 @@
 (ns kosa-crux.publisher.entity.pali-word.handler
-  (:refer-clojure :exclude [list])
+  (:refer-clojure :exclude [list update])
   (:require [ring.util.response :as resp]
             [kosa-crux.views :as v]
             [kosa-crux.publisher.entity.pali-word.db :as pali-word-db]
