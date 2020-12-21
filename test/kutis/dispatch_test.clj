@@ -8,7 +8,7 @@
   (fn [request]
     (handler request)))
 
-(def routes [["trucks" {:name ::trucks-index
+(def expected [["trucks" {:name ::trucks-index
                         :aliases [::trucks-create]
                         :get  truck-handler/index
                         :post (wrap-spec-validation :entity/truck-request truck-handler/create)}]
@@ -22,9 +22,33 @@
              ["trucks/:id/edit" {:name ::trucks-edit
                                  :get  truck-handler/edit}]])
 
+(defn- clip [s matcher]
+  (when s
+    (clojure.string/replace (str s) matcher "")))
+
+(defn- clip-verbs [x]
+  (-> x
+      (update-in [1 :post] clip #"\$fn.*")
+      (update-in [1 :get] clip #" .*\]")
+      (update-in [1 :put] clip #" .*\]")
+      (update-in [1 :delete] clip #" .*\]")))
+
+(defn- clip-actions [x]
+  (-> x
+      (update-in [1 :get] clip #"@.*")
+      (update-in [1 :put] clip #"@.*")
+      (update-in [1 :delete] clip #"@.*")))
+
+(defn- clip-fns [v]
+  (->> v
+       (map clip-verbs)
+       (map clip-actions)))
+
 (deftest macro-expansion
   (testing "splats the keyword everywhere"
-    ;; TODO: `"trucks" => :post` needs to be ignored
-    (prn (clojure.data/diff routes (sut/resources :trucks)))
-    (is (= routes
-           (sut/resources :trucks)))))
+    (let [clipped-expected (clip-fns expected)
+          clipped-resources (clip-fns (sut/resources :trucks))]
+      ;; for debugging:
+      ;; (prn (clojure.data/diff clipped-expected clipped-resources))
+      (is (= clipped-expected
+             clipped-resources)))))
