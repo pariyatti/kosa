@@ -60,6 +60,9 @@ This file should have only element level css. Ideally shouldn't have classes and
 }
 
 body {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
   max-width: 1024px;
   margin: 0 auto;
   background: #f2ede5;
@@ -339,6 +342,9 @@ This file should have only element level css. Ideally shouldn't have classes and
 }
 
 body {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
   max-width: 1024px;
   margin: 0 auto;
   background: #f2ede5;
@@ -894,6 +900,9 @@ This file should have only element level css. Ideally shouldn't have classes and
 }
 
 body {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
   max-width: 1024px;
   margin: 0 auto;
   background: #f2ede5;
@@ -1394,6 +1403,9 @@ This file should have only element level css. Ideally shouldn't have classes and
 }
 
 body {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65em;
   max-width: 1024px;
   margin: 0 auto;
   background: #f2ede5;

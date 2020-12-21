@@ -14,6 +14,7 @@ This file should have only element level css. Ideally shouldn't have classes and
 }
 
 body {
+    @include fs-r; // unclassed tags shouldn't look *too* strange so we apply a font
     max-width: 1024px;
     margin: 0 auto;
     background: lighten($color: $cream, $amount: 8%);
