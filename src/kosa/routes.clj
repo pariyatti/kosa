@@ -1,13 +1,13 @@
 (ns kosa.routes
   (:refer-clojure :exclude [resources])
-  (:require [cages.dispatch :refer [resources]]
-            [kosa.library.artefacts.image.handler :as image-handler]
+  (:require [kosa.library.artefacts.image.handler :as image-handler]
             kosa.library.artefacts.image.spec
             kosa.library.handler
             [kosa.middleware :refer [wrap-spec-validation]]
             [kosa.publisher.entity.pali-word.handler :as pali-word-handler]
             kosa.publisher.entity.pali-word.spec
             kosa.publisher.handler
+            [kutis.dispatch :refer [resources]]
             [muuntaja.core :as m]
             [reitit.ring :as rr]
             [ring.util.response :as resp]))

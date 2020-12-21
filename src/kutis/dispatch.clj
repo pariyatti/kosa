@@ -1,4 +1,4 @@
-(ns cages.dispatch)
+(ns kutis.dispatch)
 
 (defn pluralize [s]
   (str s "s"))

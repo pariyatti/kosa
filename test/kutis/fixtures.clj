@@ -1,4 +1,4 @@
-(ns cages.fixtures
+(ns kutis.fixtures
   (:refer-clojure :exclude [update]))
 
 (defn index [_] nil)
