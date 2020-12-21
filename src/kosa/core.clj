@@ -3,8 +3,8 @@
   (:require [clojure.tools.logging :as log]
             [kosa.cli :as cli]
             [kosa.config :as config]
-            [kosa.crux :as crux]
             [kosa.server :as server]
+            [kutis.record :as db]
             [mount-up.core :as mu]
             [mount.core :as mount]))
 
@@ -34,7 +34,7 @@
   (log/info (format "Starting the server with options: %s" opts))
   (-> (mount/with-args opts)
       (mount/only #{#'config/config
-                    #'crux/crux-node
+                    #'db/crux-node
                     #'server/server})
       mount/start)
   (log/info "Kosa started."))

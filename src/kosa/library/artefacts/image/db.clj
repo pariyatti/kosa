@@ -1,6 +1,6 @@
 (ns kosa.library.artefacts.image.db
   (:refer-clojure :exclude [list get])
-  (:require [kosa.crux :as crux]))
+  (:require [kutis.record]))
 
 (def fields [:type
              :modified-at
@@ -15,20 +15,20 @@
                      :where    [[e :type "image_artefact"]
                                 [e :modified-at modified-at]]
                      :order-by [[modified-at :desc]]}]
-    (crux/query list-query)))
+    (kutis.record/query list-query)))
 
 (defn put [e]
-  (crux/put e fields))
+  (kutis.record/put e fields))
 
 (defn put [e]
   ;; TODO: we need a low-level home for applying `:modified-at` to all entities
   (let [doc (assoc e
                    :modified-at (java.util.Date.)
                    :type "image_artefact")]
-    (crux/put doc fields)))
+    (kutis.record/put doc fields)))
 
 (defn get [id]
-  (crux/get id))
+  (kutis.record/get id))
 
 (defn delete [e]
-  (crux/delete e))
+  (kutis.record/delete e))

@@ -1,4 +1,4 @@
-(ns kosa.crux
+(ns kutis.record
   (:refer-clojure :exclude [get])
   (:require [clojure.java.io :as io]
             [crux.api :as crux]

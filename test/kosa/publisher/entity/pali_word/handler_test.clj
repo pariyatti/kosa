@@ -32,7 +32,7 @@
           word-2 (db/put (pali-word "word-2" "translation-2"))]
       (is (= [word-2 word-1] (db/list))))))
 
-(deftest http-params->crux-document
+(deftest http-params->edn-document
   (testing "Zips languages and translations"
     (let [params {:card-type "pali_word", :bookmarkable "true", :shareable "true", :header "Pali Word",
                   :pali "rani", :language ["hi" "en" "cn"], :translation ["rani" "queen" "wx"], :submit "Save"}]

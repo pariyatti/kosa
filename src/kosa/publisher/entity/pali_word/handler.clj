@@ -26,13 +26,13 @@
     (if card
       (resp/redirect (v/show-path req :pali-word-cards card))
       (resp/response
-       (str "It looks like your card wasn't saved? 'crux/put' returned nil.")))))
+       (str "It looks like your card wasn't saved? 'db/put' returned nil.")))))
 
 (defn show [req]
   (let [card (-> req :path-params :id pali-word-db/get)]
     (if card
       (resp/response (views/show req card))
-      (resp/response "Card not found in Crux."))))
+      (resp/response "Card not found in database."))))
 
 (defn list [_request]
   (resp/response

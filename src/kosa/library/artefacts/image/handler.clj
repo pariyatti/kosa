@@ -53,7 +53,7 @@
     (if image
       (resp/redirect (v/show-path request :images image))
       (resp/response
-       (str "It looks like your image wasn't saved? 'crux/put' returned nil.")))))
+       (str "It looks like your image wasn't saved? 'db/put' returned nil.")))))
 
 (defn show [request]
   (let [image (db/get (-> request :path-params :id))]
@@ -75,7 +75,7 @@
     (if image
       (resp/redirect (v/show-path request :images image))
       (resp/response
-       (str "It looks like your image wasn't saved? 'crux/put' returned nil.")))))
+       (str "It looks like your image wasn't saved? 'db/put' returned nil.")))))
 
 (defn destroy [{:keys [path-params]}]
   (let [image (db/get (:id path-params))]

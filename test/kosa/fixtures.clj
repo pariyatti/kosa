@@ -1,8 +1,7 @@
 (ns kosa.fixtures
   (:require [clojure.java.io :as io]
-            crux.api
             [kosa.config :as config]
-            [kosa.crux :as crux]
+            [kutis.record :as db]
             [mount.core :as mount]))
 
 (defn rm-rf
@@ -25,16 +24,16 @@
 
 (defn start-test-db []
   (-> (mount/with-args (get-test-config))
-      (mount/only #{#'config/config #'crux/crux-node})
+      (mount/only #{#'config/config #'db/crux-node})
       mount/start))
 
 (defn reset-db! []
   (start-test-config)
   (let [data-dir (get-in config/config [:db-spec :data-dir])
-        crux-log (io/file data-dir "event-log")
-        crux-idx (io/file data-dir "indexes")]
-    (rm-rf crux-log true)
-    (rm-rf crux-idx true)))
+        db-log (io/file data-dir "event-log")
+        db-idx (io/file data-dir "indexes")]
+    (rm-rf db-log true)
+    (rm-rf db-idx true)))
 
 (defn throw-lock-error []
   (let [msg "RocksDB is locked. Do you have a repl connected somewhere?"]
@@ -42,7 +41,7 @@
     (throw (ex-info msg {}))))
 
 (defn load-states [t]
-  (mount/stop #'crux/crux-node)
+  (mount/stop #'db/crux-node)
   ;; TODO: this is unbelievably janky... there has to be a better way.
   (reset-db!)
   (try (start-test-db)
@@ -56,4 +55,4 @@
   ;;       time with this approach.
   ;; release the connection in case we run a `lein test` on the command
   ;; line while the repl is still open:
-  (mount/stop #'crux/crux-node))
+  (mount/stop #'db/crux-node))
