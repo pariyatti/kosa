@@ -1,3 +1,3 @@
-# Introduction to kosa-crux
+# Introduction to kosa
 
 TODO: write [great documentation](http://jacobian.org/writing/what-to-write/)

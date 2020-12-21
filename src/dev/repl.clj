@@ -1,8 +1,8 @@
 (ns dev.repl
-  (:require [mount.core :as mount]
-            [kosa-crux.server :as server]
-            [kosa-crux.core :as core]
-            [kosa-crux.config :as config]))
+  (:require [kosa.config :as config]
+            [kosa.core :as core]
+            [kosa.server :as server]
+            [mount.core :as mount]))
 
 (def dev-opts {:options {:config-file "config/config.dev.edn"}})
 (def test-opts {:options {:config-file "config/config.test.edn"}})

@@ -1,6 +1,6 @@
-(defproject kosa-crux "0.1.0-SNAPSHOT"
+(defproject kosa "0.1.0-SNAPSHOT"
   :description "The Pariyatti Library"
-  :url "http://github.com/pariyatti/kosa-crux"
+  :url "http://github.com/pariyatti/kosa"
   :license {:name "GNU Affero General Public License 3.0"
             :url  "https://www.gnu.org/licenses/agpl-3.0.en.html"}
   :dependencies [[org.clojure/clojure "1.10.1"]
@@ -41,7 +41,7 @@
                        :args        ["--style" "compressed"]
                        :jar         true}}}
 
-  :main ^:skip-aot kosa-crux.core
+  :main ^:skip-aot kosa.core
   :target-path "target/%s"
 
   :repl-options {:init-ns dev.repl}
