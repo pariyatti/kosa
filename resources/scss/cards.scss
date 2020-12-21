@@ -15,7 +15,7 @@
     position: relative;
     border: 1px solid rgba($color: $black, $alpha: 0.4);
     border-radius: 2px;
-    
+
     padding: 1rem; //16px
     margin-bottom: 1.25rem;
   }
@@ -24,13 +24,19 @@
 .card-index-content {
   padding-top: 2rem; //32px
   justify-content: center;
+  table {
+    margin: 0px;
+    td {
+      width: 50%;
+    }
+  }
 }
 
 .card {
   display: flex;
   flex-direction: column;
   align-self: flex-start;
-  
+
   border-radius: 1rem; //16px
   background-color: $off-white;
 
@@ -87,11 +93,11 @@
   .pali-word {
     padding-top: 1rem;
     border-top: 1px solid $logo-sand;
-    
+
     @include fs-l;
     text-align: center;
   }
-  
+
   .pali-word-translations {
     padding: 1rem;
     @include fs-r;

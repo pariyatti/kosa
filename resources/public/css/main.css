@@ -1153,7 +1153,7 @@ Publisher index
 /*
 -----------------
 #################
-Library index
+Library index - artefacts
 #################
 -----------------
 */
@@ -1200,7 +1200,7 @@ Library index
 /*
 -----------------
 #################
-Library index
+Library index - metadata
 #################
 -----------------
 */
@@ -1616,6 +1616,12 @@ ul li {
 .card-index-content {
   padding-top: 2rem;
   justify-content: center;
+}
+.card-index-content table {
+  margin: 0px;
+}
+.card-index-content table td {
+  width: 50%;
 }
 
 .card {

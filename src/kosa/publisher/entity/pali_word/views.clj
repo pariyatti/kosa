@@ -5,6 +5,39 @@
             [kosa.layouts.publisher :as p]
             [kosa.views :as v]))
 
+(defn show-index-preview [card]
+  [:div {:class "card-index-content flex"}
+   [:table
+    [:tr
+     [:td "Pali Word:"]
+     [:td (:pali card)]]
+    (for [t (:translations card)]
+      (when-not (clojure.string/blank? (second t))
+        [:tr
+         [:td (first t)]
+         [:td (second t)]]))]
+   [:ul {:class "card-action-links"}
+    [:li {:class "card-action-link"} "Show"]
+    [:li {:class "card-action-link"} "Edit"]
+    [:li {:class "card-action-link"} "Destroy"]]])
+
+(defn index [req cards]
+  (p/app "Pali Word Card Index"
+   [:p {:id "notice"}
+    "&lt;%= notice %&gt;"]
+   [:div {:class "page-heading"}
+    [:div {:class "breadcrumb"}
+     [:a {:href (v/index-path req :publisher)}
+      [:clr-icon {:shape "grid-view" :size "24"}]
+      "&nbsp;Back to Publisher"]]
+    [:div {:class "header-and-link flex"}
+     [:h1 {:class "page-header"} "Pali Cards"]
+     [:a {:href (v/new-path req :pali-word-cards)}
+      [:clr-icon {:shape "plus-circle" :size "24"}]
+      "&nbsp;Create Pali Word Card"]]]
+   (for [card cards]
+     (show-index-preview card))))
+
 (defn show* [card]
   (h/html
    [:table
@@ -87,25 +120,3 @@
     (new-form req)
     ;; (show card) ;; TODO: requires javascript to do anything meaningful
     ]))
-
-(defn index [req cards]
-  (p/app "Pali Word Card Index"
-   [:p {:id "notice"}
-    "&lt;%= notice %&gt;"]
-   [:div {:class "page-heading"}
-    [:div {:class "breadcrumb"}
-     [:a {:href (v/index-path req :publisher)}
-      [:clr-icon {:shape "grid-view" :size "24"}]
-      "&nbsp;Back to Publisher"]]
-    [:div {:class "header-and-link flex"}
-     [:h1 {:class "page-header"} "Pali Cards"]
-     [:a {:href (v/new-path req :pali-word-cards)}
-      [:clr-icon {:shape "plus-circle" :size "24"}]
-      "&nbsp;Create Pali Word Card"]]]
-   (for [card cards]
-     [:div {:class "card-index-content flex"}
-      (show* card)
-      [:ul {:class "card-action-links"}
-           [:li {:class "card-action-link"} "Show"]
-           [:li {:class "card-action-link"} "Edit"]
-           [:li {:class "card-action-link"} "Destroy"]]])))
