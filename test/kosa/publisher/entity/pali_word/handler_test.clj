@@ -35,9 +35,14 @@
 (deftest http-params->edn-document
   (testing "Zips languages and translations"
     (let [params {:card-type "pali_word", :bookmarkable "true", :shareable "true", :header "Pali Word",
-                  :pali "rani", :language ["hi" "en" "cn"], :translation ["rani" "queen" "wx"], :submit "Save"}]
+                  :pali "rani", :language ["hi" "en" "cn"], :translation ["rani" "queen" "wx"], :submit "Save"}
+          req {:params params
+               :router routes/router}
+          response (pali-word-handler/create req)
+          uuid (-> response :headers (get "Location") (clojure.string/split #"\/") last)
+          doc (db/get uuid)]
       (is (= [["hi" "rani"] ["en" "queen"] ["cn" "wx"]]
-             (:translations (pali-word-handler/params->doc params))))))
+             (:translations doc)))))
 
   (testing "Saves params to db"
     (let [params {:card-type "pali_word", :bookmarkable "true", :shareable "true", :header "Pali Word",

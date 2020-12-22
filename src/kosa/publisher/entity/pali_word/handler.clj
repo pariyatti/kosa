@@ -1,9 +1,14 @@
 (ns kosa.publisher.entity.pali-word.handler
   (:refer-clojure :exclude [list update])
-  (:require [kosa.publisher.entity.pali-word.db :as pali-word-db]
+  (:require [kutis.controller :as c]
+            [kosa.publisher.entity.pali-word.db :as pali-word-db]
             [kosa.publisher.entity.pali-word.views :as views]
             [kosa.views :as v]
             [ring.util.response :as resp]))
+
+(defn ->pali-word-doc [p]
+  (c/params->doc p [:card-type :pali
+                    [:translations #(map vector (:language %) (:translation %))]]))
 
 (defn index [request]
   (let [cards (pali-word-db/list)]
@@ -14,14 +19,8 @@
   (resp/response
    (views/new request)))
 
-(defn params->doc [p]
-  (-> p
-      (assoc :translations (map vector (:language p) (:translation p)))
-      (dissoc :language :translation)
-      (assoc :published-at (java.util.Date.))))
-
 (defn create [req]
-  (let [doc (-> req :params params->doc)
+  (let [doc (-> req :params ->pali-word-doc)
         card (pali-word-db/put doc)]
     (if card
       (resp/redirect (v/show-path req :pali-word-cards card))
