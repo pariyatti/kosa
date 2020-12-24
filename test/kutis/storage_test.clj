@@ -17,11 +17,14 @@
 
 (use-fixtures :each copy-fixture-files)
 
-(sut/set-blob-prefix! "resources/public/uploads")
+(sut/set-service-config! {:service :disk
+                          ;; TODO: try "resources/storage/" instead
+                          :root    "resources/public/uploads/"
+                          :path    "/uploads"})
 
 (deftest attachment
   (let [attachment (sut/attach! (:leaf-file params1))]
-    (testing "saves file to disk and returns an 'attachment' document"
+    (testing "returns an 'attachment' document"
       (is (= {;;:key 1643646293
               :filename "bodhi-with-raindrops.jpg"
               :content-type "image/jpeg"
@@ -31,15 +34,16 @@
               :checksum ""}
              (dissoc attachment :key))))
 
-    (testing "attachment blob-filename identifies it as a kutis.storage file"
-      (is (re-matches #"kutis-.*-bodhi-with-raindrops\.jpg" (sut/blob-filename attachment))))
+    (testing "attachment's service filename identifies it as a kutis.storage file"
+      (is (re-matches #"resources/public/uploads/kutis-.*-bodhi-with-raindrops\.jpg"
+                      (sut/service-filename attachment))))
 
-    (testing "url uses blob prefix or something, then revisit image-handler"
-      (is (= "uploads" (clojure.string/split (sut/url attachment)
-                                             #"/"))))))
+    (testing "url is prefixed with path from service config"
+      (is (re-matches #"/uploads/kutis-.*-bodhi-with-raindrops\.jpg"
+                      (sut/url attachment))))))
 
 (deftest file-size
-  (testing "attached file has the same length as the uploaded file"
+  (testing "attached file on disk has the same length as the uploaded file"
     (let [attachment (sut/attach! (:leaf-file params1))
           local-file (sut/file attachment)]
       (is (= 13468 (.length local-file))))))
@@ -66,5 +70,6 @@
 ;; https://bloggie.io/@kinopyo/7-practical-tips-for-activestorage-on-rails-5-2
 ;; https://bibwild.wordpress.com/2018/10/03/some-notes-on-whats-going-on-in-activestorage/
 
+;; Service::DiskService - https://github.com/rails/rails/blob/5cfd58bbfb8425ab1931c618d98b649bab059ce6/activestorage/lib/active_storage/service/disk_service.rb
 ;; Why bother doing this? To avoid too many files in one directory?
 ;; https://github.com/rails/rails/blob/7be33750d7e4c88d493c0e4c929eb66b8c40582d/activestorage/lib/active_storage/service/disk_service.rb#L149
