@@ -5,9 +5,7 @@
 (def fields [:type
              :modified-at
              :original-url ;; from *.pariyatti.org
-             :filename
-             :content-type
-             :url          ;; content-addressable storage URL
+             :attached-image
              ])
 
 (defn list []

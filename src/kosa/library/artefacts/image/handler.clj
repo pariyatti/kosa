@@ -1,10 +1,17 @@
 (ns kosa.library.artefacts.image.handler
   (:refer-clojure :exclude [update])
   (:require [clojure.java.io :as io]
+            [kutis.storage :as storage]
+            [kutis.controller :as c]
             [kosa.library.artefacts.image.db :as db]
             [kosa.library.artefacts.image.views :as views]
             [kosa.views :as v]
             [ring.util.response :as resp]))
+
+(defn ->image-doc [p]
+  (let [attachment (storage/attach! (:image-file p))]
+    (-> (c/params->doc p [:crux.db/id])
+        (assoc :attached-image attachment))))
 
 (defn index [request]
   (let [images (db/list)]
@@ -15,40 +22,9 @@
   (resp/response
    (views/new request)))
 
-(defn params->doc [p h]
-  (-> p
-      (assoc :hash h)
-      ;; TODO: obvs temporary. get local file root from config --
-      (assoc :url (format "/uploads/img%s" h))
-      (assoc :filename (-> p :image-file :filename))
-      (assoc :content-type (-> p :image-file :content-type))
-      (dissoc :image-file)
-      (assoc :published-at (java.util.Date.))))
-
-(defn local-file-from [h]
-  ;; TODO: local file root from config
-  (io/file (format "/Users/steven/work/pariyatti/kosa/resources/public/uploads/img%s" h)))
-
-(defn file->bytes [file]
-  (with-open [xin (io/input-stream file)
-              xout (java.io.ByteArrayOutputStream.)]
-    (io/copy xin xout)
-    (.toByteArray xout)))
-
-(defn save-file! [p]
-  (let [tmp-file (io/file (-> p :image-file :tempfile))
-        bytes (file->bytes tmp-file)
-        ;; bytes (-> p :image-file :tempfile slurp)
-        ;; TODO: replace with blake2b
-        h (hash bytes)]
-    ;; (spit (local-file-from h) bytes)
-    (.renameTo tmp-file (local-file-from h))
-    h))
-
 (defn create [request]
   (let [params (:params request)
-        h (save-file! params)
-        doc (params->doc params h)
+        doc (->image-doc params)
         image (db/put doc)]
     (if image
       (resp/redirect (v/show-path request :images image))
@@ -68,9 +44,11 @@
       (resp/response "Image artefact not found in database."))))
 
 (defn update [request]
-  (let [params (assoc (:params request) :crux.db/id (-> request :path-params :id))
-        h (save-file! params)
-        doc (params->doc params h)
+  ;; TODO: extract the copying of :crux.db/id from params into
+  ;;       doc into `controller.params->doc`.
+  (let [params (assoc (:params request)
+                      :crux.db/id (-> request :path-params :id))
+        doc (->image-doc params)
         image (db/put doc)]
     (if image
       (resp/redirect (v/show-path request :images image))
@@ -81,6 +59,7 @@
   (let [image (db/get (:id path-params))]
     (if image
       (do
+        ;; TODO: cascade record deletes to kutis.storage attachments, somehow?
         (db/delete image)
         ;; TODO: add a flash
         (resp/redirect (format "/library/artefacts/images")))

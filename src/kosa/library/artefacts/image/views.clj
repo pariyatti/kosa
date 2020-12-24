@@ -1,6 +1,7 @@
 (ns kosa.library.artefacts.image.views
   (:require [hiccup.core :as h]
             [hiccup.form :as f]
+            [kutis.storage :as storage]
             [kosa.layouts.library :as l]
             [kosa.views :as v]))
 
@@ -33,9 +34,9 @@
           [:div {:class "artefacts-wrapper"}
            (for [img images]
              [:div {:class "artefact"}
-              [:div [:img {:src (:url img) :width "128" :height "128"}]]
+              [:div [:img {:src (storage/url (:attached-image img)) :width "128" :height "128"}]]
               [:a {:href (v/show-path req :images img)}
-               [:div (:url img)]]])]]))
+               [:div (storage/url (:attached-image img))]]])]]))
 
 (defn new-form* [req]
   [:form {:method "POST"
@@ -64,10 +65,10 @@
    [:table
     [:tr
      [:td "Image Preview:"]
-     [:td [:img {:src (:url image) :width "128" :height "128"}]]]
+     [:td [:img {:src (storage/url (:attached-image image)) :width "128" :height "128"}]]]
     [:tr
      [:td "URL:"]
-     [:td (:url image)]]
+     [:td (storage/url (:attached-image image))]]
     [:tr
      [:td "Original URL:"]
      [:td (:original-url image)]]]))

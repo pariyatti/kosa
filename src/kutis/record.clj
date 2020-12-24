@@ -37,12 +37,21 @@
     raw
     (assoc raw :crux.db/id (uuid))))
 
+(defn validate-put! [e allowed-keys]
+  (let [allowed-keys* (conj allowed-keys :crux.db/id :published-at)
+        extras (apply dissoc e allowed-keys*)]
+    (when (not-empty extras)
+      (throw (ex-info (format "Extra fields '%s' found during put."
+                              (clojure.string/join ", " (keys extras)))
+                      e)))))
+
 (defn put-async
   "Try not to use me unless you absolutely have to. Prefer `put` (synchronous)."
   [e restricted-keys]
+  (validate-put! e restricted-keys)
   (let [raw (select-keys e (conj restricted-keys :crux.db/id))
-        doc     (put-prepare raw)
-        tx      (put-async* doc)]
+        doc (put-prepare raw)
+        tx  (put-async* doc)]
     (assoc tx :crux.db/id (:crux.db/id doc))))
 
 ;; TODO: `put` should really behave like a regular db insert wrt

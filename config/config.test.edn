@@ -1,3 +1,8 @@
 {:db-spec {:data-dir "data/test/"}
  :port 3000
+
+ :storage {:service :disk
+           :root    "tmp/storage"
+           :path    "/uploads"}
+
  :supported-languages ["hi" "en" "cn"]}

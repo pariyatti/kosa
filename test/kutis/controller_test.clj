@@ -1,6 +1,7 @@
 (ns kutis.controller-test
   (:require [clojure.test :refer :all]
-            [kutis.controller :as sut]))
+            [kutis.controller :as sut]
+            [clojure.java.io :as io]))
 
 (deftest document-timestamps
   (testing "timestamp with published-at when it isn't set"
@@ -25,7 +26,11 @@
   (testing "barf on fields listed with non-keyword, non-lambda types"
     (let [params {:corrupt "this will fail"}]
       (is (thrown-with-msg? java.lang.Exception #"Parameter mapping 'corrupt' is not a keyword or fn."
-                            (sut/params->doc params ["corrupt"]))))))
+                            (sut/params->doc params ["corrupt"])))))
+
+  (testing "accepts an empty mapping list"
+    (let [doc (sut/params->doc {:some-file (io/file "zig")} [])]
+      (is (get doc :published-at)))))
 
 (deftest fields-mapped-from-lambda
   (testing "executes a lambda from mapping list"

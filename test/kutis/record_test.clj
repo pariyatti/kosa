@@ -29,7 +29,12 @@
   (testing "put generates a new id"
     (let [inserted (sut/put record-without-id [:country :state :city :population])]
       (is (= record-without-id (dissoc inserted :crux.db/id)))
-      (is (not (nil? (:crux.db/id inserted)))))))
+      (is (not (nil? (:crux.db/id inserted))))))
+
+  (testing "put barfs on badly-formed documents"
+    (is (thrown-with-msg? java.lang.Exception #"Extra fields ':superfluous-field' found during put."
+                          (sut/put {:city "Igatpuri" :superfluous-field "I should cause an error."}
+                                   [:city])))))
 
 (deftest db-update-operations
   (testing "Can update raw datums"
