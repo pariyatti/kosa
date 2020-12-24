@@ -1,7 +1,7 @@
 (ns kutis.record-test
   (:require [clojure.test :refer :all]
             [crux.api]
-            [kosa.fixtures :as fixtures]
+            [kutis.fixtures.record-fixtures :as fixtures]
             [kutis.record :as sut]))
 
 (use-fixtures :once fixtures/load-states)

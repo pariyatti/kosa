@@ -1,4 +1,4 @@
-(ns kosa.fixtures
+(ns kutis.fixtures.record-fixtures
   (:require [clojure.java.io :as io]
             [kosa.config :as config]
             [kutis.record :as db]
@@ -40,7 +40,11 @@
     (prn msg)
     (throw (ex-info msg {}))))
 
-(defn load-states [t]
+(defn load-states
+  "TODO: This is fundamentally broken. `kutis` should not depend on
+         kosa _at all_ which means `record-fixtures` should create its
+         own Crux node. This would also solve the jankiness in this fn."
+  [t]
   (mount/stop #'db/crux-node)
   ;; TODO: this is unbelievably janky... there has to be a better way.
   (reset-db!)

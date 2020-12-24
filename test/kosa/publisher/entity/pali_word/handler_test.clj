@@ -1,8 +1,8 @@
 (ns kosa.publisher.entity.pali-word.handler-test
   (:require [clojure.string :as str]
             [clojure.test :refer :all]
+            [kutis.fixtures.record-fixtures :as fixtures]
             [kosa.config :as config]
-            [kosa.fixtures :as fixtures]
             [kosa.publisher.entity.pali-word.db :as db]
             [kosa.publisher.entity.pali-word.handler :as pali-word-handler]
             [kosa.routes :as routes]))
