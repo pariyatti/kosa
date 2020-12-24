@@ -1,8 +1,8 @@
 (ns kutis.dispatch-test
-  (:require clojure.data
+  (:require [clojure.data]
             [clojure.test :refer :all]
             [kutis.dispatch :as sut]
-            [kutis.fixtures :as truck-handler]))
+            [kutis.fixtures.dispatch-fixtures :as truck-handler]))
 
 (defn wrap-spec-validation [_spec handler]
   (fn [request]
