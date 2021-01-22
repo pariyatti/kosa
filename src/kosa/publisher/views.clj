@@ -25,7 +25,7 @@
            [:li {:class "card-type"}
             [:h3 "Pali Word Card"]
             [:p "This card is used to display a Pali word and its translatation for a selected language"]
-            [:a.link {:href (v/index-path req :pali-word-cards)}
+            [:a.link {:href (v/index-path req :pali-words)}
              "Manage Cards"]
-            [:a.btn.btn-primary {:href (v/new-path req :pali-word-cards)}
+            [:a.btn.btn-primary {:href (v/new-path req :pali-words)}
              "Create Card"]]]]))

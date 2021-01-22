@@ -23,7 +23,7 @@
   (let [doc (-> req :params ->pali-word-doc)
         card (pali-word-db/put doc)]
     (if card
-      (resp/redirect (v/show-path req :pali-word-cards card))
+      (resp/redirect (v/show-path req :pali-words card))
       (resp/response
        (str "It looks like your card wasn't saved? 'db/put' returned nil.")))))
 

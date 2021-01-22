@@ -6,12 +6,13 @@
 (def ^:private cli-options
   [["-f" "--config-file FILE" "Path to configuration file"]
    ["-h" "--help" "Print this help message"]
+   ["-R" "--routes" "Print HTTP routes"]
    ["-m" "--migrate" "Run migrations"]
    ["-r" "--rollback" "Rollback the last migration"]
    ["-s" "--start" "Start the server"]])
 
 (defn- operational-modes [options]
-  (set/intersection #{:help :migrate :rollback :start} (into #{} (keys options))))
+  (set/intersection #{:help :routes :migrate :rollback :start} (into #{} (keys options))))
 
 (defn parse [args]
   (tcli/parse-opts args cli-options))
@@ -19,7 +20,7 @@
 (defn error-message [{:keys [options]}]
   (cond
     (not= 1 (count (operational-modes options)))
-    "Should be invoked with exactly one of -h -r -m -s"
+    "Should be invoked with exactly one of -h -R -r -m -s"
 
     (not (or (:config-file options) (:help options)))
     "Missing required option -f"

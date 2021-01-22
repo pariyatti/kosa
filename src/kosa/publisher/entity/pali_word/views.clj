@@ -32,7 +32,7 @@
       "&nbsp;Back to Publisher"]]
     [:div {:class "header-and-link flex"}
      [:h1 {:class "page-header"} "Pali Cards"]
-     [:a {:href (v/new-path req :pali-word-cards)}
+     [:a {:href (v/new-path req :pali-words)}
       [:clr-icon {:shape "plus-circle" :size "24"}]
       "&nbsp;Create Pali Word Card"]]]
    (for [card cards]
@@ -61,10 +61,10 @@
          [:ul {:class "card-action-links"}
            [:li {:class "card-action-link"} "Edit"]
            [:li {:class "card-action-link"} "Destroy"]]
-         [:a {:href (v/index-path req :pali-word-cards)} "Go Back"]))
+         [:a {:href (v/index-path req :pali-words)} "Go Back"]))
 
 (defn new-form [req]
-  (f/form-to [:post (v/create-path req :pali-word-cards)]
+  (f/form-to [:post (v/create-path req :pali-words)]
              [:div {:class "field"}
               (f/hidden-field :card-type "pali_word")]
              [:a {:href "#"

@@ -47,6 +47,9 @@ assets: ##@Development Rebuild web assets (CSS)
 
 init: tools deps assets ##@Setup Dev Setup
 
+routes: ##@Development Display HTTP routes
+	lein run -- --routes -f config/config.dev.edn
+
 test: ##@Development Run tests with lein
 #lein run -- -mf config/config.test.edn # TODO: add migrations
 	lein test
