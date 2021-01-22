@@ -2,10 +2,10 @@
   (:refer-clojure :exclude [list get])
   (:require [kutis.record]))
 
-(def fields [:card-type :modified-at :published-at :bookmarkable :shareable
-             :pali :translations
-             ;; TODO: remove or make these work-
-             :header :id :audio])
+(def fields #{:card-type :modified-at :published-at :bookmarkable :shareable
+              :pali :translations
+              ;; TODO: remove or make these work-
+              :header :id :audio})
 
 (defn list []
   (let [list-query '{:find     [e modified-at]

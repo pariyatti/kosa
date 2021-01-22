@@ -2,11 +2,10 @@
   (:refer-clojure :exclude [list get])
   (:require [kutis.record]))
 
-(def fields [:type
-             :modified-at
-             :original-url ;; from *.pariyatti.org
-             :attached-image
-             ])
+(def fields #{:type
+              :modified-at
+              :original-url ;; from *.pariyatti.org
+              :attached-image})
 
 (defn list []
   (let [list-query '{:find     [e modified-at]
