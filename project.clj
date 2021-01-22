@@ -9,6 +9,7 @@
                  [org.clojure/tools.cli "1.0.194"]
                  [org.clojure/tools.logging "1.1.0"]
                  ;; logging:
+                 [fancy "0.2.3"]
                  [ch.qos.logback/logback-classic "1.2.3"]
                  [ch.qos.logback/logback-core "1.2.3"]
                  [org.slf4j/slf4j-api "1.7.30"]

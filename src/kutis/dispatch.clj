@@ -1,4 +1,6 @@
-(ns kutis.dispatch)
+(ns kutis.dispatch
+  (:require [reitit.core]
+            [fancy.table :as fancy]))
 
 (defn pluralize [s]
   (str s "s"))
@@ -29,3 +31,34 @@
                          :delete  ~(handler "destroy")}]
       [~(route k ":id" "edit") {:name ~(name-kw "edit")
                                 :get  ~(handler "edit")}]]))
+
+(defn fn-name [fn]
+  (when fn
+    (-> fn class str
+        (clojure.string/replace #"\$" "/")
+        (clojure.string/replace #"class " ""))))
+
+(defn print-handler [c verb]
+  (-> c second (get verb) :handler fn-name))
+
+(defn print-route [c verb]
+  {:verb verb
+   :url (first c)
+   :action (print-handler c verb)})
+
+(defn print-url-cluster [c]
+  (->> [:get :post :put :delete]
+       (map (partial print-route c))
+       (filter #(get % :action))))
+
+(defn print-routes* [r]
+  (->> r
+       (map print-url-cluster)
+       (apply concat)))
+
+(defn print-routes [router verbose]
+  (let [routes (reitit.core/routes router)]
+    (if verbose
+      (clojure.pprint/pprint routes)
+      (fancy/print-table [:verb :url :action]
+                         (print-routes* routes)))))

@@ -55,17 +55,3 @@
    ;; consider {:conflicting true} instead
    {:conflicts nil
     :data {:muuntaja m/instance}}))
-
-;; example crud-ful routes:
-
-;; GET    /publisher/cards/pali_word_cards(.:format)                    cards/pali_word_cards#index
-;; POST   /publisher/cards/pali_word_cards(.:format)                    cards/pali_word_cards#create
-;; GET    /publisher/cards/pali_word_cards/new(.:format)                cards/pali_word_cards#new
-;; GET    /publisher/cards/pali_word_cards/:id/edit(.:format)           cards/pali_word_cards#edit
-;; GET    /publisher/cards/pali_word_cards/:id(.:format)                cards/pali_word_cards#show
-;; PATCH  /publisher/cards/pali_word_cards/:id(.:format)                cards/pali_word_cards#update
-;; PUT    /publisher/cards/pali_word_cards/:id(.:format)                cards/pali_word_cards#update
-;; DELETE /publisher/cards/pali_word_cards/:id(.:format)                cards/pali_word_cards#destroy
-
-(defn print-routes []
-  (clojure.pprint/pprint (reitit.core/routes router)))

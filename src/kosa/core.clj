@@ -5,6 +5,7 @@
             [kosa.config :as config]
             [kosa.routes :as routes]
             [kosa.server :as server]
+            [kutis.dispatch :as dispatch]
             [kutis.record :as db]
             [mount-up.core :as mu]
             [mount.core :as mount]))
@@ -61,7 +62,7 @@
   (throw (ex-info "Migrations are not implemented yet." {})))
 
 (defn print-routes [_]
-  (routes/print-routes))
+  (dispatch/print-routes routes/router false))
 
 (defn print-help [opts]
   (println (cli/help-message opts)))
