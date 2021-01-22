@@ -15,7 +15,8 @@
           :sync?       true}
 	  :crux/tx-log         {:kv-store :rdb}
 	  :crux/document-store {:kv-store :rdb}
-    :crux/index-store    {:kv-store :rdb}}))
+    :crux/index-store    {:kv-store :rdb}
+    :crux.http-server/server {:port 9999}}))
 
 (defn stop-crux! []
   (.close crux-node))

@@ -24,10 +24,11 @@
                  [metosin/reitit "0.5.6"]
                  [metosin/muuntaja "0.6.7"]
                  [metosin/jsonista "0.2.7"] ;; force version: reitit / muuntaja dep
-                 [hiccup "1.0.5"]
+                 [hiccup "2.0.0-alpha2"]
                  ;; data:
-                 [juxt/crux-core "20.09-1.12.1-beta"]
-                 [juxt/crux-rocksdb "20.09-1.12.1-beta"]]
+                 [juxt/crux-core "21.01-1.14.0-beta"]
+                 [juxt/crux-rocksdb "21.01-1.14.0-beta"]
+                 [juxt/crux-http-server "21.01-1.14.0-alpha"]]
   :plugins [[lein-scss "0.3.0"]]
 
   :scss {:builds
