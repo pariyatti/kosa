@@ -1,4 +1,4 @@
-(ns kosa.sundry)
+(ns kutis.support.collections)
 
 (defn find-all-nested
   [m k]
