@@ -50,21 +50,9 @@
 
          ["publisher" [["" {:name    ::publisher-index
                             :handler kosa.publisher.handler/index}]
-                       ["/today" [["/pali-words" {:name ::pali-words-index
-                                                  :aliases [::pali-words-create]
-                                                  :get  pali-word-handler/index
-                                                  :post (wrap-spec-validation :entity/pali-word-request pali-word-handler/create)}]
-                                  ["/pali-words/new" {:name ::pali-words-new
-                                                      :get  pali-word-handler/new}]
-                                  ["/pali-words/:id" {:name   ::pali-words-show
-                                                      :aliases [::pali-words-update ::pali-words-destroy]
-                                                      :get    pali-word-handler/show
-                                                      :put    pali-word-handler/update
-                                                      :delete pali-word-handler/destroy}]
-                                  ["/pali-words/:id/edit" {:name ::pali-words-edit
-                                                           :get  pali-word-handler/edit}]]]]]]]
+                       ["/today/" (resources :pali-words)]]]]]
    ;; CRUD resources conflict between /new and /:id
-   ;; consider {:conflicting true} instead, once we abstract CRUDs
+   ;; consider {:conflicting true} instead
    {:conflicts nil
     :data {:muuntaja m/instance}}))
 
