@@ -1,12 +1,14 @@
 (ns kosa.routes
   (:refer-clojure :exclude [resources])
   (:require [kosa.library.artefacts.image.handler :as image-handler]
-            kosa.library.artefacts.image.spec
-            kosa.library.handler
+            [kosa.library.artefacts.image.spec]
+            [kosa.library.handler]
             [kosa.middleware :refer [wrap-spec-validation]]
-            kosa.mobile.handler
+            [kosa.mobile.handler]
             [kosa.mobile.today.pali-word.handler :as pali-word-handler]
-            kosa.mobile.today.pali-word.spec
+            [kosa.mobile.today.pali-word.spec]
+            [kosa.mobile.today.stacked-inspiration.handler :as stacked-inspiration-handler]
+            [kosa.mobile.today.stacked-inspiration.spec]
             [kutis.dispatch :refer [resources]]
             [muuntaja.core :as m]
             [reitit.ring :as rr]
@@ -50,7 +52,7 @@
 
          ["mobile" [["" {:name    ::mobile-index
                          :handler kosa.mobile.handler/index}]
-                    ["/today/" (resources :pali-words)]]]]]
+                    ["/today/" (resources :pali-words :stacked-inspirations)]]]]]
    ;; CRUD resources conflict between /new and /:id
    ;; consider {:conflicting true} instead
    {:conflicts nil
