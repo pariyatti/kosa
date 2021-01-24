@@ -1,4 +1,4 @@
-(ns kosa.mobile.entity.pali-word.views
+(ns kosa.mobile.today.pali-word.views
   (:require [hiccup.core :as h]
             [hiccup.form :as f]
             [kosa.config :as config]

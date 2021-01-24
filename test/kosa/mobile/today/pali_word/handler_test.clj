@@ -1,9 +1,9 @@
-(ns kosa.mobile.entity.pali-word.handler-test
+(ns kosa.mobile.today.pali-word.handler-test
   (:require [clojure.string :as str]
             [clojure.test :refer :all]
             [kosa.config :as config]
-            [kosa.mobile.entity.pali-word.db :as db]
-            [kosa.mobile.entity.pali-word.handler :as pali-word-handler]
+            [kosa.mobile.today.pali-word.db :as db]
+            [kosa.mobile.today.pali-word.handler :as pali-word-handler]
             [kosa.routes :as routes]
             [kutis.fixtures.record-fixtures :as fixtures]))
 

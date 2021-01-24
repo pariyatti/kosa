@@ -4,9 +4,9 @@
             kosa.library.artefacts.image.spec
             kosa.library.handler
             [kosa.middleware :refer [wrap-spec-validation]]
-            [kosa.mobile.entity.pali-word.handler :as pali-word-handler]
-            kosa.mobile.entity.pali-word.spec
             kosa.mobile.handler
+            [kosa.mobile.today.pali-word.handler :as pali-word-handler]
+            kosa.mobile.today.pali-word.spec
             [kutis.dispatch :refer [resources]]
             [muuntaja.core :as m]
             [reitit.ring :as rr]

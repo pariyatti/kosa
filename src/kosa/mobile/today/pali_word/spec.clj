@@ -1,4 +1,4 @@
-(ns kosa.mobile.entity.pali-word.spec
+(ns kosa.mobile.today.pali-word.spec
   (:require [clojure.string]
             [clojure.spec.alpha :as s]))
 
