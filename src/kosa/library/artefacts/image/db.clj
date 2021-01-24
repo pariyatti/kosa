@@ -15,9 +15,6 @@
     (kutis.record/query list-query)))
 
 (defn put [e]
-  (kutis.record/put e fields))
-
-(defn put [e]
   ;; TODO: we need a low-level home for applying `:modified-at` to all entities
   (let [doc (assoc e
                    :modified-at (java.util.Date.)

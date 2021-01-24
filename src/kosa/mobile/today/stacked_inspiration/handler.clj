@@ -4,10 +4,13 @@
             [kosa.mobile.today.stacked-inspiration.views :as views]
             [kosa.views :as v]
             [kutis.controller :as c]
+            [kutis.storage :as storage]
             [ring.util.response :as resp]))
 
 (defn ->stacked-inspiration-doc [p]
-  (c/params->doc p [:card-type :text]))
+  (let [attachment (storage/attach! (:image-file p))]
+    (-> (c/params->doc p [:card-type :text])
+        (assoc :attached-image attachment))))
 
 (defn index [request]
   (let [cards (db/list)]

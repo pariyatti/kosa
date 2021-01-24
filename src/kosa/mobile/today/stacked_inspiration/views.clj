@@ -1,6 +1,7 @@
 (ns kosa.mobile.today.stacked-inspiration.views
   (:require [hiccup.core :as h]
             [hiccup.form :as f]
+            [kutis.storage :as storage]
             [kosa.config :as config]
             [kosa.layouts.mobile :as p]
             [kosa.views :as v]))
@@ -12,8 +13,8 @@
      [:td "Text:"]
      [:td (:text card)]]
     [:tr
-     [:td "TODO: image"]
-     [:td ""]]]
+     [:td "Image:"]
+     [:td [:div [:img {:src (storage/url (:attached-image card)) :width "128" :height "128"}]]]]]
    [:ul {:class "card-action-links"}
     [:li {:class "card-action-link"} "Show"]
     [:li {:class "card-action-link"} "Edit"]
@@ -49,8 +50,8 @@
      [:td "Text:"]
      [:td (:text card)]]
     [:tr
-     [:td "TODO: image"]
-     [:td ""]]]))
+     [:td "Image:"]
+     [:td [:div [:img {:src (storage/url (:attached-image card)) :width "128" :height "128"}]]]]]))
 
 (defn show [req card]
   (p/app "Show Stacked Inspiration Card"
@@ -61,31 +62,33 @@
          [:a {:href (v/index-path req :stacked-inspirations)} "Go Back"]))
 
 (defn new-form [req]
-  (f/form-to [:post (v/create-path req :stacked-inspirations)]
-             [:div {:class "field"}
-              (f/hidden-field :card-type "stacked_inspiration")]
-             [:a {:href "#"
-                  :onclick "document.getElementById('defaults').classList.toggle('form-defaults-hidden');"}
-              "Show / Hide Defaults"]
-             [:div#defaults {:class "form-defaults-hidden"}
-              [:div {:class "field"}
-               (f/label :bookmarkable "Bookmarkable?")
-               (f/check-box :bookmarkable :checked)]
-              [:div {:class "field"}
-               (f/label :shareable "Shareable?")
-               (f/check-box :shareable :checked)]
-              [:div {:class "field"}
-               (f/label :header "Header")
-               (f/text-field :header "Stacked Inspiration")]]
-             [:div {:class "field"}
-              (f/label :text "Text")
-              (f/text-field :text)]
+  [:form {:method "POST"
+          :action (v/create-path req :stacked-inspirations)
+          :enctype "multipart/form-data"}
+   [:div {:class "field"}
+    (f/hidden-field :card-type "stacked_inspiration")]
+   [:a {:href "#"
+        :onclick "document.getElementById('defaults').classList.toggle('form-defaults-hidden');"}
+    "Show / Hide Defaults"]
+   [:div#defaults {:class "form-defaults-hidden"}
+    [:div {:class "field"}
+     (f/label :bookmarkable "Bookmarkable?")
+     (f/check-box :bookmarkable :checked)]
+    [:div {:class "field"}
+     (f/label :shareable "Shareable?")
+     (f/check-box :shareable :checked)]
+    [:div {:class "field"}
+     (f/label :header "Header")
+     (f/text-field :header "Stacked Inspiration")]]
 
-             [:div {:class "field"}
-              "TODO: image"]
-
-             [:div {:class "actions"}
-              (f/submit-button {:name "submit"} "Save")]))
+   [:div {:class "field"}
+    (f/label :text "Text")
+    (f/text-field :text)]
+   [:div {:class "field"}
+    (f/label :image-file "Image File:")
+    (f/file-upload :image-file)]
+   [:div {:class "actions"}
+    (f/submit-button {:name "submit"} "Save")]])
 
 (defn new [req]
   (p/app "New Stacked Inspiration Card"
