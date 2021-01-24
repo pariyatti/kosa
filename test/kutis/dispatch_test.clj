@@ -2,7 +2,9 @@
   (:require [clojure.data]
             [clojure.test :refer :all]
             [kutis.dispatch :as sut]
-            [kutis.fixtures.dispatch-fixtures :as green-truck-handler]))
+            [kutis.fixtures.dispatch-fixtures :as green-truck-handler]
+            [kutis.fixtures.dispatch-fixtures :as first-handler]
+            [kutis.fixtures.dispatch-fixtures :as second-handler]))
 
 (defn wrap-spec-validation [_spec handler]
   (fn [request]
@@ -52,3 +54,7 @@
       ;; (prn (clojure.data/diff clipped-expected clipped-resources))
       (is (= clipped-expected
              clipped-resources)))))
+
+(deftest multiple-resources
+  (testing "handles n-arity resources by name"
+    (is (= 8 (count (sut/resources :firsts :seconds))))))

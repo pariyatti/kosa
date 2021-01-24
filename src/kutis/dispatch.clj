@@ -8,7 +8,7 @@
 (defn singularize [s]
   (clojure.string/replace s #"s$" ""))
 
-(defmacro resources [kw]
+(defmacro resource [kw]
   (let [k (name kw)
         route (fn [& parts] (clojure.string/join "/" parts))
 
@@ -31,6 +31,13 @@
                          :delete  ~(handler "destroy")}]
       [~(route k ":id" "edit") {:name ~(name-kw "edit")
                                 :get  ~(handler "edit")}]]))
+
+(defn flatvec [coll]
+  (vec (mapcat seq coll)))
+
+(defmacro resources [& kws]
+  `(flatvec (vector ~@(for [kw# kws]
+                     `(kutis.dispatch/resource ~kw#)))))
 
 (defn fn-name [fn]
   (when fn
