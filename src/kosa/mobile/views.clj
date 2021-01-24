@@ -1,7 +1,7 @@
-(ns kosa.publisher.views
+(ns kosa.mobile.views
   (:require [hiccup.core :as h]
             [hiccup.form :as f]
-            [kosa.layouts.publisher :as p]
+            [kosa.layouts.mobile :as p]
             [kosa.views :as v]))
 
 (defn index [req]

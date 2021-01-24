@@ -1,9 +1,9 @@
-(ns kosa.publisher.entity.pali-word.handler
+(ns kosa.mobile.entity.pali-word.handler
   (:refer-clojure :exclude [list update])
-  (:require [kutis.controller :as c]
-            [kosa.publisher.entity.pali-word.db :as pali-word-db]
-            [kosa.publisher.entity.pali-word.views :as views]
+  (:require [kosa.mobile.entity.pali-word.db :as pali-word-db]
+            [kosa.mobile.entity.pali-word.views :as views]
             [kosa.views :as v]
+            [kutis.controller :as c]
             [ring.util.response :as resp]))
 
 (defn ->pali-word-doc [p]

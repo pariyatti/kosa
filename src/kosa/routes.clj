@@ -4,9 +4,9 @@
             kosa.library.artefacts.image.spec
             kosa.library.handler
             [kosa.middleware :refer [wrap-spec-validation]]
-            [kosa.publisher.entity.pali-word.handler :as pali-word-handler]
-            kosa.publisher.entity.pali-word.spec
-            kosa.publisher.handler
+            [kosa.mobile.entity.pali-word.handler :as pali-word-handler]
+            kosa.mobile.entity.pali-word.spec
+            kosa.mobile.handler
             [kutis.dispatch :refer [resources]]
             [muuntaja.core :as m]
             [reitit.ring :as rr]
@@ -38,7 +38,7 @@
 (def router
   (rr/router
    ["/" [["" {:name    ::root
-              :handler (fn [req] (redirect "/publisher"))}]
+              :handler (fn [req] (redirect "/mobile"))}]
          ["ping" {:name    ::ping
                   :handler pong}]
          ["api/v1/today.json" {:name    :kosa.routes.api/today
@@ -48,9 +48,9 @@
                           :handler kosa.library.handler/index}]
                      ["/artefacts/" (resources :images)]]]
 
-         ["publisher" [["" {:name    ::publisher-index
-                            :handler kosa.publisher.handler/index}]
-                       ["/today/" (resources :pali-words)]]]]]
+         ["mobile" [["" {:name    ::mobile-index
+                         :handler kosa.mobile.handler/index}]
+                    ["/today/" (resources :pali-words)]]]]]
    ;; CRUD resources conflict between /new and /:id
    ;; consider {:conflicting true} instead
    {:conflicts nil

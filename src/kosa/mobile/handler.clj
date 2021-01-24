@@ -1,5 +1,5 @@
-(ns kosa.publisher.handler
-  (:require [kosa.publisher.views :as views]
+(ns kosa.mobile.handler
+  (:require [kosa.mobile.views :as views]
             [ring.util.response :as resp]))
 
 (defn index [request]

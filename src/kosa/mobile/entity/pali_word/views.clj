@@ -1,8 +1,8 @@
-(ns kosa.publisher.entity.pali-word.views
+(ns kosa.mobile.entity.pali-word.views
   (:require [hiccup.core :as h]
             [hiccup.form :as f]
             [kosa.config :as config]
-            [kosa.layouts.publisher :as p]
+            [kosa.layouts.mobile :as p]
             [kosa.views :as v]))
 
 (defn show-index-preview [card]
@@ -27,9 +27,9 @@
     "&lt;%= notice %&gt;"]
    [:div {:class "page-heading"}
     [:div {:class "breadcrumb"}
-     [:a {:href (v/index-path req :publisher)}
+     [:a {:href (v/index-path req :mobile)}
       [:clr-icon {:shape "grid-view" :size "24"}]
-      "&nbsp;Back to Publisher"]]
+      "&nbsp;Back to Mobile Admin"]]
     [:div {:class "header-and-link flex"}
      [:h1 {:class "page-header"} "Pali Cards"]
      [:a {:href (v/new-path req :pali-words)}
@@ -112,8 +112,8 @@
   (p/app "New Pali Word Card"
    [:div {:class "page-heading"}
     [:div {:class "breadcrumb"}
-     [:a {:href (v/index-path req :publisher)}
-      "Back to Publisher"]]
+     [:a {:href (v/index-path req :mobile)}
+      "Back to Mobile Admin"]]
     [:div {:class "header-and-link flex"}
      [:h1 {:class "page-header"} "New Pali Word Card"]]]
    [:div {:class "form-and-preview flex row"}

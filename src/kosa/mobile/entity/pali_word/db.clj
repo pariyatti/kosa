@@ -1,4 +1,4 @@
-(ns kosa.publisher.entity.pali-word.db
+(ns kosa.mobile.entity.pali-word.db
   (:refer-clojure :exclude [list get])
   (:require [kutis.record]))
 

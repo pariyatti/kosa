@@ -13,7 +13,7 @@
 
            [:body
             (header/render "Pariyatti Library" "/library"
-                           "Pariyatti Mobile" "/publisher")
+                           "Pariyatti Mobile Admin" "/mobile")
             [:div {:class "main-container"}
            ;; TODO: pass a flash map
              (flash/render {})

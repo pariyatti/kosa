@@ -1,6 +1,6 @@
 # kosa [m.]: _store-room; treasury_
 
-Publisher and Library service written in Clojure + Crux.
+Library and Mobile services written in Clojure + Crux.
 
 
 ## Mobile App API
@@ -54,7 +54,7 @@ make repl # run the server interactively
 
 ## Design Wireframes
 
-- [Publisher](https://whimsical.com/4tTbGHDiYkYXj7cUnTBSTb)
+- [Mobile (Admin)](https://whimsical.com/4tTbGHDiYkYXj7cUnTBSTb)
 - [Library](https://whimsical.com/6LN2LDkv1bRyyuojyiJ8oV)
 
 ## Architectural Thinking
