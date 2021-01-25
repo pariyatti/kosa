@@ -14,10 +14,12 @@
 	                      :db-dir      (io/file (get-in config/config [:db-spec :data-dir]) dir)
                         :sync?       true}})]
     (crux/start-node
-     {:crux/tx-log         (kv-store "tx-log")
-	    :crux/document-store (kv-store "doc-store")
-      :crux/index-store    (kv-store "index-store")
-      :crux.http-server/server {:port 9999}})))
+     {:crux/tx-log              (kv-store "tx-log")
+	    :crux/document-store      (kv-store "doc-store")
+      :crux/index-store         (kv-store "index-store")
+      :crux.lucene/lucene-store {:db-dir (str (get-in config/config [:db-spec :data-dir])
+                                              "lucene-dir")}
+      :crux.http-server/server  {:port 9999}})))
 
 (defn stop-crux! []
   (.close crux-node))
@@ -68,6 +70,11 @@
   (let [id (:crux.db/id e)]
     (crux/submit-tx crux-node [[:crux.tx/delete id]])))
 
-(defn query [q]
-  (let [result-set (crux/q (crux/db crux-node) q)]
-    (map #(-> % first get) result-set)))
+(defn query
+  ([q]
+   (let [result-set (crux/q (crux/db crux-node) q)]
+     (map #(-> % first get) result-set)))
+  ([q param]
+   (let [result-set (crux/q (crux/db crux-node) q param)
+         _ (prn result-set)]
+     (map #(-> % first get) result-set))))

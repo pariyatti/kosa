@@ -14,7 +14,6 @@
 
 (defn search [req]
   (let [text (-> req :params :q)
-        list (image-db/list)]
-    (prn (format "searching for '%s'" text))
+        list (image-db/search text)]
     (resp/response
-     (search* list text))))
+     list)))

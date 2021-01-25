@@ -29,6 +29,7 @@
                  ;; data:
                  [juxt/crux-core "21.01-1.14.0-beta"]
                  [juxt/crux-rocksdb "21.01-1.14.0-beta"]
+                 [juxt/crux-lucene "21.01-1.14.0-alpha"]
                  [juxt/crux-http-server "21.01-1.14.0-alpha"]]
   :plugins [[lein-scss "0.3.0"]]
 

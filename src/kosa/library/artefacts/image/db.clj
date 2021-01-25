@@ -21,12 +21,14 @@
         raw-images (kutis.record/query list-query)]
     (map rehydrate raw-images)))
 
-(defn find [match]
-  (let [list-query '{:find     [e modified-at]
-                     :where    [[e :type "image_artefact"]
-                                [e :modified-at modified-at]]
-                     :order-by [[modified-at :desc]]}]
-    (kutis.record/query list-query)))
+(defn search [match]
+  (let [matcher (format "%s*" match)
+        list-query '{:find [?e ?v ?a ?s]
+                     :in [?match]
+	                   :where [[(wildcard-text-search ?match) [[?e ?v ?a ?s]]]
+	                           [?e :crux.db/id]]}]
+    (prn (format "searching for '%s'" matcher))
+    (kutis.record/query list-query matcher)))
 
 ;; TODO: extract "attachment-flattening" into its own ns.
 (defn put [e]
