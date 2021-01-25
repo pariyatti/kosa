@@ -9,14 +9,15 @@
 (def crux-node)
 
 (defn start-crux! []
-  (crux/start-node
-   {:rdb {:crux/module 'crux.rocksdb/->kv-store
-	        :db-dir      (io/file (get-in config/config [:db-spec :data-dir]) "event-log")
-          :sync?       true}
-	  :crux/tx-log         {:kv-store :rdb}
-	  :crux/document-store {:kv-store :rdb}
-    :crux/index-store    {:kv-store :rdb}
-    :crux.http-server/server {:port 9999}}))
+  (letfn [(kv-store [dir]
+            {:kv-store {:crux/module 'crux.rocksdb/->kv-store
+	                      :db-dir      (io/file (get-in config/config [:db-spec :data-dir]) dir)
+                        :sync?       true}})]
+    (crux/start-node
+     {:crux/tx-log         (kv-store "tx-log")
+	    :crux/document-store (kv-store "doc-store")
+      :crux/index-store    (kv-store "index-store")
+      :crux.http-server/server {:port 9999}})))
 
 (defn stop-crux! []
   (.close crux-node))
