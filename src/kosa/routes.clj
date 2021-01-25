@@ -9,6 +9,7 @@
             [kosa.mobile.today.pali-word.spec]
             [kosa.mobile.today.stacked-inspiration.handler :as stacked-inspiration-handler]
             [kosa.mobile.today.stacked-inspiration.spec]
+            [kosa.search.handler :as search-handler]
             [kutis.dispatch :refer [resources]]
             [muuntaja.core :as m]
             [reitit.ring :as rr]
@@ -45,6 +46,8 @@
                   :handler pong}]
          ["api/v1/today.json" {:name    :kosa.routes.api/today
                                :handler pali-word-handler/list}]
+         ["api/v1/search" {:name    :kosa.routes.api/search
+                           :handler search-handler/search}]
 
          ["library" [["" {:name    ::library-index
                           :handler kosa.library.handler/index}]

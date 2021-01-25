@@ -11,7 +11,7 @@
 (defn ->image-doc [p]
   (let [attachment (storage/attach! (:image-file p))]
     (-> (c/params->doc p [:crux.db/id])
-        (assoc :attached-image attachment))))
+        (assoc :image-attachment attachment))))
 
 (defn index [request]
   (let [images (db/list)]

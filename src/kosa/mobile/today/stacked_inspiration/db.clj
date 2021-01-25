@@ -3,7 +3,7 @@
   (:require [kutis.record]))
 
 (def fields #{:card-type :modified-at :published-at :bookmarkable :shareable
-              :text :attached-image})
+              :text :image-attachment})
 
 (defn list []
   (let [list-query '{:find     [e modified-at]

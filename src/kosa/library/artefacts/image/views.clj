@@ -34,9 +34,9 @@
           [:div {:class "artefacts-wrapper"}
            (for [img images]
              [:div {:class "artefact"}
-              [:div [:img {:src (storage/url (:attached-image img)) :width "128" :height "128"}]]
+              [:div [:img {:src (storage/url (:image-attachment img)) :width "128" :height "128"}]]
               [:a {:href (v/show-path req :images img)}
-               [:div (storage/url (:attached-image img))]]])]]))
+               [:div (storage/url (:image-attachment img))]]])]]))
 
 (defn new-form* [req]
   [:form {:method "POST"
@@ -65,10 +65,10 @@
    [:table
     [:tr
      [:td "Image Preview:"]
-     [:td [:img {:src (storage/url (:attached-image image)) :width "128" :height "128"}]]]
+     [:td [:img {:src (storage/url (:image-attachment image)) :width "128" :height "128"}]]]
     [:tr
      [:td "URL:"]
-     [:td (storage/url (:attached-image image))]]
+     [:td (storage/url (:image-attachment image))]]
     [:tr
      [:td "Original URL:"]
      [:td (:original-url image)]]]))

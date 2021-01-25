@@ -10,7 +10,7 @@
 (defn ->stacked-inspiration-doc [p]
   (let [attachment (storage/attach! (:image-file p))]
     (-> (c/params->doc p [:card-type :text])
-        (assoc :attached-image attachment))))
+        (assoc :image-attachment attachment))))
 
 (defn index [request]
   (let [cards (db/list)]

@@ -14,7 +14,7 @@
      [:td (:text card)]]
     [:tr
      [:td "Image:"]
-     [:td [:div [:img {:src (storage/url (:attached-image card)) :width "128" :height "128"}]]]]]
+     [:td [:div [:img {:src (storage/url (:image-attachment card)) :width "128" :height "128"}]]]]]
    [:ul {:class "card-action-links"}
     [:li {:class "card-action-link"} "Show"]
     [:li {:class "card-action-link"} "Edit"]
@@ -51,7 +51,7 @@
      [:td (:text card)]]
     [:tr
      [:td "Image:"]
-     [:td [:div [:img {:src (storage/url (:attached-image card)) :width "128" :height "128"}]]]]]))
+     [:td [:div [:img {:src (storage/url (:image-attachment card)) :width "128" :height "128"}]]]]]))
 
 (defn show [req card]
   (p/app "Show Stacked Inspiration Card"
