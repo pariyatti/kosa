@@ -4,21 +4,24 @@
             [crux.api :as crux]
             [crux.rocksdb :as rocks]
             [kosa.config :as config]
+            [kutis.support :refer [path-join]]
             [mount.core :refer [defstate]]))
 
 (def crux-node)
 
+(defn- data-dir []
+  (get-in config/config [:db-spec :data-dir]))
+
 (defn start-crux! []
   (letfn [(kv-store [dir]
             {:kv-store {:crux/module 'crux.rocksdb/->kv-store
-	                      :db-dir      (io/file (get-in config/config [:db-spec :data-dir]) dir)
+	                      :db-dir      (io/file (data-dir) dir)
                         :sync?       true}})]
     (crux/start-node
      {:crux/tx-log              (kv-store "tx-log")
 	    :crux/document-store      (kv-store "doc-store")
       :crux/index-store         (kv-store "index-store")
-      :crux.lucene/lucene-store {:db-dir (str (get-in config/config [:db-spec :data-dir])
-                                              "lucene-dir")}
+      :crux.lucene/lucene-store {:db-dir (path-join (data-dir) "lucene-dir")}
       :crux.http-server/server  {:port 9999}})))
 
 (defn stop-crux! []

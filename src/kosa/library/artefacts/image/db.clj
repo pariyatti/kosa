@@ -5,7 +5,8 @@
 (def fields #{:type
               :modified-at
               :original-url ;; from *.pariyatti.org
-              :image-attachment-id})
+              :image-attachment-id
+              :searchables})
 
 (def attachment-fields #{:key :filename :content-type :metadata :service-name :byte-size :checksum})
 
@@ -26,9 +27,17 @@
         list-query '{:find [?e ?v ?a ?s]
                      :in [?match]
 	                   :where [[(wildcard-text-search ?match) [[?e ?v ?a ?s]]]
-	                           [?e :crux.db/id]]}]
+	                           [?e :crux.db/id]
+                             [?e :type "image_artefact"]]}
+        raw-images (kutis.record/query list-query matcher)]
     (prn (format "searching for '%s'" matcher))
-    (kutis.record/query list-query matcher)))
+    (map rehydrate raw-images)))
+
+(defn tag-searchables [e string]
+  (let [searchables (clojure.string/split string #"-|_|~|=|\$|\{|\}|\.|\[|\]|\+")
+        searchables (conj searchables string)
+        searchable-string (clojure.string/join " " searchables)]
+    (assoc e :searchables searchable-string)))
 
 ;; TODO: extract "attachment-flattening" into its own ns.
 (defn put [e]
@@ -38,6 +47,7 @@
                         (:crux.db/id attachment)
                         (throw (ex-info "Attachment not saved.")))
         artefact (-> e
+                     (tag-searchables (:filename attachment))
                      (dissoc :image-attachment)
                      (assoc :image-attachment-id attachment-id))
         ;; TODO: we need a low-level home for applying `:modified-at` to all entities
