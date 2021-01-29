@@ -30,10 +30,14 @@
 (defn reset-db! []
   (start-test-config)
   (let [data-dir (get-in config/config [:db-spec :data-dir])
-        db-log (io/file data-dir "event-log")
-        db-idx (io/file data-dir "indexes")]
+        db-log (io/file data-dir "tx-log")
+        db-idx (io/file data-dir "index-store")
+        db-doc (io/file data-dir "doc-store")
+        db-luc (io/file data-dir "lucene-dir")]
     (rm-rf db-log true)
-    (rm-rf db-idx true)))
+    (rm-rf db-idx true)
+    (rm-rf db-doc true)
+    (rm-rf db-luc true)))
 
 (defn throw-lock-error []
   (let [msg "RocksDB is locked. Do you have a repl connected somewhere?"]
