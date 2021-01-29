@@ -30,6 +30,8 @@
 (defn reset-db! []
   (start-test-config)
   (let [data-dir (get-in config/config [:db-spec :data-dir])
+        _ (when-not (= "data/test/" data-dir)
+            (throw (ex-info "Config [:db-spec :data-dir] is NOT 'data/test/'. Aborting.")))
         db-log (io/file data-dir "tx-log")
         db-idx (io/file data-dir "index-store")
         db-doc (io/file data-dir "doc-store")

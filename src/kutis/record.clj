@@ -12,6 +12,9 @@
 (defn- data-dir []
   (get-in config/config [:db-spec :data-dir]))
 
+(defn- crux-http-port []
+  (get-in config/config [:db-spec :crux-http-port]))
+
 (defn start-crux! []
   (letfn [(kv-store [dir]
             {:kv-store {:crux/module 'crux.rocksdb/->kv-store
@@ -22,7 +25,7 @@
 	    :crux/document-store      (kv-store "doc-store")
       :crux/index-store         (kv-store "index-store")
       :crux.lucene/lucene-store {:db-dir (path-join (data-dir) "lucene-dir")}
-      :crux.http-server/server  {:port 9999}})))
+      :crux.http-server/server  {:port (crux-http-port)}})))
 
 (defn stop-crux! []
   (.close crux-node))
