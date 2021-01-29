@@ -9,7 +9,7 @@
             [ring.util.response :as resp]))
 
 (defn ->image-doc [p]
-  (let [attachment (storage/attach! (:image-file p))]
+  (let [attachment (storage/attach! (:file p))]
     (-> (c/params->doc p [:crux.db/id])
         (assoc :image-attachment attachment))))
 
@@ -44,10 +44,7 @@
       (resp/response "Image artefact not found in database."))))
 
 (defn update [request]
-  ;; TODO: extract the copying of :crux.db/id from params into
-  ;;       doc into `controller.params->doc`.
-  (let [params (assoc (:params request)
-                      :crux.db/id (-> request :path-params :id))
+  (let [params (:params request)
         doc (->image-doc params)
         image (db/put doc)]
     (if image

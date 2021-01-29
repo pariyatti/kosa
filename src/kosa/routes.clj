@@ -1,9 +1,8 @@
 (ns kosa.routes
   (:refer-clojure :exclude [resources])
-  (:require [kosa.library.artefacts.image.handler :as image-handler]
+  (:require [kosa.library.handler]
+            [kosa.library.artefacts.image.handler :as image-handler]
             [kosa.library.artefacts.image.spec]
-            [kosa.library.handler]
-            [kosa.middleware :refer [wrap-spec-validation]]
             [kosa.mobile.handler]
             [kosa.mobile.today.pali-word.handler :as pali-word-handler]
             [kosa.mobile.today.pali-word.spec]
@@ -11,9 +10,22 @@
             [kosa.mobile.today.stacked-inspiration.spec]
             [kosa.search.handler :as search-handler]
             [kutis.dispatch :refer [resources]]
-            [muuntaja.core :as m]
             [reitit.ring :as rr]
-            [ring.util.response :as resp]))
+            [ring.util.response :as resp]
+
+            ;; middleware nonsense:
+            [kosa.middleware :refer [wrap-spec-validation]]
+            [muuntaja.core :as m]
+            [reitit.coercion.spec :as c]
+            [reitit.ring.middleware.dev]
+            [kosa.middleware.json :as json]
+            [kosa.middleware.logger :as logger]
+            [kosa.middleware.params :as params]
+            [reitit.ring.coercion :as coercion]
+            [reitit.ring.middleware.exception :as exception]
+            [reitit.ring.middleware.parameters :as parameters]
+            [reitit.ring.middleware.muuntaja :as muuntaja]
+            [reitit.ring.middleware.multipart :as multipart]))
 
 (defn pong [_request]
   (resp/response "pong"))
@@ -56,7 +68,25 @@
          ["mobile" [["" {:name    ::mobile-index
                          :handler kosa.mobile.handler/index}]
                     ["/today/" (resources :pali-words :stacked-inspirations)]]]]]
+
    ;; CRUD resources conflict between /new and /:id
    ;; consider {:conflicting true} instead
    {:conflicts nil
-    :data {:muuntaja m/instance}}))
+    ;; WARNING: these diffs are very handy, but very slow:
+    ;; :reitit.middleware/transform reitit.ring.middleware.dev/print-request-diffs
+    :data {:muuntaja m/instance
+           :coercion c/coercion
+           :middleware
+           [logger/log-request-start-middleware
+            json/json-response
+            json/json-params
+            json/json-body
+            parameters/parameters-middleware
+            kosa.middleware.params/multipart-params
+            muuntaja/format-negotiate-middleware
+            exception/exception-middleware
+            coercion/coerce-request-middleware
+            params/keyword-params
+            kosa.middleware/path-params
+            logger/log-request-params-middleware
+            logger/log-response-middleware]}}))

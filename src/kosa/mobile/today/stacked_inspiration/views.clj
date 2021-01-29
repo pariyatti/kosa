@@ -85,8 +85,8 @@
     (f/label :text "Text")
     (f/text-field :text)]
    [:div {:class "field"}
-    (f/label :image-file "Image File:")
-    (f/file-upload :image-file)]
+    (f/label :file "Image File:")
+    (f/file-upload :file)]
    [:div {:class "actions"}
     (f/submit-button {:name "submit"} "Save")]])
 

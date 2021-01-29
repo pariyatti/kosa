@@ -17,7 +17,7 @@
                                                             :aliases [:kosa.views/users-destroy]
                                                             :get     show-stub
                                                             :delete  destroy-stub}]]]]])
-        request {:router router}]
+        request {:reitit.core/router router}]
     (testing "Finds route names"
       (is (= "/entities/users/123" (sut/path-for request :kosa.views/users-show 123))))
     (testing "Finds aliased route names"
@@ -30,7 +30,7 @@
                                                      :aliases [:kosa.views/users-create]
                                                      :get     index-stub
                                                      :create  create-stub}]]])
-        request {:router router-without-id}]
+        request {:reitit.core/router router-without-id}]
     (testing "Finds route names without id"
       (is (= "/users" (sut/path-for request :kosa.views/users-index))))
     (testing "Finds aliased route names without id"
@@ -38,7 +38,7 @@
 
   (let [router-without-alias (rr/router ["/" [["users" {:name :kosa.views/users-index
                                                         :get  index-stub}]]])
-        request {:router router-without-alias}]
+        request {:reitit.core/router router-without-alias}]
     (testing "Finds routes without aliases"
       (is (= "/users" (sut/path-for request :kosa.views/users-index)))))
 
@@ -50,7 +50,7 @@
                                                                 :aliases [:kosa.views/users-create]
                                                                 :get     index-stub
                                                                 :create  create-stub}]]])
-        request {:router router-with-multiple-aliases}]
+        request {:reitit.core/router router-with-multiple-aliases}]
     (testing "Finds alias from first route"
       (is (= "/users/123" (sut/path-for request :kosa.views/users-destroy 123))))
     (testing "Finds alias from second route"
@@ -71,7 +71,7 @@
                                  ["users/:id/edit" {:name :kosa.views/users-edit
                                                     :get  edit-stub}]]]
                            {:conflicts nil})
-        request {:router router7}]
+        request {:reitit.core/router router7}]
     (testing "index path"
       (is (= "/users" (sut/index-path request :users))))
     (testing "create path"
@@ -95,7 +95,7 @@
                                                                    :aliases [:kosa.views/thing-destroy]
                                                                    :get     show-stub
                                                                    :delete  destroy-stub}]])
-        request {:router router-with-colliding-aliases}]
+        request {:reitit.core/router router-with-colliding-aliases}]
 
     (testing "Barfs (at runtime, sorry) if duplicate aliases are detected"
       (is (thrown-with-msg? java.lang.Exception #"Alias ':kosa.views/thing-destroy' is colliding."

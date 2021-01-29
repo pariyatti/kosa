@@ -45,8 +45,8 @@
    [:div {:class "field"}
     (f/hidden-field :type "image_artefact")]
    [:div {:class "field"}
-    (f/label :image-file "Image File:")
-    (f/file-upload :image-file)]
+    (f/label :file "Image File:")
+    (f/file-upload :file)]
    [:div {:class "actions"}
     (f/submit-button {:name "submit"} "Save")]])
 
@@ -96,8 +96,8 @@
              [:div {:class "field"}
               (f/hidden-field :type "image_artefact")]
              [:div {:class "field"}
-              (f/label :image-file "Image File:")
-              (f/file-upload :image-file)]
+              (f/label :file "Image File:")
+              (f/file-upload :file)]
              [:div {:class "actions"}
               (f/submit-button {:name "submit"} "Save")]))
 

@@ -1,6 +1,9 @@
 (ns kutis.controller)
 
-(defn apply-mapping [doc mapping params]
+(defn apply-mapping
+  "Maps a value from `params` to `doc` either with a supplied `[field fn]` (vector)
+   form or simply by copying the field (keyword) directly."
+  [doc mapping params]
   (cond
     (vector? mapping) (assoc doc
                              (first mapping)

@@ -8,7 +8,7 @@
             [ring.util.response :as resp]))
 
 (defn ->stacked-inspiration-doc [p]
-  (let [attachment (storage/attach! (:image-file p))]
+  (let [attachment (storage/attach! (:file p))]
     (-> (c/params->doc p [:card-type :text])
         (assoc :image-attachment attachment))))
 

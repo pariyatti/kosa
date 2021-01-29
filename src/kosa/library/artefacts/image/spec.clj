@@ -20,11 +20,11 @@
 (defn multipart-file? [obj]
   (s/conform :entity/file obj))
 
-(s/def :image/image-file multipart-file?)
+(s/def :image/file multipart-file?)
 
 (s/def :image/url (s/and string? #(-> % clojure.string/blank? not)))
 (s/def :image/original-url (s/and string? #(-> % clojure.string/blank? not)))
 
 (s/def :entity/image-request
-  (s/keys :req-un [:image/image-file]
+  (s/keys :req-un [:image/file]
           :opt-un [:image/original-url]))

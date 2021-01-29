@@ -22,7 +22,7 @@
       name)))
 
 (defn path-for* [request path-name id matcher]
-  (let [router (:router request)
+  (let [router (:reitit.core/router request)
         name (replace-alias router path-name)]
     (if-let [match (matcher router name id)]
       (r/match->path match)
@@ -51,7 +51,7 @@
     (-> kw first namespace)))
 
 (defn qualify [req type action]
-  (keyword (str (root-route-ns (:router req))
+  (keyword (str (root-route-ns (:reitit.core/router req))
                 "/"
                 (pluralize type)
                 "-"

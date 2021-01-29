@@ -30,14 +30,16 @@
   (testing "Can list pali words in reverse chronological order"
     (let [word-1 (db/put (pali-word "word-1" "translation-1"))
           word-2 (db/put (pali-word "word-2" "translation-2"))]
-      (is (= [word-2 word-1] (db/list))))))
+      ;; (prn (clojure.data/diff word-2 (first (db/list))))
+      (is (= [word-2 word-1]
+             (db/list))))))
 
 (deftest http-params->edn-document
   (testing "Zips languages and translations"
     (let [params {:card-type "pali_word", :bookmarkable "true", :shareable "true", :header "Pali Word",
                   :pali "rani", :language ["hi" "en" "cn"], :translation ["rani" "queen" "wx"], :submit "Save"}
           req {:params params
-               :router routes/router}
+               :reitit.core/router routes/router}
           response (pali-word-handler/create req)
           uuid (-> response :headers (get "Location") (clojure.string/split #"\/") last)
           doc (db/get uuid)]
@@ -48,7 +50,7 @@
     (let [params {:card-type "pali_word", :bookmarkable "true", :shareable "true", :header "Pali Word",
                   :pali "rani", :language ["hi" "en" "cn"], :translation ["rani" "queen" "wx"], :submit "Save"}
           req {:params params
-               :router routes/router}
+               :reitit.core/router routes/router}
           response (pali-word-handler/create req)
           uuid (-> response :headers (get "Location") (clojure.string/split #"\/") last)
           doc (db/get uuid)]

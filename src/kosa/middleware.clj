@@ -6,13 +6,11 @@
 (defn wrap-spec-validation [spec handler]
   (fn [request]
     (if (s/invalid? (s/conform spec (:params request)))
-      (resp/bad-request (str "Invalid parameters: " (s/explain-str spec (:params request))))
+      (resp/bad-request (str "Invalid parameters: " (s/explain-str spec (:params request))
+                             "\n\n"
+                             "Request was: "
+                             (with-out-str (clojure.pprint/pprint request))))
       (handler request))))
-
-(defn wrap-router [h]
-  (let [router (rring/get-router h)]
-    (fn [req]
-      (h (assoc req :router router)))))
 
 (defn wrap-println-request
   "Just some lazy debugging trash"
@@ -22,7 +20,7 @@
     (prn req)
     (h req)))
 
-(defn- hidden-method
+(defn- http-verb-method
   "From https://github.com/metosin/reitit/blob/master/doc/ring/RESTful_form_methods.md"
   [request]
   (some-> (or (get-in request [:form-params "_method"])         ;; look for "_method" field in :form-params
@@ -30,12 +28,30 @@
           clojure.string/lower-case
           keyword))
 
-(defn wrap-hidden-method
-  ;; TODO: write a test that ensures the output of `wrap-hidden-method` is lower-case
-  ;; TODO: move this (and all other middleware) into reitit middleware wrappers
+(defn wrap-http-verb-method
+  ;; TODO: write a test that ensures the output of `wrap-http-verb-method` is lower-case
   [handler]
   (fn [request]
     (if-let [fm (and (= :post (:request-method request)) ;; if this is a :post request
-                     (hidden-method request))] ;; and there is a "_method" field
+                     (http-verb-method request))]        ;; and there is a "_method" field
          (handler (assoc request :request-method fm)) ;; replace :request-method
          (handler request))))
+
+(defn wrap-path-params
+  [handler]
+  (fn [request]
+    (prn "request/path-params:")
+    (prn (:path-params request))
+    (if-let [id (-> request :path-params :id)]
+      (handler (assoc-in request [:params :crux.db/id] id))
+      (handler request))))
+
+(def http-verb-override
+  "Wraps POST requests with `_method` fields indicating another HTTP verb."
+  {:name ::http-verb-override
+   :wrap wrap-http-verb-method})
+
+(def path-params
+  "Injects `:path-params` into `:params` for specific keys (currently: `:id`)."
+  {:name ::path-params
+   :wrap wrap-path-params})

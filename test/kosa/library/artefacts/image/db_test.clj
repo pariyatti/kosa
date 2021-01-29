@@ -30,7 +30,7 @@
     (let [img (sut/put image-artefact)
           img-found (kutis.record/get (:crux.db/id img))
           attachment-found (kutis.record/get (:image-attachment-id img-found))]
-      (is (= #{:crux.db/id :modified-at :type :image-attachment-id}
+      (is (= #{:crux.db/id :modified-at :type :image-attachment-id :searchables}
              (-> img-found keys set)))
       (is (= image-attachment (clean-ids attachment-found)))))
 
@@ -38,7 +38,8 @@
     (let [img (sut/put image-artefact)
           img-found (sut/get (:crux.db/id img))
           img-no-ids (clean-ids img-found [:image-attachment])]
-      (is (= image-artefact img-no-ids))))
+      (is (= (assoc image-artefact :searchables "bodhi with raindrops jpg bodhi-with-raindrops.jpg")
+             img-no-ids))))
 
   (testing "On list, rehydrates all attachments"
     (let [img (sut/put image-artefact)
