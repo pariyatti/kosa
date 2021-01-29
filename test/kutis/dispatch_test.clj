@@ -13,15 +13,13 @@
 (def expected [["green-trucks" {:name    ::green-trucks-index
                                 :aliases [::green-trucks-create]
                                 :get     green-truck-handler/index
-                                :post    {:handler
-                                          (wrap-spec-validation :entity/green-truck-request green-truck-handler/create)}}]
+                                :post    (wrap-spec-validation :entity/green-truck-request green-truck-handler/create)}]
                ["green-trucks/new" {:name ::green-trucks-new
                                     :get  green-truck-handler/new}]
                ["green-trucks/:id" {:name    ::green-trucks-show
                                     :aliases [::green-trucks-update ::green-trucks-destroy]
                                     :get     green-truck-handler/show
-                                    :put     {:handler
-                                              green-truck-handler/update}
+                                    :put     green-truck-handler/update
                                     :delete  green-truck-handler/destroy}]
                ["green-trucks/:id/edit" {:name ::green-trucks-edit
                                          :get  green-truck-handler/edit}]])

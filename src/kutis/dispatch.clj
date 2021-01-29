@@ -21,22 +21,13 @@
     `[[~(route k) {:name    ~(name-kw "index")
                    :aliases [~(name-kw "create")]
                    :get     ~(handler "index")
-                   ;; TODO: come back and remove :handler and :parameters
-                   :post    {:handler (~'wrap-spec-validation ~(spec) ~(handler "create"))
-                             ;; :parameters {:multipart
-                             ;;              {:file
-                             ;;               reitit.ring.middleware.multipart/temp-file-part}}
-                             }}]
+                   :post    (~'wrap-spec-validation ~(spec) ~(handler "create"))}]
       [~(route k "new") {:name ~(name-kw "new")
                          :get  ~(handler "new")}]
       [~(route k ":id") {:name    ~(name-kw "show")
                          :aliases [~(name-kw "update") ~(name-kw "destroy")]
                          :get     ~(handler "show")
-                         :put {:handler ~(handler "update")
-                               ;; :parameters {:multipart
-                               ;;              {:file
-                               ;;               reitit.ring.middleware.multipart/temp-file-part}}
-                               }
+                         :put ~(handler "update")
                          :delete  ~(handler "destroy")}]
       [~(route k ":id" "edit") {:name ~(name-kw "edit")
                                 :get  ~(handler "edit")}]]))
