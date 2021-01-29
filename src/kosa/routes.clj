@@ -11,21 +11,11 @@
             [kosa.search.handler :as search-handler]
             [kutis.dispatch :refer [resources]]
             [reitit.ring :as rr]
-            [ring.util.response :as resp]
-
-            ;; middleware nonsense:
-            [kosa.middleware :refer [wrap-spec-validation]]
             [muuntaja.core :as m]
             [reitit.coercion.spec :as c]
-            [reitit.ring.middleware.dev]
-            [kosa.middleware.json :as json]
-            [kosa.middleware.logger :as logger]
-            [kosa.middleware.params :as params]
-            [reitit.ring.coercion :as coercion]
-            [reitit.ring.middleware.exception :as exception]
-            [reitit.ring.middleware.parameters :as parameters]
-            [reitit.ring.middleware.muuntaja :as muuntaja]
-            [reitit.ring.middleware.multipart :as multipart]))
+            [ring.util.response :as resp]
+            [kosa.middleware.validation :refer [wrap-spec-validation]]
+            [kosa.middleware]))
 
 (defn pong [_request]
   (resp/response "pong"))
@@ -76,17 +66,4 @@
     ;; :reitit.middleware/transform reitit.ring.middleware.dev/print-request-diffs
     :data {:muuntaja m/instance
            :coercion c/coercion
-           :middleware
-           [logger/log-request-start-middleware
-            json/json-response
-            json/json-params
-            json/json-body
-            parameters/parameters-middleware
-            kosa.middleware.params/multipart-params
-            muuntaja/format-negotiate-middleware
-            exception/exception-middleware
-            coercion/coerce-request-middleware
-            params/keyword-params
-            kosa.middleware/path-params
-            logger/log-request-params-middleware
-            logger/log-response-middleware]}}))
+           :middleware kosa.middleware/router-bundle}}))

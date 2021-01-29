@@ -1,12 +1,9 @@
 (ns kosa.server
   (:require [kosa.config :as config]
-            [kosa.middleware]
-            [kosa.middleware.params]
+            [kosa.middleware.fake-http-verb :as fake-http-verb]
             [kosa.routes :as routes]
             [mount.core :refer [defstate]]
             [reitit.ring :as rring]
-            [reitit.ring.middleware.parameters :as parameters]
-            [reitit.ring.middleware.multipart :as multipart]
             [ring.adapter.jetty :as jetty]))
 
 (def server)
@@ -14,10 +11,9 @@
 (def app-handler
   (rring/ring-handler routes/router
                       routes/default-handler
-                      {:middleware
-                       [parameters/parameters-middleware        ;; need :form-params for http-verb
-                        kosa.middleware.params/multipart-params ;; need :multipart-params for http-verb
-                        kosa.middleware/http-verb-override]
+                      {:middleware [fake-http-verb/form-params
+                                    fake-http-verb/multipart-params
+                                    fake-http-verb/override]
                        :inject-router? true}))
 
 (defn start-server! []
