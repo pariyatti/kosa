@@ -12,7 +12,7 @@
   (ring.middleware.session/wrap-session
    handler
    {:flash true
-    :store (cookie/cookie-store {:key (bytes/str->byte-array "abcdabcdabcdabacd")})
+    :store (cookie/cookie-store {:key (bytes/str->byte-array "abcdabcdabcdabcd")})
     :cookie-attrs {:http-only true, :same-site :strict}}))
 
 (def session
