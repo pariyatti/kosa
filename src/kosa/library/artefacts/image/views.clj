@@ -21,6 +21,7 @@
     [:a {:href (v/index-path req :library)}
      [:clr-icon {:shape "grid-view" :size "24"}]
      "&nbsp;Back to Library"]]
+   [:div (str "Flash: " (:flash req))]
    [:div {:class "header-and-link flex"}
     [:h1 {:class "page-header"} "Image Artefacts"]
     [:a {:href (v/new-path req :images)}

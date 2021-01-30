@@ -72,9 +72,17 @@
         card (get (:crux.db/id tx))]
     card))
 
-(defn delete [e]
+(defn delete-async
+  "Try not to use me unless you absolutely have to. Prefer `delete` (syncronous)."
+  [e]
   (let [id (:crux.db/id e)]
     (crux/submit-tx crux-node [[:crux.tx/delete id]])))
+
+(defn delete [e]
+  (let [tx   (delete-async e)
+        _    (crux/await-tx crux-node tx)
+        deleted e]
+    deleted))
 
 (defn query
   ([q]

@@ -1,6 +1,7 @@
 (ns kosa.middleware
   (:require
    [reitit.ring.middleware.dev]
+   [kosa.middleware.flash :as flash]
    [kosa.middleware.json :as json]
    [kosa.middleware.logger :as logger]
    [kosa.middleware.params :as params]
@@ -17,11 +18,13 @@
    json/json-params
    json/json-body
    parameters/parameters-middleware
-   kosa.middleware.params/multipart-params
+   params/multipart-params
    muuntaja/format-negotiate-middleware
    exception/exception-middleware
    coercion/coerce-request-middleware
    params/keyword-params
-   kosa.middleware.params/path-params
+   params/path-params
+   flash/session
+   flash/flash
    logger/log-request-params-middleware
    logger/log-response-middleware])

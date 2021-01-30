@@ -52,12 +52,11 @@
       (resp/response
        (str "It looks like your image wasn't saved? 'db/put' returned nil.")))))
 
-(defn destroy [{:keys [path-params]}]
-  (let [image (db/get (:id path-params))]
+(defn destroy [request]
+  (let [image (db/get (-> request :path-params :id))]
     (if image
       (do
-        ;; TODO: cascade record deletes to kutis.storage attachments, somehow?
         (db/delete image)
-        ;; TODO: add a flash
-        (resp/redirect (format "/library/artefacts/images")))
+        (-> (resp/redirect (format "/library/artefacts/images"))
+            (assoc :flash "Image Deleted.")))
       (resp/response "Image artefact not found in database."))))

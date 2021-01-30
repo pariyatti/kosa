@@ -61,5 +61,7 @@
         attachment (kutis.record/get (:image-attachment-id image))]
     (assoc image :image-attachment attachment)))
 
+;; TODO: cascade record deletes to kutis.storage attachments, somehow?
+;;       ...I actually think this might be too much work to bother doing. -sd
 (defn delete [e]
   (kutis.record/delete e))

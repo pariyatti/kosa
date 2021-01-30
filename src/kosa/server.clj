@@ -1,6 +1,7 @@
 (ns kosa.server
   (:require [kosa.config :as config]
             [kosa.middleware.fake-http-verb :as fake-http-verb]
+            [kosa.middleware.flash]
             [kosa.routes :as routes]
             [mount.core :refer [defstate]]
             [reitit.ring :as rring]
