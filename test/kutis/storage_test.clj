@@ -31,7 +31,7 @@
               :metadata ""
               :service-name :disk
               :byte-size 13468
-              :checksum ""}
+              :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"}
              (dissoc attachment :key))))
 
     (testing "attachment's service filename identifies it as a kutis.storage file"
@@ -48,10 +48,13 @@
           local-file (sut/file attachment)]
       (is (= 13468 (.length local-file))))))
 
-(deftest byte-size
-  (testing "byte size is recorded"
-    (let [attachment (sut/params->attachment! (:leaf-file params1))]
-      (is (= 13468 (:byte-size attachment))))))
+(deftest unfurling
+  (let [attachment (sut/params->attachment! (:leaf-file params1))]
+    (testing "byte size is recorded"
+      (is (= 13468 (:byte-size attachment))))
+
+    (testing "md5 checksum is recorded"
+      (is (= "ca20bbfbea75755b1059ff2cd64bd6d3" (:checksum attachment))))))
 
 (deftest attach!
   (let [doc1 (c/params->doc params1 [:type :leaf-file])
@@ -70,7 +73,7 @@
                 :metadata ""
                 :service-name :disk
                 :byte-size 13468
-                :checksum ""}
+                :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"}
                (dissoc attachment :key :crux.db/id)))))))
 
 (deftest collapse

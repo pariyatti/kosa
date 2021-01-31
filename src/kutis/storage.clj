@@ -3,7 +3,8 @@
             [kutis.support :refer [path-join]]
             [kutis.record]
             [kutis.record.nested :as nested]
-            [kutis.search]))
+            [kutis.search])
+  (:import [com.twmacinta.util MD5]))
 
 (def attachment-fields #{:key :filename :content-type :metadata :service-name :byte-size :checksum})
 
@@ -43,7 +44,7 @@
                     :metadata     ""
                     :service-name (:service @service-config)
                     :byte-size    (.length tempfile)
-                    :checksum     "" ;; TODO: track checksum
+                    :checksum     (-> tempfile (MD5/getHash) (MD5/asHex))
                     }
         _ (save-file! tempfile attachment)]
     attachment))
