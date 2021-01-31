@@ -69,25 +69,17 @@
                 :checksum ""}
                (dissoc attachment :key :crux.db/id)))))))
 
-(deftest dehydrate
+(deftest collapse
   (let [doc1 (c/params->doc params1 [:type])
         doc2 (sut/attach! doc1 :leaf-attachment (:leaf-file params1))
-        doc3 (sut/dehydrate-all doc2)]
+        leaf-attachment-id (-> doc2 :leaf-attachment :crux.db/id)
+        doc3 (sut/collapse-all doc2)]
 
-    (testing "dehydrates a named attachment"
-      (let [dehydrated (sut/dehydrate-one {:zig-attachment
-                                           {:crux.db/id "123" :filename "this-zig.txt"}
-                                           :zag-attachment
-                                           {:crux.db/id "456" :filename "this-zag.txt"}}
-                                          :zig-attachment)
-            id (:zig-attachment-id dehydrated)]
-        (is (= "123" id))))
-
-    (testing "dehydrates all attachments"
+    (testing "collapses all attachments"
       (is (not (nil? (:leaf-attachment-id doc3))))
       (is (= {:type "leaf_artefact"
-              :searchables "bodhi with raindrops jpg bodhi-with-raindrops.jpg"}
-             (dissoc doc3 :leaf-attachment-id :published-at))))))
+              :leaf-attachment-id leaf-attachment-id}
+             (dissoc doc3 :published-at))))))
 
 ;; ***************************
 ;; ActiveStorage Blob Columns:

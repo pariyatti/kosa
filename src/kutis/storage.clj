@@ -2,6 +2,7 @@
   (:require [clojure.java.io :as io]
             [kutis.support :refer [path-join]]
             [kutis.record]
+            [kutis.record.nested :as nested]
             [kutis.search]))
 
 (def attachment-fields #{:key :filename :content-type :metadata :service-name :byte-size :checksum})
@@ -63,18 +64,8 @@
         attachment-in-db (put-attachment! attachment)]
     (assoc doc attr attachment-in-db)))
 
-(defn dehydrate-one [doc attr]
-  (let [attr-id (-> attr name (str "-id") keyword)
-        attachment (get doc attr)
-        attachment-id (:crux.db/id attachment)]
-    (-> doc
-        (kutis.search/tag-searchables (:filename attachment))
-        (dissoc attr)
-        (assoc attr-id attachment-id))))
-
-(defn dehydrate-all [doc]
-  (let [att-keys (vec (filter (fn [k] (clojure.string/includes? (name k) "attachment")) (keys doc)))]
-    (reduce dehydrate-one doc att-keys)))
+(defn collapse-all [doc]
+  (nested/collapse-all doc "attachment"))
 
 (defn file [attachment]
   (io/file (service-filename attachment)))
