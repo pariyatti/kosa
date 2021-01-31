@@ -25,14 +25,14 @@
 (deftest attachment
   (let [attachment (sut/params->attachment! (:leaf-file params1))]
     (testing "returns an 'attachment' document"
-      (is (= {;;:key 1643646293
+      (is (= {:key "a2e0d5505185beb708ac5edaf4fc4d20"
               :filename "bodhi-with-raindrops.jpg"
               :content-type "image/jpeg"
               :metadata ""
               :service-name :disk
               :byte-size 13468
               :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"}
-             (dissoc attachment :key))))
+             attachment)))
 
     (testing "attachment's service filename identifies it as a kutis.storage file"
       (is (re-matches #"resources/storage/kutis-.*-bodhi-with-raindrops\.jpg"
@@ -42,11 +42,10 @@
       (is (re-matches #"/uploads/kutis-.*-bodhi-with-raindrops\.jpg"
                       (sut/url attachment))))))
 
-(deftest file-size
-  (testing "attached file on disk has the same length as the uploaded file"
-    (let [attachment (sut/params->attachment! (:leaf-file params1))
-          local-file (sut/file attachment)]
-      (is (= 13468 (.length local-file))))))
+(deftest hash-key
+  (let [attachment (sut/params->attachment! (:leaf-file params1))]
+    (testing ":key is blake2b-encoded"
+      (is (= "a2e0d5505185beb708ac5edaf4fc4d20" (:key attachment))))))
 
 (deftest unfurling
   (let [attachment (sut/params->attachment! (:leaf-file params1))]
@@ -55,6 +54,12 @@
 
     (testing "md5 checksum is recorded"
       (is (= "ca20bbfbea75755b1059ff2cd64bd6d3" (:checksum attachment))))))
+
+(deftest file-size
+  (testing "attached file on disk has the same length as the uploaded file"
+    (let [attachment (sut/params->attachment! (:leaf-file params1))
+          local-file (sut/file attachment)]
+      (is (= 13468 (.length local-file))))))
 
 (deftest attach!
   (let [doc1 (c/params->doc params1 [:type :leaf-file])
@@ -67,14 +72,14 @@
     (testing "records the attachment in Crux"
       (let [attachment (kutis.record/get (-> doc2 :leaf-attachment :crux.db/id))]
         (is (not (nil? (:crux.db/id attachment))))
-        (is (= {;;:key 1643646293
+        (is (= {:key "a2e0d5505185beb708ac5edaf4fc4d20"
                 :filename "bodhi-with-raindrops.jpg"
                 :content-type "image/jpeg"
                 :metadata ""
                 :service-name :disk
                 :byte-size 13468
                 :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"}
-               (dissoc attachment :key :crux.db/id)))))))
+               (dissoc attachment :crux.db/id)))))))
 
 (deftest collapse
   (let [doc1 (c/params->doc params1 [:type])

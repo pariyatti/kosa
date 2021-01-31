@@ -28,24 +28,27 @@
     (.toByteArray xout)))
 
 (defn calculate-key [tempfile]
-  (let [bytes (file->bytes tempfile)
-        ;; TODO: replace with blake2b
-        h (hash bytes)]
-    h))
+  (-> (io/input-stream tempfile)
+      (hash/blake2b-128)
+      (bytes->hex)))
+
+(defn calculate-md5 [tempfile]
+  (-> (io/input-stream tempfile)
+      (hash/md5)
+      (bytes->hex)))
 
 (defn save-file! [tempfile attachment]
   (.renameTo tempfile (io/file (service-filename attachment))))
 
 (defn params->attachment! [file-params]
   (let [tempfile (:tempfile file-params)
-        k (calculate-key tempfile)
-        attachment {:key k
+        attachment {:key (calculate-key tempfile)
                     :filename (:filename file-params)
                     :content-type (:content-type file-params)
                     :metadata     ""
                     :service-name (:service @service-config)
                     :byte-size    (.length tempfile)
-                    :checksum     (-> tempfile (hash/md5) (bytes->hex))
+                    :checksum     (calculate-md5 tempfile)
                     }
         _ (save-file! tempfile attachment)]
     attachment))

@@ -15,8 +15,8 @@
                        :content-type "image/jpeg"
                        :metadata ""
                        :service-name :disk
-                       :byte-size 0
-                       :checksum ""})
+                       :byte-size 13468
+                       :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"})
 
 (def image-artefact {:type "image_artefact"})
 
