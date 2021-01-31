@@ -4,8 +4,7 @@
  :port 3000
 
  :storage {:service :disk
-           ;; TODO: try "resources/storage/" instead
-           :root    "resources/public/uploads/"
+           :root    "resources/storage/"
            :path    "/uploads"}
 
  :supported-languages ["en" "hi" "cn"]}

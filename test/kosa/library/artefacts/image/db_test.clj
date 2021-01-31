@@ -21,8 +21,7 @@
 (def image-artefact {:type "image_artefact"})
 
 (storage/set-service-config! {:service :disk
-                              ;; TODO: try "resources/storage/" instead
-                              :root    "resources/public/uploads/"
+                              :root    "resources/storage/"
                               :path    "/uploads"})
 
 (defn clean-ids

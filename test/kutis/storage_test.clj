@@ -19,8 +19,7 @@
               :submit "Save"})
 
 (sut/set-service-config! {:service :disk
-                          ;; TODO: try "resources/storage/" instead
-                          :root    "resources/public/uploads/"
+                          :root    "resources/storage/"
                           :path    "/uploads"})
 
 (deftest attachment
@@ -36,7 +35,7 @@
              (dissoc attachment :key))))
 
     (testing "attachment's service filename identifies it as a kutis.storage file"
-      (is (re-matches #"resources/public/uploads/kutis-.*-bodhi-with-raindrops\.jpg"
+      (is (re-matches #"resources/storage/kutis-.*-bodhi-with-raindrops\.jpg"
                       (sut/service-filename attachment))))
 
     (testing "url is prefixed with path from service config"

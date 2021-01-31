@@ -27,11 +27,10 @@
 
 (def default-handler
   (rr/routes
+   (rr/create-resource-handler {:path "/uploads" :root "storage"})
    (rr/create-resource-handler {:path "/css"     :root "public/css"})
    (rr/create-resource-handler {:path "/js"      :root "public/js"})
    (rr/create-resource-handler {:path "/images"  :root "public/images"})
-   ;; TODO: move `uploads` _out_ of `/public`? -sd
-   (rr/create-resource-handler {:path "/uploads" :root "public/uploads"})
    (rr/create-resource-handler {:path "/"        :root "public"})
    (rr/routes
     (rr/redirect-trailing-slash-handler {:method :strip})
