@@ -1,8 +1,11 @@
 (ns kutis.record.nested
   (:require [kutis.record :as record]))
 
-(defn attr-id [attr]
+(defn field->id [attr]
   (-> attr name (str "-id") keyword))
+
+(defn id->field [attr-id]
+  (-> attr-id name (clojure.string/replace #"-id" "") keyword))
 
 (defn do-to-all [f doc substr]
   (letfn [(match-substr [k]
@@ -14,15 +17,15 @@
   (let [inner (get doc attr)
         inner-id (:crux.db/id inner)]
     (-> doc
-        (assoc (attr-id attr) inner-id)
+        (assoc (field->id attr) inner-id)
         (dissoc attr))))
 
-(defn expand-one [doc attr]
-  (let [a-id (attr-id attr)
-        inner (record/get (get doc a-id))]
+(defn expand-one [doc attr-id]
+  (let [attr (id->field attr-id)
+        inner (record/get (get doc attr-id))]
     (-> doc
         (assoc attr inner)
-        (dissoc a-id))))
+        (dissoc attr-id))))
 
 (defn collapse-all
   "Finds all fields in `doc` containing `substr` and collapses them."

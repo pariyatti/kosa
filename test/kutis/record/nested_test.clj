@@ -1,5 +1,6 @@
 (ns kutis.record.nested-test
   (:require [clojure.test :refer :all]
+            [clojure.data]
             [kutis.fixtures.record-fixtures :as record-fixtures]
             [kutis.record.nested :as sut]
             [kutis.record :as record]))
@@ -42,7 +43,7 @@
             :name "List of plants"
             :tree-plant tree
             :shrub-plant-id "456"}
-           (sut/expand-one doc :tree-plant)))))
+           (sut/expand-one doc :tree-plant-id)))))
 
 (deftest expand-all
   (let [tree {:crux.db/id "123" :name "Birch"}
@@ -54,4 +55,8 @@
         _ (record/put tree [:name])
         _ (record/put shrub [:name])
         _ (record/put doc [:name :tree-plant-id :shrub-plant-id])]
-    (sut/expand-all doc :tree-plant)))
+    (is (= {:crux.db/id "999"
+            :name "List of plants"
+            :tree-plant tree
+            :shrub-plant shrub}
+           (sut/expand-all doc :plant)))))
