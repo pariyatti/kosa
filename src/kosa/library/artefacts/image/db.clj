@@ -11,8 +11,7 @@
               :searchables})
 
 (defn rehydrate [image]
-  (let [attachment (record/get (:image-attachment-id image))]
-    (assoc image :image-attachment attachment)))
+  (nested/expand-all image :attachment))
 
 (defn list []
   (let [list-query '{:find     [e modified-at]
@@ -43,9 +42,7 @@
         (record/put fields))))
 
 (defn get [id]
-  (let [image (record/get id)
-        attachment (record/get (:image-attachment-id image))]
-    (assoc image :image-attachment attachment)))
+  (rehydrate (record/get id)))
 
 ;; TODO: cascade record deletes to kutis.storage attachments, somehow?
 ;;       ...I actually think this might be too much work to bother doing. -sd
