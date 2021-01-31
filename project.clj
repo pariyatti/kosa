@@ -27,7 +27,7 @@
                  [metosin/jsonista "0.2.7"] ;; force version: reitit / muuntaja dep
                  [hiccup "2.0.0-alpha2"]
                  ;; data:
-                 [com.joyent.util/fast-md5 "2.7.1"] ;; com.twmacinta.util/MD5
+                 [buddy/buddy-core "1.9.0"]
                  [juxt/crux-core "21.01-1.14.0-beta"]
                  [juxt/crux-rocksdb "21.01-1.14.0-beta"]
                  [juxt/crux-lucene "21.01-1.14.0-alpha"]
