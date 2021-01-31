@@ -54,6 +54,9 @@ test: ##@Development Run tests with lein
 #lein run -- -mf config/config.test.edn # TODO: add migrations
 	lein test
 
+t: ##@Development Run a single test with lein
+	lein test :only ${TEST}
+
 run: ##@Development Start a development server
 	lein run -- -sf config/config.dev.edn
 
