@@ -31,7 +31,8 @@
               :metadata ""
               :service-name :disk
               :byte-size 13468
-              :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"}
+              :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"
+              :identified true}
              attachment)))
 
     (testing "attachment's service filename identifies it as a kutis.storage file"
@@ -78,7 +79,8 @@
                 :metadata ""
                 :service-name :disk
                 :byte-size 13468
-                :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"}
+                :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"
+                :identified true}
                (dissoc attachment :crux.db/id)))))))
 
 (deftest collapse

@@ -16,7 +16,8 @@
                        :metadata ""
                        :service-name :disk
                        :byte-size 13468
-                       :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"})
+                       :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"
+                       :identified true})
 
 (def image-artefact {:type "image_artefact"})
 

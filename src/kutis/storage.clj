@@ -7,7 +7,8 @@
             [buddy.core.hash :as hash]
             [buddy.core.codecs :refer :all]))
 
-(def attachment-fields #{:key :filename :content-type :metadata :service-name :byte-size :checksum})
+(def attachment-fields #{:key :filename :metadata :service-name
+                         :content-type :checksum :byte-size :identified})
 
 (def service-config (atom {}))
 
@@ -42,14 +43,15 @@
 
 (defn params->attachment! [file-params]
   (let [tempfile (:tempfile file-params)
-        attachment {:key (calculate-key tempfile)
-                    :filename (:filename file-params)
-                    :content-type (:content-type file-params)
+        attachment {:key          (calculate-key tempfile)
+                    :filename     (:filename file-params)
                     :metadata     ""
                     :service-name (:service @service-config)
-                    :byte-size    (.length tempfile)
+                    ;; unfurled:
                     :checksum     (calculate-md5 tempfile)
-                    }
+                    :content-type (:content-type file-params)
+                    :byte-size    (.length tempfile)
+                    :identified   true}
         _ (save-file! tempfile attachment)]
     attachment))
 
