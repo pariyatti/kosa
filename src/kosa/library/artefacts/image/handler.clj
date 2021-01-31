@@ -9,9 +9,9 @@
             [ring.util.response :as resp]))
 
 (defn ->image-doc [p]
-  (let [attachment (storage/params->attachment! (:file p))]
-    (-> (c/params->doc p [:crux.db/id])
-        (assoc :image-attachment attachment))))
+  (-> p
+      (c/params->doc [:crux.db/id])
+      (storage/attach! :image-attachment (:file p))))
 
 (defn index [request]
   (let [images (db/list)]

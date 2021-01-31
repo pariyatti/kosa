@@ -1,10 +1,15 @@
 (ns kosa.library.artefacts.image.db-test
   (:require [clojure.test :refer :all]
+            [clojure.data]
+            [clojure.java.io :as io]
             [kosa.library.artefacts.image.db :as sut]
-            [kutis.fixtures.record-fixtures :as fixtures]
-            [kutis.record]))
+            [kutis.fixtures.record-fixtures :as record-fixtures]
+            [kutis.fixtures.file-fixtures :as file-fixtures]
+            [kutis.record]
+            [kutis.storage :as storage]))
 
-(use-fixtures :once fixtures/load-states)
+(use-fixtures :once record-fixtures/load-states)
+(use-fixtures :each file-fixtures/copy-fixture-files)
 
 (def image-attachment {:filename "bodhi-with-raindrops.jpg"
                        :content-type "image/jpeg"
@@ -13,37 +18,50 @@
                        :byte-size 0
                        :checksum ""})
 
-(def image-artefact {:type "image_artefact"
-                     :image-attachment image-attachment})
+(def image-artefact {:type "image_artefact"})
+
+(storage/set-service-config! {:service :disk
+                              ;; TODO: try "resources/storage/" instead
+                              :root    "resources/public/uploads/"
+                              :path    "/uploads"})
 
 (defn clean-ids
   ([obj]
    (clean-ids obj nil))
   ([obj innards]
-   (let [top-clean (dissoc obj :crux.db/id :modified-at :image-attachment-id)]
+   (let [top-clean (dissoc obj :crux.db/id :key :modified-at :image-attachment-id)]
      (if innards
-       (update-in top-clean innards dissoc :crux.db/id)
+       (update-in top-clean innards dissoc :crux.db/id :key)
        top-clean))))
 
-(deftest db-operations
-  (testing "On insert, flattens Image Artefacts into (1) artefact and (2) attachment"
-    (let [img (sut/put image-artefact)
-          img-found (kutis.record/get (:crux.db/id img))
-          attachment-found (kutis.record/get (:image-attachment-id img-found))]
-      (is (= #{:crux.db/id :modified-at :type :image-attachment-id :searchables}
-             (-> img-found keys set)))
-      (is (= image-attachment (clean-ids attachment-found)))))
+(deftest attachment-acceptance-tests
+  (let [file {:filename "bodhi-with-raindrops.jpg",
+              :content-type "image/jpeg",
+              :tempfile (io/file "test/kutis/fixtures/files/bodhi-temp.jpg")
+              :size 13468}
+        image-artefact2 (storage/attach! image-artefact :image-attachment file)]
 
-  (testing "On lookup, rehydrates attachment back into the artefact"
-    (let [img (sut/put image-artefact)
-          img-found (sut/get (:crux.db/id img))
-          img-no-ids (clean-ids img-found [:image-attachment])]
-      (is (= (assoc image-artefact :searchables "bodhi with raindrops jpg bodhi-with-raindrops.jpg")
-             img-no-ids))))
+    (testing "On insert, flattens Image Artefacts into (1) artefact and (2) attachment"
+      (let [img (sut/put image-artefact2)
+            img-found (kutis.record/get (:crux.db/id img))
+            attachment-found (kutis.record/get (:image-attachment-id img-found))]
+        (is (= #{:crux.db/id :modified-at :type :image-attachment-id :searchables}
+               (-> img-found keys set)))
+        (is (= image-attachment (clean-ids attachment-found)))))
 
-  (testing "On list, rehydrates all attachments"
-    (let [img (sut/put image-artefact)
-          img2 (sut/put image-artefact)
-          imgs (vec (sut/list))]
-      (is (= image-attachment (-> imgs first :image-attachment clean-ids)))
-      (is (= image-attachment (-> imgs second :image-attachment clean-ids))))))
+    (testing "On lookup, rehydrates attachment back into the artefact"
+      (let [expected (assoc image-artefact
+                            :searchables "bodhi with raindrops jpg bodhi-with-raindrops.jpg"
+                            :image-attachment image-attachment)
+            img (sut/put image-artefact2)
+            img-found (sut/get (:crux.db/id img))
+            img-no-ids (clean-ids img-found [:image-attachment])]
+        (prn (clojure.data/diff expected img-no-ids))
+        (is (= expected img-no-ids))))
+
+    (testing "On list, rehydrates all attachments"
+      (let [img (sut/put image-artefact2)
+            img2 (sut/put image-artefact2)
+            imgs (vec (sut/list))]
+        (is (= image-attachment (-> imgs first :image-attachment clean-ids)))
+        (is (= image-attachment (-> imgs second :image-attachment clean-ids)))))))
