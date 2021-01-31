@@ -30,7 +30,7 @@
               :content-type "image/jpeg"
               :metadata ""
               :service-name :disk
-              :byte-size 0
+              :byte-size 13468
               :checksum ""}
              (dissoc attachment :key))))
 
@@ -48,6 +48,11 @@
           local-file (sut/file attachment)]
       (is (= 13468 (.length local-file))))))
 
+(deftest byte-size
+  (testing "byte size is recorded"
+    (let [attachment (sut/params->attachment! (:leaf-file params1))]
+      (is (= 13468 (:byte-size attachment))))))
+
 (deftest attach!
   (let [doc1 (c/params->doc params1 [:type :leaf-file])
         doc2 (sut/attach! doc1 :leaf-attachment (:leaf-file doc1))]
@@ -64,7 +69,7 @@
                 :content-type "image/jpeg"
                 :metadata ""
                 :service-name :disk
-                :byte-size 0
+                :byte-size 13468
                 :checksum ""}
                (dissoc attachment :key :crux.db/id)))))))
 

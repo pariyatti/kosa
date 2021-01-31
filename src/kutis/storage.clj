@@ -42,7 +42,7 @@
                     :content-type (:content-type file-params)
                     :metadata     ""
                     :service-name (:service @service-config)
-                    :byte-size    0 ;; TODO: track byte size
+                    :byte-size    (.length tempfile)
                     :checksum     "" ;; TODO: track checksum
                     }
         _ (save-file! tempfile attachment)]
