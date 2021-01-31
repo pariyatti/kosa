@@ -1,6 +1,7 @@
 (ns kosa.library.artefacts.image.db
   (:refer-clojure :exclude [list find get])
-  (:require [kutis.record]))
+  (:require [kutis.record]
+            [kutis.search]))
 
 (def fields #{:type
               :modified-at
@@ -8,6 +9,7 @@
               :image-attachment-id
               :searchables})
 
+;; TODO: remove this:
 (def attachment-fields #{:key :filename :content-type :metadata :service-name :byte-size :checksum})
 
 (defn rehydrate [image]
@@ -33,12 +35,6 @@
     (prn (format "searching for '%s'" matcher))
     (map rehydrate raw-images)))
 
-(defn tag-searchables [e string]
-  (let [searchables (clojure.string/split string #"-|_|~|=|\$|\{|\}|\.|\[|\]|\+")
-        searchables (conj searchables string)
-        searchable-string (clojure.string/join " " searchables)]
-    (assoc e :searchables searchable-string)))
-
 ;; TODO: extract "attachment-flattening" into its own ns.
 (defn put [e]
   (let [attachment-doc (:image-attachment e)
@@ -47,7 +43,7 @@
                         (:crux.db/id attachment)
                         (throw (ex-info "Attachment not saved.")))
         artefact (-> e
-                     (tag-searchables (:filename attachment))
+                     (kutis.search/tag-searchables (:filename attachment))
                      (dissoc :image-attachment)
                      (assoc :image-attachment-id attachment-id))
         ;; TODO: we need a low-level home for applying `:modified-at` to all entities

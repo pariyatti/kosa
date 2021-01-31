@@ -1,8 +1,15 @@
 (ns kutis.storage-test
   (:require [clojure.test :refer :all]
             [clojure.java.io :as io]
+            [kutis.fixtures.record-fixtures :as record-fixtures]
+            [kutis.fixtures.file-fixtures :as file-fixtures]
             [kutis.support]
+            [kutis.record]
+            [kutis.controller :as c]
             [kutis.storage :as sut]))
+
+(use-fixtures :once record-fixtures/load-states)
+(use-fixtures :each file-fixtures/copy-fixture-files)
 
 (def params1 {:type "leaf_artefact",
               :leaf-file {:filename "bodhi-with-raindrops.jpg",
@@ -11,19 +18,13 @@
                           :size 13468}
               :submit "Save"})
 
-(defn copy-fixture-files [t]
-  (io/copy "test/kutis/fixtures/files/bodhi.jpg" "test/kutis/fixtures/files/bodhi-temp.jpg")
-  (t))
-
-(use-fixtures :each copy-fixture-files)
-
 (sut/set-service-config! {:service :disk
                           ;; TODO: try "resources/storage/" instead
                           :root    "resources/public/uploads/"
                           :path    "/uploads"})
 
 (deftest attachment
-  (let [attachment (sut/attach! (:leaf-file params1))]
+  (let [attachment (sut/params->attachment! (:leaf-file params1))]
     (testing "returns an 'attachment' document"
       (is (= {;;:key 1643646293
               :filename "bodhi-with-raindrops.jpg"
@@ -44,10 +45,49 @@
 
 (deftest file-size
   (testing "attached file on disk has the same length as the uploaded file"
-    (let [attachment (sut/attach! (:leaf-file params1))
+    (let [attachment (sut/params->attachment! (:leaf-file params1))
           local-file (sut/file attachment)]
       (is (= 13468 (.length local-file))))))
 
+(deftest attach!
+  (let [doc1 (c/params->doc params1 [:type :leaf-file])
+        doc2 (sut/attach! doc1 :leaf-attachment (:leaf-file doc1))]
+
+    (testing "records the attachment to disk"
+      (let [local-file (sut/file (:leaf-attachment doc2))]
+        (is (= 13468 (.length local-file)))))
+
+    (testing "records the attachment in Crux"
+      (let [attachment (kutis.record/get (-> doc2 :leaf-attachment :crux.db/id))]
+        (is (not (nil? (:crux.db/id attachment))))
+        (is (= {;;:key 1643646293
+                :filename "bodhi-with-raindrops.jpg"
+                :content-type "image/jpeg"
+                :metadata ""
+                :service-name :disk
+                :byte-size 0
+                :checksum ""}
+               (dissoc attachment :key :crux.db/id)))))))
+
+(deftest dehydrate
+  (let [doc1 (c/params->doc params1 [:type])
+        doc2 (sut/attach! doc1 :leaf-attachment (:leaf-file params1))
+        doc3 (sut/dehydrate-all doc2)]
+
+    (testing "dehydrates a named attachment"
+      (let [dehydrated (sut/dehydrate-one {:zig-attachment
+                                           {:crux.db/id "123" :filename "this-zig.txt"}
+                                           :zag-attachment
+                                           {:crux.db/id "456" :filename "this-zag.txt"}}
+                                          :zig-attachment)
+            id (:zig-attachment-id dehydrated)]
+        (is (= "123" id))))
+
+    (testing "dehydrates all attachments"
+      (is (not (nil? (:leaf-attachment-id doc3))))
+      (is (= {:type "leaf_artefact"
+              :searchables "bodhi with raindrops jpg bodhi-with-raindrops.jpg"}
+             (dissoc doc3 :leaf-attachment-id :published-at))))))
 
 ;; ***************************
 ;; ActiveStorage Blob Columns:
