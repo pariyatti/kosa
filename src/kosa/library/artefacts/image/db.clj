@@ -10,9 +10,6 @@
               :image-attachment-id
               :searchables})
 
-;; TODO: remove this:
-(def attachment-fields #{:key :filename :content-type :metadata :service-name :byte-size :checksum})
-
 (defn rehydrate [image]
   (let [attachment (record/get (:image-attachment-id image))]
     (assoc image :image-attachment attachment)))
