@@ -17,7 +17,7 @@
         feed (:feed result)
         response (:response result)
         length (:length response)]
-    (when (> 0 length) ;; this will return 0 when 'If-None-Match'
+    (when (> 0 length) ;; this will return 0 when skpping: 'If-None-Match' or 'If-Modified-Since'
       (throw (ex-info (str "Failed to retrieve RSS feed: " url) response)))
     (when (< 0 length)
       (do
