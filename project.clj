@@ -17,6 +17,7 @@
                  [mount "0.1.16"]
                  [tolitius/mount-up "0.1.3"]
                  [aero "1.1.6"]
+                 [jarohen/chime "0.3.2"]
                  ;; web:
                  [ring/ring-core "1.8.2"]
                  [ring/ring-jetty-adapter "1.6.3"]
@@ -26,6 +27,7 @@
                  [metosin/muuntaja "0.6.7"]
                  [metosin/jsonista "0.2.7"] ;; force version: reitit / muuntaja dep
                  [hiccup "2.0.0-alpha2"]
+                 [remus "0.2.1"]
                  ;; data:
                  [buddy/buddy-core "1.9.0"]
                  [juxt/crux-core "21.01-1.14.0-beta"]
