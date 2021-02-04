@@ -1,5 +1,6 @@
 (ns kosa.mobile.today.pali-word.rss-job-test
   (:require [kosa.mobile.today.pali-word.rss-job :as sut]
+            [kosa.mobile.today.pali-word.db :as db]
             [clojure.test :refer :all]
             [kutis.fixtures.record-fixtures :as fixtures]))
 
@@ -41,3 +42,11 @@
             :original-url "https://ignored"}
            (sut/parse* {:entries '({:description {:value "kuti = hut"}
                                     :uri "https://ignored"})})))))
+
+(deftest database
+  (testing "does not insert the same entity twice"
+    (let [feed {:entries '({:description {:value "anta — end, goal, limit"}
+                            :uri "https://ignored"})}]
+      (sut/parse feed)
+      (sut/parse feed)
+      (is (= 1 (count (db/list)))))))

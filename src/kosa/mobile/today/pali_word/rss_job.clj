@@ -48,11 +48,12 @@
     [pali english]))
 
 (defn db-insert [pali-word]
-  ;; TODO: check for 'pali' and don't repeat inserts
-  (db/put (merge {:card-type "pali_word"
-                  :bookmarkable true
-                  :shareable true}
-                 pali-word) ))
+  (let [existing (db/q (:original-pali pali-word))]
+    (if (= 0 (count existing))
+      (db/put (merge {:card-type "pali_word"
+                      :bookmarkable true
+                      :shareable true}
+                     pali-word)))))
 
 (defn parse* [feed]
   (when-let* [entry (-> feed :entries first)

@@ -6,7 +6,8 @@
               :card-type
               :modified-at
               :published-at
-              :original-url ;; from *.pariyatti.org
+              :original-pali ;; from *.pariyatti.org - a long string
+              :original-url  ;; from *.pariyatti.org
               :bookmarkable
               :shareable
               :pali
@@ -20,6 +21,14 @@
                                 [e :modified-at modified-at]]
                      :order-by [[modified-at :desc]]}]
     (kutis.record/query list-query)))
+
+(defn q [param]
+  (let [find-query '{:find     [e modified-at]
+                     :in       [original-pali]
+                     :where    [[e :original-pali original-pali]
+                                [e :modified-at modified-at]]
+                     :order-by [[modified-at :desc]]}]
+    (kutis.record/query find-query param)))
 
 (defn put [e]
   ;; TODO: we need a low-level home for applying `:modified-at` to all entities
