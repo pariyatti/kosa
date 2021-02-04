@@ -24,4 +24,12 @@
                                          :uri "https://ignored"})})))
     (is (thrown? clojure.lang.ExceptionInfo
                  (sut/parse {:entries '({:description {:value "some <br /> html"}
-                                         :uri-not-found "https://ignored"})})))))
+                                         :uri-not-found "https://ignored"})}))))
+
+  (testing "can shred pali/english, separated by hyphen"
+    (is (= {:pali "kuti"
+            :translations [["en" "hut"]]
+            :original-pali "kuti — hut"
+            :original-url "https://ignored"}
+           (sut/parse* {:entries '({:description {:value "kuti — hut"}
+                                    :uri "https://ignored"})})))))

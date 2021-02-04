@@ -41,23 +41,33 @@
       (clojure.string/replace #"<br />" "")
       (clojure.string/trim)))
 
-(defn db-insert [pali original-url]
+(defn split-pali-english [pa]
+  (let [[pali english] (clojure.string/split "kuti — hut" #"—")
+        pali (clojure.string/trim (or pali ""))
+        english (clojure.string/trim (or english ""))]
+    [pali english]))
+
+(defn db-insert [pali-word]
   ;; TODO: check for 'pali' and don't repeat inserts
-  (db/put {:card-type "pali_word"
-           :pali pali
-           :original-url original-url
-           :bookmarkable true
-           :shareable true}))
+  (db/put (merge {:card-type "pali_word"
+                  :bookmarkable true
+                  :shareable true}
+                 pali-word) ))
 
 (defn parse* [feed]
   (when-let* [entry (-> feed :entries first)
               pali-html (-> entry :description :value)
-              pali (trim pali-html)
+              pali-english (trim pali-html)
+              [pali english] (split-pali-english pali-english)
               original-url (:uri entry)]
-    (db-insert pali original-url)))
+    {:pali pali
+     :translations [["en" english]]
+     :original-pali pali-english
+     :original-url original-url}))
 
 (defn parse [feed]
-  (if-not (parse* feed)
+  (if-let [pali-word (parse* feed)]
+    (db-insert pali-word)
     (throw (ex-info "Failed to parse RSS feed." feed))))
 
 (defn run-job! []
