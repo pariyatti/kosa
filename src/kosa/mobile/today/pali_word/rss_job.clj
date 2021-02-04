@@ -44,18 +44,23 @@
            :bookmarkable true
            :shareable true}))
 
+(defn parse* [feed]
+  (when-let* [entry (-> feed :entries first)
+              pali-html (-> entry :description :value)
+              pali (trim pali-html)
+              original-url (:uri entry)]
+    (db-insert pali original-url)))
+
+(defn parse [feed]
+  (if-not (parse* feed)
+    (throw (ex-info "Failed to parse RSS feed." feed))))
+
 (defn run-job! []
   ;; Ignore the entire job if a feed isn't returned. `(poll)` throws an exception
   ;; if the feed fails and returns nil if there are no modifications since the
   ;; last time we checked the feed.
   (when-let [feed (poll)]
-    (when-let* [entry (-> feed :entries first)
-                pali-html (-> entry :description :value)
-                pali (trim pali-html)
-                original-url (:uri entry)]
-      (if (and pali original-url)
-        (db-insert pali original-url)
-        (throw (ex-info "Failed to parse RSS feed." feed))))))
+    (parse feed)))
 
 ;; testing if-none-match (2021-02-02):
 ;; curl -I "https://download.pariyatti.org/pwad/pali_words.xml" --header 'If-None-Match: "7d6-5ba5cb78530ae-gzip"'
