@@ -1,9 +1,12 @@
 {:db-spec {:data-dir "data/test/"
            :crux-http-port 9876}
+
  :port 3001
 
  :storage {:service :disk
            :root    "tmp/storage"
            :path    "/uploads"}
 
- :supported-languages ["hi" "en" "cn"]}
+ :supported-languages ["hi" "en" "cn"]
+
+ :rss-feeds {:pali-word "https://download.pariyatti.org/pwad/pali_words.xml"}}

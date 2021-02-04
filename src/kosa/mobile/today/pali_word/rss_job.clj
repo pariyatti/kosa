@@ -1,21 +1,25 @@
 (ns kosa.mobile.today.pali-word.rss-job
   (:require [remus :refer [parse-url]]
             [kutis.support :refer [when-let*]]
+            [kosa.config :as config]
             [kosa.mobile.today.pali-word.db :as db]
             [clojure.string]))
 
 (def etag (atom ""))
 (def last-modified (atom ""))
 
-(defn response->etag [response]
+(defn response->etag
+  "This is not actually the correct way to do this, but it is required
+  because of this but: https://bz.apache.org/bugzilla/show_bug.cgi?id=45023
+  Also, yikes: https://bz.apache.org/bugzilla/show_bug.cgi?id=45023#c26"
+  [response]
   (clojure.string/replace (-> response :headers :etag) #"-gzip" ""))
 
 (defn response->modified [response]
   (-> response :headers :last-modified))
 
 (defn poll []
-  ;; TODO: grab from config
-  (let [url "https://download.pariyatti.org/pwad/pali_words.xml"
+  (let [url (-> config/config :rss-feeds :pali-word)
         result (parse-url url
                           {:headers {"If-None-Match" @etag
                                      "If-Modified-Since" @last-modified}})

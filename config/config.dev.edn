@@ -7,4 +7,6 @@
            :root    "resources/storage/"
            :path    "/uploads"}
 
- :supported-languages ["en" "hi" "cn"]}
+ :supported-languages ["en" "hi" "cn"]
+
+ :rss-feeds {:pali-word "https://download.pariyatti.org/pwad/pali_words.xml"}}
