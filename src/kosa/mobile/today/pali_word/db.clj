@@ -22,12 +22,12 @@
                      :order-by [[modified-at :desc]]}]
     (kutis.record/query list-query)))
 
-(defn q [param]
-  (let [find-query '{:find     [e modified-at]
-                     :in       [original-pali]
-                     :where    [[e :original-pali original-pali]
-                                [e :modified-at modified-at]]
-                     :order-by [[modified-at :desc]]}]
+(defn q [attr param]
+  (let [find-query {:find     '[e modified-at]
+                    :in       '[original-pali]
+                    :where    [['e attr 'original-pali]
+                               '[e :modified-at modified-at]]
+                    :order-by '[[modified-at :desc]]}]
     (kutis.record/query find-query param)))
 
 (defn put [e]

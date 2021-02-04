@@ -48,7 +48,7 @@
     [pali english]))
 
 (defn db-insert [pali-word]
-  (let [existing (db/q (:original-pali pali-word))]
+  (let [existing (db/q :original-pali (:original-pali pali-word))]
     (if (= 0 (count existing))
       (db/put (merge {:card-type "pali_word"
                       :bookmarkable true
