@@ -38,6 +38,7 @@
       (clojure.string/trim)))
 
 (defn db-insert [pali original-url]
+  ;; TODO: check for 'pali' and don't repeat inserts
   (db/put {:card-type "pali_word"
            :pali pali
            :original-url original-url

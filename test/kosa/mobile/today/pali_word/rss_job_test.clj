@@ -5,6 +5,13 @@
 
 (use-fixtures :each fixtures/load-states)
 
+(deftest ^:integration polling
+  (testing "only gets feed updates once"
+    (let [first-feed (sut/poll)
+          second-feed (sut/poll)]
+      (is (not (nil? first-feed)))
+      (is (nil? second-feed)))))
+
 (deftest parsing
   (testing "barfs when feed nodes can't be parsed"
     (is (thrown? java.lang.ClassCastException

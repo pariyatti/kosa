@@ -11,7 +11,7 @@ HELP_FUNC = \
             push(@{$$help{$$2}}, [$$1, $$3]); \
         } \
     }; \
-    print "usage: make [target] env=<sandbox>\n\n"; \
+    print "usage: make [target]\n\n"; \
     for ( sort keys %help ) { \
         print "$$_:\n"; \
         printf("  %-20s %s\n", $$_->[0], $$_->[1]) for @{$$help{$$_}}; \
@@ -54,7 +54,10 @@ test: ##@Development Run tests with lein
 #lein run -- -mf config/config.test.edn # TODO: add migrations
 	lein test
 
-t: ##@Development Run a single test with lein
+test-integration: ##@Development Run integration tests with lein
+	lein test :integration
+
+t: ##@Development Run 1 test: `make t TEST=your.test.ns-test`
 	lein test :only ${TEST}
 
 run: ##@Development Start a development server
