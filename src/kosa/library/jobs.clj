@@ -1,8 +1,9 @@
 (ns kosa.library.jobs
-  (:require [chime.core :as chime]
-            [mount.core :as mount :refer [defstate]]
-            [kosa.mobile.today.pali-word.rss-parser :as pali-word])
-  (:import [java.time Instant Duration]))
+  (:require [clojure.tools.logging :as log]
+            [chime.core :as chime]
+            [kosa.mobile.today.pali-word.rss-job :as pali-word]
+            [mount.core :as mount :refer [defstate]])
+  (:import [java.time Duration Instant]))
 
 (def rss-job)
 
@@ -12,7 +13,12 @@
 
                   (fn [time]
                     (println "Chiming at" time)
-                    (println (pali-word/poll)))))
+                    (println (pali-word/run-job!)))
+
+                  {:error-handler (fn [e]
+                                    (log/error e "RSS job failed.")
+                                    ;; TODO: alert support (steven, brihas)
+                                    :continue-schedule)}))
 
 (defn stop-rss-job! []
   (.close rss-job))
@@ -20,3 +26,7 @@
 (defstate rss-job
   :start (start-rss-job!)
   :stop (stop-rss-job!))
+
+;; (mount/only #{#'rss-job})
+;; (mount/start #{#'rss-job})
+;; (mount/stop #{#'rss-job})

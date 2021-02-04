@@ -8,6 +8,7 @@
                  [org.clojure/spec.alpha "0.2.187"]
                  [org.clojure/tools.cli "1.0.194"]
                  [org.clojure/tools.logging "1.1.0"]
+                 [org.clojure/algo.monads "0.1.6"]
                  ;; logging:
                  [fancy "0.2.3"]
                  [ch.qos.logback/logback-classic "1.2.3"]

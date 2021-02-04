@@ -1,6 +1,7 @@
 (ns kutis.support
   (:require [clojure.java.io :as io]
-            [clojure.string :as string]))
+            [clojure.string :as string]
+            [clojure.algo.monads :refer [domonad maybe-m]]))
 
 (defn kutis-root
   "Returns the root directory for the running service"
@@ -17,3 +18,7 @@
 
 (defmethod @#'io/do-copy [String String] [in out opts]
   (apply io/copy (io/file in) (io/file out) opts))
+
+(defmacro when-let* [binding & body]
+  (let [body (cons 'do body)]
+   `(domonad maybe-m ~binding ~body)))

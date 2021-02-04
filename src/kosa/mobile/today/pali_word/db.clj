@@ -2,8 +2,15 @@
   (:refer-clojure :exclude [list get])
   (:require [kutis.record]))
 
-(def fields #{:card-type :modified-at :published-at :bookmarkable :shareable
-              :pali :translations
+(def fields #{:type
+              :card-type
+              :modified-at
+              :published-at
+              :original-url ;; from *.pariyatti.org
+              :bookmarkable
+              :shareable
+              :pali
+              :translations
               ;; TODO: remove or make these work-
               :header :id :audio})
 
