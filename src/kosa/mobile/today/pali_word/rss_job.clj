@@ -41,8 +41,8 @@
       (clojure.string/replace #"<br />" "")
       (clojure.string/trim)))
 
-(defn split-pali-english [pa]
-  (let [[pali english] (clojure.string/split "kuti — hut" #"—")
+(defn split-pali-english [hyphenated]
+  (let [[pali english] (clojure.string/split hyphenated #"—")
         pali (clojure.string/trim (or pali ""))
         english (clojure.string/trim (or english ""))]
     [pali english]))

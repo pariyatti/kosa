@@ -32,4 +32,12 @@
             :original-pali "kuti — hut"
             :original-url "https://ignored"}
            (sut/parse* {:entries '({:description {:value "kuti — hut"}
+                                    :uri "https://ignored"})}))))
+
+  (testing "tolerates RSS entries which are missing the hyphen"
+    (is (= {:pali "kuti = hut"
+            :translations [["en" ""]]
+            :original-pali "kuti = hut"
+            :original-url "https://ignored"}
+           (sut/parse* {:entries '({:description {:value "kuti = hut"}
                                     :uri "https://ignored"})})))))
