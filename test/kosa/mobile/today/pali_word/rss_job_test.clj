@@ -7,19 +7,19 @@
 (use-fixtures :each fixtures/load-states)
 
 (deftest ^:integration polling
-  (testing "only gets feed updates once"
+  (testing "only gets feed updates once with If-None-Match and If-Modified-Since HTTP headers"
     (let [first-feed (sut/poll)
           second-feed (sut/poll)]
       (is (not (nil? first-feed)))
       (is (nil? second-feed)))))
 
 (deftest parsing
-  (testing "barfs when feed nodes can't be parsed"
+  (testing "alerts when feed nodes can't be parsed"
     (is (thrown? java.lang.ClassCastException
                  (sut/parse {:entries '({:description {:value {:a-string "is expected here"}}
                                          :uri "https://ignored"})}))))
 
-  (testing "barfs when feed nodes are mis-ordered"
+  (testing "alerts when feed nodes are mis-ordered"
     (is (thrown? clojure.lang.ExceptionInfo
                  (sut/parse {:entries '({:description {:value-not-found "<html>wrong node</html>"}
                                          :uri "https://ignored"})})))
@@ -27,7 +27,7 @@
                  (sut/parse {:entries '({:description {:value "some <br /> html"}
                                          :uri-not-found "https://ignored"})}))))
 
-  (testing "can shred pali/english, separated by hyphen"
+  (testing "can shred pali/english, separated by em-dash"
     (is (= {:pali "kuti"
             :translations [["en" "hut"]]
             :original-pali "kuti — hut"
@@ -35,7 +35,7 @@
            (sut/parse* {:entries '({:description {:value "kuti — hut"}
                                     :uri "https://ignored"})}))))
 
-  (testing "tolerates RSS entries which are missing the hyphen"
+  (testing "tolerates RSS entries which are missing the em-dash"
     (is (= {:pali "kuti = hut"
             :translations [["en" ""]]
             :original-pali "kuti = hut"
