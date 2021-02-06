@@ -19,6 +19,8 @@
                  [tolitius/mount-up "0.1.3"]
                  [aero "1.1.6"]
                  [jarohen/chime "0.3.2"]
+                 ;; networking:
+                 [com.draines/postal "2.0.4"]
                  ;; web:
                  [ring/ring-core "1.8.2"]
                  [ring/ring-jetty-adapter "1.6.3"]

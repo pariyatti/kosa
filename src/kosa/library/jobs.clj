@@ -1,6 +1,7 @@
 (ns kosa.library.jobs
   (:require [clojure.tools.logging :as log]
             [chime.core :as chime]
+            [kutis.mailer :as mailer]
             [kosa.mobile.today.pali-word.rss-job :as pali-word]
             [mount.core :as mount :refer [defstate]])
   (:import [java.time Duration Instant]))
@@ -17,7 +18,7 @@
 
                   {:error-handler (fn [e]
                                     (log/error e "RSS job failed.")
-                                    ;; TODO: alert support (steven, brihas)
+                                    (mailer/send-alert (format "RSS job failed:\n\n%s" e))
                                     :continue-schedule)}))
 
 (defn stop-rss-job! []
