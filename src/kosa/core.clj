@@ -37,6 +37,7 @@
   (-> (mount/with-args opts)
       (mount/only #{#'config/config
                     #'db/crux-node
+                    ;; TODO: add RSS jobs
                     #'server/server})
       mount/start)
   (log/info "Kosa started."))

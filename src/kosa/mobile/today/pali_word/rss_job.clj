@@ -1,6 +1,8 @@
 (ns kosa.mobile.today.pali-word.rss-job
   (:require [remus :refer [parse-url]]
+            [mount.core :as mount :refer [defstate]]
             [kutis.support :refer [when-let*]]
+            [kosa.library.jobs :as jobs]
             [kosa.config :as config]
             [kosa.mobile.today.pali-word.db :as db]
             [clojure.string]))
@@ -71,7 +73,7 @@
     (db-insert pali-word)
     (throw (ex-info "Failed to parse RSS feed." feed))))
 
-(defn run-job! []
+(defn run-job! [_]
   ;; Ignore the entire job if a feed isn't returned. `(poll)` throws an exception
   ;; if the feed fails and returns nil if there are no modifications since the
   ;; last time we checked the feed.
@@ -80,3 +82,14 @@
 
 ;; testing if-none-match (2021-02-02):
 ;; curl -I "https://download.pariyatti.org/pwad/pali_words.xml" --header 'If-None-Match: "7d6-5ba5cb78530ae-gzip"'
+
+(defn start! []
+  (jobs/add-job :pali-word-rss-job run-job!))
+
+(defn stop! []
+  (jobs/remove-job :pali-word-rss-job))
+
+;; TODO: consider moving this into config
+(defstate pali-word-rss-job
+  :start (start!)
+  :stop (stop!))

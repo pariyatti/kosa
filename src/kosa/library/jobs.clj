@@ -2,19 +2,23 @@
   (:require [clojure.tools.logging :as log]
             [chime.core :as chime]
             [kutis.mailer :as mailer]
-            [kosa.mobile.today.pali-word.rss-job :as pali-word]
             [mount.core :as mount :refer [defstate]])
   (:import [java.time Duration Instant]))
 
+(def jobs (atom {}))
 (def rss-job)
+
+(defn run-jobs [time]
+  (log/info (str "Chiming at " time))
+  (doseq [[job-name job-fn] @jobs]
+    (log/info (str "Running job: " job-name))
+    (job-fn time)))
 
 (defn start-rss-job! []
   (chime/chime-at (-> (chime/periodic-seq (Instant/now) (Duration/ofSeconds 5))
                       rest)
 
-                  (fn [time]
-                    (println "Chiming at" time)
-                    (println (pali-word/run-job!)))
+                  run-jobs
 
                   {:error-handler (fn [e]
                                     (log/error e "RSS job failed.")
@@ -31,3 +35,9 @@
 ;; (mount/only #{#'rss-job})
 ;; (mount/start #{#'rss-job})
 ;; (mount/stop #{#'rss-job})
+
+(defn add-job [job-name job]
+  (swap! jobs assoc job-name job))
+
+(defn remove-job [job-name]
+  (swap! jobs dissoc job-name))
