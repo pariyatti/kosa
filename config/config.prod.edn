@@ -6,10 +6,8 @@
  :mailer {:host "localhost"
           ;; revisit: https://serverfault.com/questions/999521/cannot-get-sendmail-to-work-on-ubuntu-18-04-3-lts-x64-on-digitalocean-droplet
           :ssl true
-          :user #ref [:secrets :mailer :user]
-          :pass #ref [:secrets :mailer :pass]
-          :default-options {:from "no-reply@pariyatti.app"
-                            :to #ref [:secrets :mailer :default-options :to]
+          :default-options {:from    "no-reply@pariyatti.app"
+                            :to      "webmaster@pariyatti.org"
                             :subject "Pariyatti Kosa: Alert"}}
 
  :port 3333
