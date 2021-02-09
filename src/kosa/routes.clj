@@ -46,9 +46,9 @@
          ["ping" {:name    ::ping
                   :handler pong}]
          ["api/v1/today.json" {:name    :kosa.routes.api/today
-                               :handler pali-word-handler/list}]
-         ["api/v1/search" {:name    :kosa.routes.api/search
-                           :handler search-handler/search}]
+                               :handler api-handler/today}]
+         ["api/v1/search.json" {:name    :kosa.routes.api/search
+                                :handler api-handler/search}]
 
          ["library" [["" {:name    ::library-index
                           :handler kosa.library.handler/index}]
@@ -56,7 +56,8 @@
 
          ["mobile" [["" {:name    ::mobile-index
                          :handler kosa.mobile.handler/index}]
-                    ["/today/" (resources :pali-words :stacked-inspirations)]]]]]
+                    ["/today/" (resources :pali-words
+                                          :stacked-inspirations)]]]]]
 
    ;; CRUD resources conflict between /new and /:id
    ;; consider {:conflicting true} instead

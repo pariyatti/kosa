@@ -18,6 +18,7 @@
                  [mount "0.1.16"]
                  [tolitius/mount-up "0.1.3"]
                  [aero "1.1.6"]
+                 [tick "0.4.30-alpha"]
                  [jarohen/chime "0.3.2"]
                  ;; networking:
                  [com.draines/postal "2.0.4"]
