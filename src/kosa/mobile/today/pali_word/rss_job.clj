@@ -2,6 +2,7 @@
   (:require [remus :refer [parse-url]]
             [mount.core :as mount :refer [defstate]]
             [kutis.support :refer [when-let*]]
+            [kutis.support.time :as time]
             [kosa.library.jobs :as jobs]
             [kosa.config :as config]
             [kosa.mobile.today.pali-word.db :as db]
@@ -59,6 +60,7 @@
 
 (defn parse* [feed]
   (when-let* [entry (-> feed :entries first)
+              published-date (-> entry :published-date time/fmt)
               pali-html (-> entry :description :value)
               pali-english (trim pali-html)
               [pali english] (split-pali-english pali-english)
@@ -66,7 +68,8 @@
     {:pali pali
      :translations [["en" english]]
      :original-pali pali-english
-     :original-url original-url}))
+     :original-url original-url
+     :published-at published-date}))
 
 (defn parse [feed]
   (if-let [pali-word (parse* feed)]

@@ -17,36 +17,57 @@
   (testing "alerts when feed nodes can't be parsed"
     (is (thrown? java.lang.ClassCastException
                  (sut/parse {:entries '({:description {:value {:a-string "is expected here"}}
-                                         :uri "https://ignored"})}))))
+                                         :uri "https://ignored"
+                                         :published-date #inst "2021-02-09T16:11:01.000-00:00"})}))))
 
   (testing "alerts when feed nodes are mis-ordered"
     (is (thrown? clojure.lang.ExceptionInfo
                  (sut/parse {:entries '({:description {:value-not-found "<html>wrong node</html>"}
-                                         :uri "https://ignored"})})))
+                                         :uri "https://ignored"
+                                         :published-date #inst "2021-02-09T16:11:01.000-00:00"})})))
     (is (thrown? clojure.lang.ExceptionInfo
                  (sut/parse {:entries '({:description {:value "some <br /> html"}
-                                         :uri-not-found "https://ignored"})}))))
+                                         :uri-not-found "https://ignored"
+                                         :published-date #inst "2021-02-09T16:11:01.000-00:00"})}))))
 
   (testing "can shred pali/english, separated by em-dash"
     (is (= {:pali "kuti"
             :translations [["en" "hut"]]
             :original-pali "kuti — hut"
-            :original-url "https://ignored"}
+            :original-url "https://ignored"
+            :published-at "2021-02-09T10:11:01.000Z"}
            (sut/parse* {:entries '({:description {:value "kuti — hut"}
-                                    :uri "https://ignored"})}))))
+                                    :uri "https://ignored"
+                                    :published-date #inst "2021-02-09T16:11:01.000-00:00"})}))))
 
   (testing "tolerates RSS entries which are missing the em-dash"
     (is (= {:pali "kuti = hut"
             :translations [["en" ""]]
             :original-pali "kuti = hut"
-            :original-url "https://ignored"}
+            :original-url "https://ignored"
+            :published-at "2021-02-09T10:11:01.000Z"}
            (sut/parse* {:entries '({:description {:value "kuti = hut"}
-                                    :uri "https://ignored"})})))))
+                                    :uri "https://ignored"
+                                    :published-date #inst "2021-02-09T16:11:01.000-00:00"})}))))
+
+  ;; TODO: fix this test so it is not dependent on local timezone
+  (testing "parses the published UTC date into a local date
+            NOTE: This test is currently tz-fragile and will break when run
+                  anywhere that isn't CST. Obviously that's wrong."
+    (is (= {:pali "kuti = hut"
+            :translations [["en" ""]]
+            :original-pali "kuti = hut"
+            :original-url "https://ignored"
+            :published-at "2021-02-09T10:11:01.000Z"}
+           (sut/parse* {:entries '({:description {:value "kuti = hut"}
+                                    :uri "https://ignored"
+                                    :published-date #inst "2021-02-09T16:11:01.000-00:00"})})))))
 
 (deftest database
   (testing "does not insert the same entity twice"
     (let [feed {:entries '({:description {:value "anta — end, goal, limit"}
-                            :uri "https://ignored"})}]
+                            :uri "https://ignored"
+                            :published-date #inst "2021-02-09T16:11:01.000-00:00"})}]
       (sut/parse feed)
       (sut/parse feed)
       (is (= 1 (count (db/list)))))))
