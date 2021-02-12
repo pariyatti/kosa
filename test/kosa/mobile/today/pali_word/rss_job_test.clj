@@ -25,6 +25,7 @@
                  (sut/parse {:entries '({:description {:value-not-found "<html>wrong node</html>"}
                                          :uri "https://ignored"
                                          :published-date #inst "2021-02-09T16:11:01.000-00:00"})})))
+
     (is (thrown? clojure.lang.ExceptionInfo
                  (sut/parse {:entries '({:description {:value "some <br /> html"}
                                          :uri-not-found "https://ignored"
@@ -35,7 +36,7 @@
             :translations [["en" "hut"]]
             :original-pali "kuti — hut"
             :original-url "https://ignored"
-            :published-at "2021-02-09T10:11:01.000Z"}
+            :published-at "2021-02-09T16:11:01.000Z"}
            (sut/parse* {:entries '({:description {:value "kuti — hut"}
                                     :uri "https://ignored"
                                     :published-date #inst "2021-02-09T16:11:01.000-00:00"})}))))
@@ -45,20 +46,17 @@
             :translations [["en" ""]]
             :original-pali "kuti = hut"
             :original-url "https://ignored"
-            :published-at "2021-02-09T10:11:01.000Z"}
+            :published-at "2021-02-09T16:11:01.000Z"}
            (sut/parse* {:entries '({:description {:value "kuti = hut"}
                                     :uri "https://ignored"
                                     :published-date #inst "2021-02-09T16:11:01.000-00:00"})}))))
 
-  ;; TODO: fix this test so it is not dependent on local timezone
-  (testing "parses the published UTC date into a local date
-            NOTE: This test is currently tz-fragile and will break when run
-                  anywhere that isn't CST. Obviously that's wrong."
+  (testing "parses the published UTC date into a local date"
     (is (= {:pali "kuti = hut"
             :translations [["en" ""]]
             :original-pali "kuti = hut"
             :original-url "https://ignored"
-            :published-at "2021-02-09T10:11:01.000Z"}
+            :published-at "2021-02-09T16:11:01.000Z"}
            (sut/parse* {:entries '({:description {:value "kuti = hut"}
                                     :uri "https://ignored"
                                     :published-date #inst "2021-02-09T16:11:01.000-00:00"})})))))

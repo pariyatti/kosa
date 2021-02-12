@@ -1,37 +1,23 @@
 (ns kutis.support.time
   (:refer-clojure :exclude [format])
-  (:require [tick.alpha.api :as t]))
+  (:require [tick.alpha.api :as t]
+            [clojure.string :as clojure.string]))
 
-(defn format2 [time]
-  ;; TODO: announcing when we are in UTC when we are not is obviously wrong
-  ;;       ...we should set the timezone on times to UTC
-  ;;
-  ;;       As it turns out, this formatter is not necessary at all. This is
-  ;;       just the default `instant` formatter (for tick) which we can reuse.
-  ;;
-  ;;       Example Roundtrip:
-  ;;       (def stored (str (t/instant (java.util.Date.))))
-  ;;       (str (t/instant (t/parse stored)))
-  (t/format (tick.format/formatter "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") time))
+(defn instant
+  "This fn is a little silly, but using `kutis.support.time`
+   exclusively ensures we don't accidentally consume the more
+   powerful features from `tick`."
+  [time]
+  (t/instant time))
 
-(defprotocol FormatDate
-  (fmt [date]))
+(defn parse [s]
+  (t/parse s))
 
-(extend nil
-  FormatDate
-  {:fmt (fn [_] nil)})
-
-(extend java.time.ZonedDateTime
-  FormatDate
-  {:fmt (fn [zoned]
-          (format2 zoned))})
-
-(extend java.util.Date
-  FormatDate
-  {:fmt (fn [inst]
-          (format2 (t/zoned-date-time inst)))})
-
-(extend java.lang.String
-  FormatDate
-  {:fmt (fn [s]
-          (format2 (t/zoned-date-time (t/parse s))))})
+(defn string
+  "Force the `yyyy-MM-dd'T'HH:mm:ss.SSS'Z' format."
+  [time]
+  (let [inst (t/instant time)
+        s (str inst)]
+    (if (= 24 (count s))
+      s
+      (clojure.string/replace s #"Z$" ".000Z"))))

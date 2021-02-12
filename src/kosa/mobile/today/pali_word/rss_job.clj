@@ -60,7 +60,7 @@
 
 (defn parse* [feed]
   (when-let* [entry (-> feed :entries first)
-              published-date (-> entry :published-date time/fmt)
+              published-date (-> entry :published-date time/string)
               pali-html (-> entry :description :value)
               pali-english (trim pali-html)
               [pali english] (split-pali-english pali-english)

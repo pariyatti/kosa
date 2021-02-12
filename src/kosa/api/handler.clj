@@ -12,7 +12,7 @@
 
 (defn pali-word->json [word]
   ;; TODO: how much of the Crux entity do we just want to hand over verbatim?
-  (let [date (time/fmt (:published-at word))]
+  (let [date (time/string (:published-at word))]
     {:type "pali_word"
      :id (:crux.db/id word)
      :published_at date
