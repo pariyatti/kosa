@@ -1,7 +1,13 @@
 (ns kutis.support.time
   (:refer-clojure :exclude [format])
   (:require [tick.alpha.api :as t]
+            [chime.core :as chime]
             [clojure.string :as clojure.string]))
+
+(def ^:dynamic clock (t/atom))
+
+(defn now []
+  (t/now))
 
 (defn instant
   "This fn is a little silly, but using `kutis.support.time`
@@ -21,3 +27,8 @@
     (if (= 24 (count s))
       s
       (clojure.string/replace s #"Z$" ".000Z"))))
+
+(defn schedule [offset-seconds period-seconds]
+  (-> (chime/periodic-seq (t/>> (t/now) (t/new-duration offset-seconds :seconds))
+                          (t/new-duration period-seconds :seconds))
+      rest))
