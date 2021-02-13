@@ -7,7 +7,7 @@
 (def ^:dynamic clock (t/atom))
 
 (defn now []
-  (t/now))
+  @clock)
 
 (defn instant
   "This fn is a little silly, but using `kutis.support.time`
@@ -29,6 +29,6 @@
       (clojure.string/replace s #"Z$" ".000Z"))))
 
 (defn schedule [offset-seconds period-seconds]
-  (-> (chime/periodic-seq (t/>> (t/now) (t/new-duration offset-seconds :seconds))
+  (-> (chime/periodic-seq (t/>> (now) (t/new-duration offset-seconds :seconds))
                           (t/new-duration period-seconds :seconds))
       rest))
