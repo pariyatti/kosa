@@ -7,6 +7,7 @@
             [kosa.server :as server]
             [kutis.dispatch :as dispatch]
             [kutis.record :as db]
+            [kutis.job :as job]
             [mount-up.core :as mu]
             [mount.core :as mount]))
 
@@ -37,7 +38,7 @@
   (-> (mount/with-args opts)
       (mount/only #{#'config/config
                     #'db/crux-node
-                    ;; TODO: add RSS jobs
+                    #'job/jobs
                     #'server/server})
       mount/start)
   (log/info "Kosa started."))

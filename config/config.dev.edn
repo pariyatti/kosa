@@ -21,7 +21,7 @@
          :offset-seconds 1
          :period-seconds 5
          :job-fn kosa.mobile.today.pali-word.rss-job/run-job!
-         :enabled true}]
+         :enabled false}]
 
  :supported-languages ["en" "hi" "cn"]
 

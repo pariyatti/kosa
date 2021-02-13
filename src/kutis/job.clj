@@ -14,7 +14,8 @@
     :continue-schedule))
 
 (defn load-jobs [jobs]
-  (for [{:keys [job-name offset-seconds period-seconds job-fn]} jobs]
+  (for [{:keys [job-name offset-seconds period-seconds job-fn enabled]} jobs
+        :when enabled]
     (let [job (chime/chime-at
                (time/schedule offset-seconds period-seconds)
 
