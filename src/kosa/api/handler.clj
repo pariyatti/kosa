@@ -2,7 +2,8 @@
   (:require [kutis.support.time :as time]
             [kosa.library.artefacts.image.db :as image-db]
             [kosa.mobile.today.pali-word.db :as pali-word-db]
-            [ring.util.response :as resp]))
+            [ring.util.response :as resp]
+            [kutis.storage :as storage]))
 
 (defn search [req]
   (let [text (-> req :params :q)

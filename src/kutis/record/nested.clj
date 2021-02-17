@@ -1,5 +1,6 @@
 (ns kutis.record.nested
-  (:require [kutis.record :as record]))
+  (:require [kutis.record :as record]
+            [clojure.string]))
 
 (defn field->id [attr]
   (-> attr name (str "-id") keyword))

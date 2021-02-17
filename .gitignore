@@ -27,3 +27,4 @@ resources/public/css/cards.css*
 resources/public/css/excerpts.css*
 resources/public/css/layout.css*
 resources/public/css/scaffolds.css*
+resources/public/cljs/*

@@ -15,7 +15,14 @@
             (header/render "Pariyatti Mobile Admin" "/mobile"
                            "Pariyatti Library" "/library")
             [:div {:class "main-container"}
-           ;; TODO: pass a flash map
+             ;; TODO: pass a flash map
              (flash/render {})
              content]
-            (footer/render)]))
+            (footer/render)
+
+            [:script {:src "//cdnjs.cloudflare.com/ajax/libs/react/0.11.0/react.js"}]
+            [:script {:src "/cljs/goog/base.js"}]
+            [:script {:src "/cljs/app.js"}]
+            [:script {:type "text/javascript"}
+             "goog.require('kosa.mediasearch');"]
+            ]))

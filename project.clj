@@ -3,6 +3,7 @@
   :url "http://github.com/pariyatti/kosa"
   :license {:name "GNU Affero General Public License 3.0"
             :url  "https://www.gnu.org/licenses/agpl-3.0.en.html"}
+
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.clojure/data.json "1.0.0"]
                  [org.clojure/spec.alpha "0.2.187"]
@@ -37,8 +38,19 @@
                  [juxt/crux-core "21.01-1.14.0-beta"]
                  [juxt/crux-rocksdb "21.01-1.14.0-beta"]
                  [juxt/crux-lucene "21.01-1.14.0-alpha"]
-                 [juxt/crux-http-server "21.01-1.14.0-alpha"]]
-  :plugins [[lein-scss "0.3.0"]]
+                 [juxt/crux-http-server "21.01-1.14.0-alpha"]
+
+                 ;; clojurescript
+                 [org.clojure/clojurescript "1.10.191"]
+                 [org.clojure/core.async "1.3.610"]
+                 ;; [reagent "1.0.0"] ;; conflicts with reagent-forms?
+                 [reagent-forms "0.5.23"]
+                 [json-html "0.3.5"]
+                 [lambdaisland/uri "1.4.54"] ;; uri is a fetch dep
+                 [lambdaisland/fetch "0.0.23"]]
+
+  :plugins [[lein-scss "0.3.0"]
+            [lein-cljsbuild "1.1.8"]]
 
   :scss {:builds
          {:development {:source-dir "resources/scss/"
@@ -50,6 +62,15 @@
                        :executable  "sass"
                        :args        ["--style" "compressed"]
                        :jar         true}}}
+
+  :cljsbuild {:builds
+              [{:source-paths ["src-cljs"],
+                :compiler
+                {:output-dir "resources/public/cljs/",
+                 :optimizations :none,
+                 :output-to "resources/public/cljs/app.js",
+                 :source-map true,
+                 :pretty-print true}}]}
 
   :main ^:skip-aot kosa.core
   :target-path "target/%s"

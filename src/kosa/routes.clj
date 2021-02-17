@@ -30,6 +30,7 @@
    (rr/create-resource-handler {:path "/uploads" :root "storage"})
    (rr/create-resource-handler {:path "/css"     :root "public/css"})
    (rr/create-resource-handler {:path "/js"      :root "public/js"})
+   (rr/create-resource-handler {:path "/cljs"    :root "public/cljs"})
    (rr/create-resource-handler {:path "/images"  :root "public/images"})
    (rr/create-resource-handler {:path "/"        :root "public"})
    (rr/routes

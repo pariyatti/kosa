@@ -2,7 +2,9 @@
   (:refer-clojure :exclude [list find get])
   (:require [kutis.record :as record]
             [kutis.record.nested :as nested]
-            [kutis.search :as search]))
+            [kutis.search :as search]
+            [kutis.storage :as storage]
+            [clojure.string :as clojure.string]))
 
 (def fields #{:type
               :modified-at
@@ -11,7 +13,10 @@
               :searchables})
 
 (defn rehydrate [image]
-  (nested/expand-all image :attachment))
+  (as-> (nested/expand-all image :image-attachment) img
+      (assoc-in img
+       [:image-attachment :url]
+       (storage/url (:image-attachment img)))))
 
 (defn list []
   (let [list-query '{:find     [e modified-at]
@@ -22,15 +27,17 @@
     (map rehydrate raw-images)))
 
 (defn search-for [match]
-  (let [matcher (format "%s*" match)
-        list-query '{:find [?e ?v ?a ?s]
-                     :in [?match]
-	                   :where [[(wildcard-text-search ?match) [[?e ?v ?a ?s]]]
-	                           [?e :crux.db/id]
-                             [?e :type "image_artefact"]]}
-        raw-images (record/query list-query matcher)]
-    (prn (format "searching for '%s'" matcher))
-    (map rehydrate raw-images)))
+  (if (= "" (clojure.string/trim match))
+    [] ;; TODO: return a 4xx error instead
+    (let [matcher (format "%s*" match)
+          list-query '{:find [?e ?v ?a ?s]
+                       :in [?match]
+	                     :where [[(wildcard-text-search ?match) [[?e ?v ?a ?s]]]
+	                             [?e :crux.db/id]
+                               [?e :type "image_artefact"]]}
+          raw-images (record/query list-query matcher)]
+      (prn (format "searching for '%s'" matcher))
+      (map rehydrate raw-images))))
 
 (defn put [e]
   (let [doc (assoc e
