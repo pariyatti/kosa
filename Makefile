@@ -42,8 +42,15 @@ tools: sass icons
 deps: ##@Development Run `lein deps`
 	lein deps
 
-assets: ##@Development Rebuild web assets (CSS)
+assets: ##@Development Rebuild web assets (CSS, CLJS)
 	lein scss :development once
+	lein cljsbuild once
+
+css-auto: ##@Development Rebuild CSS continuously
+	lein scss :development auto
+
+cljs-auto: ##@Development Rebuild CLJS continuously
+	lein cljsbuild auto
 
 init: tools deps assets ##@Setup Dev Setup
 
