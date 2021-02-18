@@ -52,16 +52,20 @@
     (testing "On lookup, rehydrates attachment back into the artefact"
       (let [expected (assoc image-artefact
                             :searchables "bodhi with raindrops jpg bodhi-with-raindrops.jpg"
-                            :image-attachment image-attachment)
+                            :image-attachment
+                            (assoc image-attachment
+                                   :url "/uploads/kutis-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg"))
             img (sut/put image-artefact2)
             img-found (sut/get (:crux.db/id img))
             img-no-ids (clean-ids img-found [:image-attachment])]
-        (prn (clojure.data/diff expected img-no-ids))
+        ;; (prn (clojure.data/diff expected img-no-ids))
         (is (= expected img-no-ids))))
 
     (testing "On list, rehydrates all attachments"
-      (let [img (sut/put image-artefact2)
+      (let [expected (assoc image-attachment
+                            :url "/uploads/kutis-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg")
+            img (sut/put image-artefact2)
             img2 (sut/put image-artefact2)
             imgs (vec (sut/list))]
-        (is (= image-attachment (-> imgs first :image-attachment clean-ids)))
-        (is (= image-attachment (-> imgs second :image-attachment clean-ids)))))))
+        (is (= expected (-> imgs first :image-attachment clean-ids)))
+        (is (= expected (-> imgs second :image-attachment clean-ids)))))))
