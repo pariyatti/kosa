@@ -4,7 +4,8 @@
             [kutis.record.nested :as nested]
             [kutis.search :as search]
             [kutis.storage :as storage]
-            [clojure.string :as clojure.string]))
+            [clojure.string :as clojure.string]
+            [clojure.tools.logging :as log]))
 
 (def fields #{:type
               :modified-at
@@ -36,7 +37,7 @@
 	                             [?e :crux.db/id]
                                [?e :type "image_artefact"]]}
           raw-images (record/query list-query matcher)]
-      (prn (format "searching for '%s'" matcher))
+      (log/info (format "searching for '%s'" matcher))
       (map rehydrate raw-images))))
 
 (defn put [e]
