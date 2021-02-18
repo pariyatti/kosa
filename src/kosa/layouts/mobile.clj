@@ -24,5 +24,5 @@
             [:script {:src "/cljs/goog/base.js"}]
             [:script {:src "/cljs/app.js"}]
             [:script {:type "text/javascript"}
-             "goog.require('kosa.mediasearch');"]
+             "goog.require('kosa.imagesearch');"]
             ]))

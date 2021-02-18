@@ -1,4 +1,4 @@
-(ns kosa.mediasearch
+(ns kosa.imagesearch
   (:require [json-html.core :refer [edn->hiccup]]
             [reagent.core :as r]
             [reagent-forms.core :refer [bind-fields init-field value-of]]
@@ -36,7 +36,8 @@
 
 (defn choose-image [img]
   (reset! selected-image {:crux.db/id (-> img :image-attachment :crux.db/id)
-                          :url (-> img :image-attachment :url)}))
+                           :url (-> img :image-attachment :url)}))
+
 
 (def form-template
   [:div
@@ -48,7 +49,7 @@
                :result-fn         show-image
                :choice-fn         choose-image
                :input-placeholder "Type an image name"
-               ;; TODO: move classes inside mediabox
+               ;; TODO: move default classes inside mediabox
                :input-class       "form-control"
                :list-class        "mediabox-list"
                :item-class        "mediabox-item"
@@ -71,4 +72,4 @@
        ;; [edn->hiccup @doc]
        ])))
 
-(r/render-component [page] (.getElementById js/document "app"))
+(r/render-component [page] (.getElementById js/document "imagesearch"))

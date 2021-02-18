@@ -85,8 +85,7 @@
     (f/label :text "Text")
     (f/text-field :text)]
    [:div {:class "field"}
-    ;; TODO: rename me something other than "app"
-    [:div {:id "app"}
+    [:div {:id "imagesearch"}
      [:p "If you're seeing this message, that means you haven't yet compiled your ClojureScript!"]]]
    [:div {:class "actions"}
     (f/submit-button {:name "submit"} "Save")]])
