@@ -46,7 +46,10 @@ assets: ##@Development Rebuild web assets (CSS, CLJS)
 	lein scss :development once
 	lein cljsbuild once
 
-css-auto: ##@Development Rebuild CSS continuously
+css: ##@Development Rebuild CSS manually
+	lein scss :development once
+
+css-auto: ##@Development Rebuild CSS continuously (kinda broken?)
 	lein scss :development auto
 
 cljs-auto: ##@Development Rebuild CLJS continuously
