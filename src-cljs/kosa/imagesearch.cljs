@@ -5,71 +5,48 @@
             [lambdaisland.fetch :as fetch]
             [kuti.mediabox]))
 
-(defn row [input]
-  [:div.row
-   [:div.col-md-5 input]])
-
 (def results (r/atom []))
-
 (def selected-image (r/atom {}))
 
 (defn reset-results [result]
-  ;; (.log js/console (:body result))
-  (let [edn (js->clj (:body result) :keywordize-keys true)
-        ;; _ (.log js/console (str "edn = " edn))
-        ]
+  (let [edn (js->clj (:body result) :keywordize-keys true)]
     (reset! results edn)))
 
 (defn result-source [text]
-  (let [;; _ (.log js/console (str "searching: " text))
-        ;; _ (.log js/console (str "results = " @results))
-        result (->
-                (fetch/get "http://localhost:3000/api/v1/search.json"
-                           {:query-params {:q text}})
-                (js/Promise.resolve)
-                (.then #(reset-results %)))]
-    ;; (.log js/console (str "result = " result))
-    @results))
+  (-> (fetch/get "http://localhost:3000/api/v1/search.json"
+                 {:query-params {:q text}})
+      (js/Promise.resolve)
+      (.then #(reset-results %)))
+  @results)
 
 (defn show-image [img]
   [:img {:src (-> img :image-attachment :url) :width 100 :height 100}])
 
 (defn choose-image [img]
   (reset! selected-image {:crux.db/id (-> img :image-attachment :crux.db/id)
-                           :url (-> img :image-attachment :url)}))
-
+                          :url (-> img :image-attachment :url)}))
 
 (def form-template
-  [:div
-   (row [:div {:field             :mediabox
-               :id                :ta
-               :data-source       result-source
-               :selections        results
-               :selected-media    selected-image
-               :result-fn         show-image
-               :choice-fn         choose-image
-               :input-placeholder "Type an image name"
-               ;; TODO: move default classes inside mediabox
-               :input-class       "form-control"
-               :list-class        "mediabox-list"
-               :item-class        "mediabox-item"
-               :highlight-class   "highlighted-item"}])
-   [:br]])
+  [:div {:field             :mediabox
+         :id                :imagesearch
+         :data-source       result-source
+         :selections        results
+         :selected-media    selected-image
+         :result-fn         show-image
+         :choice-fn         choose-image
+         :input-placeholder "Type an image name"
+         ;; TODO: move default classes inside mediabox
+         :input-class       "form-control"
+         :list-class        "mediabox-list"
+         :item-class        "mediabox-item"
+         :highlight-class   "highlighted-item"}])
 
-(defn page []
-  (let [doc (atom {:pick-one :bar})]
+(defn widget []
+  (let [doc (atom {:imagesearch nil})]
     (fn []
       [:div
-       [:label "Image Picker"]
-       ;; [:div (str "results = " @results)] ;; for debugging
+       [:label "Image Search"]
+       [bind-fields form-template doc]
+       [:br]])))
 
-       [bind-fields
-        form-template
-        doc]
-
-       ;; [:hr]
-       ;; [:h1 "Document State"]
-       ;; [edn->hiccup @doc]
-       ])))
-
-(r/render-component [page] (.getElementById js/document "imagesearch"))
+(r/render-component [widget] (.getElementById js/document "imagesearch"))
