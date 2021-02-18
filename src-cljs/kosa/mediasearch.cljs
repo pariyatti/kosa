@@ -39,9 +39,10 @@
                :selections        results
                :result-fn         show-media
                :input-placeholder "Type an image name"
+               ;; TODO: move classes inside mediabox
                :input-class       "form-control"
-               :list-class        "typeahead-list" ;; mediabox-list -- need to define
-               :item-class        "typeahead-item"
+               :list-class        "mediabox-list"
+               :item-class        "mediabox-item"
                :highlight-class   "highlighted"}])
    [:br]])
 
