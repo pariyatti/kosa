@@ -71,6 +71,13 @@
         attachment-in-db (put-attachment! attachment)]
     (assoc doc attr attachment-in-db)))
 
+(defn reattach!
+  "`attr` must be of the form `:<name>-attachment`
+   `id` must be an existing attachment"
+  [doc attr id]
+  (let [attachment (kutis.record/get id)]
+    (assoc doc attr attachment)))
+
 (defn collapse-all [doc]
   (nested/collapse-all doc "attachment"))
 

@@ -119,5 +119,8 @@
                      ;; show selected url:
                      [:br]
                      (if-let [url (:url @selected-media)]
-                       [:img {:src url :width "300" :height "300"}]
+                       [:div
+                        [:input {:type "hidden" :name "image-id" :id "image-id"
+                                 :value (:crux.db/id @selected-media)}]
+                        [:img {:src url :width "300" :height "300"}]]
                        [:div "No media chosen."])])))

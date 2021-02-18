@@ -8,9 +8,11 @@
             [ring.util.response :as resp]))
 
 (defn ->stacked-inspiration-doc [p]
-  (let [attachment (storage/params->attachment! (:file p))]
-    (-> (c/params->doc p [:card-type :text])
-        (assoc :image-attachment attachment))))
+  (let [card (assoc {:card-type "stacked_inspiration"
+                     :bookmarkable true
+                     :shareable true}
+                    :text (:text p))]
+    (storage/reattach! card :image-attachment (:image-id p))))
 
 (defn index [request]
   (let [cards (db/list)]
