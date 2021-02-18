@@ -26,7 +26,7 @@
 
 (defmethod rf/init-field :mediabox
   [[type {:keys [id data-source input-class list-class item-class highlight-class
-                 input-placeholder result-fn choice-fn clear-on-focus? selections get-index]
+                 input-placeholder result-fn choice-fn clear-on-focus? selections selected-media get-index]
           :as   attrs
           :or   {result-fn       identity
                  choice-fn       identity
@@ -35,6 +35,7 @@
         mouse-on-list?    (atom false)
         selected-index    (atom -1)
         selections        (or selections (atom []))
+        selected-media    (or selected-media (atom {}))
         get-index         (or get-index (constantly -1))
         choose-selected   #(when (and (not-empty @selections) (> @selected-index -1))
                              (let [choice (nth @selections @selected-index)]
@@ -104,11 +105,19 @@
                                   :key           index
                                   :class         (if (= @selected-index index) highlight-class item-class)
                                   :on-mouse-over #(do
-                                                    (reset! selected-index (js/parseInt (.getAttribute (.-target %) "tabIndex"))))
+                                                    ;; NOTE: this used to be `.-target` but since our contents are an `img` tag, we
+                                                    ;;       need to target the actual `li`. there might be a much better way. -sd
+                                                    (reset! selected-index (js/parseInt (.getAttribute (.-currentTarget %) "tabIndex"))))
                                   :on-click      #(do
                                                     (.preventDefault %)
                                                     (reset! typeahead-hidden? true)
                                                     (save! id result)
                                                     (choice-fn result))}
                              (result-fn result)])
-                          @selections))]])))
+                          @selections))]
+
+                     ;; show selected url:
+                     [:br]
+                     (if-let [url (:url @selected-media)]
+                       [:img {:src url :width "300" :height "300"}]
+                       [:div "No media chosen."])])))

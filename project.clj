@@ -56,7 +56,9 @@
          {:development {:source-dir "resources/scss/"
                         :dest-dir   "resources/public/css/"
                         :executable "sass"
-                        :args       ["--style" "expanded"]}
+                        :args       ["--style" "expanded"
+                                     ;; ignore emacs' .#xyz.scss
+                                     "--no-stop-on-error"]}
           :production {:source-dir  "resources/scss/"
                        :dest-dir    "resources/public/css/"
                        :executable  "sass"

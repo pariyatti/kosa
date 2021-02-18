@@ -11,15 +11,18 @@
 
 (def results (r/atom []))
 
+(def selected-image (r/atom {}))
+
 (defn reset-results [result]
-  (.log js/console (:body result))
+  ;; (.log js/console (:body result))
   (let [edn (js->clj (:body result) :keywordize-keys true)
-        _ (.log js/console (str "edn = " edn))]
+        ;; _ (.log js/console (str "edn = " edn))
+        ]
     (reset! results edn)))
 
 (defn result-source [text]
-  (let [_ (.log js/console (str "searching: " text))
-        _ (.log js/console (str "results = " @results))
+  (let [;; _ (.log js/console (str "searching: " text))
+        ;; _ (.log js/console (str "results = " @results))
         result (->
                 (fetch/get "http://localhost:3000/api/v1/search.json"
                            {:query-params {:q text}})
@@ -28,8 +31,12 @@
     ;; (.log js/console (str "result = " result))
     @results))
 
-(defn show-media [img]
+(defn show-image [img]
   [:img {:src (-> img :image-attachment :url) :width 100 :height 100}])
+
+(defn choose-image [img]
+  (reset! selected-image {:crux.db/id (-> img :image-attachment :crux.db/id)
+                          :url (-> img :image-attachment :url)}))
 
 (def form-template
   [:div
@@ -37,13 +44,15 @@
                :id                :ta
                :data-source       result-source
                :selections        results
-               :result-fn         show-media
+               :selected-media    selected-image
+               :result-fn         show-image
+               :choice-fn         choose-image
                :input-placeholder "Type an image name"
                ;; TODO: move classes inside mediabox
                :input-class       "form-control"
                :list-class        "mediabox-list"
                :item-class        "mediabox-item"
-               :highlight-class   "highlighted"}])
+               :highlight-class   "highlighted-item"}])
    [:br]])
 
 (defn page []
