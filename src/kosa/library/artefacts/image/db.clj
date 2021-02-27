@@ -5,7 +5,8 @@
             [kutis.search :as search]
             [kutis.storage :as storage]
             [clojure.string :as clojure.string]
-            [clojure.tools.logging :as log]))
+            [clojure.tools.logging :as log]
+            [kutis.support.time :as time]))
 
 (def fields #{:type
               :modified-at
@@ -42,7 +43,7 @@
 
 (defn put [e]
   (let [doc (assoc e
-                   :modified-at (java.util.Date.)
+                   :modified-at (time/now)
                    :type "image_artefact")]
     (-> doc
         (search/tag-searchables (-> doc :image-attachment :filename))

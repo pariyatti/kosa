@@ -1,4 +1,6 @@
-(ns kutis.controller)
+(ns kutis.controller
+  (:require
+    [kutis.support.time :as time]))
 
 (defn apply-mapping
   "Maps a value from `params` to `doc` either with a supplied `[field fn]` (vector)
@@ -14,7 +16,7 @@
 (defn tag-date [params]
   (if (:published-at params)
     (:published-at params)
-    (java.util.Date.)))
+    (time/now)))
 
 (defn params->doc [params mappings]
   (let [mappings (conj mappings [:published-at tag-date])]

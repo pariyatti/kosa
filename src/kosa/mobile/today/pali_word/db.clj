@@ -1,6 +1,7 @@
 (ns kosa.mobile.today.pali-word.db
   (:refer-clojure :exclude [list get])
-  (:require [kutis.record]))
+  (:require [kutis.record]
+            [kutis.support.time :as time]))
 
 (def fields #{:type
               :card-type
@@ -32,7 +33,7 @@
 
 (defn put [e]
   ;; TODO: we need a low-level home for applying `:modified-at` to all entities
-  (kutis.record/put (assoc e :modified-at (java.util.Date.)) fields))
+  (kutis.record/put (assoc e :modified-at (time/now)) fields))
 
 (defn get [id]
   (kutis.record/get id))

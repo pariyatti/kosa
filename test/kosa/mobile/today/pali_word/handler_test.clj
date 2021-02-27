@@ -5,7 +5,8 @@
             [kosa.mobile.today.pali-word.db :as db]
             [kosa.mobile.today.pali-word.handler :as pali-word-handler]
             [kosa.routes :as routes]
-            [kutis.fixtures.record-fixtures :as fixtures]))
+            [kutis.fixtures.record-fixtures :as fixtures]
+            [kutis.support.time :as time]))
 
 (use-fixtures :each fixtures/load-states)
 
@@ -17,7 +18,7 @@
                        :translation translation
                        :language "en"}]]
     {:id (java.util.UUID/randomUUID)
-     :published-at (java.util.Date.)
+     :published-at (time/now)
      :header "sticky header"
      :bookmarkable true
      :shareable true
