@@ -39,18 +39,25 @@
                  [juxt/crux-rocksdb "21.01-1.14.0-beta"]
                  [juxt/crux-lucene "21.01-1.14.0-alpha"]
                  [juxt/crux-http-server "21.01-1.14.0-alpha"]
+                 [joplin.core "0.3.11"]
+                 [org.pariyatti/joplin.crux "184ae54a9da5eff9baf05a79e96603c94c27809d"]
 
                  ;; clojurescript
                  [org.clojure/clojurescript "1.10.191"]
                  [org.clojure/core.async "1.3.610"]
-                 ;; [reagent "1.0.0"] ;; conflicts with reagent-forms?
+                 ;; [reagent "1.0.0"] ;; conflicts with reagent-forms
                  [reagent-forms "0.5.23"]
                  [json-html "0.3.5"]
                  [lambdaisland/uri "1.4.54"] ;; uri is a fetch dep
                  [lambdaisland/fetch "0.0.23"]]
 
   :plugins [[lein-scss "0.3.0"]
-            [lein-cljsbuild "1.1.8"]]
+            [lein-cljsbuild "1.1.8"]
+            [reifyhealth/lein-git-down "0.4.0"]]
+
+  :middleware [lein-git-down.plugin/inject-properties]
+  :repositories [["public-github" {:url "git://github.com"}]]
+  :git-down {org.pariyatti/joplin.crux {:coordinates pariyatti/joplin.crux}}
 
   :scss {:builds
          {:development {:source-dir "resources/scss/"
@@ -76,6 +83,13 @@
 
   :main ^:skip-aot kosa.core
   :target-path "target/%s"
+
+  :aliases {"migrate"  ["run" "-m" "joplin.crux.alias/migrate"  "joplin/config.edn"]
+            "seed"     ["run" "-m" "joplin.crux.alias/seed"     "joplin/config.edn"]
+            "rollback" ["run" "-m" "joplin.crux.alias/rollback" "joplin/config.edn"]
+            "reset"    ["run" "-m" "joplin.crux.alias/reset"    "joplin/config.edn"]
+            "pending"  ["run" "-m" "joplin.crux.alias/pending"  "joplin/config.edn"]
+            "create"   ["run" "-m" "joplin.crux.alias/create"   "joplin/config.edn"]}
 
   :repl-options {:init-ns dev.repl}
   :profiles {:uberjar {:aot      :all

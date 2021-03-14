@@ -1,0 +1,26 @@
+{:migrators {:crux-mig "resources/joplin/migrators/crux"}
+
+ :seeds {:crux-seed "seeds.crux/run"}
+
+ :databases
+ {:crux-dev
+  {:type :crux
+   :conf {:crux/tx-log {:kv-store {:crux/module crux.rocksdb/->kv-store
+	                                 :db-dir      "data/dev/tx-log"
+                                   :sync?       true}}
+	        :crux/document-store {:kv-store {:crux/module crux.rocksdb/->kv-store
+	                                         :db-dir      "data/dev/doc-store"
+                                           :sync?       true}}
+          :crux/index-store {:kv-store {:crux/module crux.rocksdb/->kv-store
+	                                      :db-dir      "data/dev/index-store"
+                                        :sync?       true}}
+          ;; :crux.lucene/lucene-store {:db-dir (path-join (data-dir) "lucene-dir")}
+          }}
+
+  ;; :crux-prod {:type :crux, :conf xyz}
+  }
+
+ :environments {:dev [{:db :crux-dev, :migrator :crux-mig, :seed :crux-seed}]
+                ;; :prod [{:db :crux-prod, :migrator :crux-mig}]
+                }
+}
