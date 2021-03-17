@@ -14,8 +14,7 @@
           :crux/index-store {:kv-store {:crux/module crux.rocksdb/->kv-store
 	                                      :db-dir      "data/dev/index-store"
                                         :sync?       true}}
-          ;; :crux.lucene/lucene-store {:db-dir (path-join (data-dir) "lucene-dir")}
-          }}
+          :crux.lucene/lucene-store {:db-dir "data/dev/lucene-dir"}}}
 
   ;; :crux-prod {:type :crux, :conf xyz}
   }

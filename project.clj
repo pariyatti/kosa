@@ -40,7 +40,7 @@
                  [juxt/crux-lucene "21.01-1.14.0-alpha"]
                  [juxt/crux-http-server "21.01-1.14.0-alpha"]
                  [joplin.core "0.3.11"]
-                 [org.pariyatti/joplin.crux "184ae54a9da5eff9baf05a79e96603c94c27809d"]
+                 [org.pariyatti/joplin.crux "0.0.1"]
 
                  ;; clojurescript
                  [org.clojure/clojurescript "1.10.191"]
