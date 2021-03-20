@@ -5,22 +5,30 @@
             [kutis.record.nested :as nested]
             [kutis.search]
             [buddy.core.hash :as hash]
-            [buddy.core.codecs :refer :all]))
+            [buddy.core.codecs :refer :all])
+  (:import [java.io FileNotFoundException]))
 
 (def attachment-fields #{:key :filename :metadata :service-name
                          :content-type :checksum :byte-size :identified})
 
 (def service-config (atom {}))
 
-(defn set-service-config! [conf]
+(defn set-service-config!
+  "Only for test harnesses."
+  [conf]
   (reset! service-config conf))
 
 (defn attached-filename [attachment]
   (format "kutis-%s-%s" (:key attachment) (:filename attachment)))
 
+(defn service-dir []
+  (:root @service-config))
+
 (defn service-filename [attachment]
-  (path-join (:root @service-config)
-             (attached-filename attachment)))
+  (let [dir (service-dir)]
+    (if (.exists (io/file dir))
+      (path-join dir (attached-filename attachment))
+      (throw (FileNotFoundException. (str "Directory missing: " dir))))))
 
 (defn file->bytes [file]
   (with-open [xin (io/input-stream file)
@@ -51,14 +59,15 @@
                     :checksum     (calculate-md5 tempfile)
                     :content-type (:content-type file-params)
                     :byte-size    (.length tempfile)
-                    :identified   true}
-        _ (save-file! tempfile attachment)]
-    attachment))
+                    :identified   true}]
+    (if (save-file! tempfile attachment)
+      attachment
+      (throw (ex-info "Uploaded file failed to save to disk.")))))
 
 (defn put-attachment! [attachment]
   (if-let [saved (kutis.record/put attachment attachment-fields)]
     saved ;; (:crux.db/id attachment)
-    (throw (ex-info "Attachment not saved."))))
+    (throw (ex-info "Attachment failed to save to database."))))
 
 ;;;;;;;;;;;;;;;;;;
 ;;  PUBLIC API  ;;

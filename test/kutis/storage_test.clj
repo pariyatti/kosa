@@ -3,13 +3,17 @@
             [clojure.java.io :as io]
             [kutis.fixtures.record-fixtures :as record-fixtures]
             [kutis.fixtures.file-fixtures :as file-fixtures]
+            [kutis.fixtures.storage-fixtures :as storage-fixtures]
             [kutis.support]
             [kutis.record]
             [kutis.controller :as c]
-            [kutis.storage :as sut]))
+            [kutis.storage :as sut])
+  (:import [java.io FileNotFoundException]))
 
 (use-fixtures :once record-fixtures/load-states)
-(use-fixtures :each file-fixtures/copy-fixture-files)
+(use-fixtures :each
+  file-fixtures/copy-fixture-files
+  storage-fixtures/set-service-config)
 
 (def params1 {:type "leaf_artefact",
               :leaf-file {:filename "bodhi-with-raindrops.jpg",
@@ -17,10 +21,6 @@
                           :tempfile (io/file "test/kutis/fixtures/files/bodhi-temp.jpg")
                           :size 13468}
               :submit "Save"})
-
-(sut/set-service-config! {:service :disk
-                          :root    "resources/storage/"
-                          :path    "/uploads"})
 
 (deftest attachment
   (let [attachment (sut/params->attachment! (:leaf-file params1))]
@@ -61,6 +61,14 @@
     (let [attachment (sut/params->attachment! (:leaf-file params1))
           local-file (sut/file attachment)]
       (is (= 13468 (.length local-file))))))
+
+(deftest missing-root-directory
+  (testing "throws an exception when file copy fails"
+    (sut/set-service-config! {:service :disk
+                              :root    "this/directory/does/not/exist/"
+                              :path    "/uploads"})
+    (is (thrown? java.io.FileNotFoundException
+                 (sut/params->attachment! (:leaf-file params1))))))
 
 (deftest attach!
   (let [doc1 (c/params->doc params1 [:type :leaf-file])
