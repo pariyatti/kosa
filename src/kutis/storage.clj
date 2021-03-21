@@ -4,25 +4,35 @@
             [kutis.record]
             [kutis.record.nested :as nested]
             [kutis.search]
+            [kosa.config :as config]
             [buddy.core.hash :as hash]
-            [buddy.core.codecs :refer :all])
+            [buddy.core.codecs :refer :all]
+            [mount.core :as mount :refer [defstate]])
   (:import [java.io FileNotFoundException]))
 
 (def attachment-fields #{:key :filename :metadata :service-name
                          :content-type :checksum :byte-size :identified})
 
-(def service-config (atom {}))
+(defn start-storage!
+  ([]
+   (:storage config/config))
+  ([override]
+   override))
+
+(defstate service-config
+  :start (start-storage!)
+  :stop nil)
 
 (defn set-service-config!
   "Only for test harnesses."
   [conf]
-  (reset! service-config conf))
+  (start-storage! conf))
 
 (defn attached-filename [attachment]
   (format "kutis-%s-%s" (:key attachment) (:filename attachment)))
 
 (defn service-dir []
-  (:root @service-config))
+  (:root service-config))
 
 (defn service-filename [attachment]
   (let [dir (service-dir)]
@@ -54,7 +64,7 @@
         attachment {:key          (calculate-key tempfile)
                     :filename     (:filename file-params)
                     :metadata     ""
-                    :service-name (:service @service-config)
+                    :service-name (:service service-config)
                     ;; unfurled:
                     :checksum     (calculate-md5 tempfile)
                     :content-type (:content-type file-params)
@@ -94,5 +104,5 @@
   (io/file (service-filename attachment)))
 
 (defn url [attachment]
-  (path-join (:path @service-config)
+  (path-join (:path service-config)
              (attached-filename attachment)))

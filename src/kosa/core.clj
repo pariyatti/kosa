@@ -7,6 +7,7 @@
             [kosa.server :as server]
             [kutis.dispatch :as dispatch]
             [kutis.record :as db]
+            [kutis.storage :as storage]
             [kutis.job :as job]
             [mount-up.core :as mu]
             [mount.core :as mount]))
@@ -38,6 +39,7 @@
   (-> (mount/with-args opts)
       (mount/only #{#'config/config
                     #'db/crux-node
+                    #'storage/service-config
                     #'job/jobs
                     #'server/server})
       mount/start)
