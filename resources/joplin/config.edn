@@ -1,6 +1,6 @@
 {:migrators {:crux-mig "resources/joplin/migrators/crux"}
 
- :seeds {:crux-seed "seeds.crux/run"}
+ :seeds {:crux-seed "kosa.seeds.crux/run"}
 
  :databases
  {:crux-dev
@@ -19,7 +19,9 @@
   ;; :crux-prod {:type :crux, :conf xyz}
   }
 
- :environments {:dev [{:db :crux-dev, :migrator :crux-mig, :seed :crux-seed}]
+ :environments {:dev [{:db       :crux-dev
+                       :migrator :crux-mig
+                       :seed     :crux-seed}]
                 ;; :prod [{:db :crux-prod, :migrator :crux-mig}]
                 }
 }

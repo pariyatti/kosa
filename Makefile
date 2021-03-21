@@ -63,6 +63,18 @@ init: resources/storage tools deps assets ##@Setup Dev Setup
 routes: ##@Development Display HTTP routes
 	lein run -- --routes -f config/config.dev.edn
 
+db-clean: ##@Development Erase local db
+	rm -rf data/dev
+	rm -rf data/test
+	rm -rf resources/storage/*
+
+db-migrate: ##@Development Migrate up
+	lein migrate dev
+
+db-seed: ##@Development Add sample data
+	echo This is currently broken...
+	echo lein seed dev
+
 test: ##@Development Run tests with lein
 #lein run -- -mf config/config.test.edn # TODO: add migrations
 	lein test

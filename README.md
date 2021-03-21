@@ -51,6 +51,14 @@ make run  # run the server
 make repl # run the server interactively
 ```
 
+To add sample data from a REPL:
+
+```clojure
+dev.repl> (migrate)
+dev.repl> (seed)
+```
+
+Once you have run these, close the REPL and restart it or your Crux node will be locked. Migrations work from the command line but seeding does not at the moment.
 
 ## Design Wireframes
 

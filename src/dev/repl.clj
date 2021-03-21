@@ -2,7 +2,11 @@
   (:require [kosa.config :as config]
             [kosa.core :as core]
             [kosa.server :as server]
+            [joplin.repl]
+            [joplin.alias :refer [*load-config*]]
             [mount.core :as mount]))
+
+(def joplin-config (*load-config* "joplin/config.edn"))
 
 (def dev-opts {:options {:config-file "config/config.dev.edn"}})
 (def test-opts {:options {:config-file "config/config.test.edn"}})
@@ -29,6 +33,12 @@
 
 (defn test-mode! []
   (restart! test-opts))
+
+(defn migrate []
+  (joplin.repl/migrate joplin-config :dev))
+
+(defn seed []
+  (joplin.repl/seed joplin-config :dev))
 
 (defn current []
   (prn "current config is: " config/config))
