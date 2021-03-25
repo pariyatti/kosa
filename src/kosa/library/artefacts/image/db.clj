@@ -22,7 +22,7 @@
 
 (defn list []
   (let [list-query '{:find     [e modified-at]
-                     :where    [[e :type "image_artefact"]
+                     :where    [[e :type "image-artefact"]
                                 [e :modified-at modified-at]]
                      :order-by [[modified-at :desc]]}
         raw-images (record/query list-query)]
@@ -36,7 +36,7 @@
                        :in [?match]
 	                     :where [[(wildcard-text-search ?match) [[?e ?v ?a ?s]]]
 	                             [?e :crux.db/id]
-                               [?e :type "image_artefact"]]}
+                               [?e :type "image-artefact"]]}
           raw-images (record/query list-query matcher)]
       (log/info (format "searching for '%s'" matcher))
       (map rehydrate raw-images))))
@@ -44,7 +44,7 @@
 (defn put [e]
   (let [doc (assoc e
                    :modified-at (time/now)
-                   :type "image_artefact")]
+                   :type "image-artefact")]
     (-> doc
         (search/tag-searchables (-> doc :image-attachment :filename))
         (nested/collapse-one :image-attachment)

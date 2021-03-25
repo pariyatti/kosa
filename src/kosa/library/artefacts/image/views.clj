@@ -44,7 +44,7 @@
           :action (v/create-path req :images)
           :enctype "multipart/form-data"}
    [:div {:class "field"}
-    (f/hidden-field :type "image_artefact")]
+    (f/hidden-field :type "image-artefact")]
    [:div {:class "field"}
     (f/label :file "Image File:")
     (f/file-upload :file)]
@@ -95,7 +95,7 @@
   (f/form-to {:enctype "multipart/form-data"}
              [:put (v/update-path req :images image)]
              [:div {:class "field"}
-              (f/hidden-field :type "image_artefact")]
+              (f/hidden-field :type "image-artefact")]
              [:div {:class "field"}
               (f/label :file "Image File:")
               (f/file-upload :file)]

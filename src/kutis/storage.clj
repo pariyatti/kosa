@@ -13,20 +13,13 @@
 (def attachment-fields #{:key :filename :metadata :service-name
                          :content-type :checksum :byte-size :identified})
 
-(defn start-storage!
-  ([]
-   (:storage config/config))
-  ([override]
-   override))
+(defn start-storage! []
+  (or (:storage (mount/args))
+      (:storage config/config)))
 
 (defstate service-config
   :start (start-storage!)
   :stop nil)
-
-(defn set-service-config!
-  "Only for test harnesses."
-  [conf]
-  (start-storage! conf))
 
 (defn attached-filename [attachment]
   (format "kutis-%s-%s" (:key attachment) (:filename attachment)))

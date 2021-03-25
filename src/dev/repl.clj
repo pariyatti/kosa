@@ -1,10 +1,12 @@
 (ns dev.repl
-  (:require [kosa.config :as config]
+  (:require [kutis.record :as record]
+            [kosa.config :as config]
             [kosa.core :as core]
             [kosa.server :as server]
             [joplin.repl]
             [joplin.alias :refer [*load-config*]]
-            [mount.core :as mount]))
+            [mount.core :as mount]
+            [kosa.library.artefacts.image.db :as image]))
 
 (def joplin-config (*load-config* "joplin/config.edn"))
 

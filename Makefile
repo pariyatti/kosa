@@ -36,6 +36,9 @@ icons:
 	cp node_modules/@clr/icons/clr-icons.min.js resources/public/js/clr-icons.min.js
 	rm -rf node_modules
 
+tmp/storage:
+	mkdir -p tmp/storage
+
 resources/storage:
 	mkdir -p resources/storage
 
@@ -58,7 +61,7 @@ css-auto: ##@Development Rebuild CSS continuously (kinda broken?)
 cljs-auto: ##@Development Rebuild CLJS continuously
 	lein cljsbuild auto
 
-init: resources/storage tools deps assets ##@Setup Dev Setup
+init: tmp/storage resources/storage tools deps assets ##@Setup Dev Setup
 
 routes: ##@Development Display HTTP routes
 	lein run -- --routes -f config/config.dev.edn

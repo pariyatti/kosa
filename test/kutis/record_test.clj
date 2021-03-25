@@ -1,12 +1,13 @@
 (ns kutis.record-test
   (:require [clojure.test :refer :all]
             [crux.api]
+            [kutis.support.digest :refer [->uuid]]
             [kutis.fixtures.record-fixtures :as fixtures]
             [kutis.record :as sut]))
 
 (use-fixtures :once fixtures/load-states)
 
-(def record {:crux.db/id :record-id
+(def record {:crux.db/id (->uuid "3291d680-0d70-4940-914d-35413e261115")
              :record     "vinyl"
              :artist     "The Who"})
 
@@ -19,7 +20,7 @@
   (testing "Can insert a raw datum"
     (let [tx (sut/put-async* record)]
       (crux.api/await-tx sut/crux-node tx)
-      (is (= record (sut/get :record-id)))))
+      (is (= record (sut/get "3291d680-0d70-4940-914d-35413e261115")))))
 
   (testing "put returns the record inserted"
     (let [inserted (sut/put record [:record :artist])]
@@ -43,7 +44,7 @@
                               (assoc :artist "the kinks" :song "Lola"))
           inserted-record (sut/put-async* new-record)]
       (crux.api/await-tx sut/crux-node inserted-record)
-      (is (= (sut/get :record-id)
+      (is (= (sut/get "3291d680-0d70-4940-914d-35413e261115")
              new-record))))
 
   (testing "put overwrites an existing record"

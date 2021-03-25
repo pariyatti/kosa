@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@clr/icons": "^4.0.3",
+    "@webcomponents/custom-elements": "^1.0.0"
+  }
+}

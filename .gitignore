@@ -28,3 +28,6 @@ resources/public/css/excerpts.css*
 resources/public/css/layout.css*
 resources/public/css/scaffolds.css*
 resources/public/cljs/*
+
+tmp/storage/*
+

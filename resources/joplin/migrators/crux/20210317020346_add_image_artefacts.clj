@@ -14,7 +14,7 @@
 	                                (let [db (crux.api/db ctx)
                                         ids (crux.api/q db
                                                         '{:find  [e]
-                                                          :where [[e :type "image_artefact"]]})
+                                                          :where [[e :type "image-artefact"]]})
                                         entities (map #(crux.api/entity db (first %)) ids)]
                                     (vec (map (fn [entity]
                                                 [:crux.tx/put (assoc entity :owner nil)])

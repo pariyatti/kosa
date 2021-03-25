@@ -1,6 +1,7 @@
 (ns kutis.storage-test
   (:require [clojure.test :refer :all]
             [clojure.java.io :as io]
+            [mount.core :as mount]
             [kutis.fixtures.record-fixtures :as record-fixtures]
             [kutis.fixtures.file-fixtures :as file-fixtures]
             [kutis.fixtures.storage-fixtures :as storage-fixtures]
@@ -15,7 +16,7 @@
   file-fixtures/copy-fixture-files
   storage-fixtures/set-service-config)
 
-(def params1 {:type "leaf_artefact",
+(def params1 {:type "leaf-artefact",
               :leaf-file {:filename "bodhi-with-raindrops.jpg",
                           :content-type "image/jpeg",
                           :tempfile (io/file "test/kutis/fixtures/files/bodhi-temp.jpg")
@@ -36,7 +37,7 @@
              attachment)))
 
     (testing "attachment's service filename identifies it as a kutis.storage file"
-      (is (re-matches #"resources/storage/kutis-.*-bodhi-with-raindrops\.jpg"
+      (is (re-matches #"tmp/storage/kutis-.*-bodhi-with-raindrops\.jpg"
                       (sut/service-filename attachment))))
 
     (testing "url is prefixed with path from service config"
@@ -64,9 +65,12 @@
 
 (deftest missing-root-directory
   (testing "throws an exception when file copy fails"
-    (sut/set-service-config! {:service :disk
-                              :root    "this/directory/does/not/exist/"
-                              :path    "/uploads"})
+    (mount/stop #'sut/service-config)
+    (-> (mount/with-args {:storage {:service :disk
+                                    :root    "this/directory/does/not/exist/"
+                                    :path    "/uploads"}})
+        (mount/only #{#'sut/service-config})
+        mount/start)
     (is (thrown? java.io.FileNotFoundException
                  (sut/params->attachment! (:leaf-file params1))))))
 
@@ -99,7 +103,7 @@
 
     (testing "collapses all attachments"
       (is (not (nil? (:leaf-attachment-id doc3))))
-      (is (= {:type "leaf_artefact"
+      (is (= {:type "leaf-artefact"
               :leaf-attachment-id leaf-attachment-id}
              (dissoc doc3 :published-at))))))
 

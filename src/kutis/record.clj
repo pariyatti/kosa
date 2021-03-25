@@ -1,10 +1,11 @@
 (ns kutis.record
-  (:refer-clojure :exclude [get])
+  (:refer-clojure :exclude [get list])
   (:require [clojure.java.io :as io]
             [crux.api :as crux]
             [crux.rocksdb :as rocks]
             [kosa.config :as config]
             [kutis.support :refer [path-join]]
+            [kutis.support.digest :refer [uuid ->uuid]]
             [mount.core :refer [defstate]]))
 
 (def crux-node)
@@ -34,17 +35,15 @@
   :start (start-crux!)
   :stop  (stop-crux!))
 
-(defn uuid [] (str (java.util.UUID/randomUUID)))
-
 (defn get [id]
-  (crux/entity (crux/db crux-node) id))
+  (crux/entity (crux/db crux-node) (->uuid id)))
 
 (defn put-async* [datum]
   (crux/submit-tx crux-node [[:crux.tx/put datum]]))
 
 (defn put-prepare [raw]
   (if (:crux.db/id raw)
-    raw
+    (assoc raw :crux.db/id (->uuid (:crux.db/id raw)))
     (assoc raw :crux.db/id (uuid))))
 
 (defn validate-put! [e allowed-keys]
@@ -92,3 +91,13 @@
    (let [result-set (crux/q (crux/db crux-node) q param)
          _ (prn result-set)]
      (map #(-> % first get) result-set))))
+
+(defn list
+  [type]
+  (let [type-kw (name type)
+        list-query '{:find     [e modified-at]
+                     :where    [[e :type type]
+                                [e :modified-at modified-at]]
+                     :order-by [[modified-at :desc]]
+                     :in [type]}]
+    (query list-query type-kw)))

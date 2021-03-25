@@ -1,5 +1,6 @@
 (ns kosa.api.handler
   (:require [kutis.support.time :as time]
+            [kutis.support.digest :refer [uuid]]
             [kosa.library.artefacts.image.db :as image-db]
             [kosa.mobile.today.pali-word.db :as pali-word-db]
             [kosa.mobile.today.stacked-inspiration.db :as stacked-inspiration-db]
@@ -7,9 +8,14 @@
 
 (defn search [req]
   (let [text (-> req :params :q)
-        list (image-db/search-for text)]
+        list (image-db/search-for text)
+        ;; TODO: un-hack this by adding proper conversion to cheshire:
+        hacked-list (map #(assoc % :modified-at nil)
+                         list)]
+    (println "hacked list:")
+    (println hacked-list)
     (resp/response
-     list)))
+     hacked-list)))
 
 (def kosa-epoch "2020-12-12T00:00:00.000Z")
 
@@ -26,7 +32,7 @@
      :bookmarkable true
      :shareable true
      :pali (:pali word)
-     :translations (map (fn [t] {:id (str (java.util.UUID/randomUUID))
+     :translations (map (fn [t] {:id (uuid)
                                  :language (first t)
                                  :translation (second t)})
                         (:translations word))

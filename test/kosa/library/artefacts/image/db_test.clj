@@ -4,12 +4,15 @@
             [clojure.java.io :as io]
             [kosa.library.artefacts.image.db :as sut]
             [kutis.fixtures.record-fixtures :as record-fixtures]
+            [kutis.fixtures.storage-fixtures :as storage-fixtures]
             [kutis.fixtures.file-fixtures :as file-fixtures]
             [kutis.record]
             [kutis.storage :as storage]))
 
 (use-fixtures :once record-fixtures/load-states)
-(use-fixtures :each file-fixtures/copy-fixture-files)
+(use-fixtures :each
+  file-fixtures/copy-fixture-files
+  storage-fixtures/set-service-config)
 
 (def image-attachment {:filename "bodhi-with-raindrops.jpg"
                        :content-type "image/jpeg"
@@ -19,11 +22,7 @@
                        :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"
                        :identified true})
 
-(def image-artefact {:type "image_artefact"})
-
-(storage/set-service-config! {:service :disk
-                              :root    "resources/storage/"
-                              :path    "/uploads"})
+(def image-artefact {:type "image-artefact"})
 
 (defn clean-ids
   ([obj]

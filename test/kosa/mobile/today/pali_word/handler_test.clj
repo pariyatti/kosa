@@ -6,6 +6,7 @@
             [kosa.mobile.today.pali-word.handler :as pali-word-handler]
             [kosa.routes :as routes]
             [kutis.fixtures.record-fixtures :as fixtures]
+            [kutis.support.digest :refer [uuid]]
             [kutis.support.time :as time]))
 
 (use-fixtures :each fixtures/load-states)
@@ -14,10 +15,10 @@
   "TODO: Should probably use the spec generators for this"
   [word translation]
   (let [audio {:url "/audio/path"}
-        translations [{:id (java.util.UUID/randomUUID)
+        translations [{:id (uuid)
                        :translation translation
                        :language "en"}]]
-    {:id (java.util.UUID/randomUUID)
+    {:id (uuid)
      :published-at (time/now)
      :header "sticky header"
      :bookmarkable true

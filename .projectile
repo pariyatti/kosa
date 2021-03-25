@@ -1,0 +1,5 @@
+-/.clj-kondo
+-/.lsp
+-/target
+-/resources/public/cljs
+-/resources/public/js
