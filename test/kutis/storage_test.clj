@@ -23,6 +23,13 @@
                           :size 13468}
               :submit "Save"})
 
+(def ws-params {:type "leaf-artefact",
+                :leaf-file {:filename "bodhi with\twhitespace.jpg",
+                            :content-type "image/jpeg",
+                            :tempfile (io/file "test/kutis/fixtures/files/bodhi-temp.jpg")
+                            :size 13468}
+                :submit "Save"})
+
 (deftest attachment
   (let [attachment (sut/params->attachment! (:leaf-file params1))]
     (testing "returns an 'attachment' document"
@@ -73,6 +80,20 @@
         mount/start)
     (is (thrown? java.io.FileNotFoundException
                  (sut/params->attachment! (:leaf-file params1))))))
+
+(deftest funky-characters
+  (testing "replaces whitespace with underscores"
+    (let [attachment (sut/params->attachment! (:leaf-file ws-params))]
+      (testing "returns an 'attachment' document with underscores"
+        (is (= {:key "a2e0d5505185beb708ac5edaf4fc4d20"
+                :filename "bodhi_with_whitespace.jpg"
+                :content-type "image/jpeg"
+                :metadata ""
+                :service-name :disk
+                :byte-size 13468
+                :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"
+                :identified true}
+               attachment))))))
 
 (deftest attach!
   (let [doc1 (c/params->doc params1 [:type :leaf-file])

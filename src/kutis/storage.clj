@@ -1,5 +1,6 @@
 (ns kutis.storage
   (:require [clojure.java.io :as io]
+            [clojure.string]
             [kutis.support :refer [path-join]]
             [kutis.record]
             [kutis.record.nested :as nested]
@@ -49,13 +50,16 @@
       (hash/md5)
       (bytes->hex)))
 
+(defn clean-filename [s]
+  (clojure.string/replace s #"\s" "_"))
+
 (defn save-file! [tempfile attachment]
   (.renameTo tempfile (io/file (service-filename attachment))))
 
 (defn params->attachment! [file-params]
   (let [tempfile (:tempfile file-params)
         attachment {:key          (calculate-key tempfile)
-                    :filename     (:filename file-params)
+                    :filename     (clean-filename (:filename file-params))
                     :metadata     ""
                     :service-name (:service service-config)
                     ;; unfurled:
