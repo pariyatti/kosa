@@ -1,5 +1,6 @@
 (ns kosa.seeds.crux
   (:require [clojure.java.io :as io]
+            [clojure.tools.logging :as log]
             [kutis.support :refer [path-join]]
             [kutis.storage :as storage]
             [crux.api :as x]
@@ -49,10 +50,10 @@
                                  (storage/attached-filename a))))))
 
 (defn run [target & _args]
-  (println "Seeding Crux...")
-  (println "Adding attachments...")
+  (log/info "Seeding Crux...")
+  (log/info "Adding attachments...")
   (copy-attachments!)
-  (println "Adding entities...")
+  (log/info "Adding entities...")
   (when-let [node (d/get-node (:db :conf target))]
     (let [txs [[:crux.tx/put {:crux.db/id #uuid "c58027f8-7c00-46d9-8338-6289e70ad299",
                               :type "image-artefact",
@@ -79,4 +80,4 @@
                [:crux.tx/put buddha-attachment]]]
 
       (d/transact! node txs (format "Seed '%s' failed to apply." (ns-name *ns*)))
-      (println "...done."))))
+      (log/info "...done."))))

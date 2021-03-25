@@ -2,7 +2,8 @@
   (:require [clojure.java.io :as io]
             [clojure.spec.alpha :as s]
             [aero.core :as aero]
-            [mount.core :as mount :refer [defstate]]))
+            [mount.core :as mount :refer [defstate]]
+            [clojure.tools.logging :as log]))
 
 (s/def :db-spec/data-dir string?)
 
@@ -17,7 +18,7 @@
 
 (defn start-config! []
   (let [config-file (get-in (mount/args) [:options :config-file])
-        _ (println (format "Reading config from '%s'." config-file))
+        _ (log/info (format "Reading config from '%s'." config-file))
         config-read (aero/read-config config-file)]
     (if (s/valid? ::config config-read)
       config-read

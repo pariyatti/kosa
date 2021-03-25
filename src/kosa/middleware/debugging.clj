@@ -1,9 +1,10 @@
-(ns kosa.middleware.debugging)
+(ns kosa.middleware.debugging
+  [:require [kutis.support.debugging :refer [dbg]]])
 
-(defn wrap-println-request
+(defn wrap-debug-request
   "Just some lazy debugging trash"
   [h]
   (fn [req]
-    (prn "REQUEST:")
-    (prn req)
+    (dbg "REQUEST:"
+         req)
     (h req)))

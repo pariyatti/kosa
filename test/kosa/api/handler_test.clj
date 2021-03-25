@@ -56,5 +56,4 @@
                                            :metadata ""
                                            :byte-size 13468}}]}]
 
-        (println (clojure.data/diff expected resp))
         (is (= expected resp))))))
