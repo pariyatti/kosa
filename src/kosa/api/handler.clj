@@ -8,14 +8,9 @@
 
 (defn search [req]
   (let [text (-> req :params :q)
-        list (image-db/search-for text)
-        ;; TODO: un-hack this by adding proper conversion to cheshire:
-        hacked-list (map #(assoc % :modified-at nil)
-                         list)]
-    (println "hacked list:")
-    (println hacked-list)
+        list (image-db/search-for text)]
     (resp/response
-     hacked-list)))
+     list)))
 
 (def kosa-epoch "2020-12-12T00:00:00.000Z")
 

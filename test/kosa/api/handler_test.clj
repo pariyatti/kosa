@@ -32,11 +32,12 @@
         image-artefact2 (storage/attach! image-artefact :image-attachment file)
         _ (image/put image-artefact2)]
 
-    (testing "serializes java.time.Instant"
+    (testing "returns list of images"
       (let [resp (sut/search {:params {:q "bodhi"}})
             resp (assoc resp :body (vec (doall (:body resp))))
             resp (-> resp
                      (assoc-in  [:body 0 :crux.db/id] nil)
+                     (assoc-in  [:body 0 :modified-at] nil)
                      (assoc-in  [:body 0 :image-attachment :crux.db/id] nil))
             expected {:status 200,
                 :headers {},
