@@ -28,7 +28,7 @@
 	   :add-owner]]))
 
 (defn up [db]
-  (let [node (d/get-node (:conf db))]
+  (with-open [node (d/get-node (:conf db))]
     (mk-tx-fn node)
     (run-tx-fn node))
   ;; (let [node (d/get-node (:conf db))
