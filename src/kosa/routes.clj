@@ -10,9 +10,10 @@
             [kosa.mobile.today.stacked-inspiration.handler :as stacked-inspiration-handler]
             [kosa.mobile.today.stacked-inspiration.spec]
             [kutis.dispatch :refer [resources]]
-            [reitit.ring :as rr]
             [muuntaja.core :as m]
+            [reitit.ring :as rr]
             [reitit.coercion.spec :as c]
+            [reitit.dev.pretty :as pretty]
             [ring.util.response :as resp]
             [kosa.middleware.validation :refer [wrap-spec-validation]]
             [kosa.middleware]))
@@ -67,4 +68,5 @@
     ;; :reitit.middleware/transform reitit.ring.middleware.dev/print-request-diffs
     :data {:muuntaja m/instance
            :coercion c/coercion
-           :middleware kosa.middleware/router-bundle}}))
+           :middleware kosa.middleware/router-bundle}
+    :exception pretty/exception}))

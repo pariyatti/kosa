@@ -5,8 +5,8 @@
    [kosa.middleware.json :as json]
    [kosa.middleware.logger :as logger]
    [kosa.middleware.params :as params]
+   [kosa.middleware.exception :as exception]
    [reitit.ring.coercion :as coercion]
-   [reitit.ring.middleware.exception :as exception]
    [reitit.ring.middleware.parameters :as parameters]
    [reitit.ring.middleware.muuntaja :as muuntaja]
    [reitit.ring.middleware.multipart :as multipart]))
@@ -19,7 +19,7 @@
    json/json-body
    parameters/parameters-middleware
    params/multipart-params
-   muuntaja/format-negotiate-middleware
+   muuntaja/format-middleware
    exception/exception-middleware
    coercion/coerce-request-middleware
    params/keyword-params
