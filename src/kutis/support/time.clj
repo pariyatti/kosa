@@ -1,8 +1,10 @@
 (ns kutis.support.time
-  (:refer-clojure :exclude [format])
+  (:refer-clojure :exclude [time])
   (:require [tick.alpha.api :as t]
             [chime.core :as chime]
-            [clojure.string :as clojure.string]))
+            [clojure.string :as clojure.string])
+  (:import [java.time ZonedDateTime ZoneId]
+           [java.time.chrono Era IsoEra IsoChronology]))
 
 (def ^:dynamic clock (t/atom))
 
@@ -32,3 +34,29 @@
   (-> (chime/periodic-seq (t/>> (now) (t/new-duration offset-seconds :seconds))
                           (t/new-duration period-seconds :seconds))
       rest))
+
+;; dates and publishing:
+
+(def CE (IsoEra/CE))
+(def BCE (IsoEra/BCE))
+
+(defn date
+  "Get a date, modern or ancient, from its components. Prefer
+   the signature with explicit `era` wherever possible."
+  ([era year-of-era]
+   (date era year-of-era 1 1))
+  ([era year-of-era month day]
+   (if (and (= BCE era)
+            (< year-of-era 0))
+     (throw (java.lang.IllegalArgumentException.
+             (format "Negative year '%s' supplied for BCE date." year-of-era)))
+     (.date (IsoChronology/INSTANCE) era year-of-era month day)))
+  ([proleptic-year month day]
+   (.date (IsoChronology/INSTANCE) proleptic-year month day)))
+
+(def time t/new-time)
+
+(defn date-time
+  "Always use this public API to create :published-at date/times."
+  [d t]
+  (t/instant (ZonedDateTime/of d t (ZoneId/of "UTC"))))
