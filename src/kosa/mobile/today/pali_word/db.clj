@@ -5,7 +5,6 @@
 
 (def fields #{:type
               :card-type
-              :updated-at
               :published-at
               :original-pali ;; from *.pariyatti.org - a long string
               :original-url  ;; from *.pariyatti.org
@@ -32,8 +31,7 @@
     (kutis.record/query find-query param)))
 
 (defn put [e]
-  ;; TODO: we need a low-level home for applying `:updated-at` to all entities
-  (kutis.record/put (assoc e :updated-at (time/now)) fields))
+  (kutis.record/put e fields))
 
 (defn get [id]
   (kutis.record/get id))

@@ -10,7 +10,7 @@
             [kutis.support.time :as time]
             [kutis.fixtures.time-fixtures :as time-fixtures]))
 
-(use-fixtures :once time-fixtures/freeze-clock)
+(use-fixtures :once time-fixtures/freeze-clock-1995)
 (use-fixtures :each record-fixtures/load-states)
 
 (defn pali-word
@@ -21,7 +21,7 @@
                        :translation translation
                        :language "en"}]]
     {:crux.db/id (uuid)
-     :updated-at @time/clock
+     :updated-at time-fixtures/win95
      :published-at (time/now)
      :header "sticky header"
      :bookmarkable true
@@ -33,11 +33,13 @@
 
 (deftest pali-word-listing-operation
   (testing "Can list pali words in reverse chronological order"
+    (time/unfreeze-clock!)
     (let [word-1 (db/put (pali-word "word-1" "translation-1"))
           word-2 (db/put (pali-word "word-2" "translation-2"))]
       ;; (prn (clojure.data/diff word-2 (first (db/list))))
-      (is (= [word-2 word-1]
-             (db/list))))))
+      (is (= (map :pali [word-2 word-1])
+             (map :pali (db/list)))))
+    (time/freeze-clock! time-fixtures/win95)))
 
 (deftest http-params->edn-document
   (testing "Zips languages and translations"

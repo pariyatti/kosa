@@ -9,7 +9,6 @@
             [kutis.support.time :as time]))
 
 (def fields #{:type
-              :updated-at
               :original-url ;; from *.pariyatti.org
               :image-attachment-id
               :searchables})
@@ -42,9 +41,7 @@
       (map rehydrate raw-images))))
 
 (defn put [e]
-  (let [doc (assoc e
-                   :updated-at (time/now)
-                   :type "image-artefact")]
+  (let [doc (assoc e :type "image-artefact")]
     (-> doc
         (search/tag-searchables (-> doc :image-attachment :filename))
         (nested/collapse-one :image-attachment)
