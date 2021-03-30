@@ -3,7 +3,7 @@
   (:require [tick.alpha.api :as t]
             [chime.core :as chime]
             [clojure.string :as clojure.string])
-  (:import [java.time ZonedDateTime ZoneId]
+  (:import [java.time LocalDate ZonedDateTime ZoneId]
            [java.time.chrono Era IsoEra IsoChronology]))
 
 (def ^:dynamic clock (t/atom))
@@ -56,9 +56,18 @@
 
 (def time t/new-time)
 
+(def date-time)
+
+(defmulti ->date-time class)
+
+(defmethod ->date-time java.time.LocalDate [d] (date-time d (time 0 0 0)))
+
+;; NOTE: I'm not actually sure this is a great idea. -sd
+(defmethod ->date-time java.time.Instant [i] i)
+
 (defn date-time
   "Always use this public API to create :published-at date/times."
   ([d]
-   (date-time d (time 0 0 0)))
+   (->date-time d))
   ([d t]
    (t/instant (ZonedDateTime/of d t (ZoneId/of "UTC")))))
