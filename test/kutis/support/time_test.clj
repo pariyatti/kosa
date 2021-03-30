@@ -67,4 +67,8 @@
   (testing "creates an instant in the BCE era from date + time"
     (is (= #time/instant "-0349-01-01T13:35:22Z"
            (sut/date-time (sut/date sut/BCE 350)
-                          (sut/time 13 35 22))))))
+                          (sut/time 13 35 22)))))
+
+  (testing "creates an instant with empty time if only date is provided"
+    (is (= #time/instant "-0349-01-01T00:00:00Z"
+           (sut/date-time (sut/date sut/BCE 350))))))

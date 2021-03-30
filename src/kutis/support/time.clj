@@ -58,5 +58,7 @@
 
 (defn date-time
   "Always use this public API to create :published-at date/times."
-  [d t]
-  (t/instant (ZonedDateTime/of d t (ZoneId/of "UTC"))))
+  ([d]
+   (date-time d (time 0 0 0)))
+  ([d t]
+   (t/instant (ZonedDateTime/of d t (ZoneId/of "UTC")))))
