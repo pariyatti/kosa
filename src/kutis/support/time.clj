@@ -8,6 +8,20 @@
 
 (def ^:dynamic clock (t/atom))
 
+(defn freeze-clock!
+  "THIS IS ONLY FOR TESTS."
+  ([]
+   (freeze-clock! (t/now)))
+  ([i]
+   (let [inst (t/instant i)]
+     (t/reset! clock (t/clock inst))
+     inst)))
+
+(defn unfreeze-clock!
+  "THIS IS ONLY FOR TESTS."
+  []
+  (t/reset! clock (t/clock)))
+
 (defn now []
   @clock)
 
