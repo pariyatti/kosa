@@ -9,7 +9,7 @@
             [kutis.support.time :as time]))
 
 (def fields #{:type
-              :modified-at
+              :updated-at
               :original-url ;; from *.pariyatti.org
               :image-attachment-id
               :searchables})
@@ -21,10 +21,10 @@
        (storage/url (:image-attachment img)))))
 
 (defn list []
-  (let [list-query '{:find     [e modified-at]
+  (let [list-query '{:find     [e updated-at]
                      :where    [[e :type "image-artefact"]
-                                [e :modified-at modified-at]]
-                     :order-by [[modified-at :desc]]}
+                                [e :updated-at updated-at]]
+                     :order-by [[updated-at :desc]]}
         raw-images (record/query list-query)]
     (map rehydrate raw-images)))
 
@@ -43,7 +43,7 @@
 
 (defn put [e]
   (let [doc (assoc e
-                   :modified-at (time/now)
+                   :updated-at (time/now)
                    :type "image-artefact")]
     (-> doc
         (search/tag-searchables (-> doc :image-attachment :filename))

@@ -28,7 +28,7 @@
   ([obj]
    (clean-ids obj nil))
   ([obj innards]
-   (let [top-clean (dissoc obj :crux.db/id :key :modified-at :image-attachment-id)]
+   (let [top-clean (dissoc obj :crux.db/id :key :updated-at :image-attachment-id)]
      (if innards
        (update-in top-clean innards dissoc :crux.db/id :key)
        top-clean))))
@@ -44,7 +44,7 @@
       (let [img (sut/put image-artefact2)
             img-found (kutis.record/get (:crux.db/id img))
             attachment-found (kutis.record/get (:image-attachment-id img-found))]
-        (is (= #{:crux.db/id :modified-at :type :image-attachment-id :searchables}
+        (is (= #{:crux.db/id :updated-at :type :image-attachment-id :searchables}
                (-> img-found keys set)))
         (is (= image-attachment (clean-ids attachment-found)))))
 

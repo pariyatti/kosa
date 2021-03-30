@@ -10,6 +10,7 @@
             [kosa.mobile.today.stacked-inspiration.handler :as stacked-inspiration-handler]
             [kosa.mobile.today.stacked-inspiration.spec]
             [kutis.dispatch :refer [resources]]
+            [kutis.dispatch.json :as dispatch-json]
             [muuntaja.core :as m]
             [reitit.ring :as rr]
             [reitit.coercion.spec :as c]
@@ -66,7 +67,7 @@
    {:conflicts nil
     ;; WARNING: these diffs are very handy, but very slow:
     ;; :reitit.middleware/transform reitit.ring.middleware.dev/print-request-diffs
-    :data {:muuntaja m/instance
+    :data {:muuntaja dispatch-json/muuntaja-instance
            :coercion c/coercion
            :middleware kosa.middleware/router-bundle}
     :exception pretty/exception}))

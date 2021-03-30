@@ -37,12 +37,12 @@
             resp (assoc resp :body (vec (doall (:body resp))))
             resp (-> resp
                      (assoc-in  [:body 0 :crux.db/id] nil)
-                     (assoc-in  [:body 0 :modified-at] nil)
+                     (assoc-in  [:body 0 :updated-at] nil)
                      (assoc-in  [:body 0 :image-attachment :crux.db/id] nil))
             expected {:status 200,
                 :headers {},
                 :body [{:type "image-artefact",
-                        :modified-at nil,
+                        :updated-at nil,
                         :searchables "bodhi with raindrops jpg bodhi-with-raindrops.jpg",
                         :crux.db/id nil
                         :image-attachment {:key "a2e0d5505185beb708ac5edaf4fc4d20",

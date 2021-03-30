@@ -5,7 +5,7 @@
 
 (def fields #{:type
               :card-type
-              :modified-at
+              :updated-at
               :published-at
               :original-pali ;; from *.pariyatti.org - a long string
               :original-url  ;; from *.pariyatti.org
@@ -17,23 +17,23 @@
               :header :id :audio})
 
 (defn list []
-  (let [list-query '{:find     [e modified-at]
+  (let [list-query '{:find     [e updated-at]
                      :where    [[e :card-type "pali_word"]
-                                [e :modified-at modified-at]]
-                     :order-by [[modified-at :desc]]}]
+                                [e :updated-at updated-at]]
+                     :order-by [[updated-at :desc]]}]
     (kutis.record/query list-query)))
 
 (defn q [attr param]
-  (let [find-query {:find     '[e modified-at]
+  (let [find-query {:find     '[e updated-at]
                     :in       '[original-pali]
                     :where    [['e attr 'original-pali]
-                               '[e :modified-at modified-at]]
-                    :order-by '[[modified-at :desc]]}]
+                               '[e :updated-at updated-at]]
+                    :order-by '[[updated-at :desc]]}]
     (kutis.record/query find-query param)))
 
 (defn put [e]
-  ;; TODO: we need a low-level home for applying `:modified-at` to all entities
-  (kutis.record/put (assoc e :modified-at (time/now)) fields))
+  ;; TODO: we need a low-level home for applying `:updated-at` to all entities
+  (kutis.record/put (assoc e :updated-at (time/now)) fields))
 
 (defn get [id]
   (kutis.record/get id))

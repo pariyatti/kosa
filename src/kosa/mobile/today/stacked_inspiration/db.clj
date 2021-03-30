@@ -6,7 +6,7 @@
             [kutis.record.nested :as nested]))
 
 (def fields #{:card-type
-              :modified-at
+              :updated-at
               :published-at
               :bookmarkable
               :shareable
@@ -20,16 +20,16 @@
        (storage/url (:image-attachment img)))))
 
 (defn list []
-  (let [list-query '{:find     [e modified-at]
+  (let [list-query '{:find     [e updated-at]
                      :where    [[e :card-type "stacked_inspiration"]
-                                [e :modified-at modified-at]]
-                     :order-by [[modified-at :desc]]}]
+                                [e :updated-at updated-at]]
+                     :order-by [[updated-at :desc]]}]
     (map rehydrate (kutis.record/query list-query))))
 
 (defn put [e]
-  ;; TODO: we need a low-level home for applying `:modified-at` to all entities
+  ;; TODO: we need a low-level home for applying `:updated-at` to all entities
   (let [doc (assoc e
-                   :modified-at (time/now)
+                   :updated-at (time/now)
                    :card-type "stacked_inspiration")]
     (-> doc
         (nested/collapse-one :image-attachment)

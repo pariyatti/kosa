@@ -95,9 +95,9 @@
 (defn list
   [type]
   (let [type-kw (name type)
-        list-query '{:find     [e modified-at]
+        list-query '{:find     [e updated-at]
                      :where    [[e :type type]
-                                [e :modified-at modified-at]]
-                     :order-by [[modified-at :desc]]
+                                [e :updated-at updated-at]]
+                     :order-by [[updated-at :desc]]
                      :in [type]}]
     (query list-query type-kw)))
