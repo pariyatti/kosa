@@ -1,13 +1,18 @@
 (ns kutis.record-test
-  (:require [clojure.test :refer :all]
+  (:require [clojure.test :refer :all :exclude [time]]
             [crux.api]
+            [kutis.support.time :as time]
             [kutis.support.digest :refer [->uuid]]
-            [kutis.fixtures.record-fixtures :as fixtures]
+            [kutis.fixtures.record-fixtures :as record-fixtures]
+            [kutis.fixtures.time-fixtures :as time-fixtures]
             [kutis.record :as sut]))
 
-(use-fixtures :once fixtures/load-states)
+(use-fixtures :once
+  record-fixtures/load-states
+  time-fixtures/freeze-clock)
 
 (def record {:crux.db/id (->uuid "3291d680-0d70-4940-914d-35413e261115")
+             :updated-at @time/clock
              :record     "vinyl"
              :artist     "The Who"})
 
@@ -29,12 +34,13 @@
 
   (testing "put generates a new id"
     (let [inserted (sut/put record-without-id [:country :state :city :population])]
-      (is (= record-without-id (dissoc inserted :crux.db/id)))
+      (is (= record-without-id (dissoc inserted :crux.db/id :updated-at)))
       (is (not (nil? (:crux.db/id inserted))))))
 
   (testing "put barfs on badly-formed documents"
     (is (thrown-with-msg? java.lang.Exception #"Extra fields ':superfluous-field' found during put."
-                          (sut/put {:city "Igatpuri" :superfluous-field "I should cause an error."}
+                          (sut/put {:city "Igatpuri"
+                                    :superfluous-field "I should cause an error."}
                                    [:city])))))
 
 (deftest db-update-operations
@@ -44,8 +50,8 @@
                               (assoc :artist "the kinks" :song "Lola"))
           inserted-record (sut/put-async* new-record)]
       (crux.api/await-tx sut/crux-node inserted-record)
-      (is (= (sut/get "3291d680-0d70-4940-914d-35413e261115")
-             new-record))))
+      (is (= new-record
+             (sut/get "3291d680-0d70-4940-914d-35413e261115")))))
 
   (testing "put overwrites an existing record"
     (let [required-fields [:country :state :city :population]

@@ -4,9 +4,13 @@
             [kutis.fixtures.record-fixtures :as record-fixtures]
             [kutis.record.nested :as sut]
             [kutis.record :as record]
-            [kutis.support.digest :refer [uuid]]))
+            [kutis.support.digest :refer [uuid]]
+            [kutis.support.time :as time]
+            [kutis.fixtures.time-fixtures :as time-fixtures]))
 
-(use-fixtures :once record-fixtures/load-states)
+(use-fixtures :once
+  record-fixtures/load-states
+  time-fixtures/freeze-clock)
 
 (def id1 (uuid))
 (def id2 (uuid))
@@ -30,12 +34,15 @@
         collapsed (sut/collapse-all doc "plant")]
 
     (testing "collapses all attachments"
-      (is (= {:name "List of plants"
+      (is (= collapsed
+             {:name "List of plants"
               :tree-plant-id id1
               :shrub-plant-id id2})))))
 
 (deftest expand-one
-  (let [tree {:crux.db/id id1 :name "Birch"}
+  (let [tree {:crux.db/id id1
+              :updated-at @time/clock
+              :name "Birch"}
         shrub {:crux.db/id id2 :name "Sage"}
         doc {:crux.db/id id3
              :name "List of plants"
@@ -51,8 +58,12 @@
            (sut/expand-one doc :tree-plant-id)))))
 
 (deftest expand-all
-  (let [tree {:crux.db/id id1 :name "Birch"}
-        shrub {:crux.db/id id2 :name "Sage"}
+  (let [tree {:crux.db/id id1
+              :updated-at @time/clock
+              :name "Birch"}
+        shrub {:crux.db/id id2
+               :updated-at @time/clock
+               :name "Sage"}
         doc {:crux.db/id id3
              :name "List of plants"
              :tree-plant-id id1

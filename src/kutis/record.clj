@@ -4,9 +4,11 @@
             [crux.api :as crux]
             [crux.rocksdb :as rocks]
             [kosa.config :as config]
+            [kutis.support.time :as time]
             [kutis.support :refer [path-join]]
             [kutis.support.digest :refer [uuid ->uuid]]
-            [mount.core :refer [defstate]]))
+            [mount.core :refer [defstate]]
+            [kutis.support.time :as time]))
 
 (def crux-node)
 
@@ -42,12 +44,15 @@
   (crux/submit-tx crux-node [[:crux.tx/put datum]]))
 
 (defn put-prepare [raw]
-  (if (:crux.db/id raw)
-    (assoc raw :crux.db/id (->uuid (:crux.db/id raw)))
-    (assoc raw :crux.db/id (uuid))))
+  (let [old-id (:crux.db/id raw)]
+    (-> raw
+        (assoc :crux.db/id (if old-id
+                             (->uuid old-id)
+                             (uuid)))
+        (assoc :updated-at (time/now)))))
 
 (defn validate-put! [e allowed-keys]
-  (let [allowed-keys* (conj allowed-keys :crux.db/id :published-at)
+  (let [allowed-keys* (conj allowed-keys :crux.db/id :published-at :updated-at)
         extras (apply dissoc e allowed-keys*)]
     (when (not-empty extras)
       (throw (ex-info (format "Extra fields '%s' found during put."

@@ -6,10 +6,14 @@
             [kutis.fixtures.storage-fixtures :as storage-fixtures]
             [kutis.fixtures.file-fixtures :as file-fixtures]
             [kutis.storage :as storage]
+            [kutis.support.time :as time]
             [clojure.data]
-            [clojure.test :refer :all]))
+            [clojure.test :refer :all]
+            [kutis.fixtures.time-fixtures :as time-fixtures]))
 
-(use-fixtures :once record-fixtures/load-states)
+(use-fixtures :once
+  record-fixtures/load-states
+  time-fixtures/freeze-clock)
 (use-fixtures :each
   file-fixtures/copy-fixture-files
   storage-fixtures/set-service-config)
@@ -37,22 +41,22 @@
             resp (assoc resp :body (vec (doall (:body resp))))
             resp (-> resp
                      (assoc-in  [:body 0 :crux.db/id] nil)
-                     (assoc-in  [:body 0 :updated-at] nil)
                      (assoc-in  [:body 0 :image-attachment :crux.db/id] nil))
             expected {:status 200,
                 :headers {},
                 :body [{:type "image-artefact",
-                        :updated-at nil,
+                        :updated-at @time/clock,
                         :searchables "bodhi with raindrops jpg bodhi-with-raindrops.jpg",
                         :crux.db/id nil
-                        :image-attachment {:key "a2e0d5505185beb708ac5edaf4fc4d20",
+                        :image-attachment {:crux.db/id nil
+                                           :updated-at @time/clock
+                                           :key "a2e0d5505185beb708ac5edaf4fc4d20",
                                            :service-name :disk,
                                            :filename "bodhi-with-raindrops.jpg",
                                            :checksum "ca20bbfbea75755b1059ff2cd64bd6d3",
                                            :url "/uploads/kutis-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg",
                                            :content-type "image/jpeg",
                                            :identified true,
-                                           :crux.db/id nil
                                            :metadata ""
                                            :byte-size 13468}}]}]
 

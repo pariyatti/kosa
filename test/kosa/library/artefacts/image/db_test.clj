@@ -7,14 +7,19 @@
             [kutis.fixtures.storage-fixtures :as storage-fixtures]
             [kutis.fixtures.file-fixtures :as file-fixtures]
             [kutis.record]
-            [kutis.storage :as storage]))
+            [kutis.storage :as storage]
+            [kutis.support.time :as time]
+            [kutis.fixtures.time-fixtures :as time-fixtures]))
 
-(use-fixtures :once record-fixtures/load-states)
+(use-fixtures :once
+  record-fixtures/load-states
+  time-fixtures/freeze-clock-1995)
 (use-fixtures :each
   file-fixtures/copy-fixture-files
   storage-fixtures/set-service-config)
 
-(def image-attachment {:filename "bodhi-with-raindrops.jpg"
+(def image-attachment {:updated-at time-fixtures/win95
+                       :filename "bodhi-with-raindrops.jpg"
                        :content-type "image/jpeg"
                        :metadata ""
                        :service-name :disk
@@ -28,7 +33,7 @@
   ([obj]
    (clean-ids obj nil))
   ([obj innards]
-   (let [top-clean (dissoc obj :crux.db/id :key :updated-at :image-attachment-id)]
+   (let [top-clean (dissoc obj :crux.db/id :key :image-attachment-id)]
      (if innards
        (update-in top-clean innards dissoc :crux.db/id :key)
        top-clean))))
@@ -50,6 +55,7 @@
 
     (testing "On lookup, rehydrates attachment back into the artefact"
       (let [expected (assoc image-artefact
+                            :updated-at time-fixtures/win95
                             :searchables "bodhi with raindrops jpg bodhi-with-raindrops.jpg"
                             :image-attachment
                             (assoc image-attachment
@@ -57,7 +63,6 @@
             img (sut/put image-artefact2)
             img-found (sut/get (:crux.db/id img))
             img-no-ids (clean-ids img-found [:image-attachment])]
-        ;; (prn (clojure.data/diff expected img-no-ids))
         (is (= expected img-no-ids))))
 
     (testing "On list, rehydrates all attachments"

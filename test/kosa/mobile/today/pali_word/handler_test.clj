@@ -5,20 +5,23 @@
             [kosa.mobile.today.pali-word.db :as db]
             [kosa.mobile.today.pali-word.handler :as pali-word-handler]
             [kosa.routes :as routes]
-            [kutis.fixtures.record-fixtures :as fixtures]
+            [kutis.fixtures.record-fixtures :as record-fixtures]
             [kutis.support.digest :refer [uuid]]
-            [kutis.support.time :as time]))
+            [kutis.support.time :as time]
+            [kutis.fixtures.time-fixtures :as time-fixtures]))
 
-(use-fixtures :each fixtures/load-states)
+(use-fixtures :once time-fixtures/freeze-clock)
+(use-fixtures :each record-fixtures/load-states)
 
 (defn pali-word
   "TODO: Should probably use the spec generators for this"
   [word translation]
   (let [audio {:url "/audio/path"}
-        translations [{:id (uuid)
+        translations [{:crux.db/id (uuid)
                        :translation translation
                        :language "en"}]]
-    {:id (uuid)
+    {:crux.db/id (uuid)
+     :updated-at @time/clock
      :published-at (time/now)
      :header "sticky header"
      :bookmarkable true

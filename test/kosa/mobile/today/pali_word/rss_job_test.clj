@@ -2,9 +2,11 @@
   (:require [kosa.mobile.today.pali-word.rss-job :as sut]
             [kosa.mobile.today.pali-word.db :as db]
             [clojure.test :refer :all]
-            [kutis.fixtures.record-fixtures :as fixtures]))
+            [kutis.fixtures.record-fixtures :as record-fixtures]
+            [kutis.fixtures.time-fixtures :as time-fixtures]))
 
-(use-fixtures :each fixtures/load-states)
+(use-fixtures :once time-fixtures/freeze-clock)
+(use-fixtures :each record-fixtures/load-states)
 
 (deftest ^:integration polling
   (testing "only gets feed updates once with If-None-Match and If-Modified-Since HTTP headers"

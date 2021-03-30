@@ -6,12 +6,16 @@
             [kutis.fixtures.file-fixtures :as file-fixtures]
             [kutis.fixtures.storage-fixtures :as storage-fixtures]
             [kutis.support]
+            [kutis.support.time :as time]
             [kutis.record]
             [kutis.controller :as c]
-            [kutis.storage :as sut])
+            [kutis.storage :as sut]
+            [kutis.fixtures.time-fixtures :as time-fixtures])
   (:import [java.io FileNotFoundException]))
 
-(use-fixtures :once record-fixtures/load-states)
+(use-fixtures :once
+  record-fixtures/load-states
+  time-fixtures/freeze-clock)
 (use-fixtures :each
   file-fixtures/copy-fixture-files
   storage-fixtures/set-service-config)
@@ -106,7 +110,8 @@
     (testing "records the attachment in Crux"
       (let [attachment (kutis.record/get (-> doc2 :leaf-attachment :crux.db/id))]
         (is (not (nil? (:crux.db/id attachment))))
-        (is (= {:key "a2e0d5505185beb708ac5edaf4fc4d20"
+        (is (= {:updated-at @time/clock
+                :key "a2e0d5505185beb708ac5edaf4fc4d20"
                 :filename "bodhi-with-raindrops.jpg"
                 :content-type "image/jpeg"
                 :metadata ""
