@@ -1,5 +1,5 @@
 (ns dev.repl
-  (:require [kutis.record :as record]
+  (:require [kuti.record :as record]
             [kosa.config :as config]
             [kosa.core :as core]
             [kosa.server :as server]

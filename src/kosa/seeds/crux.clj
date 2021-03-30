@@ -1,8 +1,8 @@
 (ns kosa.seeds.crux
   (:require [clojure.java.io :as io]
             [clojure.tools.logging :as log]
-            [kutis.support :refer [path-join]]
-            [kutis.storage :as storage]
+            [kuti.support :refer [path-join]]
+            [kuti.storage :as storage]
             [crux.api :as x]
             [joplin.crux.database :as d]))
 

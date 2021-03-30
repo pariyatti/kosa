@@ -3,13 +3,13 @@
             [clojure.data]
             [clojure.java.io :as io]
             [kosa.library.artefacts.image.db :as sut]
-            [kutis.fixtures.record-fixtures :as record-fixtures]
-            [kutis.fixtures.storage-fixtures :as storage-fixtures]
-            [kutis.fixtures.file-fixtures :as file-fixtures]
-            [kutis.record]
-            [kutis.storage :as storage]
-            [kutis.support.time :as time]
-            [kutis.fixtures.time-fixtures :as time-fixtures]))
+            [kuti.fixtures.record-fixtures :as record-fixtures]
+            [kuti.fixtures.storage-fixtures :as storage-fixtures]
+            [kuti.fixtures.file-fixtures :as file-fixtures]
+            [kuti.record]
+            [kuti.storage :as storage]
+            [kuti.support.time :as time]
+            [kuti.fixtures.time-fixtures :as time-fixtures]))
 
 (use-fixtures :once
   record-fixtures/load-states
@@ -41,14 +41,14 @@
 (deftest attachment-acceptance-tests
   (let [file {:filename "bodhi-with-raindrops.jpg",
               :content-type "image/jpeg",
-              :tempfile (io/file "test/kutis/fixtures/files/bodhi-temp.jpg")
+              :tempfile (io/file "test/kuti/fixtures/files/bodhi-temp.jpg")
               :size 13468}
         image-artefact2 (storage/attach! image-artefact :image-attachment file)]
 
     (testing "On insert, flattens Image Artefacts into (1) artefact and (2) attachment"
       (let [img (sut/put image-artefact2)
-            img-found (kutis.record/get (:crux.db/id img))
-            attachment-found (kutis.record/get (:image-attachment-id img-found))]
+            img-found (kuti.record/get (:crux.db/id img))
+            attachment-found (kuti.record/get (:image-attachment-id img-found))]
         (is (= #{:crux.db/id :updated-at :type :image-attachment-id :searchables}
                (-> img-found keys set)))
         (is (= image-attachment (clean-ids attachment-found)))))
@@ -59,7 +59,7 @@
                             :searchables "bodhi with raindrops jpg bodhi-with-raindrops.jpg"
                             :image-attachment
                             (assoc image-attachment
-                                   :url "/uploads/kutis-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg"))
+                                   :url "/uploads/kuti-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg"))
             img (sut/put image-artefact2)
             img-found (sut/get (:crux.db/id img))
             img-no-ids (clean-ids img-found [:image-attachment])]
@@ -67,7 +67,7 @@
 
     (testing "On list, rehydrates all attachments"
       (let [expected (assoc image-attachment
-                            :url "/uploads/kutis-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg")
+                            :url "/uploads/kuti-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg")
             img (sut/put image-artefact2)
             img2 (sut/put image-artefact2)
             imgs (vec (sut/list))]

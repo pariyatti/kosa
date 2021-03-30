@@ -5,11 +5,11 @@
             [kosa.config :as config]
             [kosa.routes :as routes]
             [kosa.server :as server]
-            [kutis.core :as kutis]
-            [kutis.dispatch :as dispatch]
-            [kutis.record :as db]
-            [kutis.storage :as storage]
-            [kutis.job :as job]
+            [kuti.core :as kuti]
+            [kuti.dispatch :as dispatch]
+            [kuti.record :as db]
+            [kuti.storage :as storage]
+            [kuti.job :as job]
             [mount-up.core :as mu]
             [mount.core :as mount]))
 

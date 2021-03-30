@@ -1,6 +1,6 @@
 (ns kosa.api.handler
-  (:require [kutis.support.time :as time]
-            [kutis.support.digest :refer [uuid]]
+  (:require [kuti.support.time :as time]
+            [kuti.support.digest :refer [uuid]]
             [kosa.library.artefacts.image.db :as image-db]
             [kosa.mobile.today.pali-word.db :as pali-word-db]
             [kosa.mobile.today.stacked-inspiration.db :as stacked-inspiration-db]

@@ -1,8 +1,8 @@
 (ns kosa.mobile.today.pali-word.rss-job
   (:require [remus :refer [parse-url]]
             [clojure.tools.logging :as log]
-            [kutis.support :refer [when-let*]]
-            [kutis.support.time :as time]
+            [kuti.support :refer [when-let*]]
+            [kuti.support.time :as time]
             [kosa.config :as config]
             [kosa.mobile.today.pali-word.db :as db]
             [clojure.string]))

@@ -2,7 +2,7 @@
   (:require [ring.middleware.flash]
             [ring.middleware.session]
             [ring.middleware.session.cookie :as cookie]
-            [kutis.support.bytes :as bytes]))
+            [kuti.support.bytes :as bytes]))
 
 (def flash
   {:name ::flash

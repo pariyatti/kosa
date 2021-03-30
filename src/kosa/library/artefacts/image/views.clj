@@ -1,7 +1,7 @@
 (ns kosa.library.artefacts.image.views
   (:require [hiccup.core :as h]
             [hiccup.form :as f]
-            [kutis.storage :as storage]
+            [kuti.storage :as storage]
             [kosa.layouts.library :as l]
             [kosa.views :as v]))
 

@@ -1,8 +1,8 @@
 (ns kosa.library.artefacts.image.handler
   (:refer-clojure :exclude [update])
   (:require [clojure.java.io :as io]
-            [kutis.storage :as storage]
-            [kutis.controller :as c]
+            [kuti.storage :as storage]
+            [kuti.controller :as c]
             [kosa.library.artefacts.image.db :as db]
             [kosa.library.artefacts.image.views :as views]
             [kosa.views :as v]

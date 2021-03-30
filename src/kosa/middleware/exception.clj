@@ -1,7 +1,7 @@
 (ns kosa.middleware.exception
   (:require [clojure.pprint :refer [pprint]]
             [reitit.ring.middleware.exception :as exception]
-            [kutis.mailer :as mailer]))
+            [kuti.mailer :as mailer]))
 
 (derive ::error ::exception)
 (derive ::failure ::exception)

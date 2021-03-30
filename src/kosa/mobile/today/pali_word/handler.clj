@@ -3,7 +3,7 @@
   (:require [kosa.mobile.today.pali-word.db :as pali-word-db]
             [kosa.mobile.today.pali-word.views :as views]
             [kosa.views :as v]
-            [kutis.controller :as c]
+            [kuti.controller :as c]
             [ring.util.response :as resp]))
 
 (defn ->pali-word-doc [p]

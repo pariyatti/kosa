@@ -1,5 +1,5 @@
 (ns kosa.middleware.debugging
-  [:require [kutis.support.debugging :refer [dbg]]])
+  [:require [kuti.support.debugging :refer [dbg]]])
 
 (defn wrap-debug-request
   "Just some lazy debugging trash"

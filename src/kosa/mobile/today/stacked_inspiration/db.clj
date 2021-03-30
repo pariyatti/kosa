@@ -1,9 +1,9 @@
 (ns kosa.mobile.today.stacked-inspiration.db
   (:refer-clojure :exclude [list get])
-  (:require [kutis.record]
-            [kutis.storage :as storage]
-            [kutis.support.time :as time]
-            [kutis.record.nested :as nested]))
+  (:require [kuti.record]
+            [kuti.storage :as storage]
+            [kuti.support.time :as time]
+            [kuti.record.nested :as nested]))
 
 (def fields #{:card-type
               :published-at
@@ -23,13 +23,13 @@
                      :where    [[e :card-type "stacked_inspiration"]
                                 [e :updated-at updated-at]]
                      :order-by [[updated-at :desc]]}]
-    (map rehydrate (kutis.record/query list-query))))
+    (map rehydrate (kuti.record/query list-query))))
 
 (defn put [e]
   (let [doc (assoc e :card-type "stacked_inspiration")]
     (-> doc
         (nested/collapse-one :image-attachment)
-        (kutis.record/put fields))))
+        (kuti.record/put fields))))
 
 (defn get [id]
-  (rehydrate (kutis.record/get id)))
+  (rehydrate (kuti.record/get id)))

@@ -1,7 +1,7 @@
 (ns kosa.mobile.today.pali-word.db
   (:refer-clojure :exclude [list get])
-  (:require [kutis.record]
-            [kutis.support.time :as time]))
+  (:require [kuti.record]
+            [kuti.support.time :as time]))
 
 (def fields #{:type
               :card-type
@@ -20,7 +20,7 @@
                      :where    [[e :card-type "pali_word"]
                                 [e :updated-at updated-at]]
                      :order-by [[updated-at :desc]]}]
-    (kutis.record/query list-query)))
+    (kuti.record/query list-query)))
 
 (defn q [attr param]
   (let [find-query {:find     '[e updated-at]
@@ -28,10 +28,10 @@
                     :where    [['e attr 'original-pali]
                                '[e :updated-at updated-at]]
                     :order-by '[[updated-at :desc]]}]
-    (kutis.record/query find-query param)))
+    (kuti.record/query find-query param)))
 
 (defn put [e]
-  (kutis.record/put e fields))
+  (kuti.record/put e fields))
 
 (defn get [id]
-  (kutis.record/get id))
+  (kuti.record/get id))

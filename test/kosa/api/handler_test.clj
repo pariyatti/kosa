@@ -2,14 +2,14 @@
   (:require [clojure.java.io :as io]
             [kosa.library.artefacts.image.db :as image]
             [kosa.api.handler :as sut]
-            [kutis.fixtures.record-fixtures :as record-fixtures]
-            [kutis.fixtures.storage-fixtures :as storage-fixtures]
-            [kutis.fixtures.file-fixtures :as file-fixtures]
-            [kutis.storage :as storage]
-            [kutis.support.time :as time]
+            [kuti.fixtures.record-fixtures :as record-fixtures]
+            [kuti.fixtures.storage-fixtures :as storage-fixtures]
+            [kuti.fixtures.file-fixtures :as file-fixtures]
+            [kuti.storage :as storage]
+            [kuti.support.time :as time]
             [clojure.data]
             [clojure.test :refer :all]
-            [kutis.fixtures.time-fixtures :as time-fixtures]))
+            [kuti.fixtures.time-fixtures :as time-fixtures]))
 
 (use-fixtures :once
   record-fixtures/load-states
@@ -31,7 +31,7 @@
 (deftest search-acceptance
   (let [file {:filename "bodhi-with-raindrops.jpg",
               :content-type "image/jpeg",
-              :tempfile (io/file "test/kutis/fixtures/files/bodhi-temp.jpg")
+              :tempfile (io/file "test/kuti/fixtures/files/bodhi-temp.jpg")
               :size 13468}
         image-artefact2 (storage/attach! image-artefact :image-attachment file)
         _ (image/put image-artefact2)]
@@ -54,7 +54,7 @@
                                            :service-name :disk,
                                            :filename "bodhi-with-raindrops.jpg",
                                            :checksum "ca20bbfbea75755b1059ff2cd64bd6d3",
-                                           :url "/uploads/kutis-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg",
+                                           :url "/uploads/kuti-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg",
                                            :content-type "image/jpeg",
                                            :identified true,
                                            :metadata ""

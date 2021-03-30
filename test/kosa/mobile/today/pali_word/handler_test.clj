@@ -5,10 +5,10 @@
             [kosa.mobile.today.pali-word.db :as db]
             [kosa.mobile.today.pali-word.handler :as pali-word-handler]
             [kosa.routes :as routes]
-            [kutis.fixtures.record-fixtures :as record-fixtures]
-            [kutis.support.digest :refer [uuid]]
-            [kutis.support.time :as time]
-            [kutis.fixtures.time-fixtures :as time-fixtures]))
+            [kuti.fixtures.record-fixtures :as record-fixtures]
+            [kuti.support.digest :refer [uuid]]
+            [kuti.support.time :as time]
+            [kuti.fixtures.time-fixtures :as time-fixtures]))
 
 (use-fixtures :once time-fixtures/freeze-clock-1995)
 (use-fixtures :each record-fixtures/load-states)

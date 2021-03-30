@@ -2,8 +2,8 @@
   (:require [kosa.mobile.today.pali-word.rss-job :as sut]
             [kosa.mobile.today.pali-word.db :as db]
             [clojure.test :refer :all]
-            [kutis.fixtures.record-fixtures :as record-fixtures]
-            [kutis.fixtures.time-fixtures :as time-fixtures]))
+            [kuti.fixtures.record-fixtures :as record-fixtures]
+            [kuti.fixtures.time-fixtures :as time-fixtures]))
 
 (use-fixtures :once time-fixtures/freeze-clock)
 (use-fixtures :each record-fixtures/load-states)

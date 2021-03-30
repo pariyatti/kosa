@@ -3,8 +3,8 @@
   (:require [kosa.mobile.today.stacked-inspiration.db :as db]
             [kosa.mobile.today.stacked-inspiration.views :as views]
             [kosa.views :as v]
-            [kutis.controller :as c]
-            [kutis.storage :as storage]
+            [kuti.controller :as c]
+            [kuti.storage :as storage]
             [ring.util.response :as resp]))
 
 (defn ->stacked-inspiration-doc [p]

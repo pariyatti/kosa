@@ -1,12 +1,12 @@
 (ns kosa.library.artefacts.image.db
   (:refer-clojure :exclude [list find get])
-  (:require [kutis.record :as record]
-            [kutis.record.nested :as nested]
-            [kutis.search :as search]
-            [kutis.storage :as storage]
+  (:require [kuti.record :as record]
+            [kuti.record.nested :as nested]
+            [kuti.search :as search]
+            [kuti.storage :as storage]
             [clojure.string :as clojure.string]
             [clojure.tools.logging :as log]
-            [kutis.support.time :as time]))
+            [kuti.support.time :as time]))
 
 (def fields #{:type
               :original-url ;; from *.pariyatti.org
@@ -50,7 +50,7 @@
 (defn get [id]
   (rehydrate (record/get id)))
 
-;; TODO: cascade record deletes to kutis.storage attachments, somehow?
+;; TODO: cascade record deletes to kuti.storage attachments, somehow?
 ;;       ...I actually think this might be too much work to bother doing. -sd
 (defn delete [e]
   (record/delete e))
