@@ -56,18 +56,13 @@
 
 (def time t/new-time)
 
-(def date-time)
+(defmulti date-time
+  "Always use this public API to create :published-at date/times."
+  (fn [d & args] (class d)))
 
-(defmulti ->date-time class)
-
-(defmethod ->date-time java.time.LocalDate [d] (date-time d (time 0 0 0)))
+(defmethod date-time java.time.LocalDate
+  ([d]   (date-time d (time 0 0 0)))
+  ([d t] (t/instant (ZonedDateTime/of d t (ZoneId/of "UTC")))))
 
 ;; NOTE: I'm not actually sure this is a great idea. -sd
-(defmethod ->date-time java.time.Instant [i] i)
-
-(defn date-time
-  "Always use this public API to create :published-at date/times."
-  ([d]
-   (->date-time d))
-  ([d t]
-   (t/instant (ZonedDateTime/of d t (ZoneId/of "UTC")))))
+(defmethod date-time java.time.Instant [i] i)
