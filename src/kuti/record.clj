@@ -138,14 +138,12 @@
             (format "Class %s of field %s does not match value type %s" c k t))
     k))
 
-;; TODO: `save!` should really behave like a regular db insert wrt
-;;       keys/schema -- this should throw an exception if `e` is badly formed.
 (defn save! [e]
   (assert (contains? e :type) ":type key expected.")
   (assert (empty? (non-homogenous? e))
           (format "Some keys did not match specified :type. %s"
                   (clojure.string/join ", " (non-homogenous? e))))
-  (let [ks (disj (-> e keys set) :type :crux.db/id :updated-at)
-        schemas (map #(schema-for %) ks)
-        ks2 (map #(assert-schema e %) schemas)]
-    (put e ks2)))
+  (->> (disj (-> e keys set) :type :crux.db/id :updated-at)
+       (map #(schema-for %))
+       (map #(assert-schema e %))
+       (put e)))
