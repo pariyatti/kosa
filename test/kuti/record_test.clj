@@ -5,7 +5,8 @@
             [kuti.support.digest :refer [->uuid]]
             [kuti.fixtures.record-fixtures :as record-fixtures]
             [kuti.fixtures.time-fixtures :as time-fixtures]
-            [kuti.record :as sut]))
+            [kuti.record :as sut])
+  (:import [java.lang IllegalArgumentException AssertionError]))
 
 (use-fixtures :once
   record-fixtures/load-states
@@ -60,3 +61,33 @@
       (is (= 1234 (:population created)))
       (is (= 6789 (:population updated)))
       (is (= (:crux.db/id created) (:crux.db/id updated))))))
+
+(deftest save!
+  (testing "requires a :type"
+    (is (thrown-with-msg? java.lang.AssertionError
+                          #":type key expected"
+                          (sut/save! {:user/name "Vikram"}))))
+
+  (testing "implied type must match :type"
+    (is (thrown-with-msg? java.lang.AssertionError
+                          #"Some keys did not match specified :type. :user/name, :address/street"
+                          (sut/save! {:type :essay
+                                      :user/name "Vikram"
+                                      :address/street "Main St."}))))
+
+  (testing "saves doc with correctly-typed keys"
+    (let [_ (sut/put {:db/ident     :essay/title
+                      :db/valueType :db.type/string}
+                     [:db/ident :db/valueType])
+          _ (sut/put {:db/ident     :essay/bookmarked
+                      :db/valueType :db.type/boolean}
+                     [:db/ident :db/valueType])
+          saved (sut/save! {:type             :essay
+                            :essay/title      "Strength of the Record"
+                            :essay/bookmarked true})
+          found (sut/get (:crux.db/id saved))]
+      (is (= {:updated-at       @time/clock
+              :type             :essay
+              :essay/title      "Strength of the Record"
+              :essay/bookmarked true}
+             (dissoc found :crux.db/id))))))

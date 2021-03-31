@@ -8,7 +8,8 @@
             [kuti.support :refer [path-join]]
             [kuti.support.digest :refer [uuid ->uuid]]
             [mount.core :refer [defstate]]
-            [kuti.support.time :as time]))
+            [kuti.support.time :as time]
+            [clojure.string :as clojure.string]))
 
 (def crux-node)
 
@@ -52,7 +53,7 @@
         (assoc :updated-at (time/now)))))
 
 (defn validate-put! [e allowed-keys]
-  (let [allowed-keys* (conj allowed-keys :crux.db/id :published-at :updated-at)
+  (let [allowed-keys* (conj allowed-keys :crux.db/id :type :updated-at :published-at)
         extras (apply dissoc e allowed-keys*)]
     (when (not-empty extras)
       (throw (ex-info (format "Extra fields '%s' found during put."
@@ -63,13 +64,11 @@
   "Try not to use me unless you absolutely have to. Prefer `put` (synchronous)."
   [e restricted-keys]
   (validate-put! e restricted-keys)
-  (let [raw (select-keys e (conj restricted-keys :crux.db/id))
+  (let [raw (select-keys e (conj restricted-keys :crux.db/id :type))
         doc (put-prepare raw)
         tx  (put-async* doc)]
     (assoc tx :crux.db/id (:crux.db/id doc))))
 
-;; TODO: `put` should really behave like a regular db insert wrt
-;;       keys/schema -- this should throw an exception if `e` is badly formed.
 (defn put [e restricted-keys]
   (let [tx   (put-async e restricted-keys)
         _    (crux/await-tx crux-node tx)
@@ -106,3 +105,47 @@
                      :order-by [[updated-at :desc]]
                      :in [type]}]
     (query list-query type-kw)))
+
+(defn non-homogenous? [e]
+  (if-let [type (:type e)]
+    (remove #(= type (-> % namespace keyword))
+            (keys (dissoc e :crux.db/id :type)))
+    (throw (IllegalArgumentException. ":type key not found."))))
+
+(defn schema-for [k]
+  (-> (query '{:find [e vt]
+               :where [[e :db/ident ident]
+                       [e :db/valueType vt]]
+               :in [ident]} k)
+      first))
+
+(def value-types
+  {:db.type/string  java.lang.String
+   :db.type/boolean java.lang.Boolean})
+
+(defn class-for [vt]
+  (assert (contains? value-types vt)
+          (format "No :db/valueType of '%s' exists." vt))
+  (clojure.core/get value-types vt))
+
+(defn assert-schema [e s]
+  (let [k (:db/ident s)
+        f (clojure.core/get e k)
+        c (class f)
+        v (:db/valueType s)
+        t (class-for v)]
+    (assert (= c t)
+            (format "Class %s of field %s does not match value type %s" c k t))
+    k))
+
+;; TODO: `save!` should really behave like a regular db insert wrt
+;;       keys/schema -- this should throw an exception if `e` is badly formed.
+(defn save! [e]
+  (assert (contains? e :type) ":type key expected.")
+  (assert (empty? (non-homogenous? e))
+          (format "Some keys did not match specified :type. %s"
+                  (clojure.string/join ", " (non-homogenous? e))))
+  (let [ks (disj (-> e keys set) :type :crux.db/id :updated-at)
+        schemas (map #(schema-for %) ks)
+        ks2 (map #(assert-schema e %) schemas)]
+    (put e ks2)))
