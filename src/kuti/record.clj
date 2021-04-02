@@ -138,8 +138,9 @@
                     type (clojure.string/join ", " missing)))))
 
 (defn coerce [[k v]]
-  (let [value (if (= (class v) clojure.lang.BigInt)
-                (biginteger v)
+  (let [value (condp isa? v
+                clojure.lang.BigInt (biginteger v)
+                java.lang.Double (double v)
                 v)]
     [k value]))
 
@@ -155,7 +156,7 @@
    :db.type/bigint  java.math.BigInteger
    :db.type/string  java.lang.String
    :db.type/boolean java.lang.Boolean
-   ;; TODO: double
+   :db.type/double  java.lang.Double
    ;; TODO: float
    :db.type/instant java.util.Date
    ;; TODO: `inst`? or another name for java.time.Instant?

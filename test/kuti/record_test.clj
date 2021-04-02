@@ -111,4 +111,17 @@
       (is (thrown-with-msg? java.lang.AssertionError
                             #"Saved failed. Missing key\(s\) for entity of type ':test': :test/hr, :test/record-date"
                             (sut/save! {:type    :test
-                                        :test/bp 120N}))))))
+                                        :test/bp 120N})))))
+
+  (testing "handles doubles"
+    (let [_ (sut/put {:db.entity/type  :dub
+                      :db.entity/attrs [:dub/dubdub]}
+                     [:db.entity/type :db.entity/attrs])
+          _ (sut/put {:db/ident     :dub/dubdub
+                      :db/valueType :db.type/double}
+                     [:db/ident :db/valueType])]
+      (is (= java.lang.Double
+             (-> (sut/save! {:type       :dub
+                             :dub/dubdub 1.0})
+                 :dub/dubdub
+                 class))))))
