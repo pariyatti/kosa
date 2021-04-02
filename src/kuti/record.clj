@@ -4,12 +4,15 @@
             [crux.api :as crux]
             [crux.rocksdb :as rocks]
             [kosa.config :as config]
+            [kuti.support.debugging :refer :all]
             [kuti.support.time :as time]
             [kuti.support :refer [path-join]]
             [kuti.support.digest :refer [uuid ->uuid]]
             [mount.core :refer [defstate]]
             [kuti.support.time :as time]
-            [clojure.string :as clojure.string]))
+            [clojure.string :as clojure.string])
+  (:import [java.math BigDecimal BigInteger]
+           [java.lang String Boolean]))
 
 (def crux-node)
 
@@ -112,6 +115,34 @@
             (keys (dissoc e :crux.db/id :type)))
     (throw (IllegalArgumentException. ":type key not found."))))
 
+(defn missing-key? [m k]
+  (when (not (contains? m k))
+    k))
+
+(defn missing-keys? [m ks]
+  (->> ks
+       (map #(missing-key? m %))
+       (remove nil?)))
+
+(defn assert-required-attrs [e]
+  (let [type (:type e)
+        attrs (-> (query '{:find [e attrs]
+                           :where [[e :db.entity/type t]
+                                   [e :db.entity/attrs attrs]]
+                           :in [t]} type)
+                  first
+                  :db.entity/attrs)
+        missing (missing-keys? e attrs)]
+    (assert (empty? missing)
+            (format "Saved failed. Missing key(s) for entity of type '%s': %s"
+                    type (clojure.string/join ", " missing)))))
+
+(defn coerce [[k v]]
+  (let [value (if (= (class v) clojure.lang.BigInt)
+                (biginteger v)
+                v)]
+    [k value]))
+
 (defn schema-for [k]
   (-> (query '{:find [e vt]
                :where [[e :db/ident ident]
@@ -120,8 +151,23 @@
       first))
 
 (def value-types
-  {:db.type/string  java.lang.String
-   :db.type/boolean java.lang.Boolean})
+  {:db.type/bigdec  java.math.BigDecimal
+   :db.type/bigint  java.math.BigInteger
+   :db.type/string  java.lang.String
+   :db.type/boolean java.lang.Boolean
+   ;; TODO: double
+   ;; TODO: float
+   :db.type/instant java.util.Date
+   ;; TODO: `inst`? or another name for java.time.Instant?
+   ;; TODO: keyword
+   ;; TODO: long
+   ;; TODO: string
+   ;; TODO: symbol
+   ;; TODO: tuple
+   ;; TODO: uuid
+   ;; TODO: URI
+   ;; TODO: bytes
+   })
 
 (defn class-for [vt]
   (assert (contains? value-types vt)
@@ -143,7 +189,9 @@
   (assert (empty? (non-homogenous? e))
           (format "Some keys did not match specified :type. %s"
                   (clojure.string/join ", " (non-homogenous? e))))
-  (->> (disj (-> e keys set) :type :crux.db/id :updated-at)
-       (map #(schema-for %))
-       (map #(assert-schema e %))
-       (put e)))
+  (assert-required-attrs e)
+  (let [e2 (into {} (map coerce e))]
+    (->> (disj (-> e2 keys set) :type :crux.db/id :updated-at)
+         (map schema-for)
+         (map #(assert-schema e2 %))
+         (put e2))))

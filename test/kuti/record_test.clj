@@ -76,7 +76,10 @@
                                       :address/street "Main St."}))))
 
   (testing "saves doc with correctly-typed keys"
-    (let [_ (sut/put {:db/ident     :essay/title
+    (let [_ (sut/put {:db.entity/type :essay
+                      :db.entity/attrs [:essay/title :essay/bookmarked]}
+                     [:db.entity/type :db.entity/attrs])
+          _ (sut/put {:db/ident     :essay/title
                       :db/valueType :db.type/string}
                      [:db/ident :db/valueType])
           _ (sut/put {:db/ident     :essay/bookmarked
@@ -90,4 +93,22 @@
               :type             :essay
               :essay/title      "Strength of the Record"
               :essay/bookmarked true}
-             (dissoc found :crux.db/id))))))
+             (dissoc found :crux.db/id)))))
+
+  (testing "rejects doc with missing keys"
+    (let [_ (sut/put {:db.entity/type  :test
+                      :db.entity/attrs [:test/bp :test/hr :test/record-date]}
+                     [:db.entity/type :db.entity/attrs])
+          _ (sut/put {:db/ident     :test/bp
+                      :db/valueType :db.type/bigint}
+                     [:db/ident :db/valueType])
+          _ (sut/put {:db/ident     :test/hr
+                      :db/valueType :db.type/bigdec}
+                     [:db/ident :db/valueType])
+          _ (sut/put {:db/ident     :test/record-date
+                      :db/valueType :db.type/instant}
+                     [:db/ident :db/valueType])]
+      (is (thrown-with-msg? java.lang.AssertionError
+                            #"Saved failed. Missing key\(s\) for entity of type ':test': :test/hr, :test/record-date"
+                            (sut/save! {:type    :test
+                                        :test/bp 120N}))))))
