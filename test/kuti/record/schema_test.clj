@@ -57,8 +57,9 @@
       (is (thrown-with-msg? java.lang.AssertionError
                             #"Saved failed. Missing key\(s\) for entity of type ':test': :test/hr, :test/record-date"
                             (sut/save! {:type    :test
-                                        :test/bp 120N})))))
+                                        :test/bp 120N}))))))
 
+(deftest datatypes-for-save!
   (testing "handles doubles"
     (let [_ (sut/add-type :dub [:dub/dubdub])
           _ (sut/add-schema :dub/dubdub :db.type/double)]
@@ -81,4 +82,20 @@
       (is (= (float 1.0123457)
            (-> (sut/save! {:type      :flt
                            :flt/width 1.0123456789012345})
-               :flt/width))))))
+               :flt/width)))))
+
+  (let [_ (sut/add-type :ins [:ins/at])
+        _ (sut/add-schema :ins/at :db.type/inst)]
+    (testing "handles java.time.Instant"
+      (is (= java.time.Instant
+             (-> (sut/save! {:type   :ins
+                             :ins/at (time/now)})
+                 :ins/at
+                 class))))
+
+    (testing "forces #inst (java.util.Date) to java.time.Instant"
+      (is (= java.time.Instant
+             (-> (sut/save! {:type   :ins
+                             :ins/at (java.util.Date.)})
+                 :ins/at
+                 class))))))

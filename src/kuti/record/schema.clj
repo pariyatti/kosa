@@ -1,5 +1,6 @@
 (ns kuti.record.schema
   (:require [kuti.record.core :as core]
+            [kuti.support.time :as time]
             [kuti.support.debugging :refer :all])
   (:import [java.math BigDecimal BigInteger]
            [java.lang String Boolean]))
@@ -54,7 +55,7 @@
    :db.type/double  java.lang.Double
    :db.type/float   java.lang.Float
    :db.type/instant java.util.Date
-   ;; TODO: `inst`? or another name for java.time.Instant?
+   :db.type/inst    java.time.Instant
    ;; TODO: keyword
    ;; TODO: long
    ;; TODO: string
@@ -85,6 +86,7 @@
         f (clojure.core/get e k)
         f2 (case (:db/valueType s)
              :db.type/float (float f)
+             :db.type/inst  (time/instant f)
              f)]
     (assoc e k f2)))
 
