@@ -98,4 +98,38 @@
              (-> (sut/save! {:type   :ins
                              :ins/at (java.util.Date.)})
                  :ins/at
+                 class)))))
+
+  (testing "handles keywords"
+    (let [_ (sut/add-type :kw [:kw/k])
+          _ (sut/add-schema :kw/k :db.type/keyword)]
+      (is (= clojure.lang.Keyword
+             (-> (sut/save! {:type :kw
+                             :kw/k :i-am-a-keyword})
+                 :kw/k
+                 class)))))
+
+  (let [_ (sut/add-type :lumbi [:lumbi/n])
+        _ (sut/add-schema :lumbi/n :db.type/long)]
+    (testing "handles longs"
+      (is (= java.lang.Long
+             (-> (sut/save! {:type    :lumbi
+                             :lumbi/n 1234})
+                 :lumbi/n
+                 class))))
+
+    (testing "attempting demotion from BigInteger throws an exception"
+      (is (thrown-with-msg? java.lang.AssertionError
+                            #"Class class clojure.lang.BigInt of field :lumbi/n does not match value type class java.lang.Long"
+                            (sut/save! {:type    :lumbi
+                                        :lumbi/n (+ (biginteger Long/MAX_VALUE)
+                                                    (biginteger Long/MAX_VALUE))})))))
+
+  (testing "handles symbols"
+    (let [_ (sut/add-type :sym [:sym/s])
+          _ (sut/add-schema :sym/s :db.type/symbol)]
+      (is (= clojure.lang.Symbol
+             (-> (sut/save! {:type  :sym
+                             :sym/s 'i-am-symbol})
+                 :sym/s
                  class))))))

@@ -50,15 +50,16 @@
 (def value-types
   {:db.type/bigdec  java.math.BigDecimal
    :db.type/bigint  java.math.BigInteger
-   :db.type/string  java.lang.String
    :db.type/boolean java.lang.Boolean
    :db.type/double  java.lang.Double
    :db.type/float   java.lang.Float
    :db.type/instant java.util.Date
    :db.type/inst    java.time.Instant
-   ;; TODO: keyword
-   ;; TODO: long
-   ;; TODO: string
+   :db.type/keyword clojure.lang.Keyword
+   :db.type/long    java.lang.Long
+   ;; :db.type/ref  nil ;; refs in Crux are implicit so this is not implemented
+   :db.type/string  java.lang.String
+   :db.type/symbol  clojure.lang.Symbol
    ;; TODO: symbol
    ;; TODO: tuple
    ;; TODO: uuid
