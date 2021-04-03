@@ -68,11 +68,17 @@
                  :dub/dubdub
                  class)))))
 
-  (testing "handles floats"
-    (let [_ (sut/add-type :flt [:flt/width])
-          _ (sut/add-schema :flt/width :db.type/float)]
+  (let [_ (sut/add-type :flt [:flt/width])
+        _ (sut/add-schema :flt/width :db.type/float)]
+    (testing "handles floats"
       (is (= java.lang.Float
-             (-> (sut/save! {:type      :flt
-                             :flt/width 1.0})
-                 :flt/width
-                 class))))))
+           (-> (sut/save! {:type      :flt
+                           :flt/width 1.0})
+               :flt/width
+               class))))
+
+    (testing "demotion from double causes precision loss"
+      (is (= (float 1.0123457)
+           (-> (sut/save! {:type      :flt
+                           :flt/width 1.0123456789012345})
+               :flt/width))))))
