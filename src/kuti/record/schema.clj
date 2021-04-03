@@ -3,7 +3,11 @@
             [kuti.support.time :as time]
             [kuti.support.debugging :refer :all])
   (:import [java.math BigDecimal BigInteger]
-           [java.lang String Boolean]))
+           [java.lang Boolean Double Float Long String]
+           [java.util Date UUID]
+           [java.time Instant]
+           [clojure.lang Keyword Symbol PersistentVector]
+           [java.net URI]))
 
 (defn non-homogenous? [e]
   (if-let [type (:type e)]
@@ -60,12 +64,10 @@
    ;; :db.type/ref  nil ;; refs in Crux are implicit so this is not implemented
    :db.type/string  java.lang.String
    :db.type/symbol  clojure.lang.Symbol
-   ;; TODO: symbol
-   ;; TODO: tuple
-   ;; TODO: uuid
-   ;; TODO: URI
-   ;; TODO: bytes
-   })
+   :db.type/tuple   clojure.lang.PersistentVector
+   :db.type/uuid    java.util.UUID
+   :db.type/uri     java.net.URI
+   :db.type/bytes   (Class/forName "[B")})
 
 (defn class-for [vt]
   (assert (contains? value-types vt)

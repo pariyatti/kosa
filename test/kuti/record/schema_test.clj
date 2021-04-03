@@ -6,7 +6,13 @@
             [kuti.fixtures.time-fixtures :as time-fixtures]
             [kuti.record.schema :as sut]
             [clojure.test :refer :all])
-  (:import [java.lang IllegalArgumentException AssertionError]))
+  (:import [java.lang IllegalArgumentException AssertionError]
+           [java.math BigDecimal BigInteger]
+           [java.lang Boolean Double Float Long String]
+           [java.util Date UUID]
+           [java.time Instant]
+           [clojure.lang Keyword Symbol PersistentVector]
+           [java.net URI]))
 
 (use-fixtures :once
   record-fixtures/load-states
@@ -132,4 +138,40 @@
              (-> (sut/save! {:type  :sym
                              :sym/s 'i-am-symbol})
                  :sym/s
+                 class)))))
+
+  (testing "handles tuples (vectors only)"
+    (let [_ (sut/add-type :tup [:tup/v])
+          _ (sut/add-schema :tup/v :db.type/tuple)]
+      (is (= clojure.lang.PersistentVector
+             (-> (sut/save! {:type  :tup
+                             :tup/v ["a" "b" "c"]})
+                 :tup/v
+                 class)))))
+
+  (testing "handles UUIDs"
+    (let [_ (sut/add-type :identity [:identity/refid])
+          _ (sut/add-schema :identity/refid :db.type/uuid)]
+      (is (= java.util.UUID
+             (-> (sut/save! {:type           :identity
+                             :identity/refid (java.util.UUID/randomUUID)})
+                 :identity/refid
+                 class)))))
+
+  (testing "handles URIs"
+    (let [_ (sut/add-type :page [:page/url])
+          _ (sut/add-schema :page/url :db.type/uri)]
+      (is (= java.net.URI
+             (-> (sut/save! {:type  :page
+                             :page/url (java.net.URI. "https://pariyatti.org")})
+                 :page/url
+                 class)))))
+
+  (testing "handles byte arrays"
+    (let [_ (sut/add-type :interop [:interop/arr])
+          _ (sut/add-schema :interop/arr :db.type/bytes)]
+      (is (= (Class/forName "[B")
+             (-> (sut/save! {:type  :interop
+                             :interop/arr (byte-array [1 2 3])})
+                 :interop/arr
                  class))))))
