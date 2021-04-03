@@ -2,6 +2,7 @@
   (:require [clojure.java.io :as io]
             [kosa.config :as config]
             [kuti.record :as db]
+            [kuti.record.core :as db-core]
             [mount.core :as mount]))
 
 (defn rm-rf
@@ -24,7 +25,7 @@
 
 (defn start-test-db []
   (-> (mount/with-args (get-test-config))
-      (mount/only #{#'config/config #'db/crux-node})
+      (mount/only #{#'config/config #'db-core/crux-node})
       mount/start))
 
 (defn reset-db! []
@@ -51,7 +52,7 @@
          kosa _at all_ which means `record-fixtures` should create its
          own Crux node. This would also solve the jankiness in this fn."
   [t]
-  (mount/stop #'db/crux-node)
+  (mount/stop #'db-core/crux-node)
   ;; TODO: this is unbelievably janky... there has to be a better way.
   (reset-db!)
   (try (start-test-db)
@@ -65,4 +66,4 @@
   ;;       time with this approach.
   ;; release the connection in case we run a `lein test` on the command
   ;; line while the repl is still open:
-  (mount/stop #'db/crux-node))
+  (mount/stop #'db-core/crux-node))

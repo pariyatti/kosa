@@ -7,7 +7,7 @@
             [kosa.server :as server]
             [kuti.core :as kuti]
             [kuti.dispatch :as dispatch]
-            [kuti.record :as db]
+            [kuti.record.core :as db-core]
             [kuti.storage :as storage]
             [kuti.job :as job]
             [mount-up.core :as mu]
@@ -39,7 +39,7 @@
   (log/info (format "Starting the server with options: %s" opts))
   (-> (mount/with-args opts)
       (mount/only #{#'config/config
-                    #'db/crux-node
+                    #'db-core/crux-node
                     #'storage/service-config
                     #'job/jobs
                     #'server/server})

@@ -7,9 +7,8 @@
 ;;       the joplin.crux tests -sd
 
 (defn mk-tx-fn [node]
-  (x/submit-tx
-   node
-   [[:crux.tx/put {:crux.db/id :add-owner
+  (d/transact! node
+               [[:crux.tx/put {:crux.db/id :add-owner
 	                 :crux.db/fn '(fn [ctx]
 	                                (let [db (crux.api/db ctx)
                                         ids (crux.api/q db
@@ -19,16 +18,17 @@
                                     (vec (map (fn [entity]
                                                 [:crux.tx/put (assoc entity :owner nil)])
                                               entities))
-	                                  ))}]]))
+	                                  ))}]]
+               (format "Migration '%s' failed to apply." (ns-name *ns*))))
 
 (defn run-tx-fn [node]
-  (x/submit-tx
-   node
-   [[:crux.tx/fn
-	   :add-owner]]))
+  (d/transact! node
+               [[:crux.tx/fn
+	               :add-owner]]
+               (format "Migration '%s' failed to apply." (ns-name *ns*))))
 
 (defn up [db]
-  (with-open [node (d/get-node (:conf db))]
+  (let [node (d/get-node (:conf db))]
     (mk-tx-fn node)
     (run-tx-fn node))
   ;; (let [node (d/get-node (:conf db))
