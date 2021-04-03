@@ -66,6 +66,33 @@
                                         :test/bp 120N}))))))
 
 (deftest datatypes-for-save!
+  (testing "handles BigDecimals"
+    (let [_ (sut/add-type :count [:count/dec])
+          _ (sut/add-schema :count/dec :db.type/bigdec)]
+      (is (= java.math.BigDecimal
+             (-> (sut/save! {:type      :count
+                             :count/dec 1.0M})
+                 :count/dec
+                 class)))))
+
+  (testing "handles BigIntegers"
+    (let [_ (sut/add-type :many [:many/int])
+          _ (sut/add-schema :many/int :db.type/bigint)]
+      (is (= java.math.BigInteger
+             (-> (sut/save! {:type      :many
+                             :many/int 7N})
+                 :many/int
+                 class)))))
+
+  (testing "handles booleans"
+    (let [_ (sut/add-type :site [:site/read])
+          _ (sut/add-schema :site/read :db.type/boolean)]
+      (is (= java.lang.Boolean
+             (-> (sut/save! {:type      :site
+                             :site/read false})
+                 :site/read
+                 class)))))
+
   (testing "handles doubles"
     (let [_ (sut/add-type :dub [:dub/dubdub])
           _ (sut/add-schema :dub/dubdub :db.type/double)]
@@ -89,6 +116,15 @@
            (-> (sut/save! {:type      :flt
                            :flt/width 1.0123456789012345})
                :flt/width)))))
+
+  (testing "handles java.util.Date"
+    (let [_ (sut/add-type :java7 [:java7/yuck-date])
+          _ (sut/add-schema :java7/yuck-date :db.type/instant)]
+      (is (= java.util.Date
+             (-> (sut/save! {:type            :java7
+                             :java7/yuck-date (java.util.Date.)})
+                 :java7/yuck-date
+                 class)))))
 
   (let [_ (sut/add-type :ins [:ins/at])
         _ (sut/add-schema :ins/at :db.type/inst)]
@@ -125,11 +161,23 @@
                  class))))
 
     (testing "attempting demotion from BigInteger throws an exception"
-      (is (thrown-with-msg? java.lang.AssertionError
-                            #"Class class clojure.lang.BigInt of field :lumbi/n does not match value type class java.lang.Long"
+      (is (thrown-with-msg? java.lang.IllegalArgumentException
+                            #"Value out of range for long: 18446744073709551614"
                             (sut/save! {:type    :lumbi
                                         :lumbi/n (+ (biginteger Long/MAX_VALUE)
                                                     (biginteger Long/MAX_VALUE))})))))
+
+  ;; NOTE: `:db:type/ref` is intentionally elided.
+  ;;       Crux refs are implicit and can be of any type.
+
+  (testing "handles strings"
+    (let [_ (sut/add-type :book [:book/author])
+          _ (sut/add-schema :book/author :db.type/string)]
+      (is (= java.lang.String
+             (-> (sut/save! {:type        :book
+                             :book/author "Paul Fleischman"})
+                 :book/author
+                 class)))))
 
   (testing "handles symbols"
     (let [_ (sut/add-type :sym [:sym/s])

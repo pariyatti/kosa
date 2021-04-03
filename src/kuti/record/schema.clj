@@ -88,8 +88,12 @@
   (let [k (:db/ident s)
         f (clojure.core/get e k)
         f2 (case (:db/valueType s)
-             :db.type/float (float f)
-             :db.type/inst  (time/instant f)
+             :db.type/bigint  (biginteger f)
+             :db.type/boolean (boolean f)
+             :db.type/double  (double f)
+             :db.type/float   (float f)
+             :db.type/inst    (time/instant f)
+             :db.type/long    (long f)
              f)]
     (assoc e k f2)))
 
