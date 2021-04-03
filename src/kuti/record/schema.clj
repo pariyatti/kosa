@@ -91,6 +91,18 @@
 (defn coerce-schema [e s]
   (reduce coerce-schema-1 e s))
 
+;; public API:
+
+(defn add-type [t attrs]
+  (core/put {:db.entity/type  t
+             :db.entity/attrs attrs}
+            [:db.entity/type :db.entity/attrs]))
+
+(defn add-schema [attr value-type]
+  (core/put {:db/ident     attr
+             :db/valueType value-type}
+            [:db/ident :db/valueType]))
+
 (defn save! [e]
   (assert (contains? e :type) ":type key expected.")
   (assert (empty? (non-homogenous? e))

@@ -36,15 +36,9 @@
                                       :address/street "Main St."}))))
 
   (testing "saves doc with correctly-typed keys"
-    (let [_ (rec/put {:db.entity/type :essay
-                      :db.entity/attrs [:essay/title :essay/bookmarked]}
-                     [:db.entity/type :db.entity/attrs])
-          _ (rec/put {:db/ident     :essay/title
-                      :db/valueType :db.type/string}
-                     [:db/ident :db/valueType])
-          _ (rec/put {:db/ident     :essay/bookmarked
-                      :db/valueType :db.type/boolean}
-                     [:db/ident :db/valueType])
+    (let [_ (sut/add-type :essay [:essay/title :essay/bookmarked])
+          _ (sut/add-schema :essay/title      :db.type/string)
+          _ (sut/add-schema :essay/bookmarked :db.type/boolean)
           saved (sut/save! {:type             :essay
                             :essay/title      "Strength of the Record"
                             :essay/bookmarked true})
@@ -56,30 +50,18 @@
              (dissoc found :crux.db/id)))))
 
   (testing "rejects doc with missing keys"
-    (let [_ (rec/put {:db.entity/type  :test
-                      :db.entity/attrs [:test/bp :test/hr :test/record-date]}
-                     [:db.entity/type :db.entity/attrs])
-          _ (rec/put {:db/ident     :test/bp
-                      :db/valueType :db.type/bigint}
-                     [:db/ident :db/valueType])
-          _ (rec/put {:db/ident     :test/hr
-                      :db/valueType :db.type/bigdec}
-                     [:db/ident :db/valueType])
-          _ (rec/put {:db/ident     :test/record-date
-                      :db/valueType :db.type/instant}
-                     [:db/ident :db/valueType])]
+    (let [_ (sut/add-type :test [:test/bp :test/hr :test/record-date])
+          _ (sut/add-schema :test/bp          :db.type/bigint)
+          _ (sut/add-schema :test/hr          :db.type/bigdec)
+          _ (sut/add-schema :test/record-date :db.type/instant)]
       (is (thrown-with-msg? java.lang.AssertionError
                             #"Saved failed. Missing key\(s\) for entity of type ':test': :test/hr, :test/record-date"
                             (sut/save! {:type    :test
                                         :test/bp 120N})))))
 
   (testing "handles doubles"
-    (let [_ (rec/put {:db.entity/type  :dub
-                      :db.entity/attrs [:dub/dubdub]}
-                     [:db.entity/type :db.entity/attrs])
-          _ (rec/put {:db/ident     :dub/dubdub
-                      :db/valueType :db.type/double}
-                     [:db/ident :db/valueType])]
+    (let [_ (sut/add-type :dub [:dub/dubdub])
+          _ (sut/add-schema :dub/dubdub :db.type/double)]
       (is (= java.lang.Double
              (-> (sut/save! {:type       :dub
                              :dub/dubdub 1.0})
@@ -87,12 +69,8 @@
                  class)))))
 
   (testing "handles floats"
-    (let [_ (rec/put {:db.entity/type  :flt
-                      :db.entity/attrs [:flt/width]}
-                     [:db.entity/type :db.entity/attrs])
-          _ (rec/put {:db/ident     :flt/width
-                      :db/valueType :db.type/float}
-                     [:db/ident :db/valueType])]
+    (let [_ (sut/add-type :flt [:flt/width])
+          _ (sut/add-schema :flt/width :db.type/float)]
       (is (= java.lang.Float
              (-> (sut/save! {:type      :flt
                              :flt/width 1.0})
