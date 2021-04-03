@@ -84,4 +84,17 @@
              (-> (sut/save! {:type       :dub
                              :dub/dubdub 1.0})
                  :dub/dubdub
+                 class)))))
+
+  (testing "handles floats"
+    (let [_ (rec/put {:db.entity/type  :flt
+                      :db.entity/attrs [:flt/width]}
+                     [:db.entity/type :db.entity/attrs])
+          _ (rec/put {:db/ident     :flt/width
+                      :db/valueType :db.type/float}
+                     [:db/ident :db/valueType])]
+      (is (= java.lang.Float
+             (-> (sut/save! {:type      :flt
+                             :flt/width 1.0})
+                 :flt/width
                  class))))))

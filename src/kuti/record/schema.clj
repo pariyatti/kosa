@@ -1,5 +1,6 @@
 (ns kuti.record.schema
-  (:require [kuti.record.core :as core])
+  (:require [kuti.record.core :as core]
+            [kuti.support.debugging :refer :all])
   (:import [java.math BigDecimal BigInteger]
            [java.lang String Boolean]))
 
@@ -51,7 +52,7 @@
    :db.type/string  java.lang.String
    :db.type/boolean java.lang.Boolean
    :db.type/double  java.lang.Double
-   ;; TODO: float
+   :db.type/float   java.lang.Float
    :db.type/instant java.util.Date
    ;; TODO: `inst`? or another name for java.time.Instant?
    ;; TODO: keyword
@@ -79,14 +80,28 @@
             (format "Class %s of field %s does not match value type %s" c k t))
     k))
 
+(defn coerce-schema-1 [e s]
+  (let [k (:db/ident s)
+        f (clojure.core/get e k)
+        f2 (case (:db/valueType s)
+             :db.type/float (float f)
+             f)]
+    (assoc e k f2)))
+
+(defn coerce-schema [e s]
+  (reduce coerce-schema-1 e s))
+
 (defn save! [e]
   (assert (contains? e :type) ":type key expected.")
   (assert (empty? (non-homogenous? e))
           (format "Some keys did not match specified :type. %s"
                   (clojure.string/join ", " (non-homogenous? e))))
   (assert-required-attrs e)
-  (let [e2 (into {} (map coerce e))]
-    (->> (disj (-> e2 keys set) :type :crux.db/id :updated-at)
-         (map schema-for)
-         (map #(assert-schema e2 %))
-         (core/put e2))))
+  (let [e2 (into {} (map coerce e))
+        schema (->> (disj (-> e2 keys set)
+                          :type :crux.db/id :updated-at)
+                    (map schema-for))
+        e3 (coerce-schema e2 schema)]
+    (->> schema
+         (map #(assert-schema e3 %))
+         (core/put e3))))
