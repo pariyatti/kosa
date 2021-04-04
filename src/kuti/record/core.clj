@@ -39,6 +39,13 @@
   :start (start-crux!)
   :stop  (stop-crux!))
 
+(defn transact! [node txns & [error-msg]]
+  (let [tx (->> txns
+                (crux/submit-tx node)
+                (crux/await-tx node))]
+    (when-not (crux/tx-committed? node tx)
+      (throw (Exception. error-msg)))))
+
 (defn get [id]
   (crux/entity (crux/db crux-node) (->uuid id)))
 

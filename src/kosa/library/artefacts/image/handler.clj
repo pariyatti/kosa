@@ -6,12 +6,14 @@
             [kosa.library.artefacts.image.db :as db]
             [kosa.library.artefacts.image.views :as views]
             [kosa.views :as v]
-            [ring.util.response :as resp]))
+            [ring.util.response :as resp])
+  (:import [java.net URI]))
 
 (defn ->image-doc [p]
   (-> p
       (c/params->doc [:crux.db/id])
-      (storage/attach! :image-attachment (:file p))))
+      (assoc :image-artefact/original-url (URI. ""))
+      (storage/attach! :image-artefact/image-attachment (:file p))))
 
 (defn index [request]
   (let [images (db/list)]

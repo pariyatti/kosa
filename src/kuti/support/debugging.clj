@@ -7,4 +7,5 @@
    Easier to grep."
   [& s]
   (doseq [each s]
-    (pprint each)))
+    (pprint each))
+  (first s))

@@ -3,7 +3,9 @@
             [kosa.config :as config]
             [kosa.core :as core]
             [kosa.server :as server]
+            [kuti.support.debugging :refer :all]
             [joplin.repl]
+            [joplin.crux.database] ;; required for joplin to work
             [joplin.alias :refer [*load-config*]]
             [mount.core :as mount]
             [kosa.library.artefacts.image.db :as image]))
@@ -36,8 +38,11 @@
 (defn test-mode! []
   (restart! test-opts))
 
-(defn migrate []
-  (joplin.repl/migrate joplin-config :dev))
+(defn migrate
+  ([]
+   (joplin.repl/migrate joplin-config :dev))
+  ([env]
+   (joplin.repl/migrate joplin-config env)))
 
 (defn seed []
   (joplin.repl/seed joplin-config :dev))

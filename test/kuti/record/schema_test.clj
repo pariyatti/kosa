@@ -38,6 +38,9 @@
     (is (thrown-with-msg? java.lang.AssertionError
                           #"Some keys did not match specified :type. :user/name, :address/street"
                           (sut/save! {:type :essay
+                                      :crux.db/id 123
+                                      :updated-at (time/now)
+                                      :published-at (time/now)
                                       :user/name "Vikram"
                                       :address/street "Main St."}))))
 
@@ -63,7 +66,13 @@
       (is (thrown-with-msg? java.lang.AssertionError
                             #"Saved failed. Missing key\(s\) for entity of type ':test': :test/hr, :test/record-date"
                             (sut/save! {:type    :test
-                                        :test/bp 120N}))))))
+                                        :test/bp 120N})))))
+
+  (testing "rejects doc with :type missing in db"
+    (is (thrown-with-msg? java.lang.AssertionError
+                          #"Saved failed. DB is missing type for entity of type ':zig2'."
+                          (sut/save! {:type       :zig2
+                                      :zig2/attr1 "I bet someone forgot to migrate."})))))
 
 (deftest datatypes-for-save!
   (testing "handles BigDecimals"

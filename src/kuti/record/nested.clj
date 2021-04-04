@@ -3,10 +3,12 @@
             [clojure.string]))
 
 (defn field->id [attr]
-  (-> attr name (str "-id") keyword))
+  (keyword (namespace attr)
+           (-> attr name (str "-id"))))
 
 (defn id->field [attr-id]
-  (-> attr-id name (clojure.string/replace #"-id" "") keyword))
+  (keyword (namespace attr-id)
+           (-> attr-id name (clojure.string/replace #"-id" ""))))
 
 (defn do-to-all [f doc substr]
   (letfn [(match-substr [k]

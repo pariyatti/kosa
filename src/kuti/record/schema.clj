@@ -1,5 +1,6 @@
 (ns kuti.record.schema
   (:require [kuti.record.core :as core]
+            [kuti.support.digest :refer [uuid]]
             [kuti.support.time :as time]
             [kuti.support.debugging :refer :all])
   (:import [java.math BigDecimal BigInteger]
@@ -9,11 +10,18 @@
            [clojure.lang Keyword Symbol PersistentVector]
            [java.net URI]))
 
+(def meta-keys #{:crux.db/id :type :updated-at :published-at})
+
 (defn non-homogenous? [e]
   (if-let [type (:type e)]
     (remove #(= type (-> % namespace keyword))
-            (keys (dissoc e :crux.db/id :type)))
+            (keys (apply dissoc e meta-keys)))
     (throw (IllegalArgumentException. ":type key not found."))))
+
+(defn missing-type? [t db-types]
+  (assert (> (count db-types) 0)
+          (format "Saved failed. DB is missing type for entity of type '%s'." t))
+  db-types)
 
 (defn missing-key? [m k]
   (when (not (contains? m k))
@@ -26,10 +34,12 @@
 
 (defn assert-required-attrs [e]
   (let [type (:type e)
+        missing-type-check (partial missing-type? type)
         attrs (-> (core/query '{:find [e attrs]
-                                  :where [[e :db.entity/type t]
-                                          [e :db.entity/attrs attrs]]
-                                  :in [t]} type)
+                                :where [[e :db.entity/type t]
+                                        [e :db.entity/attrs attrs]]
+                                :in [t]} type)
+                  missing-type-check
                   first
                   :db.entity/attrs)
         missing (missing-keys? e attrs)]
@@ -69,9 +79,10 @@
    :db.type/uri     java.net.URI
    :db.type/bytes   (Class/forName "[B")})
 
-(defn class-for [vt]
+(defn class-for [vt s]
   (assert (contains? value-types vt)
-          (format "No :db/valueType of '%s' exists." vt))
+          (format "No :db/valueType of '%s' exists for schema '%s'."
+                  vt s))
   (clojure.core/get value-types vt))
 
 (defn assert-schema [e s]
@@ -79,7 +90,7 @@
         f (clojure.core/get e k)
         c (class f)
         v (:db/valueType s)
-        t (class-for v)]
+        t (class-for v s)]
     (assert (= c t)
             (format "Class %s of field %s does not match value type %s" c k t))
     k))
@@ -102,15 +113,27 @@
 
 ;; public API:
 
-(defn add-type [t attrs]
-  (core/put {:db.entity/type  t
-             :db.entity/attrs attrs}
-            [:db.entity/type :db.entity/attrs]))
+(defn add-type
+  ([t attrs]
+   (core/put {:db.entity/type  t
+              :db.entity/attrs attrs}
+             [:db.entity/type :db.entity/attrs]))
+  ([node t attrs]
+   (core/transact! node [[:crux.tx/put
+                          {:crux.db/id      (uuid)
+                           :db.entity/type  t
+                           :db.entity/attrs attrs}]])))
 
-(defn add-schema [attr value-type]
-  (core/put {:db/ident     attr
-             :db/valueType value-type}
-            [:db/ident :db/valueType]))
+(defn add-schema
+  ([attr value-type]
+   (core/put {:db/ident     attr
+              :db/valueType value-type}
+             [:db/ident :db/valueType]))
+  ([node attr value-type]
+   (core/transact! node [[:crux.tx/put
+                          {:crux.db/id   (uuid)
+                           :db/ident     attr
+                           :db/valueType value-type}]])))
 
 (defn save! [e]
   (assert (contains? e :type) ":type key expected.")
@@ -121,7 +144,8 @@
   (let [e2 (into {} (map coerce e))
         schema (->> (disj (-> e2 keys set)
                           :type :crux.db/id :updated-at)
-                    (map schema-for))
+                    (map schema-for)
+                    (remove nil?))
         e3 (coerce-schema e2 schema)]
     (->> schema
          (map #(assert-schema e3 %))

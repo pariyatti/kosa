@@ -1,8 +1,10 @@
 (ns kuti.fixtures.record-fixtures
   (:require [clojure.java.io :as io]
             [kosa.config :as config]
+            [kuti.support.debugging :refer :all]
             [kuti.record :as db]
             [kuti.record.core :as db-core]
+            [dev.repl]
             [mount.core :as mount]))
 
 (defn rm-rf
@@ -67,3 +69,29 @@
   ;; release the connection in case we run a `lein test` on the command
   ;; line while the repl is still open:
   (mount/stop #'db-core/crux-node))
+
+(defn force-destroy-db
+  [t]
+  (mount/stop #'db-core/crux-node)
+  (reset-db!)
+  (mount/stop #'db-core/crux-node)
+  (t))
+
+(defn force-migrate-db
+  [t]
+  (mount/stop #'db-core/crux-node)
+  ;; TODO: don't rely on `dev.repl`
+  (dev.repl/migrate :test)
+  (mount/stop #'db-core/crux-node)
+  (t))
+
+(defn force-start-db
+  [t]
+  (try (start-test-db)
+       (t)
+       (catch org.rocksdb.RocksDBException e
+         (throw-lock-error))
+       (catch java.lang.RuntimeException e
+         (throw-lock-error))
+       (finally
+         (mount/stop #'db-core/crux-node))))

@@ -16,6 +16,23 @@
 (def id2 (uuid))
 (def id3 (uuid))
 
+(deftest fields-and-ids
+  (testing "fields without ns"
+    (is (= :namo-id
+           (sut/field->id :namo))))
+
+  (testing "namespaced fields"
+    (is (= :some.ns/namo-id
+           (sut/field->id :some.ns/namo))))
+
+  (testing "ids without ns"
+    (is (= :namo
+           (sut/id->field :namo-id))))
+
+  (testing "namespaced ids"
+    (is (= :some.ns/namo
+           (sut/id->field :some.ns/namo-id)))))
+
 (deftest collapse-one
   (testing "collapses a named field"
     (let [entity {:zig-attachment
