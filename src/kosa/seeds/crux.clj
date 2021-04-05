@@ -54,7 +54,7 @@
   (log/info "Adding attachments...")
   (copy-attachments!)
   (log/info "Adding entities...")
-  (with-open [node (d/get-node (:db :conf target))]
+  (with-open [node (d/get-node (-> target :db :conf))]
     (let [txs [[:crux.tx/put {:crux.db/id #uuid "c58027f8-7c00-46d9-8338-6289e70ad299",
                               :type :image-artefact,
                               :updated-at #time/instant "2021-03-21T01:47:02.508768Z",

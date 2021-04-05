@@ -132,14 +132,19 @@
 
 (defn add-schema
   ([attr value-type]
-   (core/put {:db/ident     attr
-              :db/valueType value-type}
-             [:db/ident :db/valueType]))
+   (add-schema core/crux-node attr value-type))
   ([node attr value-type]
    (core/transact! node [[:crux.tx/put
-                          {:crux.db/id   (uuid)
+                          {:crux.db/id   attr
                            :db/ident     attr
                            :db/valueType value-type}]])))
+
+(defn remove-schema
+  ([s]
+   (remove-schema core/crux-node s))
+  ([node s]
+   (core/transact! node
+                   [[:crux.tx/delete s]])))
 
 (defn save! [e]
   (assert (contains? e :type) ":type key expected.")

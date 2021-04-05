@@ -55,6 +55,20 @@
                           #"Assert failed: Saved failed. DB is missing type for entity of type ':dog'."
                           (sut/save! {:type :dog :dog/breed "Shiba"}))))
 
+  (testing "when schema is removed, save ignores it"
+    (sut/add-type :doge [:doge/coin :doge/breed])
+    (sut/add-schema :doge/coin :db.type/bigdec)
+    (sut/add-schema :doge/breed :db.type/string)
+    (is (thrown-with-msg? java.lang.AssertionError
+                          #"Assert failed: Saved failed. Missing key\(s\) for entity of type ':doge': :doge/coin"
+                          (sut/save! {:type :doge :doge/breed "Shiba"})))
+    (sut/add-type :doge [:doge/breed])
+    (sut/remove-schema :doge/coin)
+    (let [doge {:type :doge :doge/breed "Shiba"}]
+      (is (= doge
+             (dissoc (sut/save! doge)
+                     :crux.db/id :updated-at)))))
+
   (testing "saves doc with correctly-typed keys"
     (let [_ (sut/add-type :essay [:essay/title :essay/bookmarked])
           _ (sut/add-schema :essay/title      :db.type/string)

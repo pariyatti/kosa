@@ -18,5 +18,10 @@
     (d/close!)))
 
 (defn down [db]
-  ;; TODO: fill this in.
-  )
+  (let [node (d/get-node (:conf db))]
+    (schema/remove-type node :image-artefact)
+    (schema/remove-schema node :image-artefact/original-url)
+    (schema/remove-schema node :image-artefact/image-attachment-id)
+    (schema/remove-schema node :image-artefact/searchables)
+    (schema/remove-schema node :published-at)
+    (d/close!)))
