@@ -27,7 +27,7 @@
 (defn create [request]
   (let [params (:params request)
         doc (->image-doc params)
-        image (db/put doc)]
+        image (db/save! doc)]
     (if image
       (resp/redirect (v/show-path request :images image))
       (resp/response
@@ -48,7 +48,7 @@
 (defn update [request]
   (let [params (:params request)
         doc (->image-doc params)
-        image (db/put doc)]
+        image (db/save! doc)]
     (if image
       (resp/redirect (v/show-path request :images image))
       (resp/response

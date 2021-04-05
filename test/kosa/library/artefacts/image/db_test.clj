@@ -53,7 +53,7 @@
         image-artefact2 (storage/attach! image-artefact :image-artefact/image-attachment file)]
 
     (testing "On insert, flattens Image Artefacts into (1) artefact and (2) attachment"
-      (let [img (sut/put image-artefact2)
+      (let [img (sut/save! image-artefact2)
             img-found (kuti.record/get (:crux.db/id img))
             attachment-found (kuti.record/get (:image-artefact/image-attachment-id img-found))]
         (is (= #{:crux.db/id :type :updated-at :published-at
@@ -70,7 +70,7 @@
                             :image-artefact/image-attachment
                             (assoc image-attachment
                                    :url "/uploads/kuti-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg"))
-            img (sut/put image-artefact2)
+            img (sut/save! image-artefact2)
             img-found (sut/get (:crux.db/id img))
             img-no-ids (clean-ids img-found [:image-artefact/image-attachment])]
         (is (= expected img-no-ids))))
@@ -78,8 +78,8 @@
     (testing "On list, rehydrates all attachments"
       (let [expected (assoc image-attachment
                             :url "/uploads/kuti-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg")
-            img (sut/put image-artefact2)
-            img2 (sut/put image-artefact2)
+            img (sut/save! image-artefact2)
+            img2 (sut/save! image-artefact2)
             imgs (vec (sut/list))]
         (is (= expected (-> imgs first :image-artefact/image-attachment clean-ids)))
         (is (= expected (-> imgs second :image-artefact/image-attachment clean-ids)))))))

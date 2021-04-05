@@ -40,7 +40,7 @@
               :tempfile (io/file "test/kuti/fixtures/files/bodhi-temp.jpg")
               :size 13468}
         image-artefact2 (storage/attach! image-artefact :image-artefact/image-attachment file)
-        _ (image/put image-artefact2)]
+        _ (image/save! image-artefact2)]
 
     (testing "returns list of images"
       (let [resp (sut/search {:params {:q "bodhi"}})

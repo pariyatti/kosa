@@ -36,7 +36,7 @@
       (log/info (format "searching for '%s'" matcher))
       (map rehydrate raw-images))))
 
-(defn put [e]
+(defn save! [e]
   (let [doc (assoc e :type :image-artefact)]
     (-> doc
         (search/tag-searchables (-> doc :image-artefact/image-attachment :filename))
