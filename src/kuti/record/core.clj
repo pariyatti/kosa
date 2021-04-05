@@ -46,8 +46,11 @@
     (when-not (crux/tx-committed? node tx)
       (throw (Exception. error-msg)))))
 
+(defn get* [id]
+  (crux/entity (crux/db crux-node) id))
+
 (defn get [id]
-  (crux/entity (crux/db crux-node) (->uuid id)))
+  (get* (->uuid id)))
 
 (defn put-async* [datum]
   (crux/submit-tx crux-node [[:crux.tx/put datum]]))
@@ -95,14 +98,25 @@
         deleted e]
     deleted))
 
+(defn reify-results
+  ([getter r]
+   (map #(-> % first getter) r)))
+
+(defn query-raw
+  ([q]
+   (->> (crux/q (crux/db crux-node) q)
+        (reify-results get*)))
+  ([q param]
+   (->> (crux/q (crux/db crux-node) q param)
+        (reify-results get*))))
+
 (defn query
   ([q]
-   (let [result-set (crux/q (crux/db crux-node) q)]
-     (map #(-> % first get) result-set)))
+   (->> (crux/q (crux/db crux-node) q)
+        (reify-results get)))
   ([q param]
-   (let [result-set (crux/q (crux/db crux-node) q param)
-         _ (prn result-set)]
-     (map #(-> % first get) result-set))))
+   (->> (crux/q (crux/db crux-node) q param)
+        (reify-results get))))
 
 (defn list
   [type]

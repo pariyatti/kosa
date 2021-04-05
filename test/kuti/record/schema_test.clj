@@ -44,6 +44,17 @@
                                       :user/name "Vikram"
                                       :address/street "Main St."}))))
 
+  (testing "detects removed type"
+    (sut/add-type :dog [:dog/name])
+    (sut/add-schema :dog/name :db.type/string)
+    (is (thrown-with-msg? java.lang.AssertionError
+                          #"Assert failed: Saved failed. Missing key\(s\) for entity of type ':dog': :dog/name"
+                          (sut/save! {:type :dog :dog/breed "Shiba"})))
+    (sut/remove-type :dog)
+    (is (thrown-with-msg? java.lang.AssertionError
+                          #"Assert failed: Saved failed. DB is missing type for entity of type ':dog'."
+                          (sut/save! {:type :dog :dog/breed "Shiba"}))))
+
   (testing "saves doc with correctly-typed keys"
     (let [_ (sut/add-type :essay [:essay/title :essay/bookmarked])
           _ (sut/add-schema :essay/title      :db.type/string)

@@ -35,10 +35,10 @@
 (defn assert-required-attrs [e]
   (let [type (:type e)
         missing-type-check (partial missing-type? type)
-        attrs (-> (core/query '{:find [e attrs]
-                                :where [[e :db.entity/type t]
-                                        [e :db.entity/attrs attrs]]
-                                :in [t]} type)
+        attrs (-> (core/query-raw '{:find [e attrs]
+                                    :where [[e :db.entity/type t]
+                                            [e :db.entity/attrs attrs]]
+                                    :in [t]} type)
                   missing-type-check
                   first
                   :db.entity/attrs)
@@ -55,11 +55,11 @@
     [k value]))
 
 (defn schema-for [k]
-  (-> (core/query '{:find [e vt]
-                    :where [[e :db/ident ident]
-                            [e :db/valueType vt]]
-                    :in [ident]} k)
-      first))
+  (->> (core/query-raw '{:find [e vt]
+                         :where [[e :db/ident ident]
+                                 [e :db/valueType vt]]
+                         :in [ident]} k)
+       first))
 
 (def value-types
   {:db.type/bigdec  java.math.BigDecimal
@@ -115,14 +115,20 @@
 
 (defn add-type
   ([t attrs]
-   (core/put {:db.entity/type  t
-              :db.entity/attrs attrs}
-             [:db.entity/type :db.entity/attrs]))
+   (add-type core/crux-node t attrs))
   ([node t attrs]
-   (core/transact! node [[:crux.tx/put
-                          {:crux.db/id      (uuid)
-                           :db.entity/type  t
-                           :db.entity/attrs attrs}]])))
+   (core/transact! node
+                   [[:crux.tx/put
+                     {:crux.db/id      t
+                      :db.entity/type  t
+                      :db.entity/attrs attrs}]])))
+
+(defn remove-type
+  ([t]
+   (remove-type core/crux-node t))
+  ([node t]
+   (core/transact! node
+                   [[:crux.tx/delete t]])))
 
 (defn add-schema
   ([attr value-type]
