@@ -2,9 +2,14 @@
   (:require [ring.middleware.keyword-params]
             [ring.middleware.multipart-params]))
 
+(defn wrap-wrap-keyword-params [handler]
+  (ring.middleware.keyword-params/wrap-keyword-params
+   handler
+   {:parse-namespaces? true}))
+
 (def keyword-params
   {:name ::keyword-params
-   :wrap ring.middleware.keyword-params/wrap-keyword-params})
+   :wrap wrap-wrap-keyword-params})
 
 (def multipart-params
   {:name ::multipart-params

@@ -10,8 +10,8 @@
    [:table
     [:tr
      [:td "Pali Word:"]
-     [:td (:pali card)]]
-    (for [t (:translations card)]
+     [:td (:pali-word/pali card)]]
+    (for [t (:pali-word/translations card)]
       (when-not (clojure.string/blank? (second t))
         [:tr
          [:td (first t)]
@@ -43,14 +43,14 @@
    [:table
     [:tr
      [:td "Bookmarkable?"]
-     [:td (:bookmarkable card)]]
+     [:td (:pali-word/bookmarkable card)]]
     [:tr
      [:td "Shareable?"]
-     [:td (:shareable card)]]
+     [:td (:pali-word/shareable card)]]
     [:tr
      [:td "Pali Word:"]
-     [:td (:pali card)]]
-    (for [t (:translations card)]
+     [:td (:pali-word/pali card)]]
+    (for [t (:pali-word/translations card)]
       [:tr
        [:td (first t)]
        [:td (second t)]])]))
@@ -66,23 +66,23 @@
 (defn new-form [req]
   (f/form-to [:post (v/create-path req :pali-words)]
              [:div {:class "field"}
-              (f/hidden-field :card-type "pali_word")]
+              (f/hidden-field :type :pali-word)]
              [:a {:href "#"
                   :onclick "document.getElementById('defaults').classList.toggle('form-defaults-hidden');"}
               "Show / Hide Defaults"]
              [:div#defaults {:class "form-defaults-hidden"}
               [:div {:class "field"}
-               (f/label :bookmarkable "Bookmarkable?")
-               (f/check-box :bookmarkable :checked)]
+               (f/label :pali-word/bookmarkable "Bookmarkable?")
+               (f/check-box :pali-word/bookmarkable :checked)]
               [:div {:class "field"}
-               (f/label :shareable "Shareable?")
-               (f/check-box :shareable :checked)]
+               (f/label :pali-word/shareable "Shareable?")
+               (f/check-box :pali-word/shareable :checked)]
               [:div {:class "field"}
-               (f/label :header "Header")
-               (f/text-field :header "Pali Word")]]
+               (f/label :pali-word/header "Header")
+               (f/text-field :pali-word/header "Pali Word")]]
              [:div {:class "field"}
-              (f/label :pali "Pali")
-              (f/text-field :pali)]
+              (f/label :pali-word/pali "Pali")
+              (f/text-field :pali-word/pali)]
 
              [:div#translations-list
               (for [lang (:supported-languages config/config)]

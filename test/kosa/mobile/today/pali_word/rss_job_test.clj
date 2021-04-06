@@ -3,10 +3,15 @@
             [kosa.mobile.today.pali-word.db :as db]
             [clojure.test :refer :all]
             [kuti.fixtures.record-fixtures :as record-fixtures]
-            [kuti.fixtures.time-fixtures :as time-fixtures]))
+            [kuti.fixtures.time-fixtures :as time-fixtures]
+            [kuti.support.time :as time])
+  (:import [java.net URI]))
 
-(use-fixtures :once time-fixtures/freeze-clock)
-(use-fixtures :each record-fixtures/load-states)
+(use-fixtures :once
+  time-fixtures/freeze-clock-1995
+  record-fixtures/force-destroy-db
+  record-fixtures/force-migrate-db
+  record-fixtures/force-start-db)
 
 (deftest ^:integration polling
   (testing "only gets feed updates once with If-None-Match and If-Modified-Since HTTP headers"
@@ -34,31 +39,31 @@
                                          :published-date #inst "2021-02-09T16:11:01.000-00:00"})}))))
 
   (testing "can shred pali/english, separated by em-dash"
-    (is (= {:pali "kuti"
-            :translations [["en" "hut"]]
-            :original-pali "kuti — hut"
-            :original-url "https://ignored"
-            :published-at "2021-02-09T16:11:01.000Z"}
+    (is (= {:pali-word/pali "kuti"
+            :pali-word/translations [["en" "hut"]]
+            :pali-word/original-pali "kuti — hut"
+            :pali-word/original-url (URI. "https://ignored")
+            :published-at (time/instant "2021-02-09T16:11:01.000Z")}
            (sut/parse* {:entries '({:description {:value "kuti — hut"}
                                     :uri "https://ignored"
                                     :published-date #inst "2021-02-09T16:11:01.000-00:00"})}))))
 
   (testing "tolerates RSS entries which are missing the em-dash"
-    (is (= {:pali "kuti = hut"
-            :translations [["en" ""]]
-            :original-pali "kuti = hut"
-            :original-url "https://ignored"
-            :published-at "2021-02-09T16:11:01.000Z"}
+    (is (= {:pali-word/pali "kuti = hut"
+            :pali-word/translations [["en" ""]]
+            :pali-word/original-pali "kuti = hut"
+            :pali-word/original-url (URI. "https://ignored")
+            :published-at (time/instant "2021-02-09T16:11:01.000Z")}
            (sut/parse* {:entries '({:description {:value "kuti = hut"}
                                     :uri "https://ignored"
                                     :published-date #inst "2021-02-09T16:11:01.000-00:00"})}))))
 
   (testing "parses the published UTC date into a local date"
-    (is (= {:pali "kuti = hut"
-            :translations [["en" ""]]
-            :original-pali "kuti = hut"
-            :original-url "https://ignored"
-            :published-at "2021-02-09T16:11:01.000Z"}
+    (is (= {:pali-word/pali "kuti = hut"
+            :pali-word/translations [["en" ""]]
+            :pali-word/original-pali "kuti = hut"
+            :pali-word/original-url (URI. "https://ignored")
+            :published-at (time/instant "2021-02-09T16:11:01.000Z")}
            (sut/parse* {:entries '({:description {:value "kuti = hut"}
                                     :uri "https://ignored"
                                     :published-date #inst "2021-02-09T16:11:01.000-00:00"})})))))

@@ -1,26 +1,15 @@
 (ns kosa.mobile.today.pali-word.db
   (:refer-clojure :exclude [list get])
-  (:require [kuti.record]
+  (:require [kuti.record :as record]
+            [kuti.support.debugging :refer :all]
             [kuti.support.time :as time]))
-
-(def fields #{:type
-              :card-type
-              :published-at
-              :original-pali ;; from *.pariyatti.org - a long string
-              :original-url  ;; from *.pariyatti.org
-              :bookmarkable
-              :shareable
-              :pali
-              :translations
-              ;; TODO: remove or make these work-
-              :header :id :audio})
 
 (defn list []
   (let [list-query '{:find     [e updated-at]
-                     :where    [[e :card-type "pali_word"]
+                     :where    [[e :type :pali-word]
                                 [e :updated-at updated-at]]
                      :order-by [[updated-at :desc]]}]
-    (kuti.record/query list-query)))
+    (record/query list-query)))
 
 (defn q [attr param]
   (let [find-query {:find     '[e updated-at]
@@ -28,10 +17,12 @@
                     :where    [['e attr 'original-pali]
                                '[e :updated-at updated-at]]
                     :order-by '[[updated-at :desc]]}]
-    (kuti.record/query find-query param)))
+    (record/query find-query param)))
 
-(defn put [e]
-  (kuti.record/put e fields))
+(defn save! [e]
+  (-> e
+      (assoc :type :pali-word)
+      (record/save!)))
 
 (defn get [id]
-  (kuti.record/get id))
+  (record/get id))

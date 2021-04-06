@@ -8,10 +8,14 @@
             [kuti.fixtures.record-fixtures :as record-fixtures]
             [kuti.support.digest :refer [uuid]]
             [kuti.support.time :as time]
-            [kuti.fixtures.time-fixtures :as time-fixtures]))
+            [kuti.fixtures.time-fixtures :as time-fixtures])
+  (:import [java.net URI]))
 
-(use-fixtures :once time-fixtures/freeze-clock-1995)
-(use-fixtures :each record-fixtures/load-states)
+(use-fixtures :once
+  time-fixtures/freeze-clock-1995
+  record-fixtures/force-destroy-db
+  record-fixtures/force-migrate-db
+  record-fixtures/force-start-db)
 
 (defn pali-word
   "TODO: Should probably use the spec generators for this"
@@ -21,21 +25,21 @@
                        :translation translation
                        :language "en"}]]
     {:crux.db/id (uuid)
+     :type :pali-word
      :updated-at time-fixtures/win95
      :published-at (time/now)
-     :header "sticky header"
-     :bookmarkable true
-     :shareable true
-     :card-type "pali_word"
-     :pali word
-     :audio audio
-     :translations translations}))
+     :pali-word/bookmarkable true
+     :pali-word/shareable true
+     :pali-word/pali word
+     :pali-word/translations translations
+     :pali-word/original-pali ""
+     :pali-word/original-url (URI. "")}))
 
 (deftest pali-word-listing-operation
   (testing "Can list pali words in reverse chronological order"
     (time/unfreeze-clock!)
-    (let [word-1 (db/put (pali-word "word-1" "translation-1"))
-          word-2 (db/put (pali-word "word-2" "translation-2"))]
+    (let [word-1 (db/save! (pali-word "word-1" "translation-1"))
+          word-2 (db/save! (pali-word "word-2" "translation-2"))]
       ;; (prn (clojure.data/diff word-2 (first (db/list))))
       (is (= (map :pali [word-2 word-1])
              (map :pali (db/list)))))
@@ -51,7 +55,7 @@
           uuid (-> response :headers (get "Location") (clojure.string/split #"\/") last)
           doc (db/get uuid)]
       (is (= [["hi" "rani"] ["en" "queen"] ["cn" "wx"]]
-             (:translations doc)))))
+             (:pali-word/translations doc)))))
 
   (testing "Saves params to db"
     (let [params {:card-type "pali_word", :bookmarkable "true", :shareable "true", :header "Pali Word",
@@ -63,4 +67,4 @@
           doc (db/get uuid)]
       ;; TODO: ignore datetimes and assert on the entire doc
       (is (= [["hi" "rani"] ["en" "queen"] ["cn" "wx"]]
-             (:translations doc))))))
+             (:pali-word/translations doc))))))

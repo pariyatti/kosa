@@ -19,6 +19,7 @@
   record-fixtures/force-destroy-db
   record-fixtures/force-migrate-db
   record-fixtures/force-start-db)
+
 (use-fixtures :each
   file-fixtures/copy-fixture-files
   storage-fixtures/set-service-config)

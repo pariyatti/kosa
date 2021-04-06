@@ -105,6 +105,7 @@
              :db.type/float   (float f)
              :db.type/inst    (time/instant f)
              :db.type/long    (long f)
+             :db.type/tuple   (vec (doall f))
              f)]
     (assoc e k f2)))
 

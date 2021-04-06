@@ -4,11 +4,24 @@
             [kosa.mobile.today.pali-word.views :as views]
             [kosa.views :as v]
             [kuti.controller :as c]
-            [ring.util.response :as resp]))
+            [kuti.support.debugging :refer :all]
+            [ring.util.response :as resp])
+  (:import [java.net URI]))
+
+(def namespacer (partial c/namespaced :pali-word))
 
 (defn ->pali-word-doc [p]
-  (c/params->doc p [:card-type :pali
-                    [:translations #(map vector (:language %) (:translation %))]]))
+  (-> p
+      namespacer
+      (c/params->doc [:pali-word/bookmarkable
+                      :pali-word/shareable
+                      :pali-word/pali
+                      [:pali-word/translations
+                       #(map vector
+                             (:pali-word/language %)
+                             (:pali-word/translation %))]])
+      (assoc :pali-word/original-pali "")
+      (assoc :pali-word/original-url (URI. ""))))
 
 (defn index [request]
   (let [cards (pali-word-db/list)]
@@ -21,7 +34,7 @@
 
 (defn create [req]
   (let [doc (-> req :params ->pali-word-doc)
-        card (pali-word-db/put doc)]
+        card (pali-word-db/save! doc)]
     (if card
       (resp/redirect (v/show-path req :pali-words card))
       (resp/response

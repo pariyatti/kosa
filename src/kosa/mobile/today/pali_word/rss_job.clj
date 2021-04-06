@@ -5,7 +5,8 @@
             [kuti.support.time :as time]
             [kosa.config :as config]
             [kosa.mobile.today.pali-word.db :as db]
-            [clojure.string]))
+            [clojure.string])
+  (:import [java.net URI]))
 
 (def etag (atom ""))
 (def last-modified (atom ""))
@@ -50,25 +51,25 @@
     [pali english]))
 
 (defn db-insert [pali-word]
-  (let [existing (db/q :original-pali (:original-pali pali-word))]
+  (let [existing (db/q :pali-word/original-pali
+                       (:pali-word/original-pali pali-word))]
     (log/info "Pali Word RSS: attempting insert")
-    (if (= 0 (count existing))
-      (db/put (merge {:card-type "pali_word"
-                      :bookmarkable true
-                      :shareable true}
-                     pali-word)))))
+    (when (= 0 (count existing))
+      (db/save! (merge {:pali-word/bookmarkable true
+                        :pali-word/shareable true}
+                       pali-word)))))
 
 (defn parse* [feed]
   (when-let* [entry (-> feed :entries first)
-              published-date (-> entry :published-date time/string)
+              published-date (-> entry :published-date time/instant)
               pali-html (-> entry :description :value)
               pali-english (trim pali-html)
               [pali english] (split-pali-english pali-english)
               original-url (:uri entry)]
-    {:pali pali
-     :translations [["en" english]]
-     :original-pali pali-english
-     :original-url original-url
+    {:pali-word/pali pali
+     :pali-word/translations [["en" english]]
+     :pali-word/original-pali pali-english
+     :pali-word/original-url (URI. original-url)
      :published-at published-date}))
 
 (defn parse [feed]
