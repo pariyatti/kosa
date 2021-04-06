@@ -26,11 +26,11 @@
      :header "Pāli Word of the Day"
      :bookmarkable true
      :shareable true
-     :pali (:pali word)
+     :pali (:pali-word/pali word)
      :translations (map (fn [t] {:id (uuid)
                                  :language (first t)
                                  :translation (second t)})
-                        (:translations word))
+                        (:pali-word/translations word))
      :audio {:url (format "/uploads/cards/pali_word_card/audio/%s" (:crux.db/id word))}}))
 
 (defn stacked-inspiration->json [card]
@@ -44,8 +44,8 @@
      :header "Inspiration"
      :bookmarkable true
      :shareable true
-     :text (:text card)
-     :image {:url (-> card :image-attachment :url)}}))
+     :text (:stacked-inspiration/text card)
+     :image {:url (-> card :stacked-inspiration/image-attachment :url)}}))
 
 (defn today-list []
   (vec (concat

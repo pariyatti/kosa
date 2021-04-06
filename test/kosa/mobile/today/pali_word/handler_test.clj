@@ -47,7 +47,7 @@
 
 (deftest http-params->edn-document
   (testing "Zips languages and translations"
-    (let [params {:card-type "pali_word", :bookmarkable "true", :shareable "true", :header "Pali Word",
+    (let [params {:type "pali_word", :bookmarkable "true", :shareable "true", :header "Pali Word",
                   :pali "rani", :language ["hi" "en" "cn"], :translation ["rani" "queen" "wx"], :submit "Save"}
           req {:params params
                :reitit.core/router routes/router}
@@ -58,7 +58,7 @@
              (:pali-word/translations doc)))))
 
   (testing "Saves params to db"
-    (let [params {:card-type "pali_word", :bookmarkable "true", :shareable "true", :header "Pali Word",
+    (let [params {:type "pali_word", :bookmarkable "true", :shareable "true", :header "Pali Word",
                   :pali "rani", :language ["hi" "en" "cn"], :translation ["rani" "queen" "wx"], :submit "Save"}
           req {:params params
                :reitit.core/router routes/router}

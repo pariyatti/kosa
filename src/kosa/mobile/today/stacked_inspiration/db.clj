@@ -1,35 +1,28 @@
 (ns kosa.mobile.today.stacked-inspiration.db
   (:refer-clojure :exclude [list get])
-  (:require [kuti.record]
+  (:require [kuti.record :as record]
             [kuti.storage :as storage]
             [kuti.support.time :as time]
             [kuti.record.nested :as nested]))
 
-(def fields #{:card-type
-              :published-at
-              :bookmarkable
-              :shareable
-              :text
-              :image-attachment-id})
-
-(defn rehydrate [image]
-  (as-> (nested/expand-all image :image-attachment) img
-      (assoc-in img
-       [:image-attachment :url]
-       (storage/url (:image-attachment img)))))
+(defn rehydrate [card]
+  (as-> (nested/expand-all card :stacked-inspiration/image-attachment) c
+      (assoc-in c
+       [:stacked-inspiration/image-attachment :url]
+       (storage/url (:stacked-inspiration/image-attachment c)))))
 
 (defn list []
   (let [list-query '{:find     [e updated-at]
-                     :where    [[e :card-type "stacked_inspiration"]
+                     :where    [[e :type :stacked-inspiration]
                                 [e :updated-at updated-at]]
                      :order-by [[updated-at :desc]]}]
-    (map rehydrate (kuti.record/query list-query))))
+    (map rehydrate (record/query list-query))))
 
-(defn put [e]
-  (let [doc (assoc e :card-type "stacked_inspiration")]
+(defn save! [e]
+  (let [doc (assoc e :type :stacked-inspiration)]
     (-> doc
-        (nested/collapse-one :image-attachment)
-        (kuti.record/put fields))))
+        (nested/collapse-one :stacked-inspiration/image-attachment)
+        (record/save!))))
 
 (defn get [id]
-  (rehydrate (kuti.record/get id)))
+  (rehydrate (record/get id)))

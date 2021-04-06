@@ -11,10 +11,12 @@
    [:table
     [:tr
      [:td "Text:"]
-     [:td (:text card)]]
+     [:td (:stacked-inspiration/text card)]]
     [:tr
      [:td "Image:"]
-     [:td [:div [:img {:src (storage/url (:image-attachment card)) :width "128" :height "128"}]]]]]
+     [:td [:div [:img {:src (storage/url (:stacked-inspiration/image-attachment card))
+                       :width "128"
+                       :height "128"}]]]]]
    [:ul {:class "card-action-links"}
     [:li {:class "card-action-link"} "Show"]
     [:li {:class "card-action-link"} "Edit"]
@@ -42,16 +44,18 @@
    [:table
     [:tr
      [:td "Bookmarkable?"]
-     [:td (:bookmarkable card)]]
+     [:td (:stacked-inspiration/bookmarkable card)]]
     [:tr
      [:td "Shareable?"]
-     [:td (:shareable card)]]
+     [:td (:stacked-inspiration/shareable card)]]
     [:tr
      [:td "Text:"]
-     [:td (:text card)]]
+     [:td (:stacked-inspiration/text card)]]
     [:tr
      [:td "Image:"]
-     [:td [:div [:img {:src (storage/url (:image-attachment card)) :width "128" :height "128"}]]]]]))
+     [:td [:div [:img {:src (storage/url (:stacked-inspiration/image-attachment card))
+                       :width "128"
+                       :height "128"}]]]]]))
 
 (defn show [req card]
   (p/app "Show Stacked Inspiration Card"
@@ -66,24 +70,24 @@
           :action (v/create-path req :stacked-inspirations)
           :enctype "multipart/form-data"}
    [:div {:class "field"}
-    (f/hidden-field :card-type "stacked_inspiration")]
+    (f/hidden-field :type :stacked-inspiration)]
    [:a {:href "#"
         :onclick "document.getElementById('defaults').classList.toggle('form-defaults-hidden');"}
     "Show / Hide Defaults"]
    [:div#defaults {:class "form-defaults-hidden"}
     [:div {:class "field"}
-     (f/label :bookmarkable "Bookmarkable?")
-     (f/check-box :bookmarkable :checked)]
+     (f/label :stacked-inspiration/bookmarkable "Bookmarkable?")
+     (f/check-box :stacked-inspiration/bookmarkable :checked)]
     [:div {:class "field"}
-     (f/label :shareable "Shareable?")
-     (f/check-box :shareable :checked)]
+     (f/label :stacked-inspiration/shareable "Shareable?")
+     (f/check-box :stacked-inspiration/shareable :checked)]
     [:div {:class "field"}
-     (f/label :header "Header")
-     (f/text-field :header "Stacked Inspiration")]]
+     (f/label :stacked-inspiration/header "Header")
+     (f/text-field :stacked-inspiration/header "Stacked Inspiration")]]
 
    [:div {:class "field"}
-    (f/label :text "Text")
-    (f/text-field :text)]
+    (f/label :stacked-inspiration/text "Text")
+    (f/text-field :stacked-inspiration/text)]
    [:div {:class "field"}
     [:div {:id "imagesearch"}
      [:p "If you're seeing this message, that means you haven't yet compiled your ClojureScript!"]]]

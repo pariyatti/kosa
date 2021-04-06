@@ -7,12 +7,15 @@
             [kuti.storage :as storage]
             [ring.util.response :as resp]))
 
+(def namespacer (partial c/namespaced :stacked-inspiration))
+
 (defn ->stacked-inspiration-doc [p]
-  (let [card (assoc {:card-type "stacked_inspiration"
-                     :bookmarkable true
-                     :shareable true}
-                    :text (:text p))]
-    (storage/reattach! card :image-attachment (:image-id p))))
+  (-> p
+      namespacer
+      (c/params->doc [:stacked-inspiration/bookmarkable
+                      :stacked-inspiration/shareable
+                      :stacked-inspiration/text])
+      (storage/reattach! :stacked-inspiration/image-attachment (:image-id p))))
 
 (defn index [request]
   (let [cards (db/list)]
@@ -25,7 +28,7 @@
 
 (defn create [req]
   (let [doc (-> req :params ->stacked-inspiration-doc)
-        card (db/put doc)]
+        card (db/save! doc)]
     (if card
       (resp/redirect (v/show-path req :stacked-inspirations card))
       (resp/response

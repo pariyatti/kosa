@@ -17,10 +17,10 @@
 
 (deftest fields-mapped-by-name-directly
   (testing "fields listed as keywords pass directly from params into the doc"
-    (let [params {:card-type "pali_word"
+    (let [params {:type "pali_word"
                   :pali "kuti"}
-          doc (sut/params->doc params [:card-type :pali])]
-      (is (= "pali_word" (:card-type doc)))
+          doc (sut/params->doc params [:type :pali])]
+      (is (= "pali_word" (:type doc)))
       (is (= "kuti" (:pali doc)))))
 
   (testing "barf on fields listed with non-keyword, non-lambda types"
