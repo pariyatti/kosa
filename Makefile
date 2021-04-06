@@ -66,6 +66,13 @@ init: tmp/storage resources/storage tools deps assets ##@Setup Dev Setup
 routes: ##@Development Display HTTP routes
 	lein run -- --routes -f config/config.dev.edn
 
+db-create: ##@Development Create a migrator: make db-create name=xyz
+ifdef name
+	lein create dev crux-dev $(name)
+else
+	echo "'name' was not defined."
+endif
+
 db-clean: ##@Development Erase local db
 	rm -rf data/dev
 	rm -rf data/test
