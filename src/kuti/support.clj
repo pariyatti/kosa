@@ -22,3 +22,15 @@
 (defmacro when-let* [binding & body]
   (let [body (cons 'do body)]
    `(domonad maybe-m ~binding ~body)))
+
+;; TODO: kuti.support.types ?
+
+(defn namespace-kw [n kw]
+  (assert (keyword n))
+  (assert (keyword? kw))
+  (keyword (name n) (name kw)))
+
+(defn typify [e kw]
+  (let [t (:type e)]
+    (assert t)
+    (namespace-kw t kw)))

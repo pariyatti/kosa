@@ -10,12 +10,10 @@
            [clojure.lang Keyword Symbol PersistentVector]
            [java.net URI]))
 
-(def meta-keys #{:crux.db/id :type :updated-at :published-at})
-
 (defn non-homogenous? [e]
   (if-let [type (:type e)]
     (remove #(= type (-> % namespace keyword))
-            (keys (apply dissoc e meta-keys)))
+            (keys (apply dissoc e core/meta-keys)))
     (throw (IllegalArgumentException. ":type key not found."))))
 
 (defn missing-type? [t db-types]

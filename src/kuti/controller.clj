@@ -1,6 +1,7 @@
 (ns kuti.controller
   (:require
-    [kuti.support.time :as time]))
+   [kuti.support.time :as time]
+   [kuti.support :as support]))
 
 (defn map-with-name [doc mapping params]
   (assoc doc mapping (get params mapping)))
@@ -35,8 +36,7 @@
     (time/now)))
 
 (defn namespaced-pair [n [k v]]
-  (assert (keyword? k))
-  [(keyword (name n) (name k))
+  [(support/namespace-kw n k)
    v])
 
 ;; public API

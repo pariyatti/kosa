@@ -1,7 +1,11 @@
 (ns kuti.record
   (:require [kuti.record.core :as core]
-            [kuti.record.schema :as schema])
+            [kuti.record.schema :as schema]
+            [kuti.support.time :as time])
   (:refer-clojure :exclude [get list]))
+
+(defn timestamp [e]
+  (core/timestamp e))
 
 (defn get [id]
   (core/get id))

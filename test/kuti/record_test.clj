@@ -23,6 +23,13 @@
                         :country "India"
                         :population 1234})
 
+(def record-with-type1 {:type :mouse
+                        :mouse/buttons 2
+                        :mouse/brand "Logitech"})
+(def record-with-type2 {:type :mouse
+                        :mouse/buttons 3
+                        :mouse/brand "Microsoft"})
+
 (deftest db-insert-operations
   (testing "Can insert a raw datum"
     (let [tx (core/put-async* record)]
@@ -62,3 +69,12 @@
       (is (= 1234 (:population created)))
       (is (= 6789 (:population updated)))
       (is (= (:crux.db/id created) (:crux.db/id updated))))))
+
+(deftest db-list
+  (testing "lists by :type and :[type]/updated-at"
+    (let [required-fields [:type :mouse/buttons :mouse/brand]
+          m1 (sut/put (sut/timestamp record-with-type1) required-fields)
+          _ (time/freeze-clock! (time/instant "1998-01-01T00:00:00.000Z"))
+          m2 (sut/put (sut/timestamp record-with-type2) required-fields)]
+      (is (= [m1 m2]
+             (sut/list :mouse))))))

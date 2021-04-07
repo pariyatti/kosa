@@ -4,6 +4,7 @@
             [crux.api :as crux]
             [crux.rocksdb :as rocks]
             [kosa.config :as config]
+            [kuti.support :as support]
             [kuti.support.debugging :refer :all]
             [kuti.support.time :as time]
             [kuti.support :refer [path-join]]
@@ -11,6 +12,9 @@
             [mount.core :refer [defstate]]
             [kuti.support.time :as time]
             [clojure.string :as clojure.string]))
+
+(def meta-keys #{:crux.db/id :type :updated-at :published-at})
+(def timestamp-fields #{:created-at :updated-at :published-at})
 
 (def crux-node)
 
@@ -52,6 +56,12 @@
 (defn get [id]
   (get* (->uuid id)))
 
+(defn timestamp [e]
+  (let [ts (support/typify e :updated-at)
+        _ (dbg "ts?")
+        _ (dbg ts)]
+    (assoc e ts (time/now))))
+
 (defn put-async* [datum]
   (crux/submit-tx crux-node [[:crux.tx/put datum]]))
 
@@ -61,21 +71,29 @@
         (assoc :crux.db/id (if old-id
                              (->uuid old-id)
                              (uuid)))
-        (assoc :updated-at (time/now)))))
+        ;; (assoc :updated-at (time/now))
+        )))
 
 (defn validate-put! [e allowed-keys]
-  (let [allowed-keys* (conj allowed-keys :crux.db/id :type :updated-at :published-at)
-        extras (apply dissoc e allowed-keys*)]
+  (let [extras
+        (->> meta-keys
+             (apply conj allowed-keys)
+             (apply dissoc e)
+             (keys)
+             (remove #(timestamp-fields (-> % name keyword))))]
     (when (not-empty extras)
       (throw (ex-info (format "Extra fields '%s' found during put."
-                              (clojure.string/join ", " (keys extras)))
+                              (clojure.string/join ", " extras))
                       e)))))
 
 (defn put-async
   "Try not to use me unless you absolutely have to. Prefer `put` (synchronous)."
   [e restricted-keys]
   (validate-put! e restricted-keys)
-  (let [raw (select-keys e (conj restricted-keys :crux.db/id :type))
+  (let [raw (select-keys e (conj restricted-keys
+                                 :crux.db/id :type
+                                 (support/typify e :updated-at)
+                                 (support/typify e :published-at)))
         doc (put-prepare raw)
         tx  (put-async* doc)]
     (assoc tx :crux.db/id (:crux.db/id doc))))
@@ -118,12 +136,25 @@
    (->> (crux/q (crux/db crux-node) q param)
         (reify-results get))))
 
+;; (defn list
+;;   [type]
+;;   (let [timestamp-field (support/namespace-kw type :updated-at)
+;;         list-query {:find     '[e updated-at]
+;;                     :where    ['[e :type type]
+;;                                 ['e timestamp-field 'updated-at]]
+;;                     :order-by '[[updated-at :desc]]
+;;                     :in [type tsf]}]
+;;     (query list-query type )))
+
 (defn list
   [type]
-  (let [type-kw (name type)
-        list-query '{:find     [e updated-at]
-                     :where    [[e :type type]
-                                [e :updated-at updated-at]]
-                     :order-by [[updated-at :desc]]
-                     :in [type]}]
-    (query list-query type-kw)))
+  (let [timestamp-field (support/namespace-kw type :updated-at)
+        list-query {:find     '[e updated-at]
+                    :where    ['[e :type type]
+                               ['e timestamp-field 'updated-at]]
+                    :order-by '[[updated-at :desc]]
+                    :in '[type]}]
+    (->> (crux/q (crux/db crux-node)
+                 list-query
+                 type)
+        (reify-results get))))
