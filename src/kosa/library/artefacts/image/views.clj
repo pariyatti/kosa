@@ -35,7 +35,9 @@
           [:div {:class "artefacts-wrapper"}
            (for [img images]
              [:div {:class "artefact"}
-              [:div [:img {:src (storage/url (:image-artefact/image-attachment img)) :width "128" :height "128"}]]
+              [:div [:img {:src (storage/url (:image-artefact/image-attachment img))
+                           :width "128"
+                           :height "128"}]]
               [:a {:href (v/show-path req :images img)}
                [:div (storage/url (:image-artefact/image-attachment img))]]])]]))
 
@@ -66,7 +68,9 @@
    [:table
     [:tr
      [:td "Image Preview:"]
-     [:td [:img {:src (storage/url (:image-artefact/image-attachment image)) :width "128" :height "128"}]]]
+     [:td [:img {:src (storage/url (:image-artefact/image-attachment image))
+                 :width "128"
+                 :height "128"}]]]
     [:tr
      [:td "URL:"]
      [:td (storage/url (:image-artefact/image-attachment image))]]

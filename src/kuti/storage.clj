@@ -9,10 +9,8 @@
             [buddy.core.hash :as hash]
             [buddy.core.codecs :refer :all]
             [mount.core :as mount :refer [defstate]])
-  (:import [java.io FileNotFoundException]))
-
-(def attachment-fields #{:key :filename :metadata :service-name
-                         :content-type :checksum :byte-size :identified})
+  (:import [java.io FileNotFoundException]
+           [java.lang RuntimeException]))
 
 (defn start-storage! []
   (or (:storage (mount/args))
@@ -23,7 +21,7 @@
   :stop nil)
 
 (defn attached-filename [attachment]
-  (format "kuti-%s-%s" (:key attachment) (:filename attachment)))
+  (format "kuti-%s-%s" (:attm/key attachment) (:attm/filename attachment)))
 
 (defn service-dir []
   (:root service-config))
@@ -58,24 +56,25 @@
 
 (defn params->attachment! [file-params]
   (let [tempfile (:tempfile file-params)
-        attachment (-> {:key          (calculate-key tempfile)
-                        :filename     (clean-filename (:filename file-params))
-                        :metadata     ""
-                        :service-name (:service service-config)
+        attachment (-> {:type              :attm
+                        :attm/key          (calculate-key tempfile)
+                        :attm/filename     (clean-filename (:filename file-params))
+                        :attm/metadata     ""
+                        :attm/service-name (:service service-config)
                         ;; unfurled:
-                        :checksum     (calculate-md5 tempfile)
-                        :content-type (:content-type file-params)
-                        :byte-size    (.length tempfile)
-                        :identified   true}
+                        :attm/checksum     (calculate-md5 tempfile)
+                        :attm/content-type (:content-type file-params)
+                        :attm/byte-size    (.length tempfile)
+                        :attm/identified   true}
                        kuti.record/timestamp)]
     (if (save-file! tempfile attachment)
       attachment
-      (throw (ex-info "Uploaded file failed to save to disk.")))))
+      (throw (RuntimeException. "Uploaded file failed to save to disk.")))))
 
 (defn put-attachment! [attachment]
-  (if-let [saved (kuti.record/put attachment attachment-fields)]
-    saved ;; (:crux.db/id attachment)
-    (throw (ex-info "Attachment failed to save to database."))))
+  (if-let [saved (kuti.record/save! attachment)]
+    saved
+    (throw (RuntimeException. "Attachment failed to save to database."))))
 
 ;;;;;;;;;;;;;;;;;;
 ;;  PUBLIC API  ;;

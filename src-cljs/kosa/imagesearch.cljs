@@ -20,13 +20,13 @@
   @results)
 
 (defn show-image [img]
-  [:img {:src (-> img :image-artefact/image-attachment :url)
+  [:img {:src (-> img :image-artefact/image-attachment :attm/url)
          :width 100
          :height 100}])
 
 (defn choose-image [img]
   (reset! selected-image {:crux.db/id (-> img :image-artefact/image-attachment :crux.db/id)
-                          :url (-> img :image-artefact/image-attachment :url)}))
+                          :url (-> img :image-artefact/image-attachment :attm/url)}))
 
 (def form-template
   [:div {:field             :mediabox
@@ -51,4 +51,5 @@
        [bind-fields form-template doc]
        [:br]])))
 
-(r/render-component [widget] (.getElementById js/document "imagesearch"))
+(r/render-component [widget]
+                    (.getElementById js/document "imagesearch"))

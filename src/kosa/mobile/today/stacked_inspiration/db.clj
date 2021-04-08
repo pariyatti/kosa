@@ -7,9 +7,10 @@
 
 (defn rehydrate [card]
   (as-> (nested/expand-all card :stacked-inspiration/image-attachment) c
-      (assoc-in c
-       [:stacked-inspiration/image-attachment :url]
-       (storage/url (:stacked-inspiration/image-attachment c)))))
+    ;; TODO: this behaviour belongs in kuti.storage
+    (assoc-in c
+              [:stacked-inspiration/image-attachment :attm/url]
+              (storage/url (:stacked-inspiration/image-attachment c)))))
 
 (defn list []
   (map rehydrate (record/list :stacked-inspiration)))

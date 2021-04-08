@@ -22,13 +22,15 @@
   file-fixtures/copy-fixture-files
   storage-fixtures/set-service-config)
 
-(def image-attachment {:filename "bodhi-with-raindrops.jpg"
-                       :content-type "image/jpeg"
-                       :metadata ""
-                       :service-name :disk
-                       :byte-size 13468
-                       :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"
-                       :identified true})
+(def image-attachment {:type :attm
+                       :attm/key ""
+                       :attm/filename "bodhi-with-raindrops.jpg"
+                       :attm/content-type "image/jpeg"
+                       :attm/metadata ""
+                       :attm/service-name :disk
+                       :attm/byte-size 13468
+                       :attm/checksum "ca20bbfbea75755b1059ff2cd64bd6d3"
+                       :attm/identified true})
 
 (def image-artefact {:type :image-artefact
                      :image-artefact/published-at time-fixtures/win95
@@ -57,15 +59,16 @@
                               :image-artefact/original-url (URI. "")
                               :image-artefact/searchables "bodhi with raindrops jpg bodhi-with-raindrops.jpg",
                               :image-artefact/image-attachment {:crux.db/id nil
-                                                                :updated-at @time/clock
-                                                                :key "a2e0d5505185beb708ac5edaf4fc4d20",
-                                                                :service-name :disk,
-                                                                :filename "bodhi-with-raindrops.jpg",
-                                                                :checksum "ca20bbfbea75755b1059ff2cd64bd6d3",
-                                                                :url "/uploads/kuti-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg",
-                                                                :content-type "image/jpeg",
-                                                                :identified true,
-                                                                :metadata ""
-                                                                :byte-size 13468}}]}]
+                                                                :type :attm
+                                                                :attm/updated-at @time/clock
+                                                                :attm/key "a2e0d5505185beb708ac5edaf4fc4d20",
+                                                                :attm/service-name :disk,
+                                                                :attm/filename "bodhi-with-raindrops.jpg",
+                                                                :attm/checksum "ca20bbfbea75755b1059ff2cd64bd6d3",
+                                                                :attm/url "/uploads/kuti-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg",
+                                                                :attm/content-type "image/jpeg",
+                                                                :attm/identified true,
+                                                                :attm/metadata ""
+                                                                :attm/byte-size 13468}}]}]
 
         (is (= expected resp))))))

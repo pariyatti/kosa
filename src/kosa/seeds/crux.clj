@@ -8,44 +8,44 @@
 
 (def leaf-attachment
   {:crux.db/id #uuid "729755d4-e85f-43f7-9aa5-79c4ab6fbceb",
-   :type "attachment"
-   :key "d54d85868f2963a4efee91e5c86e1679",
-   :service-name :disk,
-   :filename "bodhi-leaf.jpg",
-   :checksum "48fbe806b00c7696838eee7e5172403f",
-   :content-type "image/jpeg",
-   :identified true,
-   :metadata "",
-   :byte-size 109334})
+   :type :attm
+   :attm/key "d54d85868f2963a4efee91e5c86e1679",
+   :attm/service-name :disk,
+   :attm/filename "bodhi-leaf.jpg",
+   :attm/checksum "48fbe806b00c7696838eee7e5172403f",
+   :attm/content-type "image/jpeg",
+   :attm/identified true,
+   :attm/metadata "",
+   :attm/byte-size 109334})
 
 (def raindrop-attachment
   {:crux.db/id #uuid "f7158192-42e7-4d96-be88-3144b9c1994e",
-   :type "attachment"
-   :key "09d54922cf16064515a03c9168552462",
-   :service-name :disk,
-   :filename "bodhi-raindrops.jpg",
-   :checksum "ce2a70d30aaa2f9fc633d13d37f4c8ad",
-   :content-type "image/jpeg",
-   :identified true,
-   :metadata "",
-   :byte-size 452474})
+   :type :attm
+   :attm/key "09d54922cf16064515a03c9168552462",
+   :attm/service-name :disk,
+   :attm/filename "bodhi-raindrops.jpg",
+   :attm/checksum "ce2a70d30aaa2f9fc633d13d37f4c8ad",
+   :attm/content-type "image/jpeg",
+   :attm/identified true,
+   :attm/metadata "",
+   :attm/byte-size 452474})
 
 (def buddha-attachment
   {:crux.db/id #uuid "b5d46c3f-da64-4881-9382-1ae3773d1a9c",
-   :type "attachment"
-   :key "cfb6470bc83d7cffe8d171485015d70f",
-   :service-name :disk,
-   :filename "buddha.jpg",
-   :checksum "63f1ea8b25e47c2d467bf6b1b636c249",
-   :content-type "image/jpeg",
-   :identified true,
-   :metadata "",
-   :byte-size 27100})
+   :type :attm
+   :attm/key "cfb6470bc83d7cffe8d171485015d70f",
+   :attm/service-name :disk,
+   :attm/filename "buddha.jpg",
+   :attm/checksum "63f1ea8b25e47c2d467bf6b1b636c249",
+   :attm/content-type "image/jpeg",
+   :attm/identified true,
+   :attm/metadata "",
+   :attm/byte-size 27100})
 
 (defn copy-attachments! []
   (doseq [a [leaf-attachment raindrop-attachment buddha-attachment]]
     (io/copy (io/file (path-join "resources/joplin/seed-attachments"
-                                 (:filename a)))
+                                 (:attm/filename a)))
              (io/file (path-join "resources/storage/"
                                  (storage/attached-filename a))))))
 

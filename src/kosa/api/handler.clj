@@ -45,7 +45,7 @@
      :bookmarkable true
      :shareable true
      :text (:stacked-inspiration/text card)
-     :image {:url (-> card :stacked-inspiration/image-attachment :url)}}))
+     :image {:url (-> card :stacked-inspiration/image-attachment :attm/url)}}))
 
 (defn today-list []
   (vec (concat

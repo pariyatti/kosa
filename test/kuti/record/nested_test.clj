@@ -36,9 +36,9 @@
 (deftest collapse-one
   (testing "collapses a named field"
     (let [entity {:zig-attachment
-                  {:crux.db/id id1 :filename "this-zig.txt"}
+                  {:crux.db/id id1 :attm/filename "this-zig.txt"}
                   :zag-attachment
-                  {:crux.db/id id2 :filename "this-zag.txt"}}
+                  {:crux.db/id id2 :attm/filename "this-zag.txt"}}
           collapsed (sut/collapse-one entity
                                         :zig-attachment)
           id (:zig-attachment-id collapsed)]

@@ -11,9 +11,10 @@
 
 (defn rehydrate [image]
   (as-> (nested/expand-all image :image-artefact/image-attachment) img
-      (assoc-in img
-       [:image-artefact/image-attachment :url]
-       (storage/url (:image-artefact/image-attachment img)))))
+    ;; TODO: this behaviour really belongs in kuti.storage
+    (assoc-in img
+              [:image-artefact/image-attachment :attm/url]
+              (storage/url (:image-artefact/image-attachment img)))))
 
 (defn list []
   (map rehydrate (record/list :image-artefact)))
@@ -34,7 +35,7 @@
 (defn save! [e]
   (-> e
       (assoc :type :image-artefact)
-      (search/tag-searchables (-> e :image-artefact/image-attachment :filename))
+      (search/tag-searchables (-> e :image-artefact/image-attachment :attm/filename))
       (nested/collapse-one :image-artefact/image-attachment)
       record/timestamp
       record/publish
