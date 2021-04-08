@@ -1,6 +1,7 @@
 (ns kuti.storage
   (:require [clojure.java.io :as io]
             [clojure.string]
+            [kuti.support.debugging :refer :all]
             [kuti.support :refer [path-join]]
             [kuti.record]
             [kuti.record.nested :as nested]
@@ -56,7 +57,7 @@
 
 (defn params->attachment! [file-params]
   (let [tempfile (:tempfile file-params)
-        attachment (-> {:type              :attm
+        attachment (-> {:kuti/type         :attm
                         :attm/key          (calculate-key tempfile)
                         :attm/filename     (clean-filename (:filename file-params))
                         :attm/metadata     ""

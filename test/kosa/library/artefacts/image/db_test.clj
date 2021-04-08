@@ -24,7 +24,7 @@
   file-fixtures/copy-fixture-files
   storage-fixtures/set-service-config)
 
-(def image-attachment {:type :attm
+(def image-attachment {:kuti/type :attm
                        :attm/updated-at time-fixtures/win95
                        :attm/key "a2e0d5505185beb708ac5edaf4fc4d20"
                        :attm/filename "bodhi-with-raindrops.jpg"
@@ -35,7 +35,7 @@
                        :attm/checksum "ca20bbfbea75755b1059ff2cd64bd6d3"
                        :attm/identified true})
 
-(def image-artefact {:type :image-artefact
+(def image-artefact {:kuti/type :image-artefact
                      :image-artefact/published-at time-fixtures/win95
                      :image-artefact/original-url (URI. "")})
 
@@ -64,7 +64,7 @@
             img-found (kuti.record/get (:crux.db/id img))
             attachment-found (kuti.record/get (:image-artefact/image-attachment-id img-found))]
         (is (= #{:crux.db/id
-                 :type
+                 :kuti/type
                  :image-artefact/updated-at
                  :image-artefact/published-at
                  :image-artefact/original-url

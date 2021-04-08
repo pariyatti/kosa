@@ -70,7 +70,7 @@
           :action (v/create-path req :stacked-inspirations)
           :enctype "multipart/form-data"}
    [:div {:class "field"}
-    (f/hidden-field :type :stacked-inspiration)]
+    (f/hidden-field :kuti/type :stacked-inspiration)]
    [:a {:href "#"
         :onclick "document.getElementById('defaults').classList.toggle('form-defaults-hidden');"}
     "Show / Hide Defaults"]

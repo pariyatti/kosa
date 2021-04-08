@@ -17,7 +17,7 @@
 
 (defn save! [e]
   (-> e
-      (assoc :type :pali-word)
+      (assoc :kuti/type :pali-word)
       record/timestamp
       record/publish
       (record/save!)))

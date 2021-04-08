@@ -36,14 +36,22 @@
   [(types/namespace-kw n k)
    v])
 
+(defn with-defaults [mappings]
+  (replace {:type [:type :kuti/type]} mappings))
+
+(defn ->doc [params mappings]
+  (if (empty? mappings)
+    (throw (IllegalArgumentException. "Controller cannot map params if no fields are specified."))
+    (reduce #(apply-mapping %1 %2 params) {} (with-defaults mappings))))
+
 ;; public API
 
 (defn params->doc [params mappings]
-  (when (:type params)
-    (assert-type-is-keyword params))
-  (if (empty? mappings)
-    (throw (IllegalArgumentException. "Controller cannot map params if no fields are specified."))
-    (reduce #(apply-mapping %1 %2 params) {} mappings)))
+  (let [m (with-defaults mappings)
+        doc (->doc params m)]
+    (when (:kuti/type doc)
+      (assert-type-is-keyword doc))
+    doc))
 
 (defn namespaced [n params]
   (assert (keyword? n))

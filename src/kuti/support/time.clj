@@ -72,7 +72,7 @@
 (def time t/new-time)
 
 (defmulti date-time
-  "Always use this public API to create :type/published-at date-times."
+  "Always use this public API to create :sometype/published-at date-times."
   (fn [d & args] (class d)))
 
 (defmethod date-time java.time.LocalDate

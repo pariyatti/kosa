@@ -25,7 +25,7 @@
                        :translation translation
                        :language "en"}]]
     {:crux.db/id (uuid)
-     :type :pali-word
+     :kuti/type :pali-word
      :pali-word/updated-at time-fixtures/win95
      :pali-word/published-at (time/now)
      :pali-word/bookmarkable true

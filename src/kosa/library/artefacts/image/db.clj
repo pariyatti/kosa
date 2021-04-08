@@ -27,14 +27,14 @@
                        :in [?match]
 	                     :where [[(wildcard-text-search ?match) [[?e ?v ?a ?s]]]
 	                             [?e :crux.db/id]
-                               [?e :type :image-artefact]]}
+                               [?e :kuti/type :image-artefact]]}
           raw-images (record/query list-query matcher)]
       (log/info (format "searching for '%s'" matcher))
       (map rehydrate raw-images))))
 
 (defn save! [e]
   (-> e
-      (assoc :type :image-artefact)
+      (assoc :kuti/type :image-artefact)
       (search/tag-searchables (-> e :image-artefact/image-attachment :attm/filename))
       (nested/collapse-one :image-artefact/image-attachment)
       record/timestamp

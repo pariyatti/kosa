@@ -23,10 +23,10 @@
                         :country "India"
                         :population 1234})
 
-(def record-with-type1 {:type :mouse
+(def record-with-type1 {:kuti/type :mouse
                         :mouse/buttons 2
                         :mouse/brand "Logitech"})
-(def record-with-type2 {:type :mouse
+(def record-with-type2 {:kuti/type :mouse
                         :mouse/buttons 3
                         :mouse/brand "Microsoft"})
 
@@ -71,9 +71,9 @@
       (is (= (:crux.db/id created) (:crux.db/id updated))))))
 
 (deftest db-list
-  (testing "lists by :type and :[type]/updated-at"
+  (testing "lists by :kuti/type and :[type]/updated-at"
     (time/unfreeze-clock!)
-    (let [required-fields [:type :mouse/buttons :mouse/brand]
+    (let [required-fields [:kuti/type :mouse/buttons :mouse/brand]
           m1 (sut/put (sut/timestamp record-with-type1) required-fields)
           _ (time/freeze-clock! (time/instant "1998-01-01T00:00:00.000Z"))
           m2 (sut/put (sut/timestamp record-with-type2) required-fields)]
@@ -83,12 +83,12 @@
 (deftest publish-dates
   (testing "can query by :[type]/published-at"
     (time/unfreeze-clock!)
-    (let [required-fields [:type :card/text]
-          m1 (sut/put (sut/publish {:type :card
+    (let [required-fields [:kuti/type :card/text]
+          m1 (sut/put (sut/publish {:kuti/type :card
                                     :card/text "Settle your quarrels."})
                       required-fields)
           _ (time/freeze-clock! (time/instant "1998-01-01T00:00:00.000Z"))
-          m2 (sut/put (sut/publish {:type :card
+          m2 (sut/put (sut/publish {:kuti/type :card
                                     :card/text "Settle your quarrels."})
                       required-fields)
           list-query '{:find     [e published-at]
@@ -98,13 +98,13 @@
              (sut/query list-query)))))
 
   (testing "can publish in the past/future"
-    (let [required-fields [:type :essay/title :essay/author]
-          m1 (sut/put (sut/publish {:type :essay
+    (let [required-fields [:kuti/type :essay/title :essay/author]
+          m1 (sut/put (sut/publish {:kuti/type :essay
                                     :essay/title "Manual of Perfections"
                                     :essay/author "Ledi Sayadaw"}
                                    (time/instant "2100-01-01T00:00:00.000Z"))
                       required-fields)
-          m2 (sut/put (sut/publish {:type :essay
+          m2 (sut/put (sut/publish {:kuti/type :essay
                                     :essay/title "Pali Canon"
                                     :essay/author "Ananda"}
                                    (time/date-time (time/date time/BCE 250)))
@@ -116,8 +116,8 @@
              (sut/query list-query)))))
 
   (testing "can draft (unpublish)"
-    (let [required-fields [:type :book/title :book/author]
-          m1 (sut/put (sut/publish {:type :book
+    (let [required-fields [:kuti/type :book/title :book/author]
+          m1 (sut/put (sut/publish {:kuti/type :book
                                     :book/title "Parami Dipani"
                                     :book/author "Ledi Sayadaw"}
                                    (time/instant "1868-01-01T00:00:00.000Z"))

@@ -13,7 +13,7 @@
             [kuti.support.time :as time]
             [clojure.string :as clojure.string]))
 
-(def meta-keys #{:crux.db/id :type})
+(def meta-keys #{:crux.db/id :kuti/type})
 (def timestamp-keys #{:created-at :updated-at :published-at})
 
 (def crux-node)
@@ -144,7 +144,7 @@
   [type]
   (let [timestamp-field (types/namespace-kw type :updated-at)
         list-query {:find     '[e updated-at]
-                    :where    ['[e :type type]
+                    :where    ['[e :kuti/type type]
                                ['e timestamp-field 'updated-at]]
                     :order-by '[[updated-at :desc]]
                     :in '[type]}]

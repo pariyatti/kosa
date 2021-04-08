@@ -17,7 +17,7 @@
 
 (defn save! [e]
   (-> e
-      (assoc :type :stacked-inspiration)
+      (assoc :kuti/type :stacked-inspiration)
       (nested/collapse-one :stacked-inspiration/image-attachment)
       record/timestamp
       record/publish

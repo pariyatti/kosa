@@ -2,6 +2,7 @@
   (:require [clojure.test :refer :all]
             [clojure.java.io :as io]
             [mount.core :as mount]
+            [kuti.support.debugging :refer :all]
             [kuti.fixtures.record-fixtures :as record-fixtures]
             [kuti.fixtures.file-fixtures :as file-fixtures]
             [kuti.fixtures.storage-fixtures :as storage-fixtures]
@@ -40,7 +41,7 @@
 (deftest attachment
   (let [attachment (sut/params->attachment! (:leaf-file params1))]
     (testing "returns an 'attachment' document"
-      (is (= {:type :attm
+      (is (= {:kuti/type :attm
               :attm/updated-at @time/clock
               :attm/key "a2e0d5505185beb708ac5edaf4fc4d20"
               :attm/filename "bodhi-with-raindrops.jpg"
@@ -94,7 +95,7 @@
   (testing "replaces whitespace with underscores"
     (let [attachment (sut/params->attachment! (:leaf-file ws-params))]
       (testing "returns an 'attachment' document with underscores"
-        (is (= {:type :attm
+        (is (= {:kuti/type :attm
                 :attm/updated-at @time/clock
                 :attm/key "a2e0d5505185beb708ac5edaf4fc4d20"
                 :attm/filename "bodhi_with_whitespace.jpg"
@@ -117,7 +118,7 @@
     (testing "records the attachment in Crux"
       (let [attachment (kuti.record/get (-> doc2 :leaf-attachment :crux.db/id))]
         (is (not (nil? (:crux.db/id attachment))))
-        (is (= {:type :attm
+        (is (= {:kuti/type :attm
                 :attm/updated-at @time/clock
                 :attm/key "a2e0d5505185beb708ac5edaf4fc4d20"
                 :attm/filename "bodhi-with-raindrops.jpg"
@@ -137,7 +138,7 @@
 
     (testing "collapses all attachments"
       (is (not (nil? (:leaf-attachment-id doc3))))
-      (is (= {:type :leaf-artefact
+      (is (= {:kuti/type :leaf-artefact
               :leaf-attachment-id leaf-attachment-id}
              (dissoc doc3 :leaf-artefact/published-at))))))
 

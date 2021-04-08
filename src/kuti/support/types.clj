@@ -6,6 +6,6 @@
   (keyword (name n) (name kw)))
 
 (defn typify [e kw]
-  (if-let [t (:type e)]
+  (if-let [t (:kuti/type e)]
     (namespace-kw t kw)
     kw))
