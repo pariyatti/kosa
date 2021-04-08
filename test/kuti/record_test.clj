@@ -1,6 +1,7 @@
 (ns kuti.record-test
   (:require [clojure.test :refer :all :exclude [time]]
             [crux.api]
+            [kuti.support.debugging :refer :all]
             [kuti.support.time :as time]
             [kuti.support.digest :refer [->uuid]]
             [kuti.fixtures.record-fixtures :as record-fixtures]
@@ -14,7 +15,6 @@
   time-fixtures/freeze-clock)
 
 (def record {:crux.db/id (->uuid "3291d680-0d70-4940-914d-35413e261115")
-             :updated-at @time/clock
              :record     "vinyl"
              :artist     "The Who"})
 
@@ -43,7 +43,7 @@
 
   (testing "put generates a new id"
     (let [inserted (sut/put record-without-id [:country :state :city :population])]
-      (is (= record-without-id (dissoc inserted :crux.db/id :updated-at)))
+      (is (= record-without-id (dissoc inserted :crux.db/id)))
       (is (not (nil? (:crux.db/id inserted))))))
 
   (testing "put barfs on badly-formed documents"
@@ -72,9 +72,60 @@
 
 (deftest db-list
   (testing "lists by :type and :[type]/updated-at"
+    (time/unfreeze-clock!)
     (let [required-fields [:type :mouse/buttons :mouse/brand]
           m1 (sut/put (sut/timestamp record-with-type1) required-fields)
           _ (time/freeze-clock! (time/instant "1998-01-01T00:00:00.000Z"))
           m2 (sut/put (sut/timestamp record-with-type2) required-fields)]
       (is (= [m1 m2]
              (sut/list :mouse))))))
+
+(deftest publish-dates
+  (testing "can query by :[type]/published-at"
+    (time/unfreeze-clock!)
+    (let [required-fields [:type :card/text]
+          m1 (sut/put (sut/publish {:type :card
+                                    :card/text "Settle your quarrels."})
+                      required-fields)
+          _ (time/freeze-clock! (time/instant "1998-01-01T00:00:00.000Z"))
+          m2 (sut/put (sut/publish {:type :card
+                                    :card/text "Settle your quarrels."})
+                      required-fields)
+          list-query '{:find     [e published-at]
+                       :where    [[e :card/published-at published-at]]
+                       :order-by [[published-at :asc]]}]
+      (is (= [m2 m1]
+             (sut/query list-query)))))
+
+  (testing "can publish in the past/future"
+    (let [required-fields [:type :essay/title :essay/author]
+          m1 (sut/put (sut/publish {:type :essay
+                                    :essay/title "Manual of Perfections"
+                                    :essay/author "Ledi Sayadaw"}
+                                   (time/instant "2100-01-01T00:00:00.000Z"))
+                      required-fields)
+          m2 (sut/put (sut/publish {:type :essay
+                                    :essay/title "Pali Canon"
+                                    :essay/author "Ananda"}
+                                   (time/date-time (time/date time/BCE 250)))
+                      required-fields)
+          list-query '{:find     [e published-at]
+                       :where    [[e :essay/published-at published-at]]
+                       :order-by [[published-at :asc]]}]
+      (is (= [m2 m1]
+             (sut/query list-query)))))
+
+  (testing "can draft (unpublish)"
+    (let [required-fields [:type :book/title :book/author]
+          m1 (sut/put (sut/publish {:type :book
+                                    :book/title "Parami Dipani"
+                                    :book/author "Ledi Sayadaw"}
+                                   (time/instant "1868-01-01T00:00:00.000Z"))
+                      required-fields)
+          _ (sut/put (sut/draft m1) required-fields)
+          list-query '{:find     [e published-at]
+                       :where    [[e :book/published-at published-at]]
+                       :order-by [[published-at :asc]]}]
+      (is (= 1 (count (sut/query list-query))))
+      (is (= time/DRAFT-DATE
+             (-> (sut/query list-query) first :book/published-at))))))

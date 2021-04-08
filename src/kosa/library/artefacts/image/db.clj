@@ -16,12 +16,7 @@
        (storage/url (:image-artefact/image-attachment img)))))
 
 (defn list []
-  (let [list-query '{:find     [e updated-at]
-                     :where    [[e :type :image-artefact]
-                                [e :updated-at updated-at]]
-                     :order-by [[updated-at :desc]]}
-        raw-images (record/query list-query)]
-    (map rehydrate raw-images)))
+  (map rehydrate (record/list :image-artefact)))
 
 (defn search-for [match]
   (if (= "" (clojure.string/trim match))
@@ -37,11 +32,13 @@
       (map rehydrate raw-images))))
 
 (defn save! [e]
-  (let [doc (assoc e :type :image-artefact)]
-    (-> doc
-        (search/tag-searchables (-> doc :image-artefact/image-attachment :filename))
-        (nested/collapse-one :image-artefact/image-attachment)
-        (record/save!))))
+  (-> e
+      (assoc :type :image-artefact)
+      (search/tag-searchables (-> e :image-artefact/image-attachment :filename))
+      (nested/collapse-one :image-artefact/image-attachment)
+      record/timestamp
+      record/publish
+      record/save!))
 
 (defn get [id]
   (rehydrate (record/get id)))

@@ -37,7 +37,9 @@
 (deftest attachment
   (let [attachment (sut/params->attachment! (:leaf-file params1))]
     (testing "returns an 'attachment' document"
-      (is (= {:key "a2e0d5505185beb708ac5edaf4fc4d20"
+      ;; TODO: change to :attachment/updated-at
+      (is (= {:updated-at @time/clock
+              :key "a2e0d5505185beb708ac5edaf4fc4d20"
               :filename "bodhi-with-raindrops.jpg"
               :content-type "image/jpeg"
               :metadata ""
@@ -89,7 +91,8 @@
   (testing "replaces whitespace with underscores"
     (let [attachment (sut/params->attachment! (:leaf-file ws-params))]
       (testing "returns an 'attachment' document with underscores"
-        (is (= {:key "a2e0d5505185beb708ac5edaf4fc4d20"
+        (is (= {:updated-at @time/clock
+                :key "a2e0d5505185beb708ac5edaf4fc4d20"
                 :filename "bodhi_with_whitespace.jpg"
                 :content-type "image/jpeg"
                 :metadata ""
@@ -131,6 +134,7 @@
       (is (not (nil? (:leaf-attachment-id doc3))))
       (is (= {:type "leaf-artefact"
               :leaf-attachment-id leaf-attachment-id}
+             ;; TODO: move to :attachment/published-at
              (dissoc doc3 :published-at))))))
 
 ;; ***************************

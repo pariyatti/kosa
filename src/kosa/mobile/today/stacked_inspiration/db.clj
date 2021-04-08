@@ -12,17 +12,15 @@
        (storage/url (:stacked-inspiration/image-attachment c)))))
 
 (defn list []
-  (let [list-query '{:find     [e updated-at]
-                     :where    [[e :type :stacked-inspiration]
-                                [e :updated-at updated-at]]
-                     :order-by [[updated-at :desc]]}]
-    (map rehydrate (record/query list-query))))
+  (map rehydrate (record/list :stacked-inspiration)))
 
 (defn save! [e]
-  (let [doc (assoc e :type :stacked-inspiration)]
-    (-> doc
-        (nested/collapse-one :stacked-inspiration/image-attachment)
-        (record/save!))))
+  (-> e
+      (assoc :type :stacked-inspiration)
+      (nested/collapse-one :stacked-inspiration/image-attachment)
+      record/timestamp
+      record/publish
+      record/save!))
 
 (defn get [id]
   (rehydrate (record/get id)))

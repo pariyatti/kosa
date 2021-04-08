@@ -7,6 +7,15 @@
 (defn timestamp [e]
   (core/timestamp e))
 
+(defn publish
+  ([e]
+   (core/publish e))
+  ([e ts]
+   (core/publish e ts)))
+
+(defn draft [e]
+  (core/draft e))
+
 (defn get [id]
   (core/get id))
 

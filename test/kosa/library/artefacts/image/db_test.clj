@@ -24,6 +24,7 @@
   file-fixtures/copy-fixture-files
   storage-fixtures/set-service-config)
 
+;; TODO: switch to :attachment/updated-at
 (def image-attachment {:updated-at time-fixtures/win95
                        :filename "bodhi-with-raindrops.jpg"
                        :content-type "image/jpeg"
@@ -34,7 +35,7 @@
                        :identified true})
 
 (def image-artefact {:type :image-artefact
-                     :published-at (time/now)
+                     :image-artefact/published-at time-fixtures/win95
                      :image-artefact/original-url (URI. "")})
 
 (defn clean-ids
@@ -57,7 +58,10 @@
       (let [img (sut/save! image-artefact2)
             img-found (kuti.record/get (:crux.db/id img))
             attachment-found (kuti.record/get (:image-artefact/image-attachment-id img-found))]
-        (is (= #{:crux.db/id :type :updated-at :published-at
+        (is (= #{:crux.db/id
+                 :type
+                 :image-artefact/updated-at
+                 :image-artefact/published-at
                  :image-artefact/original-url
                  :image-artefact/image-attachment-id
                  :image-artefact/searchables}
@@ -66,7 +70,7 @@
 
     (testing "On lookup, rehydrates attachment back into the artefact"
       (let [expected (assoc image-artefact
-                            :updated-at time-fixtures/win95
+                            :image-artefact/updated-at time-fixtures/win95
                             :image-artefact/searchables "bodhi with raindrops jpg bodhi-with-raindrops.jpg"
                             :image-artefact/image-attachment
                             (assoc image-attachment

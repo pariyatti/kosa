@@ -58,15 +58,16 @@
 
 (defn params->attachment! [file-params]
   (let [tempfile (:tempfile file-params)
-        attachment {:key          (calculate-key tempfile)
-                    :filename     (clean-filename (:filename file-params))
-                    :metadata     ""
-                    :service-name (:service service-config)
-                    ;; unfurled:
-                    :checksum     (calculate-md5 tempfile)
-                    :content-type (:content-type file-params)
-                    :byte-size    (.length tempfile)
-                    :identified   true}]
+        attachment (-> {:key          (calculate-key tempfile)
+                        :filename     (clean-filename (:filename file-params))
+                        :metadata     ""
+                        :service-name (:service service-config)
+                        ;; unfurled:
+                        :checksum     (calculate-md5 tempfile)
+                        :content-type (:content-type file-params)
+                        :byte-size    (.length tempfile)
+                        :identified   true}
+                       kuti.record/timestamp)]
     (if (save-file! tempfile attachment)
       attachment
       (throw (ex-info "Uploaded file failed to save to disk.")))))

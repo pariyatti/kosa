@@ -61,7 +61,7 @@
 
 (defn parse* [feed]
   (when-let* [entry (-> feed :entries first)
-              published-date (-> entry :published-date time/instant)
+              published-date (-> entry :published-date)
               pali-html (-> entry :description :value)
               pali-english (trim pali-html)
               [pali english] (split-pali-english pali-english)
@@ -70,7 +70,7 @@
      :pali-word/translations [["en" english]]
      :pali-word/original-pali pali-english
      :pali-word/original-url (URI. original-url)
-     :published-at published-date}))
+     :pali-word/published-at (time/instant published-date)}))
 
 (defn parse [feed]
   (log/info "#### parsing pali word feed")

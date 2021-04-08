@@ -58,38 +58,35 @@
 
 (deftest expand-one
   (let [tree {:crux.db/id id1
-              :updated-at @time/clock
-              :name "Birch"}
-        shrub {:crux.db/id id2 :name "Sage"}
+              :tree/name "Birch"}
+        shrub {:crux.db/id id2 :shrub/name "Sage"}
         doc {:crux.db/id id3
-             :name "List of plants"
-             :tree-plant-id id1
-             :shrub-plant-id id2}
-        _ (record/put tree [:name])
-        _ (record/put shrub [:name])
-        _ (record/put doc [:name :tree-plant-id :shrub-plant-id])]
+             :plants/name "List of plants"
+             :plants/tree-plant-id id1
+             :plants/shrub-plant-id id2}
+        _ (record/put tree [:tree/name])
+        _ (record/put shrub [:shrub/name])
+        _ (record/put doc [:plants/name :plants/tree-plant-id :plants/shrub-plant-id])]
     (is (= {:crux.db/id id3
-            :name "List of plants"
-            :tree-plant tree
-            :shrub-plant-id id2}
-           (sut/expand-one doc :tree-plant-id)))))
+            :plants/name "List of plants"
+            :plants/tree-plant tree
+            :plants/shrub-plant-id id2}
+           (sut/expand-one doc :plants/tree-plant-id)))))
 
 (deftest expand-all
   (let [tree {:crux.db/id id1
-              :updated-at @time/clock
-              :name "Birch"}
+              :tree/name "Birch"}
         shrub {:crux.db/id id2
-               :updated-at @time/clock
-               :name "Sage"}
+               :shrub/name "Sage"}
         doc {:crux.db/id id3
-             :name "List of plants"
-             :tree-plant-id id1
-             :shrub-plant-id id2}
-        _ (record/put tree [:name])
-        _ (record/put shrub [:name])
-        _ (record/put doc [:name :tree-plant-id :shrub-plant-id])]
+             :plants/name "List of plants"
+             :plants/tree-plant-id id1
+             :plants/shrub-plant-id id2}
+        _ (record/put tree [:tree/name])
+        _ (record/put shrub [:shrub/name])
+        _ (record/put doc [:plants/name :plants/tree-plant-id :plants/shrub-plant-id])]
     (is (= {:crux.db/id id3
-            :name "List of plants"
-            :tree-plant tree
-            :shrub-plant shrub}
+            :plants/name "List of plants"
+            :plants/tree-plant tree
+            :plants/shrub-plant shrub}
            (sut/expand-all doc :plant)))))

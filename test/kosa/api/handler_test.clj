@@ -31,7 +31,7 @@
                        :identified true})
 
 (def image-artefact {:type :image-artefact
-                     :published-at time-fixtures/win95
+                     :image-artefact/published-at time-fixtures/win95
                      :image-artefact/original-url (URI. "")})
 
 (deftest search-acceptance
@@ -52,8 +52,8 @@
                       :headers {},
                       :body [{:crux.db/id nil
                               :type :image-artefact,
-                              :updated-at @time/clock,
-                              :published-at @time/clock,
+                              :image-artefact/updated-at @time/clock,
+                              :image-artefact/published-at @time/clock,
                               :image-artefact/original-url (URI. "")
                               :image-artefact/searchables "bodhi with raindrops jpg bodhi-with-raindrops.jpg",
                               :image-artefact/image-attachment {:crux.db/id nil

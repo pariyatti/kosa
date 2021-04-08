@@ -1,5 +1,6 @@
 (ns kuti.record.schema
-  (:require [kuti.record.core :as core]
+  (:require [clojure.set :refer [difference]]
+            [kuti.record.core :as core]
             [kuti.support.digest :refer [uuid]]
             [kuti.support.time :as time]
             [kuti.support.debugging :refer :all])
@@ -151,9 +152,10 @@
           (format "Some keys did not match specified :type. %s"
                   (clojure.string/join ", " (non-homogenous? e))))
   (assert-required-attrs e)
-  (let [e2 (into {} (map coerce e))
-        schema (->> (disj (-> e2 keys set)
-                          :type :crux.db/id :updated-at)
+  (let [e1 (core/timestamp e)
+        e2 (into {} (map coerce e1))
+        schema (->> (difference (-> e2 keys set)
+                                core/meta-keys)
                     (map schema-for)
                     (remove nil?))
         e3 (coerce-schema e2 schema)]

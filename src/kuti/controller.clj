@@ -1,7 +1,8 @@
 (ns kuti.controller
   (:require
    [kuti.support.time :as time]
-   [kuti.support :as support]))
+   [kuti.support.types :as types])
+  (:import [java.lang IllegalArgumentException]))
 
 (defn map-with-name [doc mapping params]
   (assoc doc mapping (get params mapping)))
@@ -30,19 +31,15 @@
     (keyword? mapping) (map-with-name doc mapping params)
     :else (throw (java.lang.Exception. (format "Parameter mapping '%s' is not a keyword or fn." mapping)))))
 
-(defn tag-date [params]
-  (if (:published-at params)
-    (:published-at params)
-    (time/now)))
-
 (defn namespaced-pair [n [k v]]
-  [(support/namespace-kw n k)
+  [(types/namespace-kw n k)
    v])
 
 ;; public API
 
 (defn params->doc [params mappings]
-  (let [mappings (conj mappings [:published-at tag-date])]
+  (if (empty? mappings)
+    (throw (IllegalArgumentException. "Controller cannot map params if no fields are specified."))
     (reduce #(apply-mapping %1 %2 params) {} mappings)))
 
 (defn namespaced [n params]

@@ -16,7 +16,7 @@
 
 (defn pali-word->json [word]
   ;; TODO: how much of the Crux entity do we just want to hand over verbatim?
-  (let [published (:published-at word)
+  (let [published (:pali-word/published-at word)
         date (time/string (or published kosa-epoch))]
     {:type "pali_word"
      :id (:crux.db/id word)
@@ -34,7 +34,7 @@
      :audio {:url (format "/uploads/cards/pali_word_card/audio/%s" (:crux.db/id word))}}))
 
 (defn stacked-inspiration->json [card]
-  (let [published (:published-at card)
+  (let [published (:stacked-inspiration/published-at card)
         date (time/string (or published kosa-epoch))]
     {:type "stacked_inspiration"
      :id (:crux.db/id card)

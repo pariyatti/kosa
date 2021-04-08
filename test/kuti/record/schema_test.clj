@@ -18,11 +18,6 @@
   record-fixtures/load-states
   time-fixtures/freeze-clock)
 
-(def record {:crux.db/id (->uuid "3291d680-0d70-4940-914d-35413e261115")
-             :updated-at @time/clock
-             :record     "vinyl"
-             :artist     "The Who"})
-
 (def record-without-id {:city "Igatpuri"
                         :state "Maharashtra"
                         :country "India"
@@ -36,11 +31,11 @@
 
   (testing "implied type must match :type"
     (is (thrown-with-msg? java.lang.AssertionError
-                          #"Some keys did not match specified :type. :user/name, :address/street"
+                          #"Some keys did not match specified :type. :updated-on, :published-on, :user/name, :address/street"
                           (sut/save! {:type :essay
                                       :crux.db/id 123
-                                      :updated-at (time/now)
-                                      :published-at (time/now)
+                                      :updated-on (time/now)
+                                      :published-on (time/now)
                                       :user/name "Vikram"
                                       :address/street "Main St."}))))
 
@@ -64,10 +59,11 @@
                           (sut/save! {:type :doge :doge/breed "Shiba"})))
     (sut/add-type :doge [:doge/breed])
     (sut/remove-schema :doge/coin)
-    (let [doge {:type :doge :doge/breed "Shiba"}]
+    (let [doge {:type :doge
+                :doge/breed "Shiba"}]
       (is (= doge
              (dissoc (sut/save! doge)
-                     :crux.db/id :updated-at)))))
+                     :crux.db/id :doge/updated-at)))))
 
   (testing "saves doc with correctly-typed keys"
     (let [_ (sut/add-type :essay [:essay/title :essay/bookmarked])
@@ -77,8 +73,8 @@
                             :essay/title      "Strength of the Record"
                             :essay/bookmarked true})
           found (rec/get (:crux.db/id saved))]
-      (is (= {:updated-at       @time/clock
-              :type             :essay
+      (is (= {:type             :essay
+              :essay/updated-at @time/clock
               :essay/title      "Strength of the Record"
               :essay/bookmarked true}
              (dissoc found :crux.db/id)))))
