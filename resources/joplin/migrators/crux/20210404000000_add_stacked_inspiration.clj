@@ -1,4 +1,4 @@
-(ns joplin.migrators.crux.20210406234601-add-stacked-inspiration
+(ns joplin.migrators.crux.20210404000000-add-stacked-inspiration
   (:require [joplin.crux.database :as d]
             [kuti.record.schema :as schema]))
 

@@ -1,4 +1,4 @@
-(ns joplin.migrators.crux.20210406174427-add-pali-word
+(ns joplin.migrators.crux.20210403000000-add-pali-word
   (:require [joplin.crux.database :as d]
             [kuti.record.schema :as schema]))
 

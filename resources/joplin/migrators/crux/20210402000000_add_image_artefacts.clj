@@ -1,4 +1,4 @@
-(ns joplin.migrators.crux.20210403230010-add-image-artefacts
+(ns joplin.migrators.crux.20210402000000-add-image-artefacts
   (:require [crux.api :as x]
             [kuti.record.schema :as schema]
             [kuti.support.debugging :refer :all]
