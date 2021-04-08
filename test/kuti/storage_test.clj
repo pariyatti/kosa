@@ -23,14 +23,14 @@
   file-fixtures/copy-fixture-files
   storage-fixtures/set-service-config)
 
-(def params1 {:type "leaf-artefact",
+(def params1 {:type :leaf-artefact
               :leaf-file {:filename "bodhi-with-raindrops.jpg",
                           :content-type "image/jpeg",
                           :tempfile (io/file "test/kuti/fixtures/files/bodhi-temp.jpg")
                           :size 13468}
               :submit "Save"})
 
-(def ws-params {:type "leaf-artefact",
+(def ws-params {:type :leaf-artefact
                 :leaf-file {:filename "bodhi with\twhitespace.jpg",
                             :content-type "image/jpeg",
                             :tempfile (io/file "test/kuti/fixtures/files/bodhi-temp.jpg")
@@ -137,7 +137,7 @@
 
     (testing "collapses all attachments"
       (is (not (nil? (:leaf-attachment-id doc3))))
-      (is (= {:type "leaf-artefact"
+      (is (= {:type :leaf-artefact
               :leaf-attachment-id leaf-attachment-id}
              (dissoc doc3 :leaf-artefact/published-at))))))
 

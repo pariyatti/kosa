@@ -29,6 +29,11 @@
                           #":type key expected"
                           (sut/save! {:user/name "Vikram"}))))
 
+  (testing "non-keyword :type is not permitted"
+    (is (thrown-with-msg? java.lang.IllegalArgumentException
+                          #":type key must be a keyword."
+                          (sut/save! {:type "not_a_keyword"}))))
+
   (testing "implied type must match :type"
     (is (thrown-with-msg? java.lang.AssertionError
                           #"Some keys did not match specified :type. :updated-on, :published-on, :user/name, :address/street"

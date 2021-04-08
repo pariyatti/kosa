@@ -1,6 +1,7 @@
 (ns kuti.controller
   (:require
    [kuti.support.time :as time]
+   [kuti.support.assertions :refer [assert-type-is-keyword]]
    [kuti.support.types :as types])
   (:import [java.lang IllegalArgumentException]))
 
@@ -38,6 +39,8 @@
 ;; public API
 
 (defn params->doc [params mappings]
+  (when (:type params)
+    (assert-type-is-keyword params))
   (if (empty? mappings)
     (throw (IllegalArgumentException. "Controller cannot map params if no fields are specified."))
     (reduce #(apply-mapping %1 %2 params) {} mappings)))

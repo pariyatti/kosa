@@ -3,6 +3,7 @@
             [kuti.record.core :as core]
             [kuti.support.digest :refer [uuid]]
             [kuti.support.time :as time]
+            [kuti.support.assertions :refer [assert-type-is-keyword]]
             [kuti.support.debugging :refer :all])
   (:import [java.math BigDecimal BigInteger]
            [java.lang Boolean Double Float Long String]
@@ -148,6 +149,7 @@
 
 (defn save! [e]
   (assert (contains? e :type) ":type key expected.")
+  (assert-type-is-keyword e)
   (assert (empty? (non-homogenous? e))
           (format "Some keys did not match specified :type. %s"
                   (clojure.string/join ", " (non-homogenous? e))))

@@ -6,10 +6,10 @@
 
 (deftest fields-mapped-by-name-directly
   (testing "fields listed as keywords pass directly from params into the doc"
-    (let [params {:type "pali_word"
+    (let [params {:type :pali-word-of-the-day
                   :pali "kuti"}
           doc (sut/params->doc params [:type :pali])]
-      (is (= "pali_word" (:type doc)))
+      (is (= :pali-word-of-the-day (:type doc)))
       (is (= "kuti" (:pali doc)))))
 
   (testing "barf on fields listed with non-keyword, non-lambda types"
@@ -43,6 +43,14 @@
               ["fr" "chat"]
               ["hi" "बिल्ली"]]
              (:translations doc))))))
+
+(deftest docs-with-type
+  (testing "rejects non-keyword types"
+    (is (thrown-with-msg? IllegalArgumentException
+                          #":type key must be a keyword."
+                          (sut/params->doc {:type "not_a_keyword_param"
+                                            :name "Steven"}
+                                           [:type :name])))))
 
 (deftest namespaced-fields
   (testing "adds a namespace to keyword params"
