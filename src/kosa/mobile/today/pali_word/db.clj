@@ -5,23 +5,21 @@
             [kuti.support.time :as time]))
 
 (defn list []
-  (let [list-query '{:find     [e updated-at]
-                     :where    [[e :type :pali-word]
-                                [e :updated-at updated-at]]
-                     :order-by [[updated-at :desc]]}]
-    (record/query list-query)))
+  (record/list :pali-word))
 
 (defn q [attr param]
   (let [find-query {:find     '[e updated-at]
                     :in       '[original-pali]
                     :where    [['e attr 'original-pali]
-                               '[e :updated-at updated-at]]
+                               '[e :pali-word/updated-at updated-at]]
                     :order-by '[[updated-at :desc]]}]
     (record/query find-query param)))
 
 (defn save! [e]
   (-> e
-      (assoc :type :pali-word)
+      (assoc :kuti/type :pali-word)
+      record/timestamp
+      record/publish
       (record/save!)))
 
 (defn get [id]

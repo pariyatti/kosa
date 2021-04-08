@@ -1,7 +1,9 @@
 (ns kuti.record.schema
-  (:require [kuti.record.core :as core]
+  (:require [clojure.set :refer [difference]]
+            [kuti.record.core :as core]
             [kuti.support.digest :refer [uuid]]
             [kuti.support.time :as time]
+            [kuti.support.assertions :refer [assert-type-is-keyword]]
             [kuti.support.debugging :refer :all])
   (:import [java.math BigDecimal BigInteger]
            [java.lang Boolean Double Float Long String]
@@ -10,13 +12,11 @@
            [clojure.lang Keyword Symbol PersistentVector]
            [java.net URI]))
 
-(def meta-keys #{:crux.db/id :type :updated-at :published-at})
-
 (defn non-homogenous? [e]
-  (if-let [type (:type e)]
+  (if-let [type (:kuti/type e)]
     (remove #(= type (-> % namespace keyword))
-            (keys (apply dissoc e meta-keys)))
-    (throw (IllegalArgumentException. ":type key not found."))))
+            (keys (apply dissoc e core/meta-keys)))
+    (throw (IllegalArgumentException. ":kuti/type key not found."))))
 
 (defn missing-type? [t db-types]
   (assert (> (count db-types) 0)
@@ -33,7 +33,7 @@
        (remove nil?)))
 
 (defn assert-required-attrs [e]
-  (let [type (:type e)
+  (let [type (:kuti/type e)
         missing-type-check (partial missing-type? type)
         attrs (-> (core/query-raw '{:find [e attrs]
                                     :where [[e :db.entity/type t]
@@ -148,14 +148,16 @@
                    [[:crux.tx/delete s]])))
 
 (defn save! [e]
-  (assert (contains? e :type) ":type key expected.")
+  (assert (contains? e :kuti/type) ":kuti/type key expected.")
+  (assert-type-is-keyword e)
   (assert (empty? (non-homogenous? e))
-          (format "Some keys did not match specified :type. %s"
+          (format "Some keys did not match specified :kuti/type. %s"
                   (clojure.string/join ", " (non-homogenous? e))))
   (assert-required-attrs e)
-  (let [e2 (into {} (map coerce e))
-        schema (->> (disj (-> e2 keys set)
-                          :type :crux.db/id :updated-at)
+  (let [e1 (core/timestamp e)
+        e2 (into {} (map coerce e1))
+        schema (->> (difference (-> e2 keys set)
+                                core/meta-keys)
                     (map schema-for)
                     (remove nil?))
         e3 (coerce-schema e2 schema)]

@@ -51,6 +51,7 @@
 
 ;; dates and publishing:
 
+(def DRAFT-DATE (instant "9999-01-01T00:00:00.000Z"))
 (def CE (IsoEra/CE))
 (def BCE (IsoEra/BCE))
 
@@ -71,7 +72,7 @@
 (def time t/new-time)
 
 (defmulti date-time
-  "Always use this public API to create :published-at date/times."
+  "Always use this public API to create :sometype/published-at date-times."
   (fn [d & args] (class d)))
 
 (defmethod date-time java.time.LocalDate

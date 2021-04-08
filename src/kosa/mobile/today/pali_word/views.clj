@@ -66,7 +66,7 @@
 (defn new-form [req]
   (f/form-to [:post (v/create-path req :pali-words)]
              [:div {:class "field"}
-              (f/hidden-field :type :pali-word)]
+              (f/hidden-field :kuti/type :pali-word)]
              [:a {:href "#"
                   :onclick "document.getElementById('defaults').classList.toggle('form-defaults-hidden');"}
               "Show / Hide Defaults"]

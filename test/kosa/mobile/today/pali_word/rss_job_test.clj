@@ -43,7 +43,7 @@
             :pali-word/translations [["en" "hut"]]
             :pali-word/original-pali "kuti — hut"
             :pali-word/original-url (URI. "https://ignored")
-            :published-at (time/instant "2021-02-09T16:11:01.000Z")}
+            :pali-word/published-at (time/instant "2021-02-09T16:11:01.000Z")}
            (sut/parse* {:entries '({:description {:value "kuti — hut"}
                                     :uri "https://ignored"
                                     :published-date #inst "2021-02-09T16:11:01.000-00:00"})}))))
@@ -53,7 +53,7 @@
             :pali-word/translations [["en" ""]]
             :pali-word/original-pali "kuti = hut"
             :pali-word/original-url (URI. "https://ignored")
-            :published-at (time/instant "2021-02-09T16:11:01.000Z")}
+            :pali-word/published-at (time/instant "2021-02-09T16:11:01.000Z")}
            (sut/parse* {:entries '({:description {:value "kuti = hut"}
                                     :uri "https://ignored"
                                     :published-date #inst "2021-02-09T16:11:01.000-00:00"})}))))
@@ -63,7 +63,7 @@
             :pali-word/translations [["en" ""]]
             :pali-word/original-pali "kuti = hut"
             :pali-word/original-url (URI. "https://ignored")
-            :published-at (time/instant "2021-02-09T16:11:01.000Z")}
+            :pali-word/published-at (time/instant "2021-02-09T16:11:01.000Z")}
            (sut/parse* {:entries '({:description {:value "kuti = hut"}
                                     :uri "https://ignored"
                                     :published-date #inst "2021-02-09T16:11:01.000-00:00"})})))))

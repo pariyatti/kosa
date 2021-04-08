@@ -1,4 +1,4 @@
-(ns joplin.migrators.crux.20210403230010-add-image-artefacts
+(ns joplin.migrators.crux.20210402000000-add-image-artefacts
   (:require [crux.api :as x]
             [kuti.record.schema :as schema]
             [kuti.support.debugging :refer :all]
@@ -10,11 +10,11 @@
     (schema/add-type node :image-artefact [:image-artefact/original-url
                                            :image-artefact/image-attachment-id
                                            :image-artefact/searchables
-                                           :published-at])
+                                           :image-artefact/published-at])
     (schema/add-schema node :image-artefact/original-url        :db.type/uri)
     (schema/add-schema node :image-artefact/image-attachment-id :db.type/uuid)
     (schema/add-schema node :image-artefact/searchables         :db.type/string)
-    (schema/add-schema node :published-at        :db.type/inst)
+    (schema/add-schema node :image-artefact/published-at        :db.type/inst)
     (d/close!)))
 
 (defn down [db]
@@ -23,5 +23,5 @@
     (schema/remove-schema node :image-artefact/original-url)
     (schema/remove-schema node :image-artefact/image-attachment-id)
     (schema/remove-schema node :image-artefact/searchables)
-    (schema/remove-schema node :published-at)
+    (schema/remove-schema node :image-artefact/published-at)
     (d/close!)))

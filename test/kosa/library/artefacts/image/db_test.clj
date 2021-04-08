@@ -24,26 +24,30 @@
   file-fixtures/copy-fixture-files
   storage-fixtures/set-service-config)
 
-(def image-attachment {:updated-at time-fixtures/win95
-                       :filename "bodhi-with-raindrops.jpg"
-                       :content-type "image/jpeg"
-                       :metadata ""
-                       :service-name :disk
-                       :byte-size 13468
-                       :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"
-                       :identified true})
+(def image-attachment {:kuti/type :attm
+                       :attm/updated-at time-fixtures/win95
+                       :attm/key "a2e0d5505185beb708ac5edaf4fc4d20"
+                       :attm/filename "bodhi-with-raindrops.jpg"
+                       :attm/content-type "image/jpeg"
+                       :attm/metadata ""
+                       :attm/service-name :disk
+                       :attm/byte-size 13468
+                       :attm/checksum "ca20bbfbea75755b1059ff2cd64bd6d3"
+                       :attm/identified true})
 
-(def image-artefact {:type :image-artefact
-                     :published-at (time/now)
+(def image-artefact {:kuti/type :image-artefact
+                     :image-artefact/published-at time-fixtures/win95
                      :image-artefact/original-url (URI. "")})
 
 (defn clean-ids
   ([obj]
    (clean-ids obj nil))
   ([obj innards]
-   (let [top-clean (dissoc obj :crux.db/id :key :image-artefact/image-attachment-id)]
+   (let [top-clean (dissoc obj
+                           :crux.db/id
+                           :image-artefact/image-attachment-id)]
      (if innards
-       (update-in top-clean innards dissoc :crux.db/id :key)
+       (update-in top-clean innards dissoc :crux.db/id)
        top-clean))))
 
 (deftest attachment-acceptance-tests
@@ -51,13 +55,18 @@
               :content-type "image/jpeg",
               :tempfile (io/file "test/kuti/fixtures/files/bodhi-temp.jpg")
               :size 13468}
-        image-artefact2 (storage/attach! image-artefact :image-artefact/image-attachment file)]
+        image-artefact2 (storage/attach! image-artefact
+                                         :image-artefact/image-attachment
+                                         file)]
 
     (testing "On insert, flattens Image Artefacts into (1) artefact and (2) attachment"
       (let [img (sut/save! image-artefact2)
             img-found (kuti.record/get (:crux.db/id img))
             attachment-found (kuti.record/get (:image-artefact/image-attachment-id img-found))]
-        (is (= #{:crux.db/id :type :updated-at :published-at
+        (is (= #{:crux.db/id
+                 :kuti/type
+                 :image-artefact/updated-at
+                 :image-artefact/published-at
                  :image-artefact/original-url
                  :image-artefact/image-attachment-id
                  :image-artefact/searchables}
@@ -66,11 +75,11 @@
 
     (testing "On lookup, rehydrates attachment back into the artefact"
       (let [expected (assoc image-artefact
-                            :updated-at time-fixtures/win95
+                            :image-artefact/updated-at time-fixtures/win95
                             :image-artefact/searchables "bodhi with raindrops jpg bodhi-with-raindrops.jpg"
                             :image-artefact/image-attachment
                             (assoc image-attachment
-                                   :url "/uploads/kuti-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg"))
+                                   :attm/url "/uploads/kuti-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg"))
             img (sut/save! image-artefact2)
             img-found (sut/get (:crux.db/id img))
             img-no-ids (clean-ids img-found [:image-artefact/image-attachment])]
@@ -78,9 +87,9 @@
 
     (testing "On list, rehydrates all attachments"
       (let [expected (assoc image-attachment
-                            :url "/uploads/kuti-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg")
-            img (sut/save! image-artefact2)
-            img2 (sut/save! image-artefact2)
+                            :attm/url "/uploads/kuti-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg")
+            _ (sut/save! image-artefact2)
+            _ (sut/save! image-artefact2)
             imgs (vec (sut/list))]
         (is (= expected (-> imgs first :image-artefact/image-attachment clean-ids)))
         (is (= expected (-> imgs second :image-artefact/image-attachment clean-ids)))))))

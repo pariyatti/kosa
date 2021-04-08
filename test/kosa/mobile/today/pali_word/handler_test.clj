@@ -25,9 +25,9 @@
                        :translation translation
                        :language "en"}]]
     {:crux.db/id (uuid)
-     :type :pali-word
-     :updated-at time-fixtures/win95
-     :published-at (time/now)
+     :kuti/type :pali-word
+     :pali-word/updated-at time-fixtures/win95
+     :pali-word/published-at (time/now)
      :pali-word/bookmarkable true
      :pali-word/shareable true
      :pali-word/pali word
@@ -40,9 +40,8 @@
     (time/unfreeze-clock!)
     (let [word-1 (db/save! (pali-word "word-1" "translation-1"))
           word-2 (db/save! (pali-word "word-2" "translation-2"))]
-      ;; (prn (clojure.data/diff word-2 (first (db/list))))
-      (is (= (map :pali [word-2 word-1])
-             (map :pali (db/list)))))
+      (is (= (map :pali-word/pali [word-2 word-1])
+             (map :pali-word/pali (db/list)))))
     (time/freeze-clock! time-fixtures/win95)))
 
 (deftest http-params->edn-document

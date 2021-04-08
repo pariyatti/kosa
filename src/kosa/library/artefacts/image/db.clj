@@ -11,17 +11,13 @@
 
 (defn rehydrate [image]
   (as-> (nested/expand-all image :image-artefact/image-attachment) img
-      (assoc-in img
-       [:image-artefact/image-attachment :url]
-       (storage/url (:image-artefact/image-attachment img)))))
+    ;; TODO: this behaviour really belongs in kuti.storage
+    (assoc-in img
+              [:image-artefact/image-attachment :attm/url]
+              (storage/url (:image-artefact/image-attachment img)))))
 
 (defn list []
-  (let [list-query '{:find     [e updated-at]
-                     :where    [[e :type :image-artefact]
-                                [e :updated-at updated-at]]
-                     :order-by [[updated-at :desc]]}
-        raw-images (record/query list-query)]
-    (map rehydrate raw-images)))
+  (map rehydrate (record/list :image-artefact)))
 
 (defn search-for [match]
   (if (= "" (clojure.string/trim match))
@@ -31,17 +27,19 @@
                        :in [?match]
 	                     :where [[(wildcard-text-search ?match) [[?e ?v ?a ?s]]]
 	                             [?e :crux.db/id]
-                               [?e :type :image-artefact]]}
+                               [?e :kuti/type :image-artefact]]}
           raw-images (record/query list-query matcher)]
       (log/info (format "searching for '%s'" matcher))
       (map rehydrate raw-images))))
 
 (defn save! [e]
-  (let [doc (assoc e :type :image-artefact)]
-    (-> doc
-        (search/tag-searchables (-> doc :image-artefact/image-attachment :filename))
-        (nested/collapse-one :image-artefact/image-attachment)
-        (record/save!))))
+  (-> e
+      (assoc :kuti/type :image-artefact)
+      (search/tag-searchables (-> e :image-artefact/image-attachment :attm/filename))
+      (nested/collapse-one :image-artefact/image-attachment)
+      record/timestamp
+      record/publish
+      record/save!))
 
 (defn get [id]
   (rehydrate (record/get id)))

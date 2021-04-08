@@ -2,6 +2,7 @@
   (:require [clojure.test :refer :all]
             [clojure.java.io :as io]
             [mount.core :as mount]
+            [kuti.support.debugging :refer :all]
             [kuti.fixtures.record-fixtures :as record-fixtures]
             [kuti.fixtures.file-fixtures :as file-fixtures]
             [kuti.fixtures.storage-fixtures :as storage-fixtures]
@@ -14,20 +15,23 @@
   (:import [java.io FileNotFoundException]))
 
 (use-fixtures :once
-  record-fixtures/load-states
-  time-fixtures/freeze-clock)
+  time-fixtures/freeze-clock
+  record-fixtures/force-destroy-db
+  record-fixtures/force-migrate-db
+  record-fixtures/force-start-db)
+
 (use-fixtures :each
   file-fixtures/copy-fixture-files
   storage-fixtures/set-service-config)
 
-(def params1 {:type "leaf-artefact",
+(def params1 {:type :leaf-artefact
               :leaf-file {:filename "bodhi-with-raindrops.jpg",
                           :content-type "image/jpeg",
                           :tempfile (io/file "test/kuti/fixtures/files/bodhi-temp.jpg")
                           :size 13468}
               :submit "Save"})
 
-(def ws-params {:type "leaf-artefact",
+(def ws-params {:type :leaf-artefact
                 :leaf-file {:filename "bodhi with\twhitespace.jpg",
                             :content-type "image/jpeg",
                             :tempfile (io/file "test/kuti/fixtures/files/bodhi-temp.jpg")
@@ -37,14 +41,16 @@
 (deftest attachment
   (let [attachment (sut/params->attachment! (:leaf-file params1))]
     (testing "returns an 'attachment' document"
-      (is (= {:key "a2e0d5505185beb708ac5edaf4fc4d20"
-              :filename "bodhi-with-raindrops.jpg"
-              :content-type "image/jpeg"
-              :metadata ""
-              :service-name :disk
-              :byte-size 13468
-              :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"
-              :identified true}
+      (is (= {:kuti/type :attm
+              :attm/updated-at @time/clock
+              :attm/key "a2e0d5505185beb708ac5edaf4fc4d20"
+              :attm/filename "bodhi-with-raindrops.jpg"
+              :attm/content-type "image/jpeg"
+              :attm/metadata ""
+              :attm/service-name :disk
+              :attm/byte-size 13468
+              :attm/checksum "ca20bbfbea75755b1059ff2cd64bd6d3"
+              :attm/identified true}
              attachment)))
 
     (testing "attachment's service filename identifies it as a kuti.storage file"
@@ -57,16 +63,16 @@
 
 (deftest hash-key
   (let [attachment (sut/params->attachment! (:leaf-file params1))]
-    (testing ":key is blake2b-encoded"
-      (is (= "a2e0d5505185beb708ac5edaf4fc4d20" (:key attachment))))))
+    (testing ":attm/key is blake2b-encoded"
+      (is (= "a2e0d5505185beb708ac5edaf4fc4d20" (:attm/key attachment))))))
 
 (deftest unfurling
   (let [attachment (sut/params->attachment! (:leaf-file params1))]
     (testing "byte size is recorded"
-      (is (= 13468 (:byte-size attachment))))
+      (is (= 13468 (:attm/byte-size attachment))))
 
     (testing "md5 checksum is recorded"
-      (is (= "ca20bbfbea75755b1059ff2cd64bd6d3" (:checksum attachment))))))
+      (is (= "ca20bbfbea75755b1059ff2cd64bd6d3" (:attm/checksum attachment))))))
 
 (deftest file-size
   (testing "attached file on disk has the same length as the uploaded file"
@@ -89,14 +95,16 @@
   (testing "replaces whitespace with underscores"
     (let [attachment (sut/params->attachment! (:leaf-file ws-params))]
       (testing "returns an 'attachment' document with underscores"
-        (is (= {:key "a2e0d5505185beb708ac5edaf4fc4d20"
-                :filename "bodhi_with_whitespace.jpg"
-                :content-type "image/jpeg"
-                :metadata ""
-                :service-name :disk
-                :byte-size 13468
-                :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"
-                :identified true}
+        (is (= {:kuti/type :attm
+                :attm/updated-at @time/clock
+                :attm/key "a2e0d5505185beb708ac5edaf4fc4d20"
+                :attm/filename "bodhi_with_whitespace.jpg"
+                :attm/content-type "image/jpeg"
+                :attm/metadata ""
+                :attm/service-name :disk
+                :attm/byte-size 13468
+                :attm/checksum "ca20bbfbea75755b1059ff2cd64bd6d3"
+                :attm/identified true}
                attachment))))))
 
 (deftest attach!
@@ -110,15 +118,16 @@
     (testing "records the attachment in Crux"
       (let [attachment (kuti.record/get (-> doc2 :leaf-attachment :crux.db/id))]
         (is (not (nil? (:crux.db/id attachment))))
-        (is (= {:updated-at @time/clock
-                :key "a2e0d5505185beb708ac5edaf4fc4d20"
-                :filename "bodhi-with-raindrops.jpg"
-                :content-type "image/jpeg"
-                :metadata ""
-                :service-name :disk
-                :byte-size 13468
-                :checksum "ca20bbfbea75755b1059ff2cd64bd6d3"
-                :identified true}
+        (is (= {:kuti/type :attm
+                :attm/updated-at @time/clock
+                :attm/key "a2e0d5505185beb708ac5edaf4fc4d20"
+                :attm/filename "bodhi-with-raindrops.jpg"
+                :attm/content-type "image/jpeg"
+                :attm/metadata ""
+                :attm/service-name :disk
+                :attm/byte-size 13468
+                :attm/checksum "ca20bbfbea75755b1059ff2cd64bd6d3"
+                :attm/identified true}
                (dissoc attachment :crux.db/id)))))))
 
 (deftest collapse
@@ -129,9 +138,9 @@
 
     (testing "collapses all attachments"
       (is (not (nil? (:leaf-attachment-id doc3))))
-      (is (= {:type "leaf-artefact"
+      (is (= {:kuti/type :leaf-artefact
               :leaf-attachment-id leaf-attachment-id}
-             (dissoc doc3 :published-at))))))
+             (dissoc doc3 :leaf-artefact/published-at))))))
 
 ;; ***************************
 ;; ActiveStorage Blob Columns:

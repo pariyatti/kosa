@@ -35,7 +35,9 @@
           [:div {:class "artefacts-wrapper"}
            (for [img images]
              [:div {:class "artefact"}
-              [:div [:img {:src (storage/url (:image-artefact/image-attachment img)) :width "128" :height "128"}]]
+              [:div [:img {:src (storage/url (:image-artefact/image-attachment img))
+                           :width "128"
+                           :height "128"}]]
               [:a {:href (v/show-path req :images img)}
                [:div (storage/url (:image-artefact/image-attachment img))]]])]]))
 
@@ -44,7 +46,7 @@
           :action (v/create-path req :images)
           :enctype "multipart/form-data"}
    [:div {:class "field"}
-    (f/hidden-field :type :image-artefact)]
+    (f/hidden-field :kuti/type :image-artefact)]
    [:div {:class "field"}
     (f/label :file "Image File:")
     (f/file-upload :file)]
@@ -66,7 +68,9 @@
    [:table
     [:tr
      [:td "Image Preview:"]
-     [:td [:img {:src (storage/url (:image-artefact/image-attachment image)) :width "128" :height "128"}]]]
+     [:td [:img {:src (storage/url (:image-artefact/image-attachment image))
+                 :width "128"
+                 :height "128"}]]]
     [:tr
      [:td "URL:"]
      [:td (storage/url (:image-artefact/image-attachment image))]]
@@ -95,7 +99,7 @@
   (f/form-to {:enctype "multipart/form-data"}
              [:put (v/update-path req :images image)]
              [:div {:class "field"}
-              (f/hidden-field :type :image-artefact)]
+              (f/hidden-field :kuti/type :image-artefact)]
              [:div {:class "field"}
               (f/label :file "Image File:")
               (f/file-upload :file)]
