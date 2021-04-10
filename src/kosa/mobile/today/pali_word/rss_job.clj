@@ -22,7 +22,12 @@
   (-> response :headers :last-modified))
 
 (defn poll []
-  (let [url (-> config/config :rss-feeds :pali-word)
+  (let [feeds (-> config/config :rss-feeds :pali-word)
+        ;; NOTE: currently, the Pali Word feed only exists for English
+        url (->> feeds
+                 (filter #(= "en" (:language %)))
+                 first
+                 :url)
         result (parse-url url
                           {:headers {"If-None-Match" @etag
                                      "If-Modified-Since" @last-modified}})
@@ -32,10 +37,9 @@
     (when (> 0 length) ;; this will return 0 when skpping: 'If-None-Match' or 'If-Modified-Since'
       (throw (ex-info (str "Failed to retrieve RSS feed: " url) response)))
     (when (< 0 length)
-      (do
-        (reset! etag (response->etag response))
-        (reset! last-modified (response->modified response))
-        feed))))
+      (reset! etag (response->etag response))
+      (reset! last-modified (response->modified response))
+      feed)))
 
 (defn trim [pali]
   (-> pali

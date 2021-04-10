@@ -17,6 +17,21 @@
            :root    "tmp/storage"
            :path    "/uploads"}
 
- :supported-languages ["hi" "en" "cn"]
+ :supported-languages ["en" "es" "fr" "it" "pt" "sr" "zh"]
 
- :rss-feeds {:pali-word "https://download.pariyatti.org/pwad/pali_words.xml"}}
+ :rss-feeds {:pali-word [{:language "en"
+                          :url "https://download.pariyatti.org/pwad/pali_words.xml"}]
+             :words-of-buddha [{:language "en"
+                                :url "https://rss.pariyatti.org/dwob_english.rss"}
+                               {:language "es"
+                                :url "https://rss.pariyatti.org/dwob_spanish.rss"}
+                               {:language "fr"
+                                :url "https://rss.pariyatti.org/dwob_french.rss"}
+                               {:language "it"
+                                :url "https://rss.pariyatti.org/dwob_italian.rss"}
+                               {:language "pt"
+                                :url "https://rss.pariyatti.org/dwob_portuguese.rss"}
+                               {:language "sr"
+                                :url "https://rss.pariyatti.org/dwob_serbian.rss"}
+                               {:language "zh"
+                                :url "https://rss.pariyatti.org/dwob_chinese.rss"}]}}
