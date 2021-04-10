@@ -21,6 +21,7 @@
                  [aero "1.1.6"]
                  [tick "0.4.30-alpha"]
                  [jarohen/chime "0.3.2"]
+                 [babashka/fs "0.0.3"]
                  ;; networking:
                  [com.draines/postal "2.0.4"]
                  ;; web:
