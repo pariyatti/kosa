@@ -43,3 +43,20 @@
 (defn ingest [f lang]
   (doseq [word (parse (slurp f) lang)]
     (db-insert word)))
+
+;; 1. lookup word by `:pali-word/pali`
+;;    (a) lookup translation for the current language
+;;    (b) add translation if (a) fails
+
+;; 2. add word if (1) fails
+;;    (a) lookup largest "looped" index
+;;    (b) add "largest + 1" as index
+;;        ...but if largest = nil, index is 0
+;;    (c) download and attach audio
+
+;; 3. daily job creates "published on today" cards at 00:00:00:
+;;
+;; (def looped-card-count 220)
+;; (def days-since-epoch (t/days (t/between (t/epoch) (t/now))))
+;; (def days-since-perl (- days-since-epoch 12902))
+;; (def todays-word (mod days-since-perl looped-card-count))
