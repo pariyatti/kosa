@@ -5,14 +5,14 @@
 
 (deftest roundtrip
   (testing "can roundtrip from a UTC time-zoned offset-date-time"
-    (let [zoned (sut/parse "2021-02-11T22:26:06.808-00:00")
+    (let [zoned (sut/parse-tz "2021-02-11T22:26:06.808-00:00")
           s (sut/string zoned)
           i (sut/instant s)
           s2 (sut/string i)]
       (is (= "2021-02-11T22:26:06.808Z" s2))))
 
   (testing "can roundtrip from time-zoned time offset-date-time"
-    (let [zoned (sut/parse "2021-02-11T22:26:06.808-06:00")
+    (let [zoned (sut/parse-tz "2021-02-11T22:26:06.808-06:00")
           s (sut/string zoned)
           i (sut/instant s)
           s2 (sut/string i)]
@@ -45,6 +45,23 @@
           i (sut/instant s)
           s2 (sut/string i)]
       (is (= "2021-02-11T22:26:06.808Z" s2)))))
+
+(deftest parse
+  (testing "returns a UTC instant for dates"
+    (is (= (sut/instant "2007-02-02T00:00:00.000Z")
+           (sut/parse "2007-02-02"))))
+
+  (testing "returns a UTC instant for date-times"
+    (is (= (sut/instant "2007-02-02T17:17:00.000Z")
+           (sut/parse "2007-02-02T17:17"))))
+
+  (testing "rejects localized date-times with tz"
+    (is (thrown? IllegalArgumentException
+                 (sut/parse "2000-01-01T00:00:00Z[Europe/Paris]"))))
+
+  (testing "rejects localized date-times with offset"
+    (is (thrown? IllegalArgumentException
+                 (sut/parse "2021-02-11T16:26:06.808-06:00")))))
 
 (deftest publishing-dates
   (testing "equates 300 BCE to the year -299"

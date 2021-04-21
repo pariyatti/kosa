@@ -32,7 +32,31 @@
   [time]
   (t/instant time))
 
-(defn parse [s]
+(defn mask-str [mask s]
+  (apply str
+         (concat (seq s)
+                 (drop (count s) (seq mask)))))
+
+(defn includes-any? [s substrs]
+  (->> substrs
+       (map (partial clojure.string/includes? s))
+       (some true?)))
+
+(defn parse
+  "This fn intentionally does not understand local dates/times
+   at all."
+  [s]
+  (when (or (includes-any? s ["[" "]"])
+            (re-matches #".*-\d\d:\d\d$" s))
+    (throw (IllegalArgumentException. "Localized date-times not permitted.")))
+  (-> (mask-str "0000-00-00T00:00:00.000Z" s)
+      t/parse
+      t/instant))
+
+(defn parse-tz
+  "Try to avoid this fn unless parsing external dates known to
+   contain a timezone."
+  [s]
   (t/parse s))
 
 (defn string
