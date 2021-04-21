@@ -34,11 +34,12 @@
 
 (defn db-insert [pali-word]
   (log/info "Pali Word TXT: attempting insert")
-  (db/save! (merge {:pali-word/bookmarkable true
-                    :pali-word/shareable true
-                    :pali-word/original-pali (:pali-word/pali pali-word)
-                    :pali-word/original-url (URI. "")}
-                   pali-word)))
+  (when-not (first (db/q :pali-word/pali (:pali-word/pali pali-word)))
+    (db/save! (merge {:pali-word/bookmarkable true
+                      :pali-word/shareable true
+                      :pali-word/original-pali (:pali-word/pali pali-word)
+                      :pali-word/original-url (URI. "")}
+                     pali-word))))
 
 (defn ingest [f lang]
   (doseq [word (parse (slurp f) lang)]

@@ -15,11 +15,17 @@
                     :order-by '[[updated-at :desc]]}]
     (record/query find-query param)))
 
+;; TODO: it's likely this just belongs in `record` directly?
+(defn publish [e]
+  (if-let [pub (:pali-word/published-at e)]
+    (record/publish e pub)
+    (record/publish e)))
+
 (defn save! [e]
   (-> e
       (assoc :kuti/type :pali-word)
       record/timestamp
-      record/publish
+      publish
       (record/save!)))
 
 (defn get [id]

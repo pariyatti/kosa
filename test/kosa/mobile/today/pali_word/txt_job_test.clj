@@ -1,7 +1,9 @@
 (ns kosa.mobile.today.pali-word.txt-job-test
   (:require [kosa.mobile.today.pali-word.txt-job :as sut]
             [kosa.mobile.today.pali-word.db :as db]
+            [kuti.support.time :as time]
             [kosa.fixtures.file-fixtures :as file-fixtures]
+            [kosa.fixtures.model-fixtures :as model]
             [kuti.fixtures.record-fixtures :as record-fixtures]
             [kuti.fixtures.time-fixtures :as time-fixtures]
             [clojure.test :refer :all]))
@@ -28,9 +30,20 @@
   (testing "inserts entries into db"
     (let [f (file-fixtures/file "pali_word_raw.txt")]
       (sut/ingest f "en")
-      (is (= 3 (count (db/list))))))
+      (is (= 3 (count (db/list)))))))
 
-  (testing "TODO: ignore identical entities")
+(deftest merging-new-entities
+  (testing "ignore identical entities"
+    (db/save! (model/pali-word {:pali-word/pali "suriya"
+                                :pali-word/translations [["en" "sun"]]
+                                :pali-word/published-at (time/parse "2008-01-01")}))
+    (sut/db-insert (model/pali-word {:pali-word/pali "suriya"
+                                     :pali-word/translations [["en" "sun"]]
+                                     :pali-word/published-at (time/parse "2012-01-01")}))
+    (let [suriya (db/q :pali-word/pali "suriya")]
+      (is (= 1 (count  suriya)))
+      (is (= (time/parse "2008-01-01")
+             (-> suriya first :pali-word/published-at)))))
 
   (testing "TODO: merge additional languages if merged is not identical")
 
