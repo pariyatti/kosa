@@ -1,4 +1,4 @@
-(ns kosa.mobile.today.pali-word.txt-job
+(ns kosa.mobile.today.looped-pali-word.txt-job
   (:require [clojure.java.io :as io]
             [clojure.set]
             [clojure.string :as str]

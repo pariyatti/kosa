@@ -1,12 +1,12 @@
-(ns kosa.mobile.today.pali-word.txt-job-test
-  (:require [kosa.mobile.today.pali-word.txt-job :as sut]
-            [kosa.mobile.today.pali-word.db :as db]
-            [kuti.support.time :as time]
+(ns kosa.mobile.today.looped-pali-word.txt-job-test
+  (:require [clojure.test :refer :all]
             [kosa.fixtures.file-fixtures :as file-fixtures]
             [kosa.fixtures.model-fixtures :as model]
+            [kosa.mobile.today.looped-pali-word.txt-job :as sut]
+            [kosa.mobile.today.pali-word.db :as db]
             [kuti.fixtures.record-fixtures :as record-fixtures]
             [kuti.fixtures.time-fixtures :as time-fixtures]
-            [clojure.test :refer :all]))
+            [kuti.support.time :as time]))
 
 (use-fixtures :once
   time-fixtures/freeze-clock-1995
