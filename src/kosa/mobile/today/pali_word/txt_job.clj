@@ -1,7 +1,9 @@
 (ns kosa.mobile.today.pali-word.txt-job
   (:require [clojure.java.io :as io]
+            [clojure.set]
             [clojure.string :as str]
             [clojure.tools.logging :as log]
+            [kuti.support.collections :refer [contains-kv?]]
             [kosa.mobile.today.pali-word.db :as db])
   (:import [java.net URI]))
 
@@ -32,14 +34,25 @@
                         :pali-word/shareable true}
                        pali-word)))))
 
+(defn find-existing [pali-word]
+  (first (db/q :pali-word/pali (:pali-word/pali pali-word))))
+
+(defn db-insert* [pali-word]
+  (db/save! (merge {:pali-word/bookmarkable true
+                    :pali-word/shareable true
+                    :pali-word/original-pali (:pali-word/pali pali-word)
+                    :pali-word/original-url (URI. "")}
+                   pali-word)))
+
 (defn db-insert [pali-word]
   (log/info "Pali Word TXT: attempting insert")
-  (when-not (first (db/q :pali-word/pali (:pali-word/pali pali-word)))
-    (db/save! (merge {:pali-word/bookmarkable true
-                      :pali-word/shareable true
-                      :pali-word/original-pali (:pali-word/pali pali-word)
-                      :pali-word/original-url (URI. "")}
-                     pali-word))))
+  (if-let [existing (find-existing pali-word)]
+    (when-not (empty? (clojure.set/difference (set (:pali-word/translations existing))
+                                              (set (:pali-word/translations pali-word))))
+      (db-insert* (update existing :pali-word/translations
+                          concat
+                          (:pali-word/translations pali-word))))
+    (db-insert* pali-word)))
 
 (defn ingest [f lang]
   (doseq [word (parse (slurp f) lang)]

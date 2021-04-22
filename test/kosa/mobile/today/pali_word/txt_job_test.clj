@@ -45,6 +45,21 @@
       (is (= (time/parse "2008-01-01")
              (-> suriya first :pali-word/published-at)))))
 
-  (testing "TODO: merge additional languages if merged is not identical")
+  (testing "merge additional languages if merged is not identical"
+    (db/save! (model/pali-word {:pali-word/pali "canda"
+                                :pali-word/translations [["en" "moon"]
+                                                         ["hi" "चंद"]]
+                                :pali-word/published-at (time/parse "2008-01-01")}))
+    (sut/db-insert (model/pali-word {:pali-word/pali "canda"
+                                     :pali-word/translations [["fr" "lune"]
+                                                              ["es" "luna"]]
+                                     :pali-word/published-at (time/parse "2012-01-01")}))
+    (let [canda (db/q :pali-word/pali "canda")]
+      (is (= 1 (count  canda)))
+      (is (= [["en" "moon"]
+              ["hi" "चंद"]
+              ["fr" "lune"]
+              ["es" "luna"]]
+             (-> canda first :pali-word/translations)))))
 
   (testing "TODO: figure out scheduling (override publish on `save!`?)"))
