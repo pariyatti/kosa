@@ -4,7 +4,7 @@
             [clojure.string :as str]
             [clojure.tools.logging :as log]
             [kuti.support.collections :refer [merge-kvs subset-kvs?]]
-            [kosa.mobile.today.pali-word.db :as db])
+            [kosa.mobile.today.looped-pali-word.db :as db])
   (:import [java.net URI]))
 
 (defn split-pali-words [txt]
@@ -16,8 +16,8 @@
        vec))
 
 (defn ->doc [lang entry]
-  {:pali-word/pali (first entry)
-   :pali-word/translations [[lang (second entry)]]})
+  {:looped-pali-word/pali (first entry)
+   :looped-pali-word/translations [[lang (second entry)]]})
 
 (defn parse [txt lang]
   (->> (split-pali-words txt)
@@ -26,38 +26,38 @@
        (map (partial ->doc lang))))
 
 #_(defn db-insert [pali-word]
-  (let [existing (db/q :pali-word/original-pali
-                       (:pali-word/original-pali pali-word))]
+  (let [existing (db/q :looped-pali-word/original-pali
+                       (:looped-pali-word/original-pali pali-word))]
     (log/info "Pali Word RSS: attempting insert")
     (when (= 0 (count existing))
-      (db/save! (merge {:pali-word/bookmarkable true
-                        :pali-word/shareable true}
+      (db/save! (merge {:looped-pali-word/bookmarkable true
+                        :looped-pali-word/shareable true}
                        pali-word)))))
 
 (defn find-existing [pali-word]
-  (first (db/q :pali-word/pali (:pali-word/pali pali-word))))
+  (first (db/q :looped-pali-word/pali (:looped-pali-word/pali pali-word))))
 
 (defn db-insert* [pali-word]
-  (db/save! (merge {:pali-word/bookmarkable true
-                    :pali-word/shareable true
-                    :pali-word/original-pali (:pali-word/pali pali-word)
-                    :pali-word/original-url (URI. "")}
+  (db/save! (merge {:looped-pali-word/bookmarkable true
+                    :looped-pali-word/shareable true
+                    :looped-pali-word/original-pali (:looped-pali-word/pali pali-word)
+                    :looped-pali-word/original-url (URI. "")}
                    pali-word)))
 
 (defn db-insert [pali-word]
   (log/info "Pali Word TXT: attempting insert")
   (if-let [existing (find-existing pali-word)]
-    (let [merged (merge-kvs (:pali-word/translations existing)
-                            (:pali-word/translations pali-word))]
-      (when-not (= merged (:pali-word/translations existing))
-        (db-insert* (assoc existing :pali-word/translations merged))))
+    (let [merged (merge-kvs (:looped-pali-word/translations existing)
+                            (:looped-pali-word/translations pali-word))]
+      (when-not (= merged (:looped-pali-word/translations existing))
+        (db-insert* (assoc existing :looped-pali-word/translations merged))))
     (db-insert* pali-word)))
 
 (defn ingest [f lang]
   (doseq [word (parse (slurp f) lang)]
     (db-insert word)))
 
-;; 1. lookup word by `:pali-word/pali`
+;; 1. lookup word by `:looped-pali-word/pali`
 ;;    (a) lookup translation for the current language
 ;;    (b) add translation if (a) fails
 

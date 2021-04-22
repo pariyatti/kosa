@@ -10,3 +10,13 @@
           :pali-word/translations
           [["en" "gone through, overcome, one who has attained nibbāna"]]}
          pw))
+
+(defn looped-pali-word [pw]
+  (merge {:looped-pali-word/pali "tiṇṇa"
+          :looped-pali-word/bookmarkable true
+          :looped-pali-word/shareable true
+          :looped-pali-word/original-pali "tiṇṇa"
+          :looped-pali-word/original-url (URI. "")
+          :looped-pali-word/translations
+          [["en" "gone through, overcome, one who has attained nibbāna"]]}
+         pw))
