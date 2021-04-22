@@ -1,4 +1,5 @@
-(ns kuti.support.collections)
+(ns kuti.support.collections
+  (:require [clojure.set]))
 
 (defn find-all-nested
   [m k]
@@ -18,3 +19,11 @@
    (if-let [kv (find m k)]
      (= (val kv) v)
      false)))
+
+(defn merge-kvs [left right]
+  (seq (merge (into {} left)
+              (into {} right))))
+
+(defn subset-kvs? [maybe-sub maybe-super]
+  (clojure.set/subset? (set maybe-sub)
+                       (set maybe-super)))

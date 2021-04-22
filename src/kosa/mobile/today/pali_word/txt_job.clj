@@ -3,7 +3,7 @@
             [clojure.set]
             [clojure.string :as str]
             [clojure.tools.logging :as log]
-            [kuti.support.collections :refer [contains-kv?]]
+            [kuti.support.collections :refer [merge-kvs subset-kvs?]]
             [kosa.mobile.today.pali-word.db :as db])
   (:import [java.net URI]))
 
@@ -47,11 +47,10 @@
 (defn db-insert [pali-word]
   (log/info "Pali Word TXT: attempting insert")
   (if-let [existing (find-existing pali-word)]
-    (when-not (empty? (clojure.set/difference (set (:pali-word/translations existing))
-                                              (set (:pali-word/translations pali-word))))
-      (db-insert* (update existing :pali-word/translations
-                          concat
-                          (:pali-word/translations pali-word))))
+    (let [merged (merge-kvs (:pali-word/translations existing)
+                            (:pali-word/translations pali-word))]
+      (when-not (= merged (:pali-word/translations existing))
+        (db-insert* (assoc existing :pali-word/translations merged))))
     (db-insert* pali-word)))
 
 (defn ingest [f lang]
