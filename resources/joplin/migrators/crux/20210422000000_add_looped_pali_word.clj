@@ -1,16 +1,19 @@
 (ns joplin.migrators.crux.20210422000000-add-looped-pali-word
   (:require [joplin.crux.database :as d]
+            [kuti.support.debugging :refer :all]
             [kuti.record.schema :as schema]))
 
 (defn up [db]
   (let [node (d/get-node (:conf db))]
-    (schema/add-type node :looped-pali-word [:looped-pali-word/original-pali  ;; from *.pariyatti.org - a long string
+    (schema/add-type node :looped-pali-word [:looped-pali-word/index
+                                             :looped-pali-word/original-pali  ;; from *.pariyatti.org - a long string
                                              :looped-pali-word/original-url   ;; from *.pariyatti.org
                                              :looped-pali-word/bookmarkable
                                              :looped-pali-word/shareable
                                              :looped-pali-word/pali
                                              :looped-pali-word/translations
                                              :looped-pali-word/published-at])
+    (schema/add-schema node :looped-pali-word/index         :db.type/long)
     (schema/add-schema node :looped-pali-word/original-pali :db.type/string)
     (schema/add-schema node :looped-pali-word/original-url  :db.type/uri)
     (schema/add-schema node :looped-pali-word/bookmarkable  :db.type/boolean)
@@ -23,6 +26,7 @@
 (defn down [db]
   (let [node (d/get-node (:conf db))]
     (schema/remove-type node :looped-pali-word)
+    (schema/remove-schema node :looped-pali-word/index)
     (schema/remove-schema node :looped-pali-word/original-pali)
     (schema/remove-schema node :looped-pali-word/original-url)
     (schema/remove-schema node :looped-pali-word/bookmarkable)

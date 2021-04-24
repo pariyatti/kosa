@@ -7,6 +7,14 @@
 (defn list []
   (record/list :looped-pali-word))
 
+(defn next-index []
+  (let [find-query '{:find     [(max ?idx)]
+                     :where    [[e :looped-pali-word/index ?idx]]}
+        result (-> (record/q find-query) first first)]
+    (if result
+      (+ 1 result)
+      0)))
+
 (defn q [attr param]
   (let [find-query {:find     '[e updated-at]
                     :in       '[original-pali]
@@ -24,6 +32,7 @@
 (defn save! [e]
   (-> e
       (assoc :kuti/type :looped-pali-word)
+      (assoc :looped-pali-word/index (next-index))
       record/timestamp
       publish
       (record/save!)))

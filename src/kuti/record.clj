@@ -25,6 +25,10 @@
 (defn delete [e]
   (core/delete e))
 
+(defn q
+  ([q] (core/q q))
+  ([q param] (core/q q param)))
+
 (defn query
   ([q] (core/query q))
   ([q param] (core/query q param)))

@@ -120,6 +120,12 @@
         deleted e]
     deleted))
 
+(defn q
+  ([q]
+   (crux/q (crux/db crux-node) q))
+  ([q param]
+   (crux/q (crux/db crux-node) q param)))
+
 (defn reify-results
   ([getter r]
    (map #(-> % first getter) r)))

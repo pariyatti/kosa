@@ -1,8 +1,9 @@
-(ns kosa.mobile.today.looped-pali-word.txt-job
+(ns kosa.mobile.today.looped-pali-word.txt
   (:require [clojure.java.io :as io]
             [clojure.set]
             [clojure.string :as str]
             [clojure.tools.logging :as log]
+            [kuti.support.debugging :refer :all]
             [kuti.support.collections :refer [merge-kvs subset-kvs?]]
             [kosa.mobile.today.looped-pali-word.db :as db])
   (:import [java.net URI]))
@@ -44,7 +45,7 @@
                     :looped-pali-word/original-url (URI. "")}
                    pali-word)))
 
-(defn db-insert [pali-word]
+(defn db-insert! [pali-word]
   (log/info "Pali Word TXT: attempting insert")
   (if-let [existing (find-existing pali-word)]
     (let [merged (merge-kvs (:looped-pali-word/translations existing)
@@ -55,7 +56,9 @@
 
 (defn ingest [f lang]
   (doseq [word (parse (slurp f) lang)]
-    (db-insert word)))
+    (-> word
+        ;; (download-attachments!) ;; there is no audio for looped pali words
+        (db-insert!))))
 
 ;; 1. lookup word by `:looped-pali-word/pali`
 ;;    (a) lookup translation for the current language

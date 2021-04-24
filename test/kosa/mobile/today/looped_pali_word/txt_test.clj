@@ -1,11 +1,12 @@
-(ns kosa.mobile.today.looped-pali-word.txt-job-test
+(ns kosa.mobile.today.looped-pali-word.txt-test
   (:require [clojure.test :refer :all]
             [kosa.fixtures.file-fixtures :as file-fixtures]
             [kosa.fixtures.model-fixtures :as model]
-            [kosa.mobile.today.looped-pali-word.txt-job :as sut]
+            [kosa.mobile.today.looped-pali-word.txt :as sut]
             [kosa.mobile.today.looped-pali-word.db :as db]
             [kuti.fixtures.record-fixtures :as record-fixtures]
             [kuti.fixtures.time-fixtures :as time-fixtures]
+            [kuti.support.debugging :refer :all]
             [kuti.support.time :as time]))
 
 (use-fixtures :once
@@ -38,7 +39,7 @@
                {:looped-pali-word/pali "suriya"
                 :looped-pali-word/translations [["en" "sun"]]
                 :looped-pali-word/published-at (time/parse "2008-01-01")}))
-    (sut/db-insert (model/looped-pali-word
+    (sut/db-insert! (model/looped-pali-word
                     {:looped-pali-word/pali "suriya"
                      :looped-pali-word/translations [["en" "sun"]]
                      :looped-pali-word/published-at (time/parse "2012-01-01")}))
@@ -53,7 +54,7 @@
                 :looped-pali-word/translations [["en" "moon"]
                                                 ["hi" "चंद"]]
                 :looped-pali-word/published-at (time/parse "2008-01-01")}))
-    (sut/db-insert (model/looped-pali-word
+    (sut/db-insert! (model/looped-pali-word
                     {:looped-pali-word/pali "canda"
                      :looped-pali-word/translations [["fr" "lune"]
                                                      ["es" "luna"]]
@@ -64,6 +65,20 @@
               ["hi" "चंद"]
               ["fr" "lune"]
               ["es" "luna"]]
-             (-> canda first :looped-pali-word/translations)))))
+             (-> canda first :looped-pali-word/translations))))))
 
+(deftest indexing
+  (testing "index auto-increments"
+    (sut/db-insert! (model/looped-pali-word
+                    {:looped-pali-word/pali "tara"
+                     :looped-pali-word/translations [["en" "star"]]}))
+    (sut/db-insert! (model/looped-pali-word
+                    {:looped-pali-word/pali "kujagaha"
+                     :looped-pali-word/translations [["en" "mars"]]}))
+    (let [tara (db/q :looped-pali-word/pali "tara")
+          kujagaha (db/q :looped-pali-word/pali "kujagaha")]
+      (is (= 1 (- (-> kujagaha first :looped-pali-word/index)
+                  (-> tara first :looped-pali-word/index)))))))
+
+(deftest schedule
   (testing "TODO: figure out scheduling (override publish on `save!`?)"))
