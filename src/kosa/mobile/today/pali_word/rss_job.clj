@@ -77,13 +77,13 @@
      :pali-word/published-at (time/instant published-date)}))
 
 (defn parse [feed]
-  (log/info "#### parsing pali word feed")
+  (log/info "#### parsing pali word RSS feed")
   (if-let [pali-word (parse* feed)]
     (db-insert pali-word)
     (throw (ex-info "Failed to parse RSS feed." feed))))
 
 (defn run-job! [_]
-  (log/info "#### running pali word job")
+  (log/info "#### running pali word RSS job")
   ;; Ignore the entire job if a feed isn't returned. `(poll)` throws an exception
   ;; if the feed fails and returns nil if there are no modifications since the
   ;; last time we checked the feed.

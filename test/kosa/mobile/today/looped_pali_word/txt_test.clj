@@ -79,6 +79,3 @@
           kujagaha (db/q :looped-pali-word/pali "kujagaha")]
       (is (= 1 (- (-> kujagaha first :looped-pali-word/index)
                   (-> tara first :looped-pali-word/index)))))))
-
-(deftest schedule
-  (testing "TODO: figure out scheduling (override publish on `save!`?)"))
