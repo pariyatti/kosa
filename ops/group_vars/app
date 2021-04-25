@@ -1,0 +1,1 @@
+exec_cmd: "{{ app_dir }}/ops/run_prod"
