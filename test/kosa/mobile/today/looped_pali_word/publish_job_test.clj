@@ -35,6 +35,9 @@
     (loop-db/save! (model/looped-pali-word
                     {:looped-pali-word/pali "kujagaha"
                      :looped-pali-word/translations [["en" "mars"]]}))
+    (loop-db/save! (model/looped-pali-word
+                    {:looped-pali-word/pali "medini"
+                     :looped-pali-word/translations [["en" "earth"]]}))
     (time/freeze-clock! (time/parse "2005-04-30"))
     (sut/run-job! nil)
     (let [all (pali-db/list)]

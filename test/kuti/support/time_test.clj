@@ -1,7 +1,8 @@
 (ns kuti.support.time-test
   (:require [clojure.test :refer [deftest testing is]]
             [tick.alpha.api :as t]
-            [kuti.support.time :as sut]))
+            [kuti.support.time :as sut]
+            [kuti.fixtures.time-fixtures :as time-fixtures]))
 
 (deftest roundtrip
   (testing "can roundtrip from a UTC time-zoned offset-date-time"
@@ -49,11 +50,19 @@
 (deftest parse
   (testing "returns a UTC instant for dates"
     (is (= (sut/instant "2007-02-02T00:00:00.000Z")
-           (sut/parse "2007-02-02"))))
+           (sut/parse   "2007-02-02"))))
 
   (testing "returns a UTC instant for date-times"
     (is (= (sut/instant "2007-02-02T17:17:00.000Z")
-           (sut/parse "2007-02-02T17:17"))))
+           (sut/parse   "2007-02-02T17:17"))))
+
+  (testing "strip zulu marker before parsing to deal with all non-milli positions"
+    (is (= (sut/instant "1991-01-01T00:00:00.000Z")
+           (sut/parse   "1991-01-01T00:00:00Z"))))
+
+  (testing "ignores sub-millisecond precision"
+    (is (= (sut/instant "1991-01-01T00:00:00.000Z")
+           (sut/parse   "1991-01-01T00:00:00.000000Z"))))
 
   (testing "rejects localized date-times with tz"
     (is (thrown? IllegalArgumentException
@@ -93,3 +102,10 @@
   (testing "creates an instant from an instant (tolerant)"
     (is (= #time/instant "-0349-01-01T13:35:22Z"
            (sut/date-time #time/instant "-0349-01-01T13:35:22Z")))))
+
+(deftest days-between
+  (testing "can diff days between a string date and a 'now' instant"
+    (sut/freeze-clock! time-fixtures/win95)
+    (is (= 5
+           (sut/days-between "1995-08-19"
+                             (sut/now))))))

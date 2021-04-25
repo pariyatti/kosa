@@ -2,7 +2,8 @@
   (:refer-clojure :exclude [time])
   (:require [tick.alpha.api :as t]
             [chime.core :as chime]
-            [clojure.string :as clojure.string])
+            [clojure.string :as clojure.string]
+            [kuti.support.strings :refer [slice]])
   (:import [java.time LocalDate ZonedDateTime ZoneId]
            [java.time.chrono Era IsoEra IsoChronology]))
 
@@ -32,7 +33,7 @@
   [time]
   (t/instant time))
 
-(defn mask-str [mask s]
+(defn mask-str [s mask]
   (apply str
          (concat (seq s)
                  (drop (count s) (seq mask)))))
@@ -49,7 +50,10 @@
   (when (or (includes-any? s ["[" "]"])
             (re-matches #".*-\d\d:\d\d$" s))
     (throw (IllegalArgumentException. "Localized date-times not permitted.")))
-  (-> (mask-str "0000-00-00T00:00:00.000Z" s)
+  (-> s
+      (clojure.string/replace #"Z" "")
+      (slice 0 23)
+      (mask-str "0000-00-00T00:00:00.000Z")
       t/parse
       t/instant))
 
@@ -67,6 +71,10 @@
     (if (= 24 (count s))
       s
       (clojure.string/replace s #"Z$" ".000Z"))))
+
+(defn days-between [old new]
+  (t/days (t/between (parse (str old))
+                     (parse (str new)))))
 
 (defn schedule [offset-seconds period-seconds]
   (-> (chime/periodic-seq (t/>> (now) (t/new-duration offset-seconds :seconds))

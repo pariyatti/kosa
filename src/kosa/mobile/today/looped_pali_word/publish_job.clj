@@ -15,6 +15,7 @@
 
 (defn which-card [today card-count]
   ;; TODO: consider moving a generic version of this into kuti.support.time ?
+  ;; TODO: yes. use `days-between` and an actual date. -sd
   (-> (t/days (t/between (t/epoch) today))
       (- perl-epoch-offset)
       (mod card-count)))
