@@ -11,14 +11,13 @@
 ;; (def days-since-perl (- days-since-epoch 12902))
 ;; (def todays-word (mod days-since-perl looped-card-count))
 
-(def perl-epoch-offset 12902)
-
 (defn which-card [today card-count]
-  ;; TODO: consider moving a generic version of this into kuti.support.time ?
-  ;; TODO: yes. use `days-between` and an actual date. -sd
-  (-> (t/days (t/between (t/epoch) today))
-      (- perl-epoch-offset)
-      (mod card-count)))
+  ;; "perl epoch":
+  ;; (t/>> (t/epoch)
+  ;;       (t/new-duration 12902 :days))
+  ;; => #time/instant "2005-04-29T00:00:00Z"
+  (mod (time/days-between "2005-04-29T00:00:00Z" today)
+       card-count))
 
 (defn run-job! [_]
   (log/info "#### Running looped pali word publish job")
@@ -27,8 +26,3 @@
                  first
                  (types/dup :pali-word))]
     (pali-db/save! word)))
-
-;; "perl epoch":
-;; (t/>> (t/epoch)
-;;       (t/new-duration 12902 :days))
-;; => #time/instant "2005-04-29T00:00:00Z"
