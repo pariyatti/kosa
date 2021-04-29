@@ -5,11 +5,13 @@
             [kosa.config :as config]
             [kosa.routes :as routes]
             [kosa.server :as server]
-            [kuti.core :as kuti]
             [kuti.dispatch :as dispatch]
             [kuti.record.core :as db-core]
             [kuti.storage :as storage]
             [kuti.job :as job]
+            ;; NOTE: jobs must be required before `kuti.job` is mounted
+            ;;       so that `resolve` never returns nil:
+            [kosa.jobs]
             [mount-up.core :as mu]
             [mount.core :as mount]))
 

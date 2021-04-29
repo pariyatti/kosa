@@ -24,6 +24,10 @@
     (let [tara (pali-db/q :pali-word/pali "tara")]
       (is (= 1 (count tara))))))
 
+(deftest schedule-ignores-an-empty-collection-of-looped-cards
+  (testing "nothing happens (including no errors)"
+    (is (nil? (sut/run-job! nil)))))
+
 (deftest scheduling-against-epoch
   (testing "publishes the Nth card from the 'perl epoch' on 2005-04-29"
     (loop-db/save! (model/looped-pali-word

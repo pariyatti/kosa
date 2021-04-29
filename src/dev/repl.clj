@@ -8,7 +8,9 @@
             [joplin.crux.database] ;; required for joplin to work
             [joplin.alias :refer [*load-config*]]
             [mount.core :as mount]
-            [kosa.library.artefacts.image.db :as image]))
+            [kosa.library.artefacts.image.db :as image]
+            [kosa.mobile.today.looped-pali-word.txt :as txt]
+            [clojure.tools.logging :as log]))
 
 (def joplin-config (*load-config* "joplin/config.edn"))
 
@@ -38,6 +40,9 @@
 (defn test-mode! []
   (restart! test-opts))
 
+(defn current-config []
+  (prn "current config is: " config/config))
+
 (defn migrate
   ([]
    (joplin.repl/migrate joplin-config :dev))
@@ -47,5 +52,7 @@
 (defn seed []
   (joplin.repl/seed joplin-config :dev))
 
-(defn current []
-  (prn "current config is: " config/config))
+(defn ingest-pali-words []
+  (log/info "Ingesting pali words ... don't forget to start server first.")
+  (doseq [txt (-> config/config :txt-feeds :pali-word)]
+    (txt/ingest (:file txt) (:language txt))))

@@ -46,19 +46,24 @@
                    pali-word)))
 
 (defn db-insert! [pali-word]
-  (log/info "Pali Word TXT: attempting insert")
   (if-let [existing (find-existing pali-word)]
     (let [merged (merge-kvs (:looped-pali-word/translations existing)
                             (:looped-pali-word/translations pali-word))]
-      (when-not (= merged (:looped-pali-word/translations existing))
+      (if (= merged (:looped-pali-word/translations existing))
+        (log/info (format "Duplicate word ignored: %s" (:looped-pali-word/pali pali-word)))
         (db-insert* (assoc existing :looped-pali-word/translations merged))))
     (db-insert* pali-word)))
 
 (defn ingest [f lang]
-  (doseq [word (parse (slurp f) lang)]
-    (-> word
-        ;; (download-attachments!) ;; there is no audio for looped pali words
-        (db-insert!))))
+  (log/info (format "Pali Word TXT: ingesting file '%s' for lang '%s'" f lang))
+  (let [words (parse (slurp f) lang)
+        word-count (count words)]
+    (log/info (format "Processing %s pali words from TXT." word-count))
+    (doseq [[n word] (map-indexed #(vector %1 %2) words)]
+      (log/info (format "Attempting insert of %s / %s" n word-count))
+      (-> word
+          ;; (download-attachments!) ;; there is no audio for looped pali words
+          (db-insert!)))))
 
 ;; 1. lookup word by `:looped-pali-word/pali`
 ;;    (a) lookup translation for the current language

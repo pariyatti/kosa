@@ -31,3 +31,4 @@ resources/public/cljs/*
 
 tmp/storage/*
 
+txt/pali/*.txt

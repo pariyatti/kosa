@@ -43,5 +43,5 @@
            [:li {:class "card-type"}
             [:h3 "Daily Words of the Buddha"]
             [:p ""]
-            [:a.btn.btn-primary {:href (v/new-path req :import)}
+            [:a.btn.btn-primary #_{:href (v/new-path req :import)}
              "Import TXT File"]]]]))

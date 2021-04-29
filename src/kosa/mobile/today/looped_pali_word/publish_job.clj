@@ -3,7 +3,6 @@
             [kosa.mobile.today.looped-pali-word.db :as loop-db]
             [kosa.mobile.today.pali-word.db :as pali-db]
             [kuti.support.types :as types]
-            [tick.alpha.api :as t]
             [kuti.support.time :as time]))
 
 ;; (def looped-card-count 220)
@@ -21,8 +20,12 @@
 
 (defn run-job! [_]
   (log/info "#### Running looped pali word publish job")
-  (let [idx (which-card (time/now) (count (loop-db/list)))
-        word (-> (loop-db/q :looped-pali-word/index idx)
-                 first
-                 (types/dup :pali-word))]
-    (pali-db/save! word)))
+  (let [n (count (loop-db/list))]
+    (if (< 0 n)
+      (let [idx (which-card (time/now) n)
+            word (-> (loop-db/q :looped-pali-word/index idx)
+                     first
+                     (types/dup :pali-word))]
+        (log/info (str "#### Today's pali word is: " (:pali-word/pali word)))
+        (pali-db/save! word))
+      (log/info "#### Zero looped pali words found."))))

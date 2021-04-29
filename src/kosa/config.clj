@@ -1,6 +1,5 @@
 (ns kosa.config
-  (:require [clojure.java.io :as io]
-            [clojure.spec.alpha :as s]
+  (:require [clojure.spec.alpha :as s]
             [aero.core :as aero]
             [mount.core :as mount :refer [defstate]]
             [clojure.tools.logging :as log]))
