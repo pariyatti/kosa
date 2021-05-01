@@ -51,7 +51,9 @@
                             (:looped-pali-word/translations pali-word))]
       (if (= merged (:looped-pali-word/translations existing))
         (log/info (format "Duplicate word ignored: %s" (:looped-pali-word/pali pali-word)))
-        (db-insert* (assoc existing :looped-pali-word/translations merged))))
+        (do
+          (log/info (format "Merging translations: %s" (:looped-pali-word/pali pali-word)))
+          (db-insert* (assoc existing :looped-pali-word/translations merged)))))
     (db-insert* pali-word)))
 
 (defn ingest [f lang]
@@ -60,7 +62,7 @@
         word-count (count words)]
     (log/info (format "Processing %s pali words from TXT." word-count))
     (doseq [[n word] (map-indexed #(vector %1 %2) words)]
-      (log/info (format "Attempting insert of %s / %s" n word-count))
+      (log/info (format "Attempting insert of %s / %s" (+ n 1) word-count))
       (-> word
           ;; (download-attachments!) ;; there is no audio for looped pali words
           (db-insert!)))))

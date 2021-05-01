@@ -30,3 +30,8 @@
 (defn subset-kvs? [maybe-sub maybe-super]
   (clojure.set/subset? (set maybe-sub)
                        (set maybe-super)))
+
+(defn dups [seq]
+  (for [[id freq] (frequencies seq)  ;; get the frequencies, destructure
+        :when (> freq 1)]            ;; this is the filter condition
+    id))                              ;; just need the id, not the frequency
