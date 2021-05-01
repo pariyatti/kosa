@@ -15,7 +15,7 @@
   record-fixtures/force-migrate-db
   record-fixtures/force-start-db)
 
-(deftest schedule
+(deftest publishing
   (testing "publishes a new pali word card from looped template"
     (loop-db/save! (model/looped-pali-word
                     {:looped-pali-word/pali "tara"
@@ -24,9 +24,33 @@
     (let [tara (pali-db/q :pali-word/pali "tara")]
       (is (= 1 (count tara))))))
 
-(deftest schedule-ignores-an-empty-collection-of-looped-cards
+(deftest ignores-an-empty-collection-of-looped-cards
   (testing "nothing happens (including no errors)"
     (is (nil? (sut/run-job! nil)))))
+
+(deftest does-not-publish-more-than-once-per-day
+  (testing "ignores a looped card it has already published"
+    (loop-db/save! (model/looped-pali-word
+                    {:looped-pali-word/pali "abaddha"
+                     :looped-pali-word/translations [["en" "unfettered"]]}))
+    (sut/run-job! nil)
+    (sut/run-job! nil)
+    (let [card (pali-db/q :pali-word/pali "abaddha")]
+      (is (= 1 (count card))))))
+
+(deftest looping
+  (testing "does not ignore looped cards published on other days"
+    (time/freeze-clock! (time/parse "2005-05-01"))
+    (loop-db/save! (model/looped-pali-word
+                    {:looped-pali-word/pali "abhaya"
+                     :looped-pali-word/translations [["en" "fearless"]]}))
+    (sut/run-job! nil)
+    (time/freeze-clock! (time/parse "2005-06-02"))
+    (sut/run-job! nil)
+    (let [cards (pali-db/q :pali-word/pali "abhaya")]
+      (is (= 2 (count cards)))
+      (is (= #{(time/parse "2005-05-01") (time/parse "2005-06-02")}
+             (set (map :pali-word/published-at cards)))))))
 
 (deftest scheduling-against-epoch
   (testing "publishes the Nth card from the 'perl epoch' on 2005-04-29"

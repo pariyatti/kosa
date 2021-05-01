@@ -32,4 +32,5 @@
                   (if (map? form)
                     (reduce-kv (fn [acc k v] (assoc acc (dup-rename ns k) v)) {} form)
                     form))]
-    (walk/postwalk renamer (-> e untypify untemplate))))
+    (-> (walk/postwalk renamer (-> e untypify untemplate))
+        (assoc :kuti/type ns))))
