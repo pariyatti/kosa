@@ -85,12 +85,13 @@
   :main ^:skip-aot kosa.core
   :target-path "target/%s"
 
-  :aliases {"migrate"  ["run" "-m" "joplin.crux.alias/migrate"  "joplin/config.edn"]
-            "seed"     ["run" "-m" "joplin.crux.alias/seed"     "joplin/config.edn"]
-            "rollback" ["run" "-m" "joplin.crux.alias/rollback" "joplin/config.edn"]
-            "reset"    ["run" "-m" "joplin.crux.alias/reset"    "joplin/config.edn"]
-            "pending"  ["run" "-m" "joplin.crux.alias/pending"  "joplin/config.edn"]
-            "create"   ["run" "-m" "joplin.crux.alias/create"   "joplin/config.edn"]}
+  :aliases {"db-migrate"  ["run" "-m" "joplin.crux.alias/migrate"  "joplin/config.edn"]
+            "db-seed"     ["run" "-m" "joplin.crux.alias/seed"     "joplin/config.edn"]
+            "db-rollback" ["run" "-m" "joplin.crux.alias/rollback" "joplin/config.edn"]
+            "db-reset"    ["run" "-m" "joplin.crux.alias/reset"    "joplin/config.edn"]
+            "db-pending"  ["run" "-m" "joplin.crux.alias/pending"  "joplin/config.edn"]
+            "db-create"   ["run" "-m" "joplin.crux.alias/create"   "joplin/config.edn"]
+            "txt-ingest"  ["run" "-m" "dev.alias/txt-ingest!"]}
 
   :repl-options {:init-ns dev.repl}
   :profiles {:uberjar {:aot      :all

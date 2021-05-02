@@ -43,16 +43,18 @@
 (defn current-config []
   (prn "current config is: " config/config))
 
-(defn migrate
+(defn migrate!
   ([]
    (joplin.repl/migrate joplin-config :dev))
   ([env]
    (joplin.repl/migrate joplin-config env)))
 
-(defn seed []
+(defn seed! []
   (joplin.repl/seed joplin-config :dev))
 
-(defn ingest-pali-words []
+(defn ingest-pwad!
+  "Ingest a Pali Word TXT file."
+  []
   (log/info "Ingesting pali words ... don't forget to start server first.")
   (doseq [txt (-> config/config :txt-feeds :pali-word)]
     (txt/ingest (:file txt) (:language txt))))

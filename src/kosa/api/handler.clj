@@ -31,7 +31,10 @@
                                  :language (first t)
                                  :translation (second t)})
                         (:pali-word/translations word))
-     :audio {:url (format "/uploads/cards/pali_word_card/audio/%s" (:crux.db/id word))}}))
+     ;; NOTE: for the time-being, pali word cards do not have an audio
+     ;;       file encoded. we can add this feature later, but we should
+     ;;       be aware that :looped-pali-word never has an audio file. -sd
+     :audio {:url ""}}))
 
 (defn stacked-inspiration->json [card]
   (let [published (:stacked-inspiration/published-at card)
