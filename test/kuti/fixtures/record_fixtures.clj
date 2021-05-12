@@ -81,7 +81,7 @@
   [t]
   (mount/stop #'db-core/crux-node)
   ;; TODO: don't rely on `dev.repl`
-  (dev.repl/migrate :test)
+  (dev.repl/migrate! :test)
   (mount/stop #'db-core/crux-node)
   (t))
 
