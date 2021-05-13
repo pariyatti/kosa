@@ -5,11 +5,9 @@
             [clojure.tools.logging :as log]
             [kuti.support.debugging :refer :all]
             [kuti.support.collections :refer [merge-kvs subset-kvs?]]
+            [kosa.mobile.today.looped.txt :as txt]
             [kosa.mobile.today.looped-pali-word.db :as db])
   (:import [java.net URI]))
-
-(defn split-pali-words [txt]
-  (str/split txt #"~"))
 
 (defn shred [entry]
   (->> (str/split entry #"—")
@@ -21,7 +19,7 @@
    :looped-pali-word/translations [[lang (second entry)]]})
 
 (defn parse [txt lang]
-  (->> (split-pali-words txt)
+  (->> (txt/split-file txt)
        (map str/trim)
        (map shred)
        (map (partial ->doc lang))))
