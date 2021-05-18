@@ -14,6 +14,9 @@
    (assert (string? s))
    (java.util.UUID/fromString s)))
 
+(defn null-uuid []
+  (UUID. 0 0))
+
 (defn ->uuid
   "Return a UUID from UUID or String."
   [o]

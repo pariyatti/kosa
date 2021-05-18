@@ -1,10 +1,12 @@
 (ns kosa.mobile.today.looped-words-of-buddha.txt-test
   (:require [kosa.mobile.today.looped-words-of-buddha.txt :as sut]
+            [kosa.mobile.today.looped-words-of-buddha.db :as db]
             [clojure.test :refer :all]
             [kosa.fixtures.file-fixtures :as file-fixtures]
             [kosa.fixtures.model-fixtures :as model]
             [kuti.fixtures.record-fixtures :as record-fixtures]
-            [kuti.fixtures.time-fixtures :as time-fixtures])
+            [kuti.fixtures.time-fixtures :as time-fixtures]
+            [kuti.support.debugging :refer :all])
   (:import [java.net URI]))
 
 (use-fixtures :once
@@ -57,3 +59,17 @@
                :store-title "The Discourse Summaries by S.N. Goenka"
                :store-url (URI. "http://store.pariyatti.org/Discourse-Summaries_p_1650.html")}]
              (sut/parse txt "en"))))))
+
+
+(deftest indexing
+  (testing "index auto-increments"
+    (sut/db-insert! (model/looped-words-of-buddha
+                     {:looped-words-of-buddha/words "Manopubbaṅgamā dhammā,"
+                      :looped-words-of-buddha/translations [["en" "Mind precedes all phenomena,"]]}))
+    (sut/db-insert! (model/looped-words-of-buddha
+                     {:looped-words-of-buddha/words "Māvoca pharusaṃ kañci,"
+                      :looped-words-of-buddha/translations [["en" "Speak not harshly to anyone,"]]}))
+    (let [mano (db/q :looped-words-of-buddha/words "Manopubbaṅgamā dhammā,")
+          voca (db/q :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
+      (is (= 1 (- (-> voca first :looped-words-of-buddha/index)
+                  (-> mano first :looped-words-of-buddha/index)))))))

@@ -5,7 +5,7 @@
             [clojure.tools.logging :as log]
             [kuti.support.debugging :refer :all]
             [kuti.support.collections :refer [merge-kvs subset-kvs?]]
-            [kosa.mobile.today.looped-pali-word.db :as db]
+            [kosa.mobile.today.looped-words-of-buddha.db :as db]
             [kosa.mobile.today.looped.txt :as txt])
   (:import [java.net URI]))
 
@@ -37,6 +37,28 @@
                               :audio-url (->audio-url (get blocks 0))
                               :translations [[lang (get blocks 1)]]}
      cite-block)))
+
+(defn find-existing [words]
+  (first (db/q :looped-words-of-buddha/words (:looped-words-of-buddha/words words))))
+
+(defn db-insert* [words]
+  (db/save! (merge #:looped-words-of-buddha
+                   {:bookmarkable true
+                    :shareable true
+                    :original-words (:looped-words-of-buddha/words words)
+                    :original-url (URI. "")}
+                   words)))
+
+(defn db-insert! [words-of-buddha]
+  (if-let [existing (find-existing words-of-buddha)]
+    (let [merged (merge-kvs (:looped-words-of-buddha/translations existing)
+                            (:looped-words-of-buddha/translations words-of-buddha))]
+      (if (= merged (:looped-words-of-buddha/translations existing))
+        (log/info (format "Duplicate words ignored: %s" (:looped-words-of-buddha/words words-of-buddha)))
+        (do
+          (log/info (format "Merging translations: %s" (:looped-words-of-buddha/words words-of-buddha)))
+          (db-insert* (assoc existing :looped-words-of-buddha/translations merged)))))
+    (db-insert* words-of-buddha)))
 
 (defn parse [txt lang]
   (let [marker (get {"en" "Listen"

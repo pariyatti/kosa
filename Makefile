@@ -84,7 +84,7 @@ db-migrate: ##@Development Migrate up
 db-seed: ##@Development Add sample data
 	lein db-seed dev
 
-db-txt-pwad:
+db-txt-pwad: ##@Development Add Looped Pali Words
 	lein db-txt-pwad
 
 test: ##@Development Run tests with lein
