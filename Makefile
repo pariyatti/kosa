@@ -68,7 +68,7 @@ routes: ##@Development Display HTTP routes
 
 db-create: ##@Development Create a migrator: make db-create name=xyz
 ifdef name
-	lein create dev crux-dev $(name)
+	lein db-create $(name)
 else
 	echo "'name' was not defined."
 endif
@@ -79,11 +79,13 @@ db-clean: ##@Development Erase local db
 	rm -rf resources/storage/*
 
 db-migrate: ##@Development Migrate up
-	lein migrate dev
+	lein db-migrate dev
 
 db-seed: ##@Development Add sample data
-	echo This is currently broken...
-	echo lein seed dev
+	lein db-seed dev
+
+db-txt-pwad:
+	lein db-txt-pwad
 
 test: ##@Development Run tests with lein
 #lein run -- -mf config/config.test.edn # TODO: add migrations

@@ -55,7 +55,7 @@
     (db-insert* pali-word)))
 
 (defn ingest [f lang]
-  (log/info (format "Pali Word TXT: ingesting file '%s' for lang '%s'" f lang))
+  (log/info (format "Pali Word TXT: started ingesting file '%s' for lang '%s'" f lang))
   (let [words (parse (slurp f) lang)
         word-count (count words)]
     (log/info (format "Processing %s pali words from TXT." word-count))
@@ -63,4 +63,5 @@
       (log/info (format "Attempting insert of %s / %s" (+ n 1) word-count))
       (-> word
           ;; (download-attachments!) ;; there is no audio for looped pali words
-          (db-insert!)))))
+          (db-insert!))))
+  (log/info (format "Pali Word TXT: done ingesting file '%s' for lang '%s'" f lang)))

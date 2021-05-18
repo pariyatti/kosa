@@ -91,7 +91,7 @@
             "db-reset"    ["run" "-m" "joplin.crux.alias/reset"    "joplin/config.edn"]
             "db-pending"  ["run" "-m" "joplin.crux.alias/pending"  "joplin/config.edn"]
             "db-create"   ["run" "-m" "joplin.crux.alias/create"   "joplin/config.edn" "dev" "crux-dev"]
-            "txt-ingest"  ["run" "-m" "dev.alias/txt-ingest!"]}
+            "db-txt-pwad" ["run" "-m" "dev.alias/ingest-txt-pwad!"]}
 
   :repl-options {:init-ns dev.repl}
   :profiles {:uberjar {:aot      :all
