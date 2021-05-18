@@ -26,9 +26,8 @@
   (let [cite (str/split s (re-pattern "\n"))]
     #:looped-words-of-buddha{:citation     (get cite 0)
                              :citation-url (URI. (get cite 1))
-                             ;; :store-title  (get cite 2)
-                             ;; :store-url    (get cite 3)
-                             }))
+                             :store-title  (get cite 2)
+                             :store-url    (URI. (or (get cite 3) ""))}))
 
 (defn shred-blocks [lang v]
   (let [blocks (str/split (second v) (re-pattern "\n\n"))
