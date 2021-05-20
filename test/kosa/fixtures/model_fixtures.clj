@@ -25,7 +25,9 @@
 
 (defn looped-words-of-buddha [wob]
   (merge #:looped-words-of-buddha
-         {:original-words "Tumhehi kiccamātappaṃ;\nAkkhātāro Tathāgatā.\nPaṭipannā pamokkhanti\njhāyino mārabandhanā."
+         {:bookmarkable true
+          :shareable true
+          :original-words "Tumhehi kiccamātappaṃ;\nAkkhātāro Tathāgatā.\nPaṭipannā pamokkhanti\njhāyino mārabandhanā."
           :original-url (URI. "")
           :words "Tumhehi kiccamātappaṃ;\nAkkhātāro Tathāgatā.\nPaṭipannā pamokkhanti\njhāyino mārabandhanā."
           :audio-attm-id (digest/null-uuid)

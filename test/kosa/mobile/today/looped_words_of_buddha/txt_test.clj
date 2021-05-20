@@ -6,6 +6,7 @@
             [kosa.fixtures.model-fixtures :as model]
             [kuti.fixtures.record-fixtures :as record-fixtures]
             [kuti.fixtures.time-fixtures :as time-fixtures]
+            [kuti.support.time :as time]
             [kuti.support.debugging :refer :all])
   (:import [java.net URI]))
 
@@ -60,6 +61,45 @@
                :store-url (URI. "http://store.pariyatti.org/Discourse-Summaries_p_1650.html")}]
              (sut/parse txt "en"))))))
 
+(deftest ingesting-txt-file
+  (testing "inserts entries into db"
+    (let [f (file-fixtures/file "words_of_buddha_raw.txt")]
+      (sut/ingest f "en")
+      (is (= 3 (count (db/list)))))))
+
+(deftest merging-entities
+  (testing "ignore identical entities"
+    (db/save! (model/looped-words-of-buddha
+               {:looped-words-of-buddha/words "Manopubbaṅgamā dhammā,"
+                :looped-words-of-buddha/translations [["en" "Mind precedes all phenomena,"]]
+                :looped-words-of-buddha/published-at (time/parse "2008-01-01")}))
+    (sut/db-insert! (model/looped-words-of-buddha
+                    {:looped-words-of-buddha/words "Manopubbaṅgamā dhammā,"
+                     :looped-words-of-buddha/translations [["en" "Mind precedes all phenomena,"]]
+                     :looped-words-of-buddha/published-at (time/parse "2012-01-01")}))
+    (let [mano (db/q :looped-words-of-buddha/words "Manopubbaṅgamā dhammā,")]
+      (is (= 1 (count mano)))
+      (is (= (time/parse "2008-01-01")
+             (-> mano first :looped-words-of-buddha/published-at)))))
+
+  (testing "merge additional languages if merged is not identical"
+    (db/save! (model/looped-words-of-buddha
+               {:looped-words-of-buddha/words "Māvoca pharusaṃ kañci,"
+                :looped-words-of-buddha/translations [["en" "Speak not harshly to anyone,"]
+                                                      ["hi" "किसी से कटुता से न बोलें,"]]
+                :looped-words-of-buddha/published-at (time/parse "2008-01-01")}))
+    (sut/db-insert! (model/looped-words-of-buddha
+                    {:looped-words-of-buddha/words "Māvoca pharusaṃ kañci,"
+                     :looped-words-of-buddha/translations [["fr" "Ne parlez pas durement à qui que ce soit,"]
+                                                           ["es" "No hables agresivamente a nadie;"]]
+                     :looped-words-of-buddha/published-at (time/parse "2012-01-01")}))
+    (let [voca (db/q :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
+      (is (= 1 (count  voca)))
+      (is (= [["en" "Speak not harshly to anyone,"]
+              ["hi" "किसी से कटुता से न बोलें,"]
+              ["fr" "Ne parlez pas durement à qui que ce soit,"]
+              ["es" "No hables agresivamente a nadie;"]]
+             (-> voca first :looped-words-of-buddha/translations))))))
 
 (deftest indexing
   (testing "index auto-increments"

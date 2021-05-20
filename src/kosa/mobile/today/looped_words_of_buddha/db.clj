@@ -4,6 +4,9 @@
             [kuti.support.debugging :refer :all]
             [kuti.support.time :as time]))
 
+(defn list []
+  (record/list :looped-words-of-buddha))
+
 (defn q [attr param]
   (let [find-query {:find     '[e updated-at]
                     :where    [['e attr 'v]

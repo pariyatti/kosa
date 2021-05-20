@@ -6,7 +6,8 @@
             [kuti.support.debugging :refer :all]
             [kuti.support.collections :refer [merge-kvs subset-kvs?]]
             [kosa.mobile.today.looped-words-of-buddha.db :as db]
-            [kosa.mobile.today.looped.txt :as txt])
+            [kosa.mobile.today.looped.txt :as txt]
+            [kuti.support.digest :as digest])
   (:import [java.net URI]))
 
 (defn shred [marker entry]
@@ -74,3 +75,18 @@
          (map #(shred m %))
          (map #(repair m %))
          (map #(shred-blocks lang %)))))
+
+(defn download-attachments! [e]
+  (assoc e :looped-words-of-buddha/audio-attm-id (digest/null-uuid)))
+
+(defn ingest [f lang]
+  (log/info (format "Words of Buddha TXT: started ingesting file '%s' for lang '%s'" f lang))
+  (let [entries (parse (slurp f) lang)
+        entry-count (count entries)]
+    (log/info (format "Processing %s Words of Buddha from TXT." entry-count))
+    (doseq [[n entry] (map-indexed #(vector %1 %2) entries)]
+      (log/info (format "Attempting insert of %s / %s" (+ n 1) entry-count))
+      (-> entry
+          (download-attachments!)
+          (db-insert!))))
+  (log/info (format "Words of Buddha TXT: done ingesting file '%s' for lang '%s'" f lang)))
