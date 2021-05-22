@@ -7,12 +7,13 @@
             [kuti.support.collections :refer [merge-kvs subset-kvs?]]
             [kosa.mobile.today.looped-words-of-buddha.db :as db]
             [kosa.mobile.today.looped.txt :as txt]
+            [kuti.support.strings :as strings]
             [kuti.support.digest :as digest])
   (:import [java.net URI]))
 
 (defn shred [marker entry]
   (->> (str/split entry (re-pattern marker))
-       (map str/trim)
+       (map strings/trim!)
        vec))
 
 (defn repair [marker pair]
@@ -27,17 +28,37 @@
   (let [cite (str/split s (re-pattern "\n"))]
     #:looped-words-of-buddha{:citation     (get cite 0)
                              :citation-url (URI. (get cite 1))
-                             :store-title  (get cite 2)
+                             :store-title  (or (get cite 2) "")
                              :store-url    (URI. (or (get cite 3) ""))}))
 
 (defn shred-blocks [lang v]
-  (let [blocks (str/split (second v) (re-pattern "\n\n"))
-        cite-block (shred-cite-block (get blocks 2))]
+  (let [all-blocks (str/split (second v) (re-pattern "\n\n"))
+        cite-block (shred-cite-block (last all-blocks))
+        blocks (drop-last all-blocks)
+        audio-url (first blocks)
+        translation (->> blocks
+                         (drop 1)
+                         (str/join "\n\n"))]
     (merge
      #:looped-words-of-buddha{:words (first v)
-                              :audio-url (->audio-url (get blocks 0))
-                              :translations [[lang (get blocks 1)]]}
+                              :audio-url (->audio-url audio-url)
+                              :translations [[lang translation]]}
      cite-block)))
+
+(defn parse [txt lang]
+  (let [marker (get {"en" "Listen"
+                     "es" "Escuchar"
+                     "fr" "Ecouter " ;; NOTE: yes, it contains a space
+                     "it" "Ascolta"
+                     "pt" "Ouça"
+                     "sr" "Slušaj"
+                     "zh" "Listen"} lang)
+        m (str marker ": ")]
+    (->> (txt/split-file txt)
+         (map strings/trim!)
+         (map #(shred m %))
+         (map #(repair m %))
+         (map #(shred-blocks lang %)))))
 
 (defn find-existing [words]
   (first (db/q :looped-words-of-buddha/words (:looped-words-of-buddha/words words))))
@@ -70,21 +91,6 @@
                              {:looped-words-of-buddha/translations merged}
                              (citations words-of-buddha))))))
     (db-insert* words-of-buddha)))
-
-(defn parse [txt lang]
-  (let [marker (get {"en" "Listen"
-                     "es" "Escuchar"
-                     "fr" "Ecouter " ;; NOTE: yes, it contains a space
-                     "it" "Ascolta"
-                     "pt" "Ouça"
-                     "sr" "Slušaj"
-                     "zh" "Listen"} lang)
-        m (str marker ": ")]
-    (->> (txt/split-file txt)
-         (map str/trim)
-         (map #(shred m %))
-         (map #(repair m %))
-         (map #(shred-blocks lang %)))))
 
 (defn download-attachments! [e]
   (assoc e :looped-words-of-buddha/audio-attm-id (digest/null-uuid)))

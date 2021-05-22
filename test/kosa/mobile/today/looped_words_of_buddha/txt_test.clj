@@ -27,7 +27,19 @@
               :looped-words-of-buddha/citation-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul10.xml#para154")
               :looped-words-of-buddha/store-title "The Dhammapada: The Buddha's Path of Wisdom, translated from Pāli by Acharya Buddharakkhita"
               :looped-words-of-buddha/store-url (URI. "https://store.pariyatti.org/The-Dhammapada-The-Buddhas-Path-of-Wisdom-Pocket-Edition_p_6305.html")}
-             (first (sut/parse txt "en")))))))
+             (first (sut/parse txt "en"))))))
+
+  (testing "parses an entry with vertical whitespace (carriage returns) in translation"
+    (let [f (file-fixtures/file "words_of_buddha_es_vertical_whitespace.txt")
+          txt (slurp f)]
+      (is (= {:looped-words-of-buddha/words "Manopubbaṅgamā dhammā,\nmanoseṭṭhā manomayā.\nManasā ce paduṭṭhena\nbhāsati vā karoti vā,\ntato naṃ dukkhamanveti\ncakkaṃva vahato padaṃ.\n\nManopubbaṅgamā dhammā,\nmanoseṭṭhā manomayā.\nManasā ce pasannena\nbhāsati vā karoti vā,\ntato naṃ sukhamanveti\nchāyāva anapāyinī."
+              :looped-words-of-buddha/audio-url (URI. "http://download.pariyatti.org/dwob/dhammapada_1_1_1_2.mp3")
+              :looped-words-of-buddha/translations [["es" "La mente precede todo fenómeno,\nla mente es lo más importante, todo es producto de la mente.\nSi con una mente impura\nuno ejecuta cualquier acción verbal o física,\nentonces el sufrimiento le seguirá,\ncomo la carreta sigue la huella del animal de tiro.\n\nLa mente precede todo fenómeno,\nla mente es lo más importante, todo es producto de la mente.\nSi con una mente pura\nuno ejecuta cualquier acción verbal o física,\nentonces la felicidad le seguirá,\ncomo una sombra que nunca abandona."]]
+              :looped-words-of-buddha/citation "Dhammapada 1.1, 1.2"
+              :looped-words-of-buddha/citation-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul0.xml#para1")
+              :looped-words-of-buddha/store-title "Resumen De Las Charlas del Curso de Diez Dias"
+              :looped-words-of-buddha/store-url (URI. "http://store.pariyatti.org/Discourse-Summaries--Spanish_p_2654.html")}
+             (first (sut/parse txt "es")))))))
 
 (deftest parsing-txt-file
   (testing "parses all days"
