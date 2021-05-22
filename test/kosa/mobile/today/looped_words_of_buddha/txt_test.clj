@@ -10,7 +10,7 @@
             [kuti.support.debugging :refer :all])
   (:import [java.net URI]))
 
-(use-fixtures :once
+(use-fixtures :each
   time-fixtures/freeze-clock-1995
   record-fixtures/force-destroy-db
   record-fixtures/force-migrate-db
@@ -100,6 +100,57 @@
               ["fr" "Ne parlez pas durement à qui que ce soit,"]
               ["es" "No hables agresivamente a nadie;"]]
              (-> voca first :looped-words-of-buddha/translations))))))
+
+(deftest citations
+  (testing "other translations do not erase english citations"
+    (db/save! (model/looped-words-of-buddha
+               #:looped-words-of-buddha
+               {:words "Māvoca pharusaṃ kañci,"
+                :translations [["en" "Speak not harshly to anyone,"]]
+                :citation "Dhammapada 10.133"
+                :citation-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul9.xml#para133")
+                :store-title "The Dhammapada: The Buddha's Path of Wisdom, translated from Pāli by Acharya Buddharakkhita"
+                :store-url (URI. "https://store.pariyatti.org/Dhammapada-The-BP203ME-Pocket-Version_p_2513.html")
+                :published-at (time/parse "2008-01-01")}))
+
+    (sut/db-insert! (model/looped-words-of-buddha
+                     #:looped-words-of-buddha
+                     {:words "Māvoca pharusaṃ kañci,"
+                      :translations [["es" "No hables agresivamente a nadie;"]]
+                      :citation "Dhammapada 10.133"
+                      :citation-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul9.xml#para133")
+                      :store-title "Dhammapada, traducción de Bhikkhu Nandisena, México, Dhammodaya Ediciones"
+                      :store-url (URI. "http://dhammodaya.btmar.org/content/dhammapada%E2%80%94precio-y-compra-en-l%C3%ADnea")
+                      :published-at (time/parse "2012-01-01")}))
+
+    (let [voca (db/q :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
+      (is (= "The Dhammapada: The Buddha's Path of Wisdom, translated from Pāli by Acharya Buddharakkhita"
+             (-> voca first :looped-words-of-buddha/store-title)))))
+
+  (testing "english citations overwrite other languages, since other citations will come from i18n"
+    (db/save! (model/looped-words-of-buddha
+               #:looped-words-of-buddha
+               {:words "Manopubbaṅgamā dhammā,"
+                :translations [["es" "La mente precede todo fenómeno,"]]
+                :citation "Dhammapada 1.1, 1.2"
+                :citation-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul0.xml#para1")
+                :store-title "Resumen De Las Charlas del Curso de Diez Dias"
+                :store-url (URI. "http://store.pariyatti.org/Discourse-Summaries--Spanish_p_2654.html")
+                :published-at (time/parse "2012-01-01")}))
+
+    (sut/db-insert!  (model/looped-words-of-buddha
+                      #:looped-words-of-buddha
+                      {:words "Manopubbaṅgamā dhammā,"
+                       :translations [["en" "Mind precedes all phenomena,"]]
+                       :citation "Dhammapada 1.1, 1.2"
+                       :citation-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul0.xml#para1")
+                       :store-title "The Discourse Summaries by S.N. Goenka"
+                       :store-url (URI. "http://store.pariyatti.org/Discourse-Summaries_p_1650.html")
+                       :published-at (time/parse "2008-01-01")}))
+
+    (let [voca (db/q :looped-words-of-buddha/words "Manopubbaṅgamā dhammā,")]
+      (is (= "The Discourse Summaries by S.N. Goenka"
+             (-> voca first :looped-words-of-buddha/store-title))))))
 
 (deftest indexing
   (testing "index auto-increments"

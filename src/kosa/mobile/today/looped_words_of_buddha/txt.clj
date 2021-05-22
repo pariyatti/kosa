@@ -50,6 +50,14 @@
                     :original-url (URI. "")}
                    words)))
 
+(defn citations [new]
+  (if (= "en" (-> new :looped-words-of-buddha/translations first first))
+    (select-keys new [:looped-words-of-buddha/citation
+                      :looped-words-of-buddha/citation-url
+                      :looped-words-of-buddha/store-title
+                      :looped-words-of-buddha/store-url])
+    {}))
+
 (defn db-insert! [words-of-buddha]
   (if-let [existing (find-existing words-of-buddha)]
     (let [merged (merge-kvs (:looped-words-of-buddha/translations existing)
@@ -58,7 +66,9 @@
         (log/info (format "Duplicate words ignored: %s" (:looped-words-of-buddha/words words-of-buddha)))
         (do
           (log/info (format "Merging translations: %s" (:looped-words-of-buddha/words words-of-buddha)))
-          (db-insert* (assoc existing :looped-words-of-buddha/translations merged)))))
+          (db-insert* (merge existing
+                             {:looped-words-of-buddha/translations merged}
+                             (citations words-of-buddha))))))
     (db-insert* words-of-buddha)))
 
 (defn parse [txt lang]
