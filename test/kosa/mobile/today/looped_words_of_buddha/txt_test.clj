@@ -1,6 +1,7 @@
 (ns kosa.mobile.today.looped-words-of-buddha.txt-test
   (:require [kosa.mobile.today.looped-words-of-buddha.txt :as sut]
             [kosa.mobile.today.looped-words-of-buddha.db :as db]
+            [kosa.mobile.today.looped.txt :as looped]
             [clojure.test :refer :all]
             [kosa.fixtures.file-fixtures :as file-fixtures]
             [kosa.fixtures.model-fixtures :as model]
@@ -16,6 +17,8 @@
   record-fixtures/force-migrate-db
   record-fixtures/force-start-db)
 
+(def i (sut/->BuddhaIngester))
+
 (deftest simple-parsing-txt-file
   (testing "parses out one day without whitespace or separators"
     (let [f (file-fixtures/file "words_of_buddha_raw.txt")
@@ -27,7 +30,7 @@
               :looped-words-of-buddha/citation-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul10.xml#para154")
               :looped-words-of-buddha/store-title "The Dhammapada: The Buddha's Path of Wisdom, translated from Pāli by Acharya Buddharakkhita"
               :looped-words-of-buddha/store-url (URI. "https://store.pariyatti.org/The-Dhammapada-The-Buddhas-Path-of-Wisdom-Pocket-Edition_p_6305.html")}
-             (first (sut/parse txt "en"))))))
+             (first (looped/parse i txt "en"))))))
 
   (testing "parses an entry with vertical whitespace (carriage returns) in translation"
     (let [f (file-fixtures/file "words_of_buddha_es_vertical_whitespace.txt")
@@ -39,7 +42,7 @@
               :looped-words-of-buddha/citation-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul0.xml#para1")
               :looped-words-of-buddha/store-title "Resumen De Las Charlas del Curso de Diez Dias"
               :looped-words-of-buddha/store-url (URI. "http://store.pariyatti.org/Discourse-Summaries--Spanish_p_2654.html")}
-             (first (sut/parse txt "es")))))))
+             (first (looped/parse i txt "es")))))))
 
 (deftest parsing-txt-file
   (testing "parses all days"
@@ -71,7 +74,7 @@
                :citation-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul19.xml#para276")
                :store-title "The Discourse Summaries by S.N. Goenka"
                :store-url (URI. "http://store.pariyatti.org/Discourse-Summaries_p_1650.html")}]
-             (sut/parse txt "en"))))))
+             (looped/parse i txt "en"))))))
 
 (deftest ingesting-txt-file
   (testing "inserts entries into db"
@@ -85,10 +88,10 @@
                {:looped-words-of-buddha/words "Manopubbaṅgamā dhammā,"
                 :looped-words-of-buddha/translations [["en" "Mind precedes all phenomena,"]]
                 :looped-words-of-buddha/published-at (time/parse "2008-01-01")}))
-    (sut/db-insert! (model/looped-words-of-buddha
-                    {:looped-words-of-buddha/words "Manopubbaṅgamā dhammā,"
-                     :looped-words-of-buddha/translations [["en" "Mind precedes all phenomena,"]]
-                     :looped-words-of-buddha/published-at (time/parse "2012-01-01")}))
+    (looped/db-insert! i (model/looped-words-of-buddha
+                          {:looped-words-of-buddha/words "Manopubbaṅgamā dhammā,"
+                           :looped-words-of-buddha/translations [["en" "Mind precedes all phenomena,"]]
+                           :looped-words-of-buddha/published-at (time/parse "2012-01-01")}))
     (let [mano (db/q :looped-words-of-buddha/words "Manopubbaṅgamā dhammā,")]
       (is (= 1 (count mano)))
       (is (= (time/parse "2008-01-01")
@@ -100,11 +103,11 @@
                 :looped-words-of-buddha/translations [["en" "Speak not harshly to anyone,"]
                                                       ["hi" "किसी से कटुता से न बोलें,"]]
                 :looped-words-of-buddha/published-at (time/parse "2008-01-01")}))
-    (sut/db-insert! (model/looped-words-of-buddha
-                    {:looped-words-of-buddha/words "Māvoca pharusaṃ kañci,"
-                     :looped-words-of-buddha/translations [["fr" "Ne parlez pas durement à qui que ce soit,"]
-                                                           ["es" "No hables agresivamente a nadie;"]]
-                     :looped-words-of-buddha/published-at (time/parse "2012-01-01")}))
+    (looped/db-insert! i (model/looped-words-of-buddha
+                       {:looped-words-of-buddha/words "Māvoca pharusaṃ kañci,"
+                        :looped-words-of-buddha/translations [["fr" "Ne parlez pas durement à qui que ce soit,"]
+                                                              ["es" "No hables agresivamente a nadie;"]]
+                        :looped-words-of-buddha/published-at (time/parse "2012-01-01")}))
     (let [voca (db/q :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
       (is (= 1 (count  voca)))
       (is (= [["en" "Speak not harshly to anyone,"]
@@ -125,15 +128,15 @@
                 :store-url (URI. "https://store.pariyatti.org/Dhammapada-The-BP203ME-Pocket-Version_p_2513.html")
                 :published-at (time/parse "2008-01-01")}))
 
-    (sut/db-insert! (model/looped-words-of-buddha
-                     #:looped-words-of-buddha
-                     {:words "Māvoca pharusaṃ kañci,"
-                      :translations [["es" "No hables agresivamente a nadie;"]]
-                      :citation "Dhammapada 10.133"
-                      :citation-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul9.xml#para133")
-                      :store-title "Dhammapada, traducción de Bhikkhu Nandisena, México, Dhammodaya Ediciones"
-                      :store-url (URI. "http://dhammodaya.btmar.org/content/dhammapada%E2%80%94precio-y-compra-en-l%C3%ADnea")
-                      :published-at (time/parse "2012-01-01")}))
+    (looped/db-insert! i (model/looped-words-of-buddha
+                       #:looped-words-of-buddha
+                       {:words "Māvoca pharusaṃ kañci,"
+                        :translations [["es" "No hables agresivamente a nadie;"]]
+                        :citation "Dhammapada 10.133"
+                        :citation-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul9.xml#para133")
+                        :store-title "Dhammapada, traducción de Bhikkhu Nandisena, México, Dhammodaya Ediciones"
+                        :store-url (URI. "http://dhammodaya.btmar.org/content/dhammapada%E2%80%94precio-y-compra-en-l%C3%ADnea")
+                        :published-at (time/parse "2012-01-01")}))
 
     (let [voca (db/q :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
       (is (= "The Dhammapada: The Buddha's Path of Wisdom, translated from Pāli by Acharya Buddharakkhita"
@@ -150,15 +153,15 @@
                 :store-url (URI. "http://store.pariyatti.org/Discourse-Summaries--Spanish_p_2654.html")
                 :published-at (time/parse "2012-01-01")}))
 
-    (sut/db-insert!  (model/looped-words-of-buddha
-                      #:looped-words-of-buddha
-                      {:words "Manopubbaṅgamā dhammā,"
-                       :translations [["en" "Mind precedes all phenomena,"]]
-                       :citation "Dhammapada 1.1, 1.2"
-                       :citation-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul0.xml#para1")
-                       :store-title "The Discourse Summaries by S.N. Goenka"
-                       :store-url (URI. "http://store.pariyatti.org/Discourse-Summaries_p_1650.html")
-                       :published-at (time/parse "2008-01-01")}))
+    (looped/db-insert! i (model/looped-words-of-buddha
+                       #:looped-words-of-buddha
+                       {:words "Manopubbaṅgamā dhammā,"
+                        :translations [["en" "Mind precedes all phenomena,"]]
+                        :citation "Dhammapada 1.1, 1.2"
+                        :citation-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul0.xml#para1")
+                        :store-title "The Discourse Summaries by S.N. Goenka"
+                        :store-url (URI. "http://store.pariyatti.org/Discourse-Summaries_p_1650.html")
+                        :published-at (time/parse "2008-01-01")}))
 
     (let [voca (db/q :looped-words-of-buddha/words "Manopubbaṅgamā dhammā,")]
       (is (= "The Discourse Summaries by S.N. Goenka"
@@ -166,12 +169,12 @@
 
 (deftest indexing
   (testing "index auto-increments"
-    (sut/db-insert! (model/looped-words-of-buddha
-                     {:looped-words-of-buddha/words "Manopubbaṅgamā dhammā,"
-                      :looped-words-of-buddha/translations [["en" "Mind precedes all phenomena,"]]}))
-    (sut/db-insert! (model/looped-words-of-buddha
-                     {:looped-words-of-buddha/words "Māvoca pharusaṃ kañci,"
-                      :looped-words-of-buddha/translations [["en" "Speak not harshly to anyone,"]]}))
+    (looped/db-insert! i (model/looped-words-of-buddha
+                       {:looped-words-of-buddha/words "Manopubbaṅgamā dhammā,"
+                        :looped-words-of-buddha/translations [["en" "Mind precedes all phenomena,"]]}))
+    (looped/db-insert! i (model/looped-words-of-buddha
+                       {:looped-words-of-buddha/words "Māvoca pharusaṃ kañci,"
+                        :looped-words-of-buddha/translations [["en" "Speak not harshly to anyone,"]]}))
     (let [mano (db/q :looped-words-of-buddha/words "Manopubbaṅgamā dhammā,")
           voca (db/q :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
       (is (= 1 (- (-> voca first :looped-words-of-buddha/index)

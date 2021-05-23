@@ -4,11 +4,11 @@
             [clojure.string :as str]
             [clojure.tools.logging :as log]
             [kuti.support.debugging :refer :all]
-            [kuti.support.collections :refer [merge-kvs subset-kvs?]]
             [kosa.mobile.today.looped-words-of-buddha.db :as db]
             [kosa.mobile.today.looped.txt :as txt]
             [kuti.support.strings :as strings]
-            [kuti.support.digest :as digest])
+            [kuti.support.digest :as digest]
+            [kuti.support.types :as types])
   (:import [java.net URI]))
 
 (defn shred [marker entry]
@@ -45,64 +45,55 @@
                               :translations [[lang translation]]}
      cite-block)))
 
-(defn parse [txt lang]
-  (let [marker (get {"en" "Listen"
-                     "es" "Escuchar"
-                     "fr" "Ecouter " ;; NOTE: yes, it contains a space
-                     "it" "Ascolta"
-                     "pt" "Ouça"
-                     "sr" "Slušaj"
-                     "zh" "Listen"} lang)
-        m (str marker ": ")]
-    (->> (txt/split-file txt)
-         (map strings/trim!)
-         (map #(shred m %))
-         (map #(repair m %))
-         (map #(shred-blocks lang %)))))
+(deftype BuddhaIngester []
+  txt/Ingester
 
-(defn find-existing [words]
-  (first (db/q :looped-words-of-buddha/words (:looped-words-of-buddha/words words))))
+  (attr-for [_this_ kw]
+    (types/namespace-kw :looped-words-of-buddha kw))
 
-(defn db-insert* [words]
-  (db/save! (merge #:looped-words-of-buddha
-                   {:bookmarkable true
-                    :shareable true
-                    :original-words (:looped-words-of-buddha/words words)
-                    :original-url (URI. "")}
-                   words)))
+  (entry-attr [_this_]
+    :looped-words-of-buddha/words)
 
-(defn citations [new]
-  (if (= "en" (-> new :looped-words-of-buddha/translations first first))
-    (select-keys new [:looped-words-of-buddha/citation
-                      :looped-words-of-buddha/citation-url
-                      :looped-words-of-buddha/store-title
-                      :looped-words-of-buddha/store-url])
-    {}))
+  (human-name [_this_]
+    "Words of Buddha")
 
-(defn db-insert! [words-of-buddha]
-  (if-let [existing (find-existing words-of-buddha)]
-    (let [merged (merge-kvs (:looped-words-of-buddha/translations existing)
-                            (:looped-words-of-buddha/translations words-of-buddha))]
-      (if (= merged (:looped-words-of-buddha/translations existing))
-        (log/info (format "Duplicate words ignored: %s" (:looped-words-of-buddha/words words-of-buddha)))
-        (do
-          (log/info (format "Merging translations: %s" (:looped-words-of-buddha/words words-of-buddha)))
-          (db-insert* (merge existing
-                             {:looped-words-of-buddha/translations merged}
-                             (citations words-of-buddha))))))
-    (db-insert* words-of-buddha)))
+  (parse [_this_ txt lang]
+    (let [marker (get {"en" "Listen"
+                       "es" "Escuchar"
+                       "fr" "Ecouter " ;; NOTE: yes, it contains a space
+                       "it" "Ascolta"
+                       "pt" "Ouça"
+                       "sr" "Slušaj"
+                       "zh" "Listen"} lang)
+          m (str marker ": ")]
+      (->> (txt/split-file txt)
+           (map strings/trim!)
+           (map #(shred m %))
+           (map #(repair m %))
+           (map #(shred-blocks lang %)))))
 
-(defn download-attachments! [e]
-  (assoc e :looped-words-of-buddha/audio-attm-id (digest/null-uuid)))
+  (find-existing [_this_ words]
+    (first (db/q :looped-words-of-buddha/words (:looped-words-of-buddha/words words))))
+
+  (db-insert* [_this_ words]
+    (db/save! (merge #:looped-words-of-buddha
+                     {:bookmarkable true
+                      :shareable true
+                      :original-words (:looped-words-of-buddha/words words)
+                      :original-url (URI. "")}
+                     words)))
+
+  (citations [_this_ new]
+    (if (= "en" (-> new :looped-words-of-buddha/translations first first))
+      (select-keys new [:looped-words-of-buddha/citation
+                        :looped-words-of-buddha/citation-url
+                        :looped-words-of-buddha/store-title
+                        :looped-words-of-buddha/store-url])
+      {}))
+
+  (download-attachments! [_this_ e]
+    ;; TODO: actually download attachments
+    (assoc e :looped-words-of-buddha/audio-attm-id (digest/null-uuid))))
 
 (defn ingest [f lang]
-  (log/info (format "Words of Buddha TXT: started ingesting file '%s' for lang '%s'" f lang))
-  (let [entries (parse (slurp f) lang)
-        entry-count (count entries)]
-    (log/info (format "Processing %s Words of Buddha from TXT." entry-count))
-    (doseq [[n entry] (map-indexed #(vector %1 %2) entries)]
-      (log/info (format "Attempting insert of %s / %s" (+ n 1) entry-count))
-      (-> entry
-          (download-attachments!)
-          (db-insert!))))
-  (log/info (format "Words of Buddha TXT: done ingesting file '%s' for lang '%s'" f lang)))
+  (txt/ingest (->BuddhaIngester) f lang))
