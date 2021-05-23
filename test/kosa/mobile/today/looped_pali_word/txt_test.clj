@@ -4,6 +4,7 @@
             [kosa.fixtures.model-fixtures :as model]
             [kosa.mobile.today.looped-pali-word.txt :as sut]
             [kosa.mobile.today.looped-pali-word.db :as db]
+            [kosa.mobile.today.looped.txt :as looped]
             [kuti.fixtures.record-fixtures :as record-fixtures]
             [kuti.fixtures.time-fixtures :as time-fixtures]
             [kuti.support.debugging :refer :all]
@@ -15,6 +16,8 @@
   record-fixtures/force-migrate-db
   record-fixtures/force-start-db)
 
+(def i (sut/->PaliIngester))
+
 (deftest parsing-txt-file
   (testing "parses out text without whitespace or separators"
     (let [f (file-fixtures/file "pali_word_raw.txt")
@@ -25,7 +28,7 @@
                :looped-pali-word/translations [["en" "kata + ññū = what is done + knowing, acknowledging what has been done (to, for one), grateful"]]}
               {:looped-pali-word/pali "tarati"
                :looped-pali-word/translations [["en" "to cross [a river], to surmount, overcome [the great flood of life, desire, ignorance], to get to the other side, to cross over, as in crossing the ocean of suffering"]]}]
-             (sut/parse txt "en"))))))
+             (looped/parse i txt "en"))))))
 
 (deftest ingesting-txt-file
   (testing "inserts entries into db"
@@ -39,7 +42,7 @@
                {:looped-pali-word/pali "suriya"
                 :looped-pali-word/translations [["en" "sun"]]
                 :looped-pali-word/published-at (time/parse "2008-01-01")}))
-    (sut/db-insert! (model/looped-pali-word
+    (looped/db-insert! i (model/looped-pali-word
                     {:looped-pali-word/pali "suriya"
                      :looped-pali-word/translations [["en" "sun"]]
                      :looped-pali-word/published-at (time/parse "2012-01-01")}))
@@ -54,7 +57,7 @@
                 :looped-pali-word/translations [["en" "moon"]
                                                 ["hi" "चंद"]]
                 :looped-pali-word/published-at (time/parse "2008-01-01")}))
-    (sut/db-insert! (model/looped-pali-word
+    (looped/db-insert! i (model/looped-pali-word
                     {:looped-pali-word/pali "canda"
                      :looped-pali-word/translations [["fr" "lune"]
                                                      ["es" "luna"]]
@@ -69,10 +72,10 @@
 
 (deftest indexing
   (testing "index auto-increments"
-    (sut/db-insert! (model/looped-pali-word
+    (looped/db-insert! i (model/looped-pali-word
                     {:looped-pali-word/pali "tara"
                      :looped-pali-word/translations [["en" "star"]]}))
-    (sut/db-insert! (model/looped-pali-word
+    (looped/db-insert! i (model/looped-pali-word
                     {:looped-pali-word/pali "kujagaha"
                      :looped-pali-word/translations [["en" "mars"]]}))
     (let [tara (db/q :looped-pali-word/pali "tara")
