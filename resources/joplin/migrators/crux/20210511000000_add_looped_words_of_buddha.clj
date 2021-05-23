@@ -11,7 +11,7 @@
                                                    :looped-words-of-buddha/bookmarkable
                                                    :looped-words-of-buddha/shareable
                                                    :looped-words-of-buddha/words
-                                                   :looped-words-of-buddha/audio-attm-id
+                                                   :looped-words-of-buddha/audio-attachment-id
                                                    :looped-words-of-buddha/audio-url      ;; to *.pariyatti.org - mp3
                                                    :looped-words-of-buddha/translations
                                                    :looped-words-of-buddha/citation
@@ -26,7 +26,7 @@
     (schema/add-schema node :looped-words-of-buddha/bookmarkable   :db.type/boolean)
     (schema/add-schema node :looped-words-of-buddha/shareable      :db.type/boolean)
     (schema/add-schema node :looped-words-of-buddha/words          :db.type/string)
-    (schema/add-schema node :looped-words-of-buddha/audio-attm-id  :db.type/uuid)
+    (schema/add-schema node :looped-words-of-buddha/audio-attachment-id  :db.type/uuid)
     (schema/add-schema node :looped-words-of-buddha/audio-url      :db.type/uri)
     (schema/add-schema node :looped-words-of-buddha/translations   :db.type/tuple)
     (schema/add-schema node :looped-words-of-buddha/citation       :db.type/string)
@@ -45,7 +45,7 @@
     (schema/remove-schema node :looped-words-of-buddha/bookmarkable)
     (schema/remove-schema node :looped-words-of-buddha/shareable)
     (schema/remove-schema node :looped-words-of-buddha/words)
-    (schema/remove-schema node :looped-words-of-buddha/audio-attm-id)
+    (schema/remove-schema node :looped-words-of-buddha/audio-attachment-id)
     (schema/remove-schema node :looped-words-of-buddha/audio-url)
     (schema/remove-schema node :looped-words-of-buddha/translations)
     (schema/remove-schema node :looped-words-of-buddha/citation)

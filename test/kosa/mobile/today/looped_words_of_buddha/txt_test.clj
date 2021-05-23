@@ -7,9 +7,13 @@
             [kosa.fixtures.model-fixtures :as model]
             [kuti.fixtures.record-fixtures :as record-fixtures]
             [kuti.fixtures.time-fixtures :as time-fixtures]
+            [kuti.fixtures.storage-fixtures :as storage-fixtures]
             [kuti.support.time :as time]
             [kuti.support.debugging :refer :all])
   (:import [java.net URI]))
+
+(use-fixtures :once
+  storage-fixtures/set-service-config)
 
 (use-fixtures :each
   time-fixtures/freeze-clock-1995
@@ -179,3 +183,16 @@
           voca (db/q :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
       (is (= 1 (- (-> voca first :looped-words-of-buddha/index)
                   (-> mano first :looped-words-of-buddha/index)))))))
+
+(deftest mp3s
+  (testing "downloads and attaches mp3"
+    (let [card (model/looped-words-of-buddha
+                {:looped-words-of-buddha/audio-attachment
+                 nil
+                 :looped-words-of-buddha/audio-url
+                 (URI. "http://download.pariyatti.org/dwob/sutta_nipata_3_710.mp3")})
+          e (looped/download-attachments! i card)]
+      (is (= "sutta_nipata_3_710.mp3"
+             (-> e :looped-words-of-buddha/audio-attachment :attm/filename)))
+      (is (= 184645
+             (-> e :looped-words-of-buddha/audio-attachment :attm/byte-size))))))

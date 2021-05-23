@@ -13,3 +13,11 @@
       (str/replace (re-pattern (str \u00A0 "$")) "")
       (str/replace (re-pattern (str "^" \u00A0)) "")
       (str/trim)))
+
+(defn file-name [path]
+  (last (str/split (str path) #"/")))
+
+(defn file-extension
+  "Can take a string, File, or URI"
+  [filename]
+  (re-find #"\.[a-zA-Z0-9]+$" (str filename)))

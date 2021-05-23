@@ -1,11 +1,20 @@
 (ns kosa.mobile.today.looped-words-of-buddha.db
   (:refer-clojure :exclude [list get])
   (:require [kuti.record :as record]
+            [kuti.record.nested :as nested]
+            [kuti.storage :as storage]
             [kuti.support.debugging :refer :all]
             [kuti.support.time :as time]))
 
+(defn rehydrate [card]
+  (as-> (nested/expand-all card :looped-words-of-buddha/audio-attachment) c
+    ;; TODO: this behaviour really belongs in kuti.storage
+    (assoc-in c
+              [:looped-words-of-buddha/audio-attachment :attm/url]
+              (storage/url (:looped-words-of-buddha/audio-attachment c)))))
+
 (defn list []
-  (record/list :looped-words-of-buddha))
+  (map rehydrate (record/list :looped-words-of-buddha)))
 
 (defn q [attr param]
   (let [find-query {:find     '[e updated-at]
@@ -13,7 +22,7 @@
                                '[e :looped-words-of-buddha/updated-at updated-at]]
                     :order-by '[[updated-at :desc]]
                     :in       '[v]}]
-    (record/query find-query param)))
+    (map rehydrate (record/query find-query param))))
 
 (defn next-index []
   (let [find-query '{:find     [(max ?idx)]
@@ -33,6 +42,7 @@
   (-> e
       (assoc :kuti/type :looped-words-of-buddha)
       (assoc :looped-words-of-buddha/index (next-index))
+      (nested/collapse-one :looped-words-of-buddha/audio-attachment)
       record/timestamp
       publish
       (record/save!)))

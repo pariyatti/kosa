@@ -23,6 +23,7 @@
                  [jarohen/chime "0.3.2"]
                  [babashka/fs "0.0.3"]
                  ;; networking:
+                 [http-kit "2.5.3"]
                  [com.draines/postal "2.0.4"]
                  ;; web:
                  [ring/ring-core "1.8.2"]

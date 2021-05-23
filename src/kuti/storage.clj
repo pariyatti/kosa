@@ -1,17 +1,21 @@
 (ns kuti.storage
   (:require [clojure.java.io :as io]
             [clojure.string]
+            [ring.util.mime-type :refer [ext-mime-type]]
             [kuti.support.debugging :refer :all]
             [kuti.support :refer [path-join]]
+            [kuti.support.strings :as strings]
             [kuti.record]
             [kuti.record.nested :as nested]
             [kuti.search]
             [kosa.config :as config]
             [buddy.core.hash :as hash]
             [buddy.core.codecs :refer :all]
-            [mount.core :as mount :refer [defstate]])
-  (:import [java.io FileNotFoundException]
-           [java.lang RuntimeException]))
+            [mount.core :as mount :refer [defstate]]
+            [org.httpkit.client :as http])
+  (:import [java.io FileNotFoundException File]
+           [java.lang RuntimeException]
+           [java.net URI URL]))
 
 (defn start-storage! []
   (or (:storage (mount/args))
@@ -28,10 +32,12 @@
   (:root service-config))
 
 (defn service-filename [attachment]
-  (let [dir (service-dir)]
+  (if-let [dir (service-dir)]
     (if (.exists (io/file dir))
       (path-join dir (attached-filename attachment))
-      (throw (FileNotFoundException. (str "Directory missing: " dir))))))
+      (throw (FileNotFoundException. (str "Directory missing: " dir))))
+    (throw (ex-info "Storage Service Config has not been started."
+                    {:service-config service-config}))))
 
 (defn file->bytes [file]
   (with-open [xin (io/input-stream file)
@@ -53,6 +59,7 @@
   (clojure.string/replace s #"\s" "_"))
 
 (defn save-file! [tempfile attachment]
+  ;; (not (io/copy tempfile (io/file (service-filename attachment))))
   (.renameTo tempfile (io/file (service-filename attachment))))
 
 (defn params->attachment! [file-params]
@@ -80,6 +87,20 @@
 ;;;;;;;;;;;;;;;;;;
 ;;  PUBLIC API  ;;
 ;;;;;;;;;;;;;;;;;;
+
+(defn download-uri! [uri]
+  (let [filename (strings/file-name uri)
+        ext (strings/file-extension uri)
+        temp-file (File/createTempFile "kuti-download-" ext)
+        resp (http/get (str uri) {:follow-redirects true
+                                  :as :stream})]
+    (with-open [in (:body @resp)
+                out (clojure.java.io/output-stream temp-file)]
+      (clojure.java.io/copy in out))
+    {:tempfile temp-file
+     :filename filename
+     :content-type (ext-mime-type filename)
+     :size (.length temp-file)}))
 
 (defn attach!
   "`attr` must be of the form `:<name>-attachment`"

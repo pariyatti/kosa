@@ -8,7 +8,8 @@
             [kosa.mobile.today.looped.txt :as txt]
             [kuti.support.strings :as strings]
             [kuti.support.digest :as digest]
-            [kuti.support.types :as types])
+            [kuti.support.types :as types]
+            [kuti.storage :as storage])
   (:import [java.net URI]))
 
 (defn shred [marker entry]
@@ -48,16 +49,16 @@
 (deftype BuddhaIngester []
   txt/Ingester
 
-  (attr-for [_this_ kw]
+  (attr-for [_ kw]
     (types/namespace-kw :looped-words-of-buddha kw))
 
-  (entry-attr [_this_]
+  (entry-attr [_]
     :looped-words-of-buddha/words)
 
-  (human-name [_this_]
+  (human-name [_]
     "Words of Buddha")
 
-  (parse [_this_ txt lang]
+  (parse [_ txt lang]
     (let [marker (get {"en" "Listen"
                        "es" "Escuchar"
                        "fr" "Ecouter " ;; NOTE: yes, it contains a space
@@ -72,10 +73,10 @@
            (map #(repair m %))
            (map #(shred-blocks lang %)))))
 
-  (find-existing [_this_ words]
+  (find-existing [_ words]
     (first (db/q :looped-words-of-buddha/words (:looped-words-of-buddha/words words))))
 
-  (db-insert* [_this_ words]
+  (db-insert* [_ words]
     (db/save! (merge #:looped-words-of-buddha
                      {:bookmarkable true
                       :shareable true
@@ -83,7 +84,7 @@
                       :original-url (URI. "")}
                      words)))
 
-  (citations [_this_ new]
+  (citations [_ new]
     (if (= "en" (-> new :looped-words-of-buddha/translations first first))
       (select-keys new [:looped-words-of-buddha/citation
                         :looped-words-of-buddha/citation-url
@@ -91,9 +92,9 @@
                         :looped-words-of-buddha/store-url])
       {}))
 
-  (download-attachments! [_this_ e]
-    ;; TODO: actually download attachments
-    (assoc e :looped-words-of-buddha/audio-attm-id (digest/null-uuid))))
+  (download-attachments! [_ e]
+    (let [file (storage/download-uri! (:looped-words-of-buddha/audio-url e))]
+      (storage/attach! e :looped-words-of-buddha/audio-attachment file))))
 
 (defn ingest [f lang]
   (txt/ingest (->BuddhaIngester) f lang))

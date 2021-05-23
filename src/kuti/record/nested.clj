@@ -1,6 +1,7 @@
 (ns kuti.record.nested
   (:require [kuti.record :as record]
-            [clojure.string]))
+            [clojure.string]
+            [kuti.support.digest :as digest]))
 
 (defn field->id [attr]
   (keyword (namespace attr)
@@ -20,14 +21,15 @@
   (let [inner (get doc attr)
         inner-id (:crux.db/id inner)]
     (-> doc
-        (assoc (field->id attr) inner-id)
+        (assoc (field->id attr) (or inner-id
+                                    (digest/null-uuid)))
         (dissoc attr))))
 
 (defn expand-one [doc attr-id]
   (let [attr (id->field attr-id)
         inner (record/get (get doc attr-id))]
     (-> doc
-        (assoc attr inner)
+        (assoc attr (or inner nil))
         (dissoc attr-id))))
 
 (defn collapse-all

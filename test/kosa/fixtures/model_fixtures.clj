@@ -23,6 +23,20 @@
           [["en" "gone through, overcome, one who has attained nibbāna"]]}
          pw))
 
+(defn audio-attachment [aud]
+  (merge {:kuti/type :attm,
+          ;; :crux.db/id #uuid "da982712-4753-4939-a912-b582adc598c1"
+          :attm/byte-size 183810,
+          :attm/content-type "audio/mpeg",
+          :attm/filename "dhammapada_20_276.mp3",
+          :attm/metadata "",
+          :attm/updated-at #time/instant "1995-08-24T00:00:00Z",
+          :attm/checksum "11f875ec4588f6868d9a0e34cabf451c",
+          :attm/service-name :disk,
+          :attm/identified true,
+          :attm/key "30ef5362250e3458c727d7209857cdff"}
+         aud))
+
 (defn looped-words-of-buddha [wob]
   (merge #:looped-words-of-buddha
          {:bookmarkable true
@@ -30,7 +44,7 @@
           :original-words "Tumhehi kiccamātappaṃ;\nAkkhātāro Tathāgatā.\nPaṭipannā pamokkhanti\njhāyino mārabandhanā."
           :original-url (URI. "")
           :words "Tumhehi kiccamātappaṃ;\nAkkhātāro Tathāgatā.\nPaṭipannā pamokkhanti\njhāyino mārabandhanā."
-          :audio-attm-id (digest/null-uuid)
+          :audio-attachment (audio-attachment {})
           :audio-url (URI. "http://download.pariyatti.org/dwob/dhammapada_20_276.mp3")
           :translations [["en" "You have to do your own work;\nEnlightened Ones will only show the way.\nThose who practise meditation\nwill free themselves from the chains of death."]]
           :citation "Dhammapada 20.276"
