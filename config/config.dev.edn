@@ -32,7 +32,21 @@
  :supported-languages ["en" "es" "fr" "it" "pt" "sr" "zh"]
 
  :txt-feeds {:pali-word [{:language "en"
-                          :file "txt/pali/pali_words_one_loop.txt"}]}
+                          :file "txt/pali/pali_words_one_loop.txt"}]
+             :words-of-buddha [{:language "en"
+                                :file "txt/buddha/daily_words_one_loop.txt"}
+                               {:language "es"
+                                :file "txt/buddha/daily_words_one_loop_es.txt"}
+                               {:language "fr"
+                                :file "txt/buddha/daily_words_one_loop_fr.txt"}
+                               {:language "it"
+                                :file "txt/buddha/daily_words_one_loop_it.txt"}
+                               {:language "pt"
+                                :file "txt/buddha/daily_words_one_loop_pt.txt"}
+                               {:language "sr"
+                                :file "txt/buddha/daily_words_one_loop_sr.txt"}
+                               {:language "zh"
+                                :file "txt/buddha/daily_words_one_loop_zh.txt"}]}
 
  :rss-feeds {:pali-word [{:language "en"
                           :url "https://download.pariyatti.org/pwad/pali_words.xml"}]

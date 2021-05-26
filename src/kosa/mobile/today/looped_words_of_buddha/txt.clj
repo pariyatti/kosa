@@ -26,7 +26,8 @@
       (URI.)))
 
 (defn shred-cite-block [s]
-  (let [cite (str/split s (re-pattern "\n"))]
+  (let [cite-dirty (str/split s (re-pattern "\n"))
+        cite (mapv strings/trim! cite-dirty)]
     #:looped-words-of-buddha{:citation     (get cite 0)
                              :citation-url (URI. (get cite 1))
                              :store-title  (or (get cite 2) "")
@@ -97,4 +98,4 @@
       (storage/attach! e :looped-words-of-buddha/audio-attachment file))))
 
 (defn ingest [f lang]
-  (txt/ingest (->BuddhaIngester) f lang))
+  (txt/ingest (BuddhaIngester.) f lang))

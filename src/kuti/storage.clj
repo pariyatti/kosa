@@ -1,6 +1,7 @@
 (ns kuti.storage
   (:require [clojure.java.io :as io]
             [clojure.string]
+            [clojure.tools.logging :as log]
             [ring.util.mime-type :refer [ext-mime-type]]
             [kuti.support.debugging :refer :all]
             [kuti.support :refer [path-join]]
@@ -59,8 +60,11 @@
   (clojure.string/replace s #"\s" "_"))
 
 (defn save-file! [tempfile attachment]
-  ;; (not (io/copy tempfile (io/file (service-filename attachment))))
-  (.renameTo tempfile (io/file (service-filename attachment))))
+  (let [attm-filename (service-filename attachment)]
+    (log/debug (format "Copying '%s' to '%s'..." tempfile attm-filename))
+    (not (io/copy tempfile (io/file attm-filename))))
+  ;; (.renameTo tempfile (io/file (service-filename attachment)))
+  )
 
 (defn params->attachment! [file-params]
   (let [tempfile (:tempfile file-params)
@@ -93,10 +97,16 @@
         ext (strings/file-extension uri)
         temp-file (File/createTempFile "kuti-download-" ext)
         resp (http/get (str uri) {:follow-redirects true
-                                  :as :stream})]
-    (with-open [in (:body @resp)
+                                  :as :stream})
+        _ (log/debug (format "Downloading '%s' to '%s'." (str uri) temp-file))
+        body (:body @resp)]
+    (when-not body
+      (log/debug "#### Body was empty: ####")
+      (log/debug (str @resp)))
+    (with-open [in body
                 out (clojure.java.io/output-stream temp-file)]
       (clojure.java.io/copy in out))
+    (log/debug (format "Saved file size: %s" (.length temp-file)))
     {:tempfile temp-file
      :filename filename
      :content-type (ext-mime-type filename)

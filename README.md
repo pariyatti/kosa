@@ -58,12 +58,13 @@ make init # setup your system
 
 make test # run the tests
 
-make db-clean    # delete any old db files you might have
-make db-migrate  # install db schema
-make db-seed     # add some sample data (optional)
-make db-txt-pwad # add looped pali word cards (optional)
-make run         # run the server (or)
-make repl        # run the server interactively
+make db-clean      # delete any old db files you might have
+make db-migrate    # install db schema
+make db-seed       # add some sample data (optional)
+make db-txt-pali   # add looped pali word cards (optional)
+make db-txt-buddha # add looped pali word cards (optional)
+make run           # run the server (or)
+make repl          # run the server interactively
 ```
 
 To add sample data from a REPL:

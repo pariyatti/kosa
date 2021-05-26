@@ -86,13 +86,14 @@
   :main ^:skip-aot kosa.core
   :target-path "target/%s"
 
-  :aliases {"db-migrate"  ["run" "-m" "joplin.crux.alias/migrate"  "joplin/config.edn"]
-            "db-seed"     ["run" "-m" "joplin.crux.alias/seed"     "joplin/config.edn"]
-            "db-rollback" ["run" "-m" "joplin.crux.alias/rollback" "joplin/config.edn"]
-            "db-reset"    ["run" "-m" "joplin.crux.alias/reset"    "joplin/config.edn"]
-            "db-pending"  ["run" "-m" "joplin.crux.alias/pending"  "joplin/config.edn"]
-            "db-create"   ["run" "-m" "joplin.crux.alias/create"   "joplin/config.edn" "dev" "crux-dev"]
-            "db-txt-pwad" ["run" "-m" "dev.alias/ingest-txt-pwad!"]}
+  :aliases {"db-migrate"    ["run" "-m" "joplin.crux.alias/migrate"  "joplin/config.edn"]
+            "db-seed"       ["run" "-m" "joplin.crux.alias/seed"     "joplin/config.edn"]
+            "db-rollback"   ["run" "-m" "joplin.crux.alias/rollback" "joplin/config.edn"]
+            "db-reset"      ["run" "-m" "joplin.crux.alias/reset"    "joplin/config.edn"]
+            "db-pending"    ["run" "-m" "joplin.crux.alias/pending"  "joplin/config.edn"]
+            "db-create"     ["run" "-m" "joplin.crux.alias/create"   "joplin/config.edn" "dev" "crux-dev"]
+            "db-txt-pali"   ["run" "-m" "dev.alias/ingest-txt-pali!"]
+            "db-txt-buddha" ["run" "-m" "dev.alias/ingest-txt-buddha!"]}
 
   :repl-options {:init-ns dev.repl}
   :profiles {:uberjar {:aot      :all

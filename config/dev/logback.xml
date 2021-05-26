@@ -15,4 +15,8 @@
   <root level="INFO">
     <appender-ref ref="STDOUT"/>
   </root>
+
+  <logger name="kuti" level="DEBUG" />
+  <logger name="kosa" level="DEBUG" />
+
 </configuration>

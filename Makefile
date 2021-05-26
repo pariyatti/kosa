@@ -84,8 +84,13 @@ db-migrate: ##@Development Migrate up
 db-seed: ##@Development Add sample data
 	lein db-seed dev
 
-db-txt-pwad: ##@Development Add Looped Pali Words
-	lein db-txt-pwad
+db-reset: db-clean db-migrate db-seed ##@Development Clean, Migrate, Seed.
+
+db-txt-pali: ##@Development Add Looped Pali Words
+	lein db-txt-pali
+
+db-txt-buddha: ##@Development Add Looped Words of Buddha
+	lein db-txt-buddha
 
 test: ##@Development Run tests with lein
 #lein run -- -mf config/config.test.edn # TODO: add migrations
