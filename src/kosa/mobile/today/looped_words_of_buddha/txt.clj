@@ -1,15 +1,13 @@
 (ns kosa.mobile.today.looped-words-of-buddha.txt
-  (:require [clojure.java.io :as io]
-            [clojure.set]
+  (:require [clojure.set]
             [clojure.string :as str]
-            [clojure.tools.logging :as log]
             [kuti.support.debugging :refer :all]
             [kosa.mobile.today.looped-words-of-buddha.db :as db]
             [kosa.mobile.today.looped.txt :as txt]
             [kuti.support.strings :as strings]
-            [kuti.support.digest :as digest]
             [kuti.support.types :as types]
-            [kuti.storage :as storage])
+            [kuti.storage :as storage]
+            [kuti.storage.open-uri :as open-uri])
   (:import [java.net URI]))
 
 (defn shred [marker entry]
@@ -94,7 +92,7 @@
       {}))
 
   (download-attachments! [_ e]
-    (let [file (storage/download-uri! (:looped-words-of-buddha/audio-url e))]
+    (let [file (open-uri/download-uri! (:looped-words-of-buddha/audio-url e))]
       (storage/attach! e :looped-words-of-buddha/audio-attachment file))))
 
 (defn ingest [f lang]

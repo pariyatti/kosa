@@ -2,21 +2,17 @@
   (:require [clojure.java.io :as io]
             [clojure.string]
             [clojure.tools.logging :as log]
-            [ring.util.mime-type :refer [ext-mime-type]]
             [kuti.support.debugging :refer :all]
             [kuti.support :refer [path-join]]
-            [kuti.support.strings :as strings]
             [kuti.record]
             [kuti.record.nested :as nested]
             [kuti.search]
             [kosa.config :as config]
             [buddy.core.hash :as hash]
             [buddy.core.codecs :refer :all]
-            [mount.core :as mount :refer [defstate]]
-            [org.httpkit.client :as http])
-  (:import [java.io FileNotFoundException File]
-           [java.lang RuntimeException]
-           [java.net URI URL]))
+            [mount.core :as mount :refer [defstate]])
+  (:import [java.io FileNotFoundException]
+           [java.lang RuntimeException]))
 
 (defn start-storage! []
   (or (:storage (mount/args))
@@ -91,26 +87,6 @@
 ;;;;;;;;;;;;;;;;;;
 ;;  PUBLIC API  ;;
 ;;;;;;;;;;;;;;;;;;
-
-(defn download-uri! [uri]
-  (let [filename (strings/file-name uri)
-        ext (strings/file-extension uri)
-        temp-file (File/createTempFile "kuti-download-" ext)
-        resp (http/get (str uri) {:follow-redirects true
-                                  :as :stream})
-        _ (log/debug (format "Downloading '%s' to '%s'." (str uri) temp-file))
-        body (:body @resp)]
-    (when-not body
-      (log/debug "#### Body was empty: ####")
-      (log/debug (str @resp)))
-    (with-open [in body
-                out (clojure.java.io/output-stream temp-file)]
-      (clojure.java.io/copy in out))
-    (log/debug (format "Saved file size: %s" (.length temp-file)))
-    {:tempfile temp-file
-     :filename filename
-     :content-type (ext-mime-type filename)
-     :size (.length temp-file)}))
 
 (defn attach!
   "`attr` must be of the form `:<name>-attachment`"
