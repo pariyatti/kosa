@@ -25,7 +25,6 @@
       (URI.)))
 
 (defn shred-cite-block [s]
-  (log/debug s)
   (let [cite-dirty (str/split s (re-pattern "\n"))
         cite (mapv strings/trim! cite-dirty)]
     #:looped-words-of-buddha{:citation     (get cite 0)
