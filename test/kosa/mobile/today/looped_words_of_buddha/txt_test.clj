@@ -31,13 +31,21 @@
               :looped-words-of-buddha/citation-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul0.xml#para1")
               :looped-words-of-buddha/store-title "Resumen De Las Charlas del Curso de Diez Dias"
               :looped-words-of-buddha/store-url (URI. "http://store.pariyatti.org/Discourse-Summaries--Spanish_p_2654.html")}
-             (first (looped/parse i txt "es"))))))
+             (first (looped/parse i txt "es")))))))
 
+(deftest illegal-characters
   (testing "parses an entry with illegal unicode characters"
     (let [f (file-fixtures/file "words_of_buddha_es_illegal_characters.txt")
           txt (slurp f)]
       (is (= (URI. "http://tipitaka.org/romn/cscd/s0103m.mul7.xml#para273")
-             (-> (looped/parse i txt "es") first :looped-words-of-buddha/citation-url))))))
+             (-> (looped/parse i txt "es") first :looped-words-of-buddha/citation-url)))))
+
+  (testing "parses an entry with horizontal whitespace (space) in the empty line"
+   (let [f (file-fixtures/file "words_of_buddha_fr_extra_whitespace.txt")
+         txt (slurp f)
+         parsed (looped/parse i txt "fr")]
+     (is (= (URI. "http://tipitaka.org/romn/cscd/s0505m.mul2.xml#para726")
+            (-> parsed first :looped-words-of-buddha/citation-url))))))
 
 (deftest parsing-txt-file
   (testing "parses all days"

@@ -1,6 +1,7 @@
 (ns kosa.mobile.today.looped-words-of-buddha.txt
   (:require [clojure.set]
             [clojure.string :as str]
+            [clojure.tools.logging :as log]
             [kuti.support.debugging :refer :all]
             [kosa.mobile.today.looped-words-of-buddha.db :as db]
             [kosa.mobile.today.looped.txt :as txt]
@@ -24,6 +25,7 @@
       (URI.)))
 
 (defn shred-cite-block [s]
+  (log/debug s)
   (let [cite-dirty (str/split s (re-pattern "\n"))
         cite (mapv strings/trim! cite-dirty)]
     #:looped-words-of-buddha{:citation     (get cite 0)
@@ -32,7 +34,7 @@
                              :store-url    (URI. (or (get cite 3) ""))}))
 
 (defn shred-blocks [lang v]
-  (let [all-blocks (str/split (second v) (re-pattern "\n\n"))
+  (let [all-blocks (str/split (second v) (re-pattern "\n\\s*\n"))
         cite-block (shred-cite-block (last all-blocks))
         blocks (drop-last all-blocks)
         audio-url (first blocks)

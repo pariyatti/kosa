@@ -31,9 +31,10 @@ resources/public/css/layout.css*
 resources/public/css/scaffolds.css*
 resources/public/cljs/*
 
+test/kuti/fixtures/files/bodhi-temp.jpg
+
 tmp/storage/*
 
 txt/pali/*.txt
 txt/buddha/*.txt
 txt/dohas/*.txt
-
