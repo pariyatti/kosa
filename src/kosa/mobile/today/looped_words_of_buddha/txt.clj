@@ -22,6 +22,7 @@
 (defn ->audio-url [url]
   (-> (str/split url #": ")
       second
+      strings/trim!
       (URI.)))
 
 (defn shred-cite-block [s]

@@ -40,6 +40,12 @@
       (is (= (URI. "http://tipitaka.org/romn/cscd/s0103m.mul7.xml#para273")
              (-> (looped/parse i txt "es") first :looped-words-of-buddha/citation-url)))))
 
+  (testing "parses an entry with illegal characters in mp3 URI"
+    (let [f (file-fixtures/file "words_of_buddha_zh_illegal_characters.txt")
+          txt (slurp f)]
+      (is (= (URI. "http://download.pariyatti.org/dwob/digha_nikaya_3_273_a.mp3")
+             (-> (looped/parse i txt "zh") first :looped-words-of-buddha/audio-url)))))
+
   (testing "parses an entry with horizontal whitespace (space) in the empty line"
    (let [f (file-fixtures/file "words_of_buddha_fr_extra_whitespace.txt")
          txt (slurp f)
