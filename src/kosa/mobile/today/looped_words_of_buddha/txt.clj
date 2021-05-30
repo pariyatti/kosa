@@ -93,9 +93,11 @@
                         :looped-words-of-buddha/store-url])
       {}))
 
-  (download-attachments! [_ e]
-    (let [file (open-uri/download-uri! (:looped-words-of-buddha/audio-url e))]
-      (storage/attach! e :looped-words-of-buddha/audio-attachment file))))
+  (download-attachments! [_ lang e]
+    (if (= "en" lang)
+      (let [file (open-uri/download-uri! (:looped-words-of-buddha/audio-url e))]
+        (storage/attach! e :looped-words-of-buddha/audio-attachment file))
+      e)))
 
 (defn ingest [f lang]
   (txt/ingest (BuddhaIngester.) f lang))

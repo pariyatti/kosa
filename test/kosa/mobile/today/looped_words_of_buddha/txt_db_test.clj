@@ -134,7 +134,7 @@
                  nil
                  :looped-words-of-buddha/audio-url
                  (URI. "http://download.pariyatti.org/dwob/sutta_nipata_3_710.mp3")})
-          e (looped/download-attachments! i card)]
+          e (looped/download-attachments! i "en" card)]
       (is (= "sutta_nipata_3_710.mp3"
              (-> e :looped-words-of-buddha/audio-attachment :attm/filename)))
       (is (= 184645

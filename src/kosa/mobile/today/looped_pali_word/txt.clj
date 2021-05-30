@@ -47,7 +47,7 @@
   (citations [_ _entity]
     {})
 
-  (download-attachments! [_ e]
+  (download-attachments! [_ _lang e]
     e))
 
 (defn ingest [f lang]

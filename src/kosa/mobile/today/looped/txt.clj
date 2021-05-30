@@ -14,7 +14,7 @@
   (find-existing [this entry])
   (db-insert* [this entry])
   (citations [this entry])
-  (download-attachments! [this entry]))
+  (download-attachments! [this lang entry]))
 
 (defn db-insert! [ingester words-of-buddha]
   (let [entry-kw (entry-attr ingester)
@@ -33,14 +33,16 @@
       (db-insert* ingester words-of-buddha))))
 
 (defn ingest [ingester f lang]
-  (let [human (human-name ingester)]
+  (let [human (human-name ingester)
+        attach! (partial download-attachments! ingester lang)
+        insert! (partial db-insert! ingester)]
     (log/info (format "%s TXT: started ingesting file '%s' for lang '%s'" human f lang))
     (let [entries (parse ingester (slurp f) lang)
           entry-count (count entries)]
       (log/info (format "Processing %s %s from TXT." entry-count human))
       (doseq [[n entry] (map-indexed #(vector %1 %2) entries)]
         (log/info (format "Attempting insert of %s / %s" (+ n 1) entry-count))
-        (->> entry
-             (download-attachments! ingester)
-             (db-insert! ingester))))
+        (-> entry
+            attach!
+            insert!)))
     (log/info (format "%s TXT: done ingesting file '%s' for lang '%s'" human f lang))))
