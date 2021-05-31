@@ -63,7 +63,7 @@ make db-migrate    # install db schema
 make db-seed       # add some sample data (optional)
 
 make txt-clean     # completely reset TXT files (optional)
-make txt           # copy TXT input files for looped cards (optional)
+make txt-clone     # copy TXT input files for looped cards (optional)
                    # note that this command only works if you have
                    # access to the private repo described above
 make db-txt-pali   # add looped pali word cards (optional)

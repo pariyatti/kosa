@@ -69,7 +69,7 @@ txt-clean: ##@Setup Remove all TXT-related directories
 	rm -rf txt/dohas  && mkdir -p txt/dohas  && touch txt/dohas/.keep
 	rm -rf /tmp/daily_emails_rss_auto
 
-txt: ##@Setup Copy TXT files from private repo
+txt-clone: ##@Setup Copy TXT files from private repo
 	./bin/copy-txt-files.sh
 
 routes: ##@Development Display HTTP routes
