@@ -63,6 +63,9 @@ cljs-auto: ##@Development Rebuild CLJS continuously
 
 init: tmp/storage resources/storage tools deps assets ##@Setup Dev Setup
 
+txt: ##@Setup Copy TXT files from private repo
+	./bin/copy-txt-files.sh
+
 routes: ##@Development Display HTTP routes
 	lein run -- --routes -f config/config.dev.edn
 
