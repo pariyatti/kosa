@@ -63,6 +63,12 @@ cljs-auto: ##@Development Rebuild CLJS continuously
 
 init: tmp/storage resources/storage tools deps assets ##@Setup Dev Setup
 
+txt-clean: ##@Setup Remove all TXT-related directories
+	rm -rf txt/pali   && mkdir -p txt/pali   && touch txt/pali/.keep
+	rm -rf txt/buddha && mkdir -p txt/buddha && touch txt/buddha/.keep
+	rm -rf txt/dohas  && mkdir -p txt/dohas  && touch txt/dohas/.keep
+	rm -rf /tmp/daily_emails_rss_auto
+
 txt: ##@Setup Copy TXT files from private repo
 	./bin/copy-txt-files.sh
 

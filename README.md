@@ -40,10 +40,10 @@ Install `npm` (nodejs LTS) as described [here](https://nodejs.org/en/download/).
 ### Build kosa
 
 If you intend to use the "looped cards" (Pali Word a Day, Daily Words
-of the Buddha, or Daily Dohas), you will need to copy the appropriate `.txt`
-files into `kosa/txt/pali/`, `kosa/txt/buddha/`, and `kosa/txt/dohas`
-directories before starting this process. Speak to Pariyatti Staff to
-obtain these files. If you do not have access to these files, Kosa will run
+of the Buddha, or Daily Dohas), you will need access to the private
+repository containing the input files (https://github.com/pariyatti/Daily_emails_RSS)
+before you can run `make txt`, as explained below. Speak to Pariyatti Staff to
+obtain access. If you do not have access to these files, Kosa will still run
 without them.
 
 To see "looped cards" published to the mobile app, find `{:job-name :txt-publisher-*}`
@@ -61,8 +61,14 @@ make test # run the tests
 make db-clean      # delete any old db files you might have
 make db-migrate    # install db schema
 make db-seed       # add some sample data (optional)
+
+make txt-clean     # completely reset TXT files (optional)
+make txt           # copy TXT input files for looped cards (optional)
+                   # note that this command only works if you have
+                   # access to the private repo described above
 make db-txt-pali   # add looped pali word cards (optional)
 make db-txt-buddha # add looped pali word cards (optional)
+
 make run           # run the server (or)
 make repl          # run the server interactively
 ```
