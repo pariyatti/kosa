@@ -47,8 +47,8 @@
           :audio-attachment (audio-attachment {})
           :audio-url (URI. "http://download.pariyatti.org/dwob/dhammapada_20_276.mp3")
           :translations [["en" "You have to do your own work;\nEnlightened Ones will only show the way.\nThose who practise meditation\nwill free themselves from the chains of death."]]
-          :citation "Dhammapada 20.276"
-          :citation-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul19.xml#para276")
-          :store-title "The Discourse Summaries by S.N. Goenka"
-          :store-url (URI. "http://store.pariyatti.org/Discourse-Summaries_p_1650.html")}
+          :citepali "Dhammapada 20.276"
+          :citepali-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul19.xml#para276")
+          :citebook "The Discourse Summaries by S.N. Goenka"
+          :citebook-url (URI. "http://store.pariyatti.org/Discourse-Summaries_p_1650.html")}
          wob))

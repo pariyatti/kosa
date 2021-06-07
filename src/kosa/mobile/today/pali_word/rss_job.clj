@@ -1,4 +1,5 @@
 (ns kosa.mobile.today.pali-word.rss-job
+  {:deprecated "0.1"}
   (:require [remus :refer [parse-url]]
             [clojure.tools.logging :as log]
             [kuti.support :refer [when-let*]]

@@ -28,10 +28,10 @@
 (defn shred-cite-block [s]
   (let [cite-dirty (str/split s (re-pattern "\n"))
         cite (mapv strings/trim! cite-dirty)]
-    #:looped-words-of-buddha{:citation     (get cite 0)
-                             :citation-url (URI. (get cite 1))
-                             :store-title  (or (get cite 2) "")
-                             :store-url    (URI. (or (get cite 3) ""))}))
+    #:looped-words-of-buddha{:citepali     (get cite 0)
+                             :citepali-url (URI. (get cite 1))
+                             :citebook     (or (get cite 2) "")
+                             :citebook-url (URI. (or (get cite 3) ""))}))
 
 (defn shred-blocks [lang v]
   (let [all-blocks (str/split (second v) (re-pattern "\n\\s*\n"))
@@ -87,10 +87,10 @@
 
   (citations [_ new]
     (if (= "en" (-> new :looped-words-of-buddha/translations first first))
-      (select-keys new [:looped-words-of-buddha/citation
-                        :looped-words-of-buddha/citation-url
-                        :looped-words-of-buddha/store-title
-                        :looped-words-of-buddha/store-url])
+      (select-keys new [:looped-words-of-buddha/citepali
+                        :looped-words-of-buddha/citepali-url
+                        :looped-words-of-buddha/citebook
+                        :looped-words-of-buddha/citebook-url])
       {}))
 
   (download-attachments! [_ lang e]

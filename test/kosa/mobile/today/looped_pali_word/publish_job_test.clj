@@ -4,7 +4,6 @@
             [kuti.fixtures.time-fixtures :as time-fixtures]
             [kosa.fixtures.model-fixtures :as model]
             [kosa.mobile.today.looped-pali-word.publish-job :as sut]
-            [kosa.mobile.today.looped-pali-word.txt :as txt]
             [kosa.mobile.today.looped-pali-word.db :as loop-db]
             [kosa.mobile.today.pali-word.db :as pali-db]
             [kuti.support.time :as time]))

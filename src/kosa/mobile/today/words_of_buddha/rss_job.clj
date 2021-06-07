@@ -1,4 +1,5 @@
 (ns kosa.mobile.today.words-of-buddha.rss-job
+  {:deprecated "0.1"}
   (:require [remus :refer [parse-url]]
             [kosa.config :as config]))
 
