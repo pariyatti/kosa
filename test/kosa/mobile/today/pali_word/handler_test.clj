@@ -28,8 +28,6 @@
      :kuti/type :pali-word
      :pali-word/updated-at time-fixtures/win95
      :pali-word/published-at (time/now)
-     :pali-word/bookmarkable true
-     :pali-word/shareable true
      :pali-word/pali word
      :pali-word/translations translations
      :pali-word/original-pali ""
@@ -46,8 +44,12 @@
 
 (deftest http-params->edn-document
   (testing "Zips languages and translations"
-    (let [params {:type "pali_word", :bookmarkable "true", :shareable "true", :header "Pali Word",
-                  :pali "rani", :language ["hi" "en" "cn"], :translation ["rani" "queen" "wx"], :submit "Save"}
+    (let [params {:type "pali_word",
+                  :header "Pali Word",
+                  :pali "rani",
+                  :language ["hi" "en" "cn"],
+                  :translation ["rani" "queen" "wx"],
+                  :submit "Save"}
           req {:params params
                :reitit.core/router routes/router}
           response (pali-word-handler/create req)
@@ -57,8 +59,12 @@
              (:pali-word/translations doc)))))
 
   (testing "Saves params to db"
-    (let [params {:type "pali_word", :bookmarkable "true", :shareable "true", :header "Pali Word",
-                  :pali "rani", :language ["hi" "en" "cn"], :translation ["rani" "queen" "wx"], :submit "Save"}
+    (let [params {:type "pali_word",
+                  :header "Pali Word",
+                  :pali "rani",
+                  :language ["hi" "en" "cn"],
+                  :translation ["rani" "queen" "wx"],
+                  :submit "Save"}
           req {:params params
                :reitit.core/router routes/router}
           response (pali-word-handler/create req)

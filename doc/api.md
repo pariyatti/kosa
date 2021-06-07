@@ -1,7 +1,7 @@
 # Kosa's API for the Pariyatti Mobile App #
 
-The mobile app prototype will need to consume Kosa APIs. Get the development version running, below. 
-We will list API endpoints here as they become available. The goal will be to make the API endpoints very 
+The mobile app prototype will need to consume Kosa APIs. Get the development version running, below.
+We will list API endpoints here as they become available. The goal will be to make the API endpoints very
 simple and reflective of the Pariyatti mobile app wireframes.
 
 ## Open Questions ##
@@ -62,31 +62,25 @@ http://localhost:3000/api/today.json
 
 ```
 Card (superclass):
-=> {"id": "3386076e-566c-4acc-9816-3514e192852f", 
-    "type": "", 
+=> {"id": "3386076e-566c-4acc-9816-3514e192852f",
+    "type": "",
     "published_at": "2020-04-25 18:26:30.774998000 UTC",
-    "bookmarkable": true,
-    "shareable": false,
     "header": "USUALLY ALL CAPS" }
 
 Card (type = 'stacked_inspiration')
 => {"id": "3386076e-566c-4acc-9816-3514e192852f",
-    "type": "stacked_inspiration", 
+    "type": "stacked_inspiration",
     "published_at": "2020-04-25 18:26:30.774998000 UTC",
-    "bookmarkable": true,
-    "shareable": false,
     "header": "Inspiration of the Day",
     "image": {"url": "https://pariyatti.org/webu.jpg"},
     "text": "Ven. Webu Sayadaw was one of the most highly respected monks of the last century in Burma."}
 
 Card (type = 'overlay_inspiration')
-=> {"id": "3386076e-566c-4acc-9816-3514e192852f", 
-    "type": "overlay_inspiration", 
+=> {"id": "3386076e-566c-4acc-9816-3514e192852f",
+    "type": "overlay_inspiration",
     "published_at": "2020-04-25 18:26:30.774998000 UTC",
-    "bookmarkable": true,
-    "shareable": false,
     "header": "Inspiration of the Day",
-    "image": {"url": "https://pariyatti.org/buddha.jpg"}, 
+    "image": {"url": "https://pariyatti.org/buddha.jpg"},
     "text": "Ataapi Sampajaanno Satima",
     "text_color": "white"}
 
@@ -112,12 +106,12 @@ TODO
 ```
 /api/artefacts/audiobook/1
 
-=> {"id": 123, "title": "content-type": "audio/mpeg", "language": "en", 
+=> {"id": 123, "title": "content-type": "audio/mpeg", "language": "en",
     "Curbing Anger, Spreading Love", "author": "Bhikkhu Visuddhacara", "url": "https://pariyatti.org/anger.mp3"}
 
 /api/artefacts/book/1
 
-=> {"id": 123, "language": "en", 
+=> {"id": 123, "language": "en",
     "title": "The Elimination of Anger", "author": "Ven. K. Piyatissa Thera", "url": "https://store.pariyatti.org/Anger"}
 ```
 
@@ -126,15 +120,15 @@ TODO
 ```
 /api/cards/1
 
-=> {"id": 123, "type": "generic",  
-    "title": "Stay Updated", 
-    "header": "Sign up for the Pariyatti newsletter", 
+=> {"id": 123, "type": "generic",
+    "title": "Stay Updated",
+    "header": "Sign up for the Pariyatti newsletter",
     "image": "https://pariyatti.org/newsletter.png",
     "text": "We'll keep you updated with the latest news and updates."}
 
-=> {"id": 123, "type": "words_of_the_buddha",  
-    "sutta_reference": "Dhammapada 17.223", 
-    "pali": "Akkodhena jine kodhaṃ;\nasādhuṃ sādhunā jine;\njine kadariyaṃ dānena;\nsaccenālikavādinaṃ.", 
+=> {"id": 123, "type": "words_of_the_buddha",
+    "sutta_reference": "Dhammapada 17.223",
+    "pali": "Akkodhena jine kodhaṃ;\nasādhuṃ sādhunā jine;\njine kadariyaṃ dānena;\nsaccenālikavādinaṃ.",
     "translation_language": "en",
     "translation": "Overcome the angry by non-anger;\novercome the wicked by goodness;\novercome the miser by generosity;\novercome the liar by truth."
     "audio_url": "http://download.pariyatti.org/dwob/dhammapada_17_223.mp3"}
@@ -142,21 +136,21 @@ TODO
 => {"id": 123, "type": "doha",
     "TODO": "TODO"}
 
-=> {"id": 123, "type": "topic_of_the_week", "alignment": "list", 
+=> {"id": 123, "type": "topic_of_the_week", "alignment": "list",
     "header": "When anger puts you down", "rows": [Audiobook, Book, ... ]}
 
     # See Artefacts for `Audiobook` and `Book` examples
 
-=> {"id": 123, "type": "donation", 
-    "icon": "https://pariyatti.org/heart-money-icon.png", 
+=> {"id": 123, "type": "donation",
+    "icon": "https://pariyatti.org/heart-money-icon.png",
     "header": "We are running a donation camp", "text": "We are generating funds for the upcoming pilgrimage to Nepal and India."}
 
-=> {"id": 123, "type": "pilgrimage", 
+=> {"id": 123, "type": "pilgrimage",
     "header": "Along the Path - India &amp; Nepal", "text": "&quot;There are four places which should be (visited and) seen by a person of devotion,&quot; the Buddha said."}
 
-=> {"id": 123, "type": "recommended_read", 
+=> {"id": 123, "type": "recommended_read",
     "header": "Letters From the Dhamma Brothers",
-    "image": "https://pariyatti.org/dhamma-brothers-cover.png", 
+    "image": "https://pariyatti.org/dhamma-brothers-cover.png",
     "author": "Joey Phillips",
     "category": "Softcover Book",
     "page_count": 112
@@ -171,12 +165,12 @@ These are just easier to list with a schema snippet than an example.
 ```
 # Card type: { "type": { "enum": [ "generic",
                                     "words_of_the_buddha",
-                                    "pali_word_of_the_day", 
-                                    "doha", 
-                                    "inspriation", 
-                                    "topic_of_the_week", 
-                                    "donation", 
-                                    "pilgrimage", 
+                                    "pali_word_of_the_day",
+                                    "doha",
+                                    "inspriation",
+                                    "topic_of_the_week",
+                                    "donation",
+                                    "pilgrimage",
                                     "recommended_read" ] } }
 # Inspiration alignment: { "alignment": {"enum": [ "stacked", "overlay" ]}}
 # Topic of the Week alignment: { "alignment": {"enum": [ "list", "blurb" ]}}

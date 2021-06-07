@@ -8,16 +8,12 @@
     (schema/add-type node :looped-pali-word [:looped-pali-word/index
                                              :looped-pali-word/original-pali  ;; from *.pariyatti.org - a long string
                                              :looped-pali-word/original-url   ;; from *.pariyatti.org
-                                             :looped-pali-word/bookmarkable
-                                             :looped-pali-word/shareable
                                              :looped-pali-word/pali
                                              :looped-pali-word/translations
                                              :looped-pali-word/published-at])
     (schema/add-schema node :looped-pali-word/index         :db.type/long)
     (schema/add-schema node :looped-pali-word/original-pali :db.type/string)
     (schema/add-schema node :looped-pali-word/original-url  :db.type/uri)
-    (schema/add-schema node :looped-pali-word/bookmarkable  :db.type/boolean)
-    (schema/add-schema node :looped-pali-word/shareable     :db.type/boolean)
     (schema/add-schema node :looped-pali-word/pali          :db.type/string)
     (schema/add-schema node :looped-pali-word/translations  :db.type/tuple)
     (schema/add-schema node :looped-pali-word/published-at  :db.type/inst)
@@ -29,8 +25,6 @@
     (schema/remove-schema node :looped-pali-word/index)
     (schema/remove-schema node :looped-pali-word/original-pali)
     (schema/remove-schema node :looped-pali-word/original-url)
-    (schema/remove-schema node :looped-pali-word/bookmarkable)
-    (schema/remove-schema node :looped-pali-word/shareable)
     (schema/remove-schema node :looped-pali-word/pali)
     (schema/remove-schema node :looped-pali-word/translations)
     (schema/remove-schema node :looped-pali-word/published-at)

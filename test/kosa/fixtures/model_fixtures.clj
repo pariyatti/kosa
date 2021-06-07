@@ -5,8 +5,6 @@
 
 (defn pali-word [pw]
   (merge {:pali-word/pali "tiṇṇa"
-          :pali-word/bookmarkable true
-          :pali-word/shareable true
           :pali-word/original-pali "tiṇṇa"
           :pali-word/original-url (URI. "")
           :pali-word/translations
@@ -15,8 +13,6 @@
 
 (defn looped-pali-word [pw]
   (merge {:looped-pali-word/pali "tiṇṇa"
-          :looped-pali-word/bookmarkable true
-          :looped-pali-word/shareable true
           :looped-pali-word/original-pali "tiṇṇa"
           :looped-pali-word/original-url (URI. "")
           :looped-pali-word/translations
@@ -39,9 +35,7 @@
 
 (defn looped-words-of-buddha [wob]
   (merge #:looped-words-of-buddha
-         {:bookmarkable true
-          :shareable true
-          :original-words "Tumhehi kiccamātappaṃ;\nAkkhātāro Tathāgatā.\nPaṭipannā pamokkhanti\njhāyino mārabandhanā."
+         {:original-words "Tumhehi kiccamātappaṃ;\nAkkhātāro Tathāgatā.\nPaṭipannā pamokkhanti\njhāyino mārabandhanā."
           :original-url (URI. "")
           :words "Tumhehi kiccamātappaṃ;\nAkkhātāro Tathāgatā.\nPaṭipannā pamokkhanti\njhāyino mārabandhanā."
           :audio-attachment (audio-attachment {})

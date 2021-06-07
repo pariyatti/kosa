@@ -79,9 +79,7 @@
 
   (db-insert* [_ words]
     (db/save! (merge #:looped-words-of-buddha
-                     {:bookmarkable true
-                      :shareable true
-                      :original-words (:looped-words-of-buddha/words words)
+                     {:original-words (:looped-words-of-buddha/words words)
                       :original-url (URI. "")}
                      words)))
 

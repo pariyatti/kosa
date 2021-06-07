@@ -8,8 +8,6 @@
     (schema/add-type node :words-of-buddha [:words-of-buddha/index
                                             :words-of-buddha/original-words ;; from *.pariyatti.org - a long string
                                             :words-of-buddha/original-url   ;; from *.pariyatti.org
-                                            :words-of-buddha/bookmarkable
-                                            :words-of-buddha/shareable
                                             :words-of-buddha/words
                                             :words-of-buddha/audio-attachment-id
                                             :words-of-buddha/audio-url      ;; to *.pariyatti.org - mp3
@@ -23,8 +21,6 @@
     (schema/add-schema node :words-of-buddha/index          :db.type/long)
     (schema/add-schema node :words-of-buddha/original-words :db.type/string)
     (schema/add-schema node :words-of-buddha/original-url   :db.type/uri)
-    (schema/add-schema node :words-of-buddha/bookmarkable   :db.type/boolean)
-    (schema/add-schema node :words-of-buddha/shareable      :db.type/boolean)
     (schema/add-schema node :words-of-buddha/words          :db.type/string)
     (schema/add-schema node :words-of-buddha/audio-attachment-id  :db.type/uuid)
     (schema/add-schema node :words-of-buddha/audio-url      :db.type/uri)
@@ -42,8 +38,6 @@
     (schema/remove-schema node :words-of-buddha/index)
     (schema/remove-schema node :words-of-buddha/original-words)
     (schema/remove-schema node :words-of-buddha/original-url)
-    (schema/remove-schema node :words-of-buddha/bookmarkable)
-    (schema/remove-schema node :words-of-buddha/shareable)
     (schema/remove-schema node :words-of-buddha/words)
     (schema/remove-schema node :words-of-buddha/audio-attachment-id)
     (schema/remove-schema node :words-of-buddha/audio-url)

@@ -42,12 +42,6 @@
   (h/html
    [:table
     [:tr
-     [:td "Bookmarkable?"]
-     [:td (:pali-word/bookmarkable card)]]
-    [:tr
-     [:td "Shareable?"]
-     [:td (:pali-word/shareable card)]]
-    [:tr
      [:td "Pali Word:"]
      [:td (:pali-word/pali card)]]
     (for [t (:pali-word/translations card)]
@@ -71,12 +65,6 @@
                   :onclick "document.getElementById('defaults').classList.toggle('form-defaults-hidden');"}
               "Show / Hide Defaults"]
              [:div#defaults {:class "form-defaults-hidden"}
-              [:div {:class "field"}
-               (f/label :pali-word/bookmarkable "Bookmarkable?")
-               (f/check-box :pali-word/bookmarkable :checked)]
-              [:div {:class "field"}
-               (f/label :pali-word/shareable "Shareable?")
-               (f/check-box :pali-word/shareable :checked)]
               [:div {:class "field"}
                (f/label :pali-word/header "Header")
                (f/text-field :pali-word/header "Pali Word")]]

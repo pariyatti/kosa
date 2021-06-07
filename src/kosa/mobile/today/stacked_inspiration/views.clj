@@ -43,12 +43,6 @@
   (h/html
    [:table
     [:tr
-     [:td "Bookmarkable?"]
-     [:td (:stacked-inspiration/bookmarkable card)]]
-    [:tr
-     [:td "Shareable?"]
-     [:td (:stacked-inspiration/shareable card)]]
-    [:tr
      [:td "Text:"]
      [:td (:stacked-inspiration/text card)]]
     [:tr
@@ -75,12 +69,6 @@
         :onclick "document.getElementById('defaults').classList.toggle('form-defaults-hidden');"}
     "Show / Hide Defaults"]
    [:div#defaults {:class "form-defaults-hidden"}
-    [:div {:class "field"}
-     (f/label :stacked-inspiration/bookmarkable "Bookmarkable?")
-     (f/check-box :stacked-inspiration/bookmarkable :checked)]
-    [:div {:class "field"}
-     (f/label :stacked-inspiration/shareable "Shareable?")
-     (f/check-box :stacked-inspiration/shareable :checked)]
     [:div {:class "field"}
      (f/label :stacked-inspiration/header "Header")
      (f/text-field :stacked-inspiration/header "Stacked Inspiration")]]

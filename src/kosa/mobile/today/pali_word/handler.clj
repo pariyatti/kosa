@@ -13,9 +13,7 @@
 (defn ->pali-word-doc [p]
   (-> p
       namespacer
-      (c/params->doc [:pali-word/bookmarkable
-                      :pali-word/shareable
-                      :pali-word/pali
+      (c/params->doc [:pali-word/pali
                       [:pali-word/translations
                        #(map vector
                              (:pali-word/language %)

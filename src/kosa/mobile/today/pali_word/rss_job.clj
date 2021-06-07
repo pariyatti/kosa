@@ -60,9 +60,7 @@
                        (:pali-word/original-pali pali-word))]
     (log/info "Pali Word RSS: attempting insert")
     (when (= 0 (count existing))
-      (db/save! (merge {:pali-word/bookmarkable true
-                        :pali-word/shareable true}
-                       pali-word)))))
+      (db/save! pali-word))))
 
 (defn parse* [feed]
   (when-let* [entry (-> feed :entries first)

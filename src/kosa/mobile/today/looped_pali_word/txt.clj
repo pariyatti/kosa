@@ -38,9 +38,7 @@
     (first (db/q :looped-pali-word/pali (:looped-pali-word/pali pali-word))))
 
   (db-insert* [_ pali-word]
-    (db/save! (merge {:looped-pali-word/bookmarkable true
-                      :looped-pali-word/shareable true
-                      :looped-pali-word/original-pali (:looped-pali-word/pali pali-word)
+    (db/save! (merge {:looped-pali-word/original-pali (:looped-pali-word/pali pali-word)
                       :looped-pali-word/original-url (URI. "")}
                      pali-word)))
 

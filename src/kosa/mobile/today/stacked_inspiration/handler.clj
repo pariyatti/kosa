@@ -12,9 +12,7 @@
 (defn ->stacked-inspiration-doc [p]
   (-> p
       namespacer
-      (c/params->doc [:stacked-inspiration/bookmarkable
-                      :stacked-inspiration/shareable
-                      :stacked-inspiration/text])
+      (c/params->doc [:stacked-inspiration/text])
       (storage/reattach! :stacked-inspiration/image-attachment (:image-id p))))
 
 (defn index [request]
