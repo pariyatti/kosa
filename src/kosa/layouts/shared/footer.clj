@@ -1,6 +1,6 @@
 (ns kosa.layouts.shared.footer
-  (:require [hiccup.core :as hc]))
+  (:require [hiccup2.core :as h]))
 
 (defn render []
-  (hc/html
+  (h/html
    [:div.meditate-illustration]))

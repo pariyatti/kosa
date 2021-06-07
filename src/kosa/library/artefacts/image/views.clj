@@ -1,5 +1,5 @@
 (ns kosa.library.artefacts.image.views
-  (:require [hiccup.core :as h]
+  (:require [hiccup2.core :as h]
             [hiccup.form :as f]
             [kuti.storage :as storage]
             [kosa.layouts.library :as l]

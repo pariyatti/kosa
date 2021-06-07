@@ -1,8 +1,8 @@
 (ns kosa.layouts.shared.flash
-  (:require [hiccup.core :as hc]))
+  (:require [hiccup2.core :as h]))
 
 (defn render [flashes]
-  (hc/html
+  (h/html
    [:div#flash
     (for [[k v] flashes]
       [:div {:class (format "flash %s" k)}

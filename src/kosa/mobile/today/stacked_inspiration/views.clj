@@ -1,8 +1,7 @@
 (ns kosa.mobile.today.stacked-inspiration.views
-  (:require [hiccup.core :as h]
+  (:require [hiccup2.core :as h]
             [hiccup.form :as f]
             [kuti.storage :as storage]
-            [kosa.config :as config]
             [kosa.layouts.mobile :as p]
             [kosa.views :as v]))
 

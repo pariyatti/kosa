@@ -1,9 +1,9 @@
 (ns kosa.layouts.shared.header
-  (:require [hiccup.core :as hc]))
+  (:require [hiccup2.core :as h]))
 
 (defn render [title home-url
               other-title other-home-url]
-  (hc/html
+  (h/html
    [:header {:class "header"}
     [:div {:class "header-logo"}
      [:a {:href home-url}

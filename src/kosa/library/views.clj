@@ -1,7 +1,5 @@
 (ns kosa.library.views
-  (:require [hiccup.core :as h]
-            [hiccup.form :as f]
-            [kosa.layouts.library :as l]
+  (:require [kosa.layouts.library :as l]
             [kosa.views :as v]))
 
 (defn index [req]

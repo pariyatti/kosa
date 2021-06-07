@@ -1,5 +1,6 @@
 (ns kosa.mobile.today.pali-word.views
-  (:require [hiccup.core :as h]
+  (:require [clojure.string :as str]
+            [hiccup2.core :as h]
             [hiccup.form :as f]
             [kosa.config :as config]
             [kosa.layouts.mobile :as p]
@@ -12,7 +13,7 @@
      [:td "Pali Word:"]
      [:td (:pali-word/pali card)]]
     (for [t (:pali-word/translations card)]
-      (when-not (clojure.string/blank? (second t))
+      (when-not (str/blank? (second t))
         [:tr
          [:td (first t)]
          [:td (second t)]]))]

@@ -1,9 +1,9 @@
 (ns kosa.layouts.shared.head
-  (:require [hiccup.core :as hc]
+  (:require [hiccup2.core :as h]
             [hiccup.page :as hp]))
 
 (defn render [inner]
-  (hc/html
+  (h/html
    [:head
     [:meta
      {:http-equiv "content-type" :content "text/html;charset=utf-8"}]
