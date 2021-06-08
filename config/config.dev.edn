@@ -27,6 +27,12 @@
          :offset-seconds 1
          :period-seconds 5
          :job-fn kosa.mobile.today.looped-pali-word.publish-job/run-job!
+         :enabled false}
+
+        {:job-name :txt-publisher-words-of-buddha
+         :offset-seconds 1
+         :period-seconds 5
+         :job-fn kosa.mobile.today.looped-words-of-buddha.publish-job/run-job!
          :enabled false}]
 
  :supported-languages ["en" "es" "fr" "it" "pt" "sr" "zh"]

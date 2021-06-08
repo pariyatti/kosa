@@ -1,8 +1,7 @@
 (ns kosa.mobile.today.pali-word.db
   (:refer-clojure :exclude [list get])
   (:require [kuti.record :as record]
-            [kuti.support.debugging :refer :all]
-            [kuti.support.time :as time]))
+            [kuti.support.debugging :refer :all]))
 
 (defn list []
   (record/list :pali-word))

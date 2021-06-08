@@ -5,8 +5,7 @@
 
 (defn up [db]
   (let [node (d/get-node (:conf db))]
-    (schema/add-type node :words-of-buddha [:words-of-buddha/index
-                                            :words-of-buddha/original-words ;; from *.pariyatti.org - a long string
+    (schema/add-type node :words-of-buddha [:words-of-buddha/original-words ;; from *.pariyatti.org - a long string
                                             :words-of-buddha/original-url   ;; from *.pariyatti.org
                                             :words-of-buddha/words
                                             :words-of-buddha/audio-attachment-id
@@ -18,7 +17,6 @@
                                             :words-of-buddha/citebook-url      ;; to store.pariyatti.org
                                             :words-of-buddha/published-at])
 
-    (schema/add-schema node :words-of-buddha/index          :db.type/long)
     (schema/add-schema node :words-of-buddha/original-words :db.type/string)
     (schema/add-schema node :words-of-buddha/original-url   :db.type/uri)
     (schema/add-schema node :words-of-buddha/words          :db.type/string)
@@ -35,7 +33,6 @@
 (defn down [db]
   (let [node (d/get-node (:conf db))]
     (schema/remove-type node :words-of-buddha)
-    (schema/remove-schema node :words-of-buddha/index)
     (schema/remove-schema node :words-of-buddha/original-words)
     (schema/remove-schema node :words-of-buddha/original-url)
     (schema/remove-schema node :words-of-buddha/words)
