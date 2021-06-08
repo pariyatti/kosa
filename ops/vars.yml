@@ -4,7 +4,7 @@ key_name: "kosa-key"
 DEPLOY_KEY_PATH: /home/{{ user_acc }}/.ssh/{{ key_name }}
 
 repo_name: kosa
-repo_url: git@github.com:pariyatti/{{ repo_name }}.git
+repo_url: https://github.com/pariyatti/{{ repo_name }}.git
 repo_remote: origin
 repo_version: master
 
