@@ -69,7 +69,12 @@
       ansible.posix.authorized_key:
         user: "{{ user_acc }}"
         state: present
-        key: https://github.com/oxalorg.keys
+        key: "{{ item }}"
+      loop:
+        - https://github.com/oxalorg.keys
+        - https://github.com/deobald.keys
+      tags:
+        - keys
 
     - name: Make Root Directory exist
       file:
