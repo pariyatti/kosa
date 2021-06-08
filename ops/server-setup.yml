@@ -5,9 +5,36 @@
     - vars.yml
 
   tasks:
+    - name: Add an Apt signing key for Caddy
+      ansible.builtin.apt_key:
+        url: https://dl.cloudsmith.io/public/caddy/stable/gpg.key
+        state: present
+
+    - name: Add deb repository into sources list for Caddy
+      ansible.builtin.apt_repository:
+        repo: deb https://dl.cloudsmith.io/public/caddy/stable/deb/debian any-version main
+        state: present
+        filename: caddy-stable
+
+    - name: Add deb-src repository into sources list for Caddy
+      ansible.builtin.apt_repository:
+        repo: deb-src https://dl.cloudsmith.io/public/caddy/stable/deb/debian any-version main
+        state: present
+        filename: caddy-stable
+
     - name: Install packages
       apt:
-        name: ["git", "fail2ban", "bash", "curl", "rlwrap", "openjdk-11-jdk"]
+        name:
+          - "git"
+          - "fail2ban"
+          - "bash"
+          - "curl"
+          - "rlwrap"
+          - "openjdk-11-jdk"
+          - "debian-keyring"
+          - "debian-archive-keyring"
+          - "apt-transport-https"
+          - "caddy"
         update-cache: yes
 
     - name: Create a new regular user with sudo privileges
@@ -31,3 +58,4 @@
         owner: "{{ user_acc }}"
         group: www-data
         state: directory
+
