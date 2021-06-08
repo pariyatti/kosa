@@ -34,7 +34,7 @@ dependencies are installed.
 To provision the server initially, run the following command
 
 ``` sh
-ansible-playbook server-setup.yml -i hosts
+ansible-playbook -i hosts provision.yml
 ```
 
 ## Deployment
@@ -42,5 +42,5 @@ ansible-playbook server-setup.yml -i hosts
 After the server has been provisioned once, we use this code for our app deployment
 
 ``` sh
-ansible-playbook deploy.yml -i hosts
+ansible-playbook -i hosts deploy.yml
 ```
