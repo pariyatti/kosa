@@ -22,3 +22,8 @@
 (defmacro when-let* [binding & body]
   (let [body (cons 'do body)]
    `(domonad maybe-m ~binding ~body)))
+
+(defn assoc-unless [m k v]
+  (if (get m k)
+    m
+    (assoc m k v)))

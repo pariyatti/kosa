@@ -3,6 +3,7 @@
             [kuti.support.digest :refer [uuid]]
             [kosa.library.artefacts.image.db :as image-db]
             [kosa.mobile.today.pali-word.db :as pali-word-db]
+            [kosa.mobile.today.words-of-buddha.db :as words-of-buddha-db]
             [kosa.mobile.today.stacked-inspiration.db :as stacked-inspiration-db]
             [ring.util.response :as resp]))
 
@@ -36,6 +37,23 @@
      ;;       be aware that :looped-pali-word never has an audio file. -sd
      :audio {:url ""}}))
 
+(defn words-of-buddha->json [card]
+  (let [published (:words-of-buddha/published-at card)
+        date (time/string (or published kosa-epoch))]
+    ;; TODO: this requires its own type, but the mobile app doesn't support
+    ;;       that yet. -sd
+    {:type "stacked_inspiration"
+     :id (:crux.db/id card)
+     :published_at date
+     :created_at date
+     :updated_at date
+     :header "Words of Buddha"
+     :bookmarkable true
+     :shareable true
+     :text (:words-of-buddha/words card)
+     ;; TODO: seed data?
+     :image {:url "https://store.pariyatti.org/assets/images/Buddha_statue.jpg"}}))
+
 (defn stacked-inspiration->json [card]
   (let [published (:stacked-inspiration/published-at card)
         date (time/string (or published kosa-epoch))]
@@ -53,6 +71,7 @@
 (defn today-list []
   (vec (concat
         (map pali-word->json (pali-word-db/list))
+        (map words-of-buddha->json (words-of-buddha-db/list))
         (map stacked-inspiration->json (stacked-inspiration-db/list)))))
 
 (defn today [req]

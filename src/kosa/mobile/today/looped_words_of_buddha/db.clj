@@ -3,6 +3,7 @@
   (:require [kuti.record :as record]
             [kuti.record.nested :as nested]
             [kuti.storage :as storage]
+            [kuti.support :refer [assoc-unless]]
             [kuti.support.debugging :refer :all]))
 
 (defn rehydrate [card]
@@ -40,7 +41,7 @@
 (defn save! [e]
   (-> e
       (assoc :kuti/type :looped-words-of-buddha)
-      (assoc :looped-words-of-buddha/index (next-index))
+      (assoc-unless :looped-words-of-buddha/index (next-index))
       (nested/collapse-one :looped-words-of-buddha/audio-attachment)
       record/timestamp
       publish

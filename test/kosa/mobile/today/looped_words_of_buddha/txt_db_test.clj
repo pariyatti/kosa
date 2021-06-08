@@ -127,6 +127,17 @@
       (is (= 1 (- (-> voca first :looped-words-of-buddha/index)
                   (-> mano first :looped-words-of-buddha/index)))))))
 
+(deftest indexing-edge-cases
+  (testing "index does not increment if index already exists for card"
+    (looped/db-insert! i (model/looped-words-of-buddha
+                       {:looped-words-of-buddha/words "Māvoca pharusaṃ kañci,"
+                        :looped-words-of-buddha/translations [["en" "Speak not harshly to anyone,"]]}))
+    (looped/db-insert! i (model/looped-words-of-buddha
+                       {:looped-words-of-buddha/words "Māvoca pharusaṃ kañci,"
+                        :looped-words-of-buddha/translations [["fr" "Ne parlez pas durement à qui que ce soit,"]]}))
+    (let [voca (db/q :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
+      (is (= 0 (-> voca first :looped-words-of-buddha/index))))))
+
 (deftest mp3s
   (testing "downloads and attaches mp3"
     (let [card (model/looped-words-of-buddha
