@@ -1,0 +1,33 @@
+---
+- hosts: all
+  remote_user: root
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Install packages
+      apt:
+        name: ["git", "fail2ban", "bash", "curl", "rlwrap", "openjdk-11-jdk"]
+        update-cache: yes
+
+    - name: Create a new regular user with sudo privileges
+      user:
+        name: "{{ user_acc }}"
+        state: present
+        create_home: true
+        shell: /bin/bash
+
+    - name: Set authorized keys taken from url
+      ansible.posix.authorized_key:
+        user: "{{ user_acc }}"
+        state: present
+        key: https://github.com/oxalorg.keys
+
+    - name: Make Root Directory exist
+      file:
+        path: "{{ srv_dir }}"
+        mode: u=rwx,g=rx,o=rx
+        recurse: yes
+        owner: "{{ user_acc }}"
+        group: www-data
+        state: directory
