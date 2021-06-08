@@ -29,12 +29,16 @@
           - "fail2ban"
           - "bash"
           - "curl"
+          - "htop"
           - "rlwrap"
           - "openjdk-11-jdk"
           - "debian-keyring"
           - "debian-archive-keyring"
           - "apt-transport-https"
           - "caddy"
+          - "nodejs"
+          - "npm"
+          - "leiningen"
         update-cache: yes
 
     - name: Make sure we have a 'wheel' group
