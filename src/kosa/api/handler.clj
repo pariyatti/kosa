@@ -52,7 +52,7 @@
      :shareable true
      :text (:words-of-buddha/words card)
      ;; TODO: seed data?
-     :image {:url "https://store.pariyatti.org/assets/images/Buddha_statue.jpg"}}))
+     :image {:url "/uploads/kuti-d54d85868f2963a4efee91e5c86e1679-bodhi-leaf.jpg"}}))
 
 (defn stacked-inspiration->json [card]
   (let [published (:stacked-inspiration/published-at card)

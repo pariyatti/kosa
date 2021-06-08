@@ -6,6 +6,9 @@
             [kuti.support.time :as time]
             [kuti.record :as record]))
 
+;; Looping can be compared against:
+;; https://rss.pariyatti.org/dwob_english.rss
+
 ;; (def looped-card-count 220)
 ;; (def days-since-epoch (t/days (t/between (t/epoch) (t/now))))
 ;; (def days-since-perl (- days-since-epoch 12902))
