@@ -37,10 +37,27 @@
           - "caddy"
         update-cache: yes
 
+    - name: Make sure we have a 'wheel' group
+      group:
+        name: wheel
+        state: present
+
+    - name: Allow 'wheel' group to have passwordless sudo
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: '^%wheel'
+        line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+        validate: visudo -cf %s
+
     - name: Create a new regular user with sudo privileges
       user:
         name: "{{ user_acc }}"
         state: present
+        groups:
+          - "sudo"
+          - "wheel"
+        append: true
         create_home: true
         shell: /bin/bash
 
