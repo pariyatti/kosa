@@ -30,7 +30,7 @@
             (< 0 (time/days-between (-> existing first :pali-word/published-at)
                                     (time/now))))
       (-> word
-          record/publish
+          record/republish
           pali-db/save!)
       (log/info (format "#### Ignoring. '%s' already exists." (:pali-word/pali word))))))
 

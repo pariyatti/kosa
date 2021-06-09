@@ -32,17 +32,11 @@
       (+ 1 result)
       0)))
 
-;; TODO: it's likely this just belongs in `record` directly?
-(defn publish [e]
-  (if-let [pub (:looped-words-of-buddha/published-at e)]
-    (record/publish e pub)
-    (record/publish e)))
-
 (defn save! [e]
   (-> e
       (assoc :kuti/type :looped-words-of-buddha)
       (assoc-unless :looped-words-of-buddha/index (next-index))
       (nested/collapse-one :looped-words-of-buddha/audio-attachment)
       record/timestamp
-      publish
+      record/publish
       (record/save!)))

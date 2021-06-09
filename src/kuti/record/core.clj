@@ -59,15 +59,6 @@
 (defn timestamp [e]
   (assoc e (types/typify e :updated-at) (time/now)))
 
-(defn publish
-  ([e]
-   (publish e (time/now)))
-  ([e ts]
-   (assoc e (types/typify e :published-at) (time/instant ts))))
-
-(defn draft [e]
-  (publish e time/DRAFT-DATE))
-
 (defn put-async* [datum]
   (crux/submit-tx crux-node [[:crux.tx/put datum]]))
 

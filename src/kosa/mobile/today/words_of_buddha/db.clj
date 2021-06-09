@@ -23,18 +23,12 @@
                     :order-by '[[updated-at :desc]]}]
     (map rehydrate (record/query find-query param))))
 
-;; TODO: it's likely this just belongs in `record` directly?
-(defn publish [e]
-  (if-let [pub (:words-of-buddha/published-at e)]
-    (record/publish e pub)
-    (record/publish e)))
-
 (defn save! [e]
   (-> e
       (assoc :kuti/type :words-of-buddha)
       (nested/collapse-one :words-of-buddha/audio-attachment)
       record/timestamp
-      publish
+      record/publish
       (record/save!)))
 
 (defn get [id]

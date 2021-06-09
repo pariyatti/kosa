@@ -99,15 +99,15 @@
 
   (testing "can publish in the past/future"
     (let [required-fields [:kuti/type :essay/title :essay/author]
-          m1 (sut/put (sut/publish {:kuti/type :essay
-                                    :essay/title "Manual of Perfections"
-                                    :essay/author "Ledi Sayadaw"}
-                                   (time/instant "2100-01-01T00:00:00.000Z"))
+          m1 (sut/put (sut/publish-at {:kuti/type :essay
+                                       :essay/title "Manual of Perfections"
+                                       :essay/author "Ledi Sayadaw"}
+                                      (time/instant "2100-01-01T00:00:00.000Z"))
                       required-fields)
-          m2 (sut/put (sut/publish {:kuti/type :essay
-                                    :essay/title "Pali Canon"
-                                    :essay/author "Ananda"}
-                                   (time/date-time (time/date time/BCE 250)))
+          m2 (sut/put (sut/publish-at {:kuti/type :essay
+                                       :essay/title "Pali Canon"
+                                       :essay/author "Ananda"}
+                                      (time/date-time (time/date time/BCE 250)))
                       required-fields)
           list-query '{:find     [e published-at]
                        :where    [[e :essay/published-at published-at]]
@@ -117,10 +117,10 @@
 
   (testing "can draft (unpublish)"
     (let [required-fields [:kuti/type :book/title :book/author]
-          m1 (sut/put (sut/publish {:kuti/type :book
-                                    :book/title "Parami Dipani"
-                                    :book/author "Ledi Sayadaw"}
-                                   (time/instant "1868-01-01T00:00:00.000Z"))
+          m1 (sut/put (sut/publish-at {:kuti/type :book
+                                       :book/title "Parami Dipani"
+                                       :book/author "Ledi Sayadaw"}
+                                      (time/instant "1868-01-01T00:00:00.000Z"))
                       required-fields)
           _ (sut/put (sut/draft m1) required-fields)
           list-query '{:find     [e published-at]

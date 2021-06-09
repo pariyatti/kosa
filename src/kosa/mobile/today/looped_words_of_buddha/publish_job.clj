@@ -33,7 +33,7 @@
             (< 0 (time/days-between (-> existing first :words-of-buddha/published-at)
                                     (time/now))))
       (-> word
-          record/publish
+          record/republish
           buddha-db/save!)
       (log/info (format "#### Ignoring. '%s' already exists." (:words-of-buddha/words word))))))
 

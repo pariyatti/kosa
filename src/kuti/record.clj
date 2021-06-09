@@ -1,20 +1,24 @@
 (ns kuti.record
   (:require [kuti.record.core :as core]
             [kuti.record.schema :as schema]
+            [kuti.record.publishing :as publishing]
             [kuti.support.time :as time])
   (:refer-clojure :exclude [get list]))
 
 (defn timestamp [e]
   (core/timestamp e))
 
-(defn publish
-  ([e]
-   (core/publish e))
-  ([e ts]
-   (core/publish e ts)))
+(defn publish-at [e ts]
+  (publishing/publish-at e ts))
+
+(defn publish [e]
+  (publishing/publish e))
+
+(defn republish [e]
+  (publishing/republish e))
 
 (defn draft [e]
-  (core/draft e))
+  (publishing/draft e))
 
 (defn get [id]
   (core/get id))

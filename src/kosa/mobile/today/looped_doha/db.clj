@@ -35,17 +35,11 @@
       (+ 1 result)
       0)))
 
-;; TODO: it's likely this just belongs in `record` directly?
-(defn publish [e]
-  (if-let [pub (:looped-doha/published-at e)]
-    (record/publish e pub)
-    (record/publish e)))
-
 (defn save! [e]
   (-> e
       (assoc :kuti/type :looped-doha)
       (assoc-unless :looped-doha/index (next-index))
       (nested/collapse-one :looped-doha/audio-attachment)
       record/timestamp
-      publish
+      record/publish
       (record/save!)))
