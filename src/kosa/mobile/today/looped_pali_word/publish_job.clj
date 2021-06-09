@@ -4,39 +4,23 @@
             [kosa.mobile.today.pali-word.db :as pali-db]
             [kuti.support.types :as types]
             [kuti.support.time :as time]
-            [kuti.record :as record]))
+            [kuti.record :as record]
+            [kosa.mobile.today.looped.publish-job :as job]
+            [kosa.mobile.today.words-of-buddha.db :as buddha-db]))
 
-;; (def looped-card-count 220)
-;; (def days-since-epoch (t/days (t/between (t/epoch) (t/now))))
-;; (def days-since-perl (- days-since-epoch 12902))
-;; (def todays-word (mod days-since-perl looped-card-count))
+;; Looping can be compared against:
+;; https://download.pariyatti.org/pwad/pali_words.xml
 
-(defn which-card [today card-count]
-  ;; "perl epoch":
-  ;; (t/>> (t/epoch)
-  ;;       (t/new-duration 12902 :days))
-  ;; => #time/instant "2005-04-29T00:00:00Z"
-  (mod (time/days-between "2005-04-29T00:00:00Z" today)
-       card-count))
+(deftype PaliPublisher []
+  job/Publisher
+  (type [_] :pali-word)
+  (main-key [_] :pali-word/pali)
+  (published-at-key [_] :pali-word/published-at)
+  (looped-list [_] (loop-db/list))
+  (looped-find [_ idx] (loop-db/q :looped-pali-word/index idx))
+  (entity-find [_ card] (pali-db/q :pali-word/pali
+                                   (:pali-word/pali card)))
+  (save! [_ card] (pali-db/save! card)))
 
-(defn publish-nth [n]
-  (let [idx (which-card (time/now) n)
-        word (-> (loop-db/q :looped-pali-word/index idx)
-                 first
-                 (types/dup :pali-word))
-        existing (pali-db/q :pali-word/pali (:pali-word/pali word))]
-    (log/info (str "#### Today's pali word is: " (:pali-word/pali word)))
-    (if (or (empty? existing)
-            (< 0 (time/days-between (-> existing first :pali-word/published-at)
-                                    (time/now))))
-      (-> word
-          record/republish
-          pali-db/save!)
-      (log/info (format "#### Ignoring. '%s' already exists." (:pali-word/pali word))))))
-
-(defn run-job! [_]
-  (log/info "#### Running looped pali word publish job")
-  (let [n (count (loop-db/list))]
-    (if (< 0 n)
-      (publish-nth n)
-      (log/info "#### Zero looped pali words found."))))
+(defn run-job! [t]
+  (job/run-job! (PaliPublisher.) t))
