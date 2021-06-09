@@ -40,6 +40,24 @@
 (defn words-of-buddha->json [card]
   (let [published (:words-of-buddha/published-at card)
         date (time/string (or published kosa-epoch))]
+    {:type "words_of_buddha"
+     :id (:crux.db/id card)
+     :published_at date
+     :created_at date
+     :updated_at date
+     :header "Words of Buddha"
+     :bookmarkable true
+     :shareable true
+     :pali (:words-of-buddha/words card)
+     :translations (map (fn [t] {:language (first t)
+                                 :translation (second t)})
+                        (:words-of-buddha/translations card))
+     ;; TODO: seed data?
+     :image {:url "/uploads/kuti-d54d85868f2963a4efee91e5c86e1679-bodhi-leaf.jpg"}}))
+
+(defn words-of-buddha->fake-json [card]
+  (let [published (:words-of-buddha/published-at card)
+        date (time/string (or published kosa-epoch))]
     ;; TODO: this requires its own type, but the mobile app doesn't support
     ;;       that yet. -sd
     {:type "stacked_inspiration"
@@ -71,6 +89,7 @@
 (defn today-list []
   (vec (concat
         (map pali-word->json (pali-word-db/list))
+        (map words-of-buddha->fake-json (words-of-buddha-db/list))
         (map words-of-buddha->json (words-of-buddha-db/list))
         (map stacked-inspiration->json (stacked-inspiration-db/list)))))
 
