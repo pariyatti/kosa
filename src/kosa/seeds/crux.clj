@@ -2,7 +2,7 @@
   (:require [clojure.java.io :as io]
             [clojure.tools.logging :as log]
             [kuti.support :refer [path-join]]
-            [kuti.storage :as storage]
+            [kuti.storage.core :as storage-core]
             [crux.api :as x]
             [joplin.crux.database :as d]))
 
@@ -47,7 +47,7 @@
     (io/copy (io/file (path-join "resources/joplin/seed-attachments"
                                  (:attm/filename a)))
              (io/file (path-join "resources/storage/"
-                                 (storage/attached-filename a))))))
+                                 (storage-core/attached-filename a))))))
 
 (defn run [target & _args]
   (log/info "Seeding Crux...")

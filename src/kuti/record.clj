@@ -1,8 +1,7 @@
 (ns kuti.record
   (:require [kuti.record.core :as core]
             [kuti.record.schema :as schema]
-            [kuti.record.publishing :as publishing]
-            [kuti.support.time :as time])
+            [kuti.record.publishing :as publishing])
   (:refer-clojure :exclude [get list]))
 
 (defn timestamp [e]

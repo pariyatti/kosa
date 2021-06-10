@@ -7,7 +7,7 @@
             [kosa.server :as server]
             [kuti.dispatch :as dispatch]
             [kuti.record.core :as db-core]
-            [kuti.storage :as storage]
+            [kuti.storage.core :as storage-core]
             [kuti.job :as job]
             ;; NOTE: jobs must be required before `kuti.job` is mounted
             ;;       so that `resolve` never returns nil:
@@ -42,7 +42,7 @@
   (-> (mount/with-args opts)
       (mount/only #{#'config/config
                     #'db-core/crux-node
-                    #'storage/service-config
+                    #'storage-core/service-config
                     #'job/jobs
                     #'server/server})
       mount/start)

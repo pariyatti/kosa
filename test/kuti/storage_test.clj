@@ -1,6 +1,7 @@
 (ns kuti.storage-test
   (:require [clojure.test :refer :all]
             [clojure.java.io :as io]
+            [medley.core :refer [dissoc-in]]
             [mount.core :as mount]
             [kuti.support.debugging :refer :all]
             [kuti.fixtures.record-fixtures :as record-fixtures]
@@ -10,12 +11,13 @@
             [kuti.support.time :as time]
             [kuti.record]
             [kuti.controller :as c]
+            [kuti.storage.core :as core]
             [kuti.storage :as sut]
             [kuti.fixtures.time-fixtures :as time-fixtures])
   (:import [java.io FileNotFoundException]))
 
 (use-fixtures :once
-  time-fixtures/freeze-clock
+  time-fixtures/freeze-clock-1995
   record-fixtures/force-destroy-db
   record-fixtures/force-migrate-db
   record-fixtures/force-start-db)
@@ -82,11 +84,11 @@
 
 (deftest missing-root-directory
   (testing "throws an exception when file copy fails"
-    (mount/stop #'sut/service-config)
+    (mount/stop #'core/service-config)
     (-> (mount/with-args {:storage {:service :disk
                                     :root    "this/directory/does/not/exist/"
                                     :path    "/uploads"}})
-        (mount/only #{#'sut/service-config})
+        (mount/only #{#'core/service-config})
         mount/start)
     (is (thrown? java.io.FileNotFoundException
                  (sut/params->attachment! (:leaf-file params1))))))
@@ -130,17 +132,64 @@
                 :attm/identified true}
                (dissoc attachment :crux.db/id)))))))
 
-(deftest collapse
-  (let [doc1 (c/params->doc params1 [:type])
-        doc2 (sut/attach! doc1 :leaf-attachment (:leaf-file params1))
-        leaf-attachment-id (-> doc2 :leaf-attachment :crux.db/id)
-        doc3 (sut/collapse-all doc2)]
+(deftest collapse-and-expand
+  (let [params-w-2-attm {:type :double
+                         :leaf-file {:filename "bodhi-with-raindrops.jpg",
+                                     :content-type "image/jpeg",
+                                     :tempfile (io/file "test/kuti/fixtures/files/bodhi-temp.jpg")
+                                     :size 13468}
+                         :bodhi-file {:filename "bodhi with\twhitespace.jpg",
+                                      :content-type "image/jpeg",
+                                      :tempfile (io/file "test/kuti/fixtures/files/bodhi-temp.jpg")
+                                      :size 13468}
+                         :submit "Save"}
+        doc (-> (c/params->doc params-w-2-attm [:type])
+                (sut/attach! :double/leaf-attachment (:leaf-file params-w-2-attm))
+                (sut/attach! :double/bodhi-attachment (:bodhi-file params-w-2-attm)))
+        leaf-attachment-id (-> doc :double/leaf-attachment :crux.db/id)
+        bodhi-attachment-id (-> doc :double/bodhi-attachment :crux.db/id)
+        collapsed (sut/collapse-all doc)]
 
     (testing "collapses all attachments"
-      (is (not (nil? (:leaf-attachment-id doc3))))
-      (is (= {:kuti/type :leaf-artefact
-              :leaf-attachment-id leaf-attachment-id}
-             (dissoc doc3 :leaf-artefact/published-at))))))
+      (is (not (nil? (:double/leaf-attachment-id collapsed))))
+      (is (not (nil? (:double/bodhi-attachment-id collapsed))))
+      (is (= {:kuti/type :double
+              :double/leaf-attachment-id leaf-attachment-id
+              :double/bodhi-attachment-id bodhi-attachment-id}
+             collapsed)))
+
+    (testing "expands all attachments"
+      (let [expanded (sut/expand-all collapsed)]
+        (is (not (nil? (:double/leaf-attachment expanded))))
+        (is (not (nil? (:double/bodhi-attachment expanded))))
+        (is (= {:kuti/type :double
+                :double/leaf-attachment
+                {:attm/byte-size 13468,
+                 :attm/content-type "image/jpeg",
+                 :attm/filename "bodhi-with-raindrops.jpg",
+                 :attm/metadata "",
+                 :kuti/type :attm,
+                 :attm/updated-at #time/instant "1995-08-24T00:00:00Z",
+                 :attm/checksum "ca20bbfbea75755b1059ff2cd64bd6d3",
+                 :attm/service-name :disk,
+                 :attm/identified true,
+                 :attm/key "a2e0d5505185beb708ac5edaf4fc4d20"
+                 :attm/url "/uploads/kuti-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg"}
+                :double/bodhi-attachment
+                {:attm/byte-size 13468,
+                 :attm/content-type "image/jpeg",
+                 :attm/filename "bodhi_with_whitespace.jpg",
+                 :attm/metadata "",
+                 :kuti/type :attm,
+                 :attm/updated-at #time/instant "1995-08-24T00:00:00Z",
+                 :attm/checksum "ca20bbfbea75755b1059ff2cd64bd6d3",
+                 :attm/service-name :disk,
+                 :attm/identified true,
+                 :attm/key "a2e0d5505185beb708ac5edaf4fc4d20"
+                 :attm/url "/uploads/kuti-a2e0d5505185beb708ac5edaf4fc4d20-bodhi_with_whitespace.jpg"}}
+               (-> expanded
+                   (dissoc-in [:double/leaf-attachment :crux.db/id])
+                   (dissoc-in [:double/bodhi-attachment :crux.db/id]))))))))
 
 ;; ***************************
 ;; ActiveStorage Blob Columns:

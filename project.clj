@@ -10,6 +10,7 @@
                  [org.clojure/tools.cli "1.0.194"]
                  [org.clojure/tools.logging "1.1.0"]
                  [org.clojure/algo.monads "0.1.6"]
+                 [medley "1.3.0"]
                  ;; logging:
                  [fancy "0.2.3"]
                  [ch.qos.logback/logback-classic "1.2.3"]

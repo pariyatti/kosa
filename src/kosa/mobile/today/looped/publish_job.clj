@@ -1,7 +1,6 @@
 (ns kosa.mobile.today.looped.publish-job
+  (:refer-clojure :exclude [type])
   (:require [clojure.tools.logging :as log]
-            [kosa.mobile.today.looped-words-of-buddha.db :as loop-db]
-            [kosa.mobile.today.words-of-buddha.db :as buddha-db]
             [kuti.support.types :as types]
             [kuti.support.time :as time]
             [kuti.record :as record]))

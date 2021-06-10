@@ -1,7 +1,8 @@
 (ns kuti.record.nested
   (:require [kuti.record :as record]
             [clojure.string]
-            [kuti.support.digest :as digest]))
+            [kuti.support.digest :as digest]
+            [kuti.support.debugging :refer :all]))
 
 (defn field->id [attr]
   (keyword (namespace attr)
