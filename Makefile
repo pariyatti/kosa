@@ -102,8 +102,11 @@ db-txt-buddha: ##@Development Add Looped Words of Buddha
 	lein db-txt-buddha
 
 test: ##@Development Run tests with lein
-#lein run -- -mf config/config.test.edn # TODO: add migrations
+#lein run -- -mf config/config.test.edn
 	lein test
+
+test-unit: ##@Development Run unit tests with lein
+	lein test :unit
 
 test-integration: ##@Development Run integration tests with lein
 	lein test :integration

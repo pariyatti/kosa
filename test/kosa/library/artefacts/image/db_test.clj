@@ -1,4 +1,4 @@
-(ns kosa.library.artefacts.image.db-test
+(ns ^:database kosa.library.artefacts.image.db-test
   (:require [clojure.test :refer :all]
             [clojure.data]
             [clojure.java.io :as io]

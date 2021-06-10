@@ -1,4 +1,4 @@
-(ns kosa.mobile.today.pali-word.handler-test
+(ns ^:database kosa.mobile.today.pali-word.handler-test
   (:require [clojure.string :as str]
             [clojure.test :refer :all]
             [kosa.config :as config]

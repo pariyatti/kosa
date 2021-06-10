@@ -36,7 +36,7 @@
                      :image-artefact/published-at time-fixtures/win95
                      :image-artefact/original-url (URI. "")})
 
-(deftest search-acceptance
+(deftest ^:database search-acceptance
   (let [file {:filename "bodhi-with-raindrops.jpg",
               :content-type "image/jpeg",
               :tempfile (io/file "test/kuti/fixtures/files/bodhi-temp.jpg")

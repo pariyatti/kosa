@@ -105,4 +105,8 @@
 
   :test-selectors {:default     (complement :integration)
                    :integration :integration
+                   :database    :database
+                   :unit        (fn [m & _]
+                                  (not (or (:integration m)
+                                           (:database m))))
                    :all         (constantly true)})

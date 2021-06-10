@@ -1,4 +1,4 @@
-(ns kosa.mobile.today.looped-words-of-buddha.txt-db-test
+(ns ^:database kosa.mobile.today.looped-words-of-buddha.txt-db-test
   (:require [kosa.mobile.today.looped-words-of-buddha.txt :as sut]
             [kosa.mobile.today.looped-words-of-buddha.db :as db]
             [kosa.mobile.today.looped.txt :as looped]

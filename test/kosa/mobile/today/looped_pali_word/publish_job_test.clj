@@ -1,4 +1,4 @@
-(ns kosa.mobile.today.looped-pali-word.publish-job-test
+(ns ^:database kosa.mobile.today.looped-pali-word.publish-job-test
   (:require [clojure.test :refer :all]
             [kuti.fixtures.record-fixtures :as record-fixtures]
             [kuti.fixtures.time-fixtures :as time-fixtures]
