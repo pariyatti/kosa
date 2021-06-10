@@ -1,6 +1,7 @@
 (ns kosa.mobile.today.looped-doha.db
   (:refer-clojure :exclude [list get])
   (:require [kuti.record :as record]
+            [kuti.record.query :as query]
             [kuti.record.nested :as nested]
             [kuti.storage.nested :refer [expand-all]]
             [kuti.support :refer [assoc-unless]]
@@ -13,13 +14,8 @@
 (defn list []
   (map expand-all (record/list :looped-doha)))
 
-(defn q [attr param]
-  (let [find-query {:find     '[e updated-at]
-                    :where    [['e attr 'v]
-                               '[e :looped-doha/updated-at updated-at]]
-                    :order-by '[[updated-at :desc]]
-                    :in       '[v]}]
-    (map expand-all (record/query find-query param))))
+(defn find-all [attr param]
+  (query/find-all :looped-doha attr param))
 
 (defn save! [e]
   (-> e

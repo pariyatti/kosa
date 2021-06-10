@@ -1,19 +1,15 @@
 (ns kosa.mobile.today.looped-pali-word.db
   (:refer-clojure :exclude [list get])
   (:require [kuti.record :as record]
+            [kuti.record.query :as query]
             [kuti.support.debugging :refer :all]
             [kosa.mobile.today.looped.db :refer [next-index]]))
 
 (defn list []
   (record/list :looped-pali-word))
 
-(defn q [attr param]
-  (let [find-query {:find     '[e updated-at]
-                    :in       '[original-pali]
-                    :where    [['e attr 'original-pali]
-                               '[e :looped-pali-word/updated-at updated-at]]
-                    :order-by '[[updated-at :desc]]}]
-    (record/query find-query param)))
+(defn find-all [attr param]
+  (query/find-all :looped-pali-word attr param))
 
 (defn save! [e]
   (-> e

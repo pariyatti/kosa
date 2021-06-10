@@ -75,7 +75,7 @@
            (map #(shred-blocks lang %)))))
 
   (find-existing [_ words]
-    (first (db/q :looped-words-of-buddha/words (:looped-words-of-buddha/words words))))
+    (first (db/find-all :looped-words-of-buddha/words (:looped-words-of-buddha/words words))))
 
   (db-insert* [_ words]
     (db/save! (merge #:looped-words-of-buddha

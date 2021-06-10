@@ -20,7 +20,7 @@
                     {:looped-pali-word/pali "tara"
                      :looped-pali-word/translations [["en" "star"]]}))
     (sut/run-job! nil)
-    (let [tara (pali-db/q :pali-word/pali "tara")]
+    (let [tara (pali-db/find-all :pali-word/pali "tara")]
       (is (= 1 (count tara))))))
 
 (deftest ignores-an-empty-collection-of-looped-cards
@@ -34,7 +34,7 @@
                      :looped-pali-word/translations [["en" "unfettered"]]}))
     (sut/run-job! nil)
     (sut/run-job! nil)
-    (let [card (pali-db/q :pali-word/pali "abaddha")]
+    (let [card (pali-db/find-all :pali-word/pali "abaddha")]
       (is (= 1 (count card))))))
 
 (deftest looping
@@ -46,7 +46,7 @@
     (sut/run-job! nil)
     (time/freeze-clock! (time/parse "2005-06-02"))
     (sut/run-job! nil)
-    (let [cards (pali-db/q :pali-word/pali "abhaya")]
+    (let [cards (pali-db/find-all :pali-word/pali "abhaya")]
       (is (= 2 (count cards)))
       (is (= #{(time/parse "2005-05-01") (time/parse "2005-06-02")}
              (set (map :pali-word/published-at cards)))))))

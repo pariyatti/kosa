@@ -20,7 +20,7 @@
                     {:looped-words-of-buddha/words "tara"
                      :looped-words-of-buddha/translations [["en" "star"]]}))
     (sut/run-job! nil)
-    (let [tara (buddha-db/q :words-of-buddha/words "tara")]
+    (let [tara (buddha-db/find-all :words-of-buddha/words "tara")]
       (is (= 1 (count tara))))))
 
 (deftest ignores-an-empty-collection-of-looped-cards
@@ -34,7 +34,7 @@
                      :looped-words-of-buddha/translations [["en" "unfettered"]]}))
     (sut/run-job! nil)
     (sut/run-job! nil)
-    (let [card (buddha-db/q :words-of-buddha/words "abaddha")]
+    (let [card (buddha-db/find-all :words-of-buddha/words "abaddha")]
       (is (= 1 (count card))))))
 
 (deftest looping
@@ -46,7 +46,7 @@
     (sut/run-job! nil)
     (time/freeze-clock! (time/parse "2005-06-02"))
     (sut/run-job! nil)
-    (let [cards (buddha-db/q :words-of-buddha/words "abhaya")]
+    (let [cards (buddha-db/find-all :words-of-buddha/words "abhaya")]
       (is (= 2 (count cards)))
       (is (= #{(time/parse "2005-05-01") (time/parse "2005-06-02")}
              (set (map :words-of-buddha/published-at cards)))))))

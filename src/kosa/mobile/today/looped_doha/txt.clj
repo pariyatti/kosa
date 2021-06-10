@@ -34,7 +34,7 @@
            (map #(shred-blocks lang %)))))
 
   (find-existing [_ doha]
-    (first (db/q :looped-doha/doha (:looped-doha/doha doha))))
+    (first (db/find-all :looped-doha/doha (:looped-doha/doha doha))))
 
   (db-insert* [_ doha]
     (db/save! (merge #:looped-doha

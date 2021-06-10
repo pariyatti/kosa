@@ -12,8 +12,8 @@
   (main-key [_] :pali-word/pali)
   (published-at-key [_] :pali-word/published-at)
   (looped-list [_] (loop-db/list))
-  (looped-find [_ idx] (loop-db/q :looped-pali-word/index idx))
-  (entity-find [_ card] (pali-db/q :pali-word/pali
+  (looped-find [_ idx] (loop-db/find-all :looped-pali-word/index idx))
+  (entity-find [_ card] (pali-db/find-all :pali-word/pali
                                    (:pali-word/pali card)))
   (save! [_ card] (pali-db/save! card)))
 

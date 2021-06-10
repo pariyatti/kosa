@@ -39,7 +39,7 @@
                           {:looped-words-of-buddha/words "Manopubbaṅgamā dhammā,"
                            :looped-words-of-buddha/translations [["en" "Mind precedes all phenomena,"]]
                            :looped-words-of-buddha/published-at (time/parse "2012-01-01")}))
-    (let [mano (db/q :looped-words-of-buddha/words "Manopubbaṅgamā dhammā,")]
+    (let [mano (db/find-all :looped-words-of-buddha/words "Manopubbaṅgamā dhammā,")]
       (is (= 1 (count mano)))
       (is (= (time/parse "2008-01-01")
              (-> mano first :looped-words-of-buddha/published-at)))))
@@ -55,7 +55,7 @@
                         :looped-words-of-buddha/translations [["fr" "Ne parlez pas durement à qui que ce soit,"]
                                                               ["es" "No hables agresivamente a nadie;"]]
                         :looped-words-of-buddha/published-at (time/parse "2012-01-01")}))
-    (let [voca (db/q :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
+    (let [voca (db/find-all :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
       (is (= 1 (count  voca)))
       (is (= [["en" "Speak not harshly to anyone,"]
               ["hi" "किसी से कटुता से न बोलें,"]
@@ -85,7 +85,7 @@
                         :citebook-url (URI. "http://dhammodaya.btmar.org/content/dhammapada%E2%80%94precio-y-compra-en-l%C3%ADnea")
                         :published-at (time/parse "2012-01-01")}))
 
-    (let [voca (db/q :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
+    (let [voca (db/find-all :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
       (is (= "The Dhammapada: The Buddha's Path of Wisdom, translated from Pāli by Acharya Buddharakkhita"
              (-> voca first :looped-words-of-buddha/citebook)))))
 
@@ -110,7 +110,7 @@
                         :citebook-url (URI. "http://store.pariyatti.org/Discourse-Summaries_p_1650.html")
                         :published-at (time/parse "2008-01-01")}))
 
-    (let [voca (db/q :looped-words-of-buddha/words "Manopubbaṅgamā dhammā,")]
+    (let [voca (db/find-all :looped-words-of-buddha/words "Manopubbaṅgamā dhammā,")]
       (is (= "The Discourse Summaries by S.N. Goenka"
              (-> voca first :looped-words-of-buddha/citebook))))))
 
@@ -122,8 +122,8 @@
     (looped/db-insert! i (model/looped-words-of-buddha
                        {:looped-words-of-buddha/words "Māvoca pharusaṃ kañci,"
                         :looped-words-of-buddha/translations [["en" "Speak not harshly to anyone,"]]}))
-    (let [mano (db/q :looped-words-of-buddha/words "Manopubbaṅgamā dhammā,")
-          voca (db/q :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
+    (let [mano (db/find-all :looped-words-of-buddha/words "Manopubbaṅgamā dhammā,")
+          voca (db/find-all :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
       (is (= 1 (- (-> voca first :looped-words-of-buddha/index)
                   (-> mano first :looped-words-of-buddha/index)))))))
 
@@ -135,7 +135,7 @@
     (looped/db-insert! i (model/looped-words-of-buddha
                        {:looped-words-of-buddha/words "Māvoca pharusaṃ kañci,"
                         :looped-words-of-buddha/translations [["fr" "Ne parlez pas durement à qui que ce soit,"]]}))
-    (let [voca (db/q :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
+    (let [voca (db/find-all :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
       (is (= 0 (-> voca first :looped-words-of-buddha/index))))))
 
 (deftest mp3s

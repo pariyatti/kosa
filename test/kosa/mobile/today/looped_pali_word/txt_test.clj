@@ -46,7 +46,7 @@
                     {:looped-pali-word/pali "suriya"
                      :looped-pali-word/translations [["en" "sun"]]
                      :looped-pali-word/published-at (time/parse "2012-01-01")}))
-    (let [suriya (db/q :looped-pali-word/pali "suriya")]
+    (let [suriya (db/find-all :looped-pali-word/pali "suriya")]
       (is (= 1 (count  suriya)))
       (is (= (time/parse "2008-01-01")
              (-> suriya first :looped-pali-word/published-at)))))
@@ -62,7 +62,7 @@
                      :looped-pali-word/translations [["fr" "lune"]
                                                      ["es" "luna"]]
                      :looped-pali-word/published-at (time/parse "2012-01-01")}))
-    (let [canda (db/q :looped-pali-word/pali "canda")]
+    (let [canda (db/find-all :looped-pali-word/pali "canda")]
       (is (= 1 (count  canda)))
       (is (= [["en" "moon"]
               ["hi" "चंद"]
@@ -78,7 +78,7 @@
     (looped/db-insert! i (model/looped-pali-word
                     {:looped-pali-word/pali "kujagaha"
                      :looped-pali-word/translations [["en" "mars"]]}))
-    (let [tara (db/q :looped-pali-word/pali "tara")
-          kujagaha (db/q :looped-pali-word/pali "kujagaha")]
+    (let [tara (db/find-all :looped-pali-word/pali "tara")
+          kujagaha (db/find-all :looped-pali-word/pali "kujagaha")]
       (is (= 1 (- (-> kujagaha first :looped-pali-word/index)
                   (-> tara first :looped-pali-word/index)))))))

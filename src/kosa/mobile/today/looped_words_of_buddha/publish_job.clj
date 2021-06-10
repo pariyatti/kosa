@@ -12,8 +12,8 @@
   (main-key [_] :words-of-buddha/words)
   (published-at-key [_] :words-of-buddha/published-at)
   (looped-list [_] (loop-db/list))
-  (looped-find [_ idx] (loop-db/q :looped-words-of-buddha/index idx))
-  (entity-find [_ card] (buddha-db/q :words-of-buddha/words
+  (looped-find [_ idx] (loop-db/find-all :looped-words-of-buddha/index idx))
+  (entity-find [_ card] (buddha-db/find-all :words-of-buddha/words
                                      (:words-of-buddha/words card)))
   (save! [_ card] (buddha-db/save! card)))
 

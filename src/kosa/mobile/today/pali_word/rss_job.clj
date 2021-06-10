@@ -56,7 +56,7 @@
     [pali english]))
 
 (defn db-insert [pali-word]
-  (let [existing (db/q :pali-word/original-pali
+  (let [existing (db/find-all :pali-word/original-pali
                        (:pali-word/original-pali pali-word))]
     (log/info "Pali Word RSS: attempting insert")
     (when (= 0 (count existing))
