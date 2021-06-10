@@ -1,12 +1,7 @@
 (ns kosa.mobile.today.looped-pali-word.publish-job
-  (:require [clojure.tools.logging :as log]
+  (:require [kosa.mobile.today.looped.publish-job :as job]
             [kosa.mobile.today.looped-pali-word.db :as loop-db]
-            [kosa.mobile.today.pali-word.db :as pali-db]
-            [kuti.support.types :as types]
-            [kuti.support.time :as time]
-            [kuti.record :as record]
-            [kosa.mobile.today.looped.publish-job :as job]
-            [kosa.mobile.today.words-of-buddha.db :as buddha-db]))
+            [kosa.mobile.today.pali-word.db :as pali-db]))
 
 ;; Looping can be compared against:
 ;; https://download.pariyatti.org/pwad/pali_words.xml

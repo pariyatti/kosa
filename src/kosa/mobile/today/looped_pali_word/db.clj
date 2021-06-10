@@ -2,18 +2,10 @@
   (:refer-clojure :exclude [list get])
   (:require [kuti.record :as record]
             [kuti.support.debugging :refer :all]
-            [kuti.support.time :as time]))
+            [kosa.mobile.today.looped.db :refer [next-index]]))
 
 (defn list []
   (record/list :looped-pali-word))
-
-(defn next-index []
-  (let [find-query '{:find     [(max ?idx)]
-                     :where    [[e :looped-pali-word/index ?idx]]}
-        result (-> (record/q find-query) first first)]
-    (if result
-      (+ 1 result)
-      0)))
 
 (defn q [attr param]
   (let [find-query {:find     '[e updated-at]
@@ -26,7 +18,7 @@
 (defn save! [e]
   (-> e
       (assoc :kuti/type :looped-pali-word)
-      (assoc :looped-pali-word/index (next-index))
+      (assoc :looped-pali-word/index (next-index :looped-pali-word))
       record/timestamp
       record/publish
       (record/save!)))

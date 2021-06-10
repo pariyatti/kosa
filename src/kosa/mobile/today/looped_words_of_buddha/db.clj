@@ -4,7 +4,8 @@
             [kuti.record.nested :as nested]
             [kuti.storage :as storage]
             [kuti.support :refer [assoc-unless]]
-            [kuti.support.debugging :refer :all]))
+            [kuti.support.debugging :refer :all]
+            [kosa.mobile.today.looped.db :refer [next-index]]))
 
 (defn rehydrate [card]
   (as-> (nested/expand-all card :looped-words-of-buddha/audio-attachment) c
@@ -24,18 +25,10 @@
                     :in       '[v]}]
     (map rehydrate (record/query find-query param))))
 
-(defn next-index []
-  (let [find-query '{:find     [(max ?idx)]
-                     :where    [[e :looped-words-of-buddha/index ?idx]]}
-        result (-> (record/q find-query) first first)]
-    (if result
-      (+ 1 result)
-      0)))
-
 (defn save! [e]
   (-> e
       (assoc :kuti/type :looped-words-of-buddha)
-      (assoc-unless :looped-words-of-buddha/index (next-index))
+      (assoc-unless :looped-words-of-buddha/index (next-index :looped-words-of-buddha))
       (nested/collapse-one :looped-words-of-buddha/audio-attachment)
       record/timestamp
       record/publish

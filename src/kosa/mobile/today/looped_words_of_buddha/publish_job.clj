@@ -1,11 +1,7 @@
 (ns kosa.mobile.today.looped-words-of-buddha.publish-job
-  (:require [clojure.tools.logging :as log]
-            [kosa.mobile.today.looped.publish-job :as job]
+  (:require [kosa.mobile.today.looped.publish-job :as job]
             [kosa.mobile.today.looped-words-of-buddha.db :as loop-db]
-            [kosa.mobile.today.words-of-buddha.db :as buddha-db]
-            [kuti.support.types :as types]
-            [kuti.support.time :as time]
-            [kuti.record :as record]))
+            [kosa.mobile.today.words-of-buddha.db :as buddha-db]))
 
 ;; Looping can be compared against:
 ;; https://rss.pariyatti.org/dwob_english.rss

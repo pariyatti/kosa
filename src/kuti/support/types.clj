@@ -6,7 +6,7 @@
              [string :as str]]))
 
 (defn namespace-kw [n kw]
-  (assert (keyword n))
+  (assert (keyword? n))
   (assert (keyword? kw))
   (keyword (name n) (name kw)))
 
