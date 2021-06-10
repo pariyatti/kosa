@@ -1,19 +1,11 @@
 (ns kosa.mobile.today.stacked-inspiration.db
   (:refer-clojure :exclude [list get])
   (:require [kuti.record :as record]
-            [kuti.storage :as storage]
-            [kuti.support.time :as time]
+            [kuti.storage.nested :refer [expand-all]]
             [kuti.record.nested :as nested]))
 
-(defn rehydrate [card]
-  (as-> (nested/expand-all card :stacked-inspiration/image-attachment) c
-    ;; TODO: this behaviour belongs in kuti.storage
-    (assoc-in c
-              [:stacked-inspiration/image-attachment :attm/url]
-              (storage/url (:stacked-inspiration/image-attachment c)))))
-
 (defn list []
-  (map rehydrate (record/list :stacked-inspiration)))
+  (map expand-all (record/list :stacked-inspiration)))
 
 (defn save! [e]
   (-> e
@@ -24,4 +16,4 @@
       record/save!))
 
 (defn get [id]
-  (rehydrate (record/get id)))
+  (expand-all (record/get id)))

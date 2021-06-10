@@ -3,17 +3,11 @@
   (:require [kuti.record :as record]
             [kuti.record.nested :as nested]
             [kuti.storage :as storage]
+            [kuti.storage.nested :refer [expand-all]]
             [kuti.support.debugging :refer :all]))
 
-(defn rehydrate [card]
-  (as-> (nested/expand-all card :looped-words-of-buddha/audio-attachment) c
-    ;; TODO: this behaviour really belongs in kuti.storage
-    (assoc-in c
-              [:looped-words-of-buddha/audio-attachment :attm/url]
-              (storage/url (:looped-words-of-buddha/audio-attachment c)))))
-
 (defn list []
-  (map rehydrate (record/list :words-of-buddha)))
+  (map expand-all (record/list :words-of-buddha)))
 
 (defn q [attr param]
   (let [find-query {:find     '[e updated-at]
@@ -21,7 +15,7 @@
                     :where    [['e attr 'original-pali]
                                '[e :words-of-buddha/updated-at updated-at]]
                     :order-by '[[updated-at :desc]]}]
-    (map rehydrate (record/query find-query param))))
+    (map expand-all (record/query find-query param))))
 
 (defn save! [e]
   (-> e
@@ -32,4 +26,4 @@
       (record/save!)))
 
 (defn get [id]
-  (record/get id))
+  (expand-all (record/get id)))

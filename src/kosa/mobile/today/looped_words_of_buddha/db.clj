@@ -2,20 +2,13 @@
   (:refer-clojure :exclude [list get])
   (:require [kuti.record :as record]
             [kuti.record.nested :as nested]
-            [kuti.storage :as storage]
+            [kuti.storage.nested :refer [expand-all]]
             [kuti.support :refer [assoc-unless]]
             [kuti.support.debugging :refer :all]
             [kosa.mobile.today.looped.db :refer [next-index]]))
 
-(defn rehydrate [card]
-  (as-> (nested/expand-all card :looped-words-of-buddha/audio-attachment) c
-    ;; TODO: this behaviour really belongs in kuti.storage
-    (assoc-in c
-              [:looped-words-of-buddha/audio-attachment :attm/url]
-              (storage/url (:looped-words-of-buddha/audio-attachment c)))))
-
 (defn list []
-  (map rehydrate (record/list :looped-words-of-buddha)))
+  (map expand-all (record/list :looped-words-of-buddha)))
 
 (defn q [attr param]
   (let [find-query {:find     '[e updated-at]
@@ -23,7 +16,7 @@
                                '[e :looped-words-of-buddha/updated-at updated-at]]
                     :order-by '[[updated-at :desc]]
                     :in       '[v]}]
-    (map rehydrate (record/query find-query param))))
+    (map expand-all (record/query find-query param))))
 
 (defn save! [e]
   (-> e
