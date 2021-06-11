@@ -9,30 +9,13 @@
 (def i (sut/->DohaIngester))
 
 (deftest simple-parsing-txt-file
-  (is true)
-  #_(testing "parses out one day without whitespace or separators"
-    (let [f (file-fixtures/file "words_of_buddha_raw.txt")
+  (testing "parses out one day without whitespace or separators"
+    (let [f (file-fixtures/file "doha_raw.txt")
           txt (slurp f)]
-      (is (= {:looped-words-of-buddha/words "Gahakāraka, diṭṭhosi!\nPuna gehaṃ na kāhasi.\nSabbā te phāsukā bhaggā gahakūṭaṃ visaṅkhataṃ.\nVisaṅkhāragataṃ cittaṃ;\ntaṇhānaṃ khayamajjhagā."
-              :looped-words-of-buddha/audio-url (URI. "http://download.pariyatti.org/dwob/dhammapada_11_154.mp3")
-              :looped-words-of-buddha/translations [["en" "O house-builder, you are seen!\nYou will not build this house again.\nFor your rafters are broken and your ridgepole shattered.\nMy mind has reached the Unconditioned;\nI have attained the destruction of craving."]]
-              :looped-words-of-buddha/citepali "Dhammapada 11.154"
-              :looped-words-of-buddha/citepali-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul10.xml#para154")
-              :looped-words-of-buddha/citebook "The Dhammapada: The Buddha's Path of Wisdom, translated from Pāli by Acharya Buddharakkhita"
-              :looped-words-of-buddha/citebook-url (URI. "https://store.pariyatti.org/The-Dhammapada-The-Buddhas-Path-of-Wisdom-Pocket-Edition_p_6305.html")}
-             (first (looped/parse i txt "en"))))))
-
-  #_(testing "parses an entry with vertical whitespace (carriage returns) in translation"
-    (let [f (file-fixtures/file "words_of_buddha_es_vertical_whitespace.txt")
-          txt (slurp f)]
-      (is (= {:looped-words-of-buddha/words "Manopubbaṅgamā dhammā,\nmanoseṭṭhā manomayā.\nManasā ce paduṭṭhena\nbhāsati vā karoti vā,\ntato naṃ dukkhamanveti\ncakkaṃva vahato padaṃ.\n\nManopubbaṅgamā dhammā,\nmanoseṭṭhā manomayā.\nManasā ce pasannena\nbhāsati vā karoti vā,\ntato naṃ sukhamanveti\nchāyāva anapāyinī."
-              :looped-words-of-buddha/audio-url (URI. "http://download.pariyatti.org/dwob/dhammapada_1_1_1_2.mp3")
-              :looped-words-of-buddha/translations [["es" "La mente precede todo fenómeno,\nla mente es lo más importante, todo es producto de la mente.\nSi con una mente impura\nuno ejecuta cualquier acción verbal o física,\nentonces el sufrimiento le seguirá,\ncomo la carreta sigue la huella del animal de tiro.\n\nLa mente precede todo fenómeno,\nla mente es lo más importante, todo es producto de la mente.\nSi con una mente pura\nuno ejecuta cualquier acción verbal o física,\nentonces la felicidad le seguirá,\ncomo una sombra que nunca abandona."]]
-              :looped-words-of-buddha/citepali "Dhammapada 1.1, 1.2"
-              :looped-words-of-buddha/citepali-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul0.xml#para1")
-              :looped-words-of-buddha/citebook "Resumen De Las Charlas del Curso de Diez Dias"
-              :looped-words-of-buddha/citebook-url (URI. "http://store.pariyatti.org/Discourse-Summaries--Spanish_p_2654.html")}
-             (first (looped/parse i txt "es")))))))
+      (is (= {:looped-doha/doha "Dharama Dharama to saba kaheṅ, \npara samajhe nā koya. \nŚuddha citta kā ācaraṇa, \nśuddha Dharama hai soya. \n\nDharama Dharama to saba kaheṅ, \nDharama nā samajhe koya. \nNirmala mana kā ācaraṇa, \nSatya Dharama hai soya."
+              :looped-doha/audio-url (URI. "http://download.pariyatti.org/dohas/008_Doha.mp3")
+              :looped-doha/translations [["en" "Everyone talks about Dhamma \nbut no one understands it. \nPracticing purity of mind— \nthis is true Dhamma. \n\nEveryone talks about Dhamma \nbut no one understands it. \nPracticing purity of mind— \nthis is true Dhamma.\n\n–S.N. Goenka"]]}
+             (first (looped/parse i txt "en")))))))
 
 #_(deftest illegal-characters
   (testing "parses an entry with illegal unicode characters"

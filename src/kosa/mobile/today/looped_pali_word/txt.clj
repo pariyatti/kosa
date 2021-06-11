@@ -38,8 +38,9 @@
     (first (db/find-all :looped-pali-word/pali (:looped-pali-word/pali pali-word))))
 
   (db-insert* [_ pali-word]
-    (db/save! (merge {:looped-pali-word/original-pali (:looped-pali-word/pali pali-word)
-                      :looped-pali-word/original-url (URI. "")}
+    (db/save! (merge #:looped-pali-word
+                     {:original-pali (:looped-pali-word/pali pali-word)
+                      :original-url (URI. "")}
                      pali-word)))
 
   (citations [_ _entity]

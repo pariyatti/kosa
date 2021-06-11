@@ -1,10 +1,37 @@
 (ns kosa.mobile.today.looped-doha.txt
-  (:require [kosa.mobile.today.looped.txt :as txt]
+  (:require [clojure.string :as str]
+            [kosa.mobile.today.looped.txt :as txt]
             [kosa.mobile.today.looped-doha.db :as db]
             [kuti.support.types :as types]
+            [kuti.support.strings :as strings]
             [kuti.storage :as storage]
             [kuti.storage.open-uri :as open-uri])
   (:import [java.net URI]))
+
+(defn shred [marker entry]
+  (->> (str/split entry (re-pattern marker))
+       (map strings/trim!)
+       vec))
+
+(defn repair [marker pair]
+  [(first pair) (str marker (second pair))])
+
+(defn ->audio-url [url]
+  (-> (str/split url #": ")
+      second
+      strings/trim!
+      (URI.)))
+
+(defn shred-blocks [lang v]
+  (let [all-blocks (str/split (second v) (re-pattern "\n\\s*\n"))
+        audio-url (first all-blocks)
+        translation (->> all-blocks
+                         (drop 1)
+                         (str/join "\n\n"))]
+    #:looped-doha
+    {:doha (first v)
+     :audio-url (->audio-url audio-url)
+     :translations [[lang translation]]}))
 
 (deftype DohaIngester []
   txt/Ingester
@@ -20,14 +47,11 @@
 
   (parse [_ txt lang]
     (let [marker (get {"en" "Listen"
-                       "es" "Escuchar"
-                       "fr" "Ecouter " ;; NOTE: yes, it contains a space
-                       "it" "Ascolta"
-                       "pt" "Ouça"
-                       "sr" "Slušaj"
-                       "zh" "Listen"} lang)
+                       "lt" "Klausytis"
+                       "pt" "Escute o áudio"
+                       "zh" "聆聽"} lang)
           m (str marker ": ")]
-      #_(->> (txt/split-file txt)
+      (->> (txt/split-file txt)
            (map strings/trim!)
            (map #(shred m %))
            (map #(repair m %))
@@ -42,13 +66,8 @@
                       :original-url (URI. "")}
                      doha)))
 
-  (citations [_ new]
-    (if (= "en" (-> new :looped-doha/translations first first))
-      (select-keys new [:looped-doha/citepali
-                        :looped-doha/citepali-url
-                        :looped-doha/citebook
-                        :looped-doha/citebook-url])
-      {}))
+  (citations [_ _entity]
+    {})
 
   (download-attachments! [_ lang e]
     (if (= "en" lang)

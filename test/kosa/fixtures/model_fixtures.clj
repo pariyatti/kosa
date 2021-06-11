@@ -46,3 +46,13 @@
           :citebook "The Discourse Summaries by S.N. Goenka"
           :citebook-url (URI. "http://store.pariyatti.org/Discourse-Summaries_p_1650.html")}
          wob))
+
+(defn looped-doha [doha]
+  (merge #:looped-doha
+         {:original-doha "Dasoṅ diśāṇa ke sabhī, \nprāṇī sukhiyā hoṅya. \nNirabhaya hoṅ, nirabaira hoṅ, \nsabhī nirāmaya hoṅya."
+          :original-url (URI. "")
+          :doha "Dasoṅ diśāṇa ke sabhī, \nprāṇī sukhiyā hoṅya. \nNirabhaya hoṅ, nirabaira hoṅ, \nsabhī nirāmaya hoṅya."
+          :audio-attachment (audio-attachment {})
+          :audio-url (URI. "http://download.pariyatti.org/dohas/117a_Doha.mp3")
+          :translations [["en" "In the ten directions, \nmay beings be happy, \nwithout fear or enmity; \nmay all be freed of ills. \n\n–S.N. Goenka"]]}
+         doha))

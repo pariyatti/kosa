@@ -8,9 +8,6 @@
             [kuti.support.debugging :refer :all]
             [kosa.mobile.today.looped.db :refer [next-index]]))
 
-;; TODO: pali word + words of buddha must be refactored
-;;       before work starts on this. -sd
-
 (defn list []
   (map expand-all (record/list :looped-doha)))
 

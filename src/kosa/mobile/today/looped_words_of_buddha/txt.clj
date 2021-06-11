@@ -1,7 +1,6 @@
 (ns kosa.mobile.today.looped-words-of-buddha.txt
   (:require [clojure.set]
             [clojure.string :as str]
-            [clojure.tools.logging :as log]
             [kuti.support.debugging :refer :all]
             [kosa.mobile.today.looped-words-of-buddha.db :as db]
             [kosa.mobile.today.looped.txt :as txt]
