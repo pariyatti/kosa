@@ -51,10 +51,3 @@
 
 (defn seed! []
   (joplin.repl/seed joplin-config :dev))
-
-(defn ingest-pwad!
-  "Ingest a Pali Word TXT file."
-  []
-  (log/info "Ingesting pali words ... don't forget to start server first.")
-  (doseq [txt (-> config/config :txt-feeds :pali-word)]
-    (txt/ingest (:file txt) (:language txt))))

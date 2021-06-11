@@ -3,6 +3,7 @@
             [clojure.tools.logging :as log]
             [kosa.mobile.today.looped-pali-word.txt :as pali-txt]
             [kosa.mobile.today.looped-words-of-buddha.txt :as buddha-txt]
+            [kosa.mobile.today.looped-doha.txt :as doha-txt]
             [dev.repl]))
 
 (defn ingest-txt-pali!
@@ -23,4 +24,14 @@
   (log/info "Ingesting words of buddha ... don't forget to start server first.")
   (doseq [txt (-> config/config :txt-feeds :words-of-buddha)]
     (buddha-txt/ingest (:file txt) (:language txt)))
+  (dev.repl/stop!))
+
+(defn ingest-txt-doha!
+  "Ingest a Doha TXT file."
+  []
+  (log/info "Starting server before ingesting dohas...")
+  (dev.repl/start!)
+  (log/info "Ingesting dohas ... don't forget to start server first.")
+  (doseq [txt (-> config/config :txt-feeds :doha)]
+    (doha-txt/ingest (:file txt) (:language txt)))
   (dev.repl/stop!))

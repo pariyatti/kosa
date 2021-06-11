@@ -1,5 +1,6 @@
 (ns kosa.mobile.today.looped-doha.txt
   (:require [clojure.string :as str]
+            [clojure.tools.logging :as log]
             [kosa.mobile.today.looped.txt :as txt]
             [kosa.mobile.today.looped-doha.db :as db]
             [kuti.support.types :as types]

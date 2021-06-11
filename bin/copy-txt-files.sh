@@ -70,5 +70,5 @@ set -e
         printf "You do not have 'tree' installed.\n"
         printf "Install 'tree' and run 'tree txt' from this directory.\n"
     fi
-    printf "You should see 3 directories and 12 TXT files.\n"
+    printf "You should see 3 directories, 12 TXT files, and 1 README.\n"
 )

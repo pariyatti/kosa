@@ -101,6 +101,9 @@ db-txt-pali: ##@Development Add Looped Pali Words
 db-txt-buddha: ##@Development Add Looped Words of Buddha
 	lein db-txt-buddha
 
+db-txt-doha: ##@Development Add Looped Dohas
+	lein db-txt-doha
+
 test: ##@Development Run tests with lein
 #lein run -- -mf config/config.test.edn
 	lein test

@@ -94,7 +94,8 @@
             "db-pending"    ["run" "-m" "joplin.crux.alias/pending"  "joplin/config.edn"]
             "db-create"     ["run" "-m" "joplin.crux.alias/create"   "joplin/config.edn" "dev" "crux-dev"]
             "db-txt-pali"   ["run" "-m" "dev.alias/ingest-txt-pali!"]
-            "db-txt-buddha" ["run" "-m" "dev.alias/ingest-txt-buddha!"]}
+            "db-txt-buddha" ["run" "-m" "dev.alias/ingest-txt-buddha!"]
+            "db-txt-doha"   ["run" "-m" "dev.alias/ingest-txt-doha!"]}
 
   :repl-options {:init-ns dev.repl}
   :profiles {:uberjar {:aot      :all
