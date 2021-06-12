@@ -38,6 +38,7 @@
                  [remus "0.2.1"]
                  ;; data:
                  [buddy/buddy-core "1.9.0"]
+                 [buddy/buddy-auth "3.0.1"]
                  [juxt/crux-core "21.01-1.14.0-beta"]
                  [juxt/crux-rocksdb "21.01-1.14.0-beta"]
                  [juxt/crux-lucene "21.01-1.14.0-alpha"]
