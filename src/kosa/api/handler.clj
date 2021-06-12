@@ -4,6 +4,7 @@
             [kosa.library.artefacts.image.db :as image-db]
             [kosa.mobile.today.pali-word.db :as pali-word-db]
             [kosa.mobile.today.words-of-buddha.db :as words-of-buddha-db]
+            [kosa.mobile.today.doha.db :as doha-db]
             [kosa.mobile.today.stacked-inspiration.db :as stacked-inspiration-db]
             [ring.util.response :as resp]))
 
@@ -48,10 +49,14 @@
      :header "Words of Buddha"
      :bookmarkable true
      :shareable true
-     :pali (:words-of-buddha/words card)
+     :words (:words-of-buddha/words card)
      :translations (map (fn [t] {:language (first t)
                                  :translation (second t)})
                         (:words-of-buddha/translations card))
+     :citepali     (:words-of-buddha/citepali card)
+     :citepali-url (:words-of-buddha/citepali-url card)
+     :citebook     (:words-of-buddha/citebook card)
+     :citebook-url (:words-of-buddha/citebook-url card)
      ;; TODO: seed data?
      :image {:url "/uploads/kuti-d54d85868f2963a4efee91e5c86e1679-bodhi-leaf.jpg"}}))
 
@@ -70,6 +75,38 @@
      :shareable true
      :text (:words-of-buddha/words card)
      ;; TODO: seed data?
+     :image {:url "/uploads/kuti-d54d85868f2963a4efee91e5c86e1679-bodhi-leaf.jpg"}}))
+
+(defn doha->json [card]
+  (let [published (:doha/published-at card)
+        date (time/string (or published kosa-epoch))]
+    {:type "doha"
+     :id (:crux.db/id card)
+     :published_at date
+     :created_at date
+     :updated_at date
+     :header "Daily Doha"
+     :bookmarkable true
+     :shareable true
+     :doha (:doha/doha card)
+     :translations (map (fn [t] {:language (first t)
+                                 :translation (second t)})
+                        (:doha/translations card))}))
+
+(defn doha->fake-json [card]
+  (let [published (:doha/published-at card)
+        date (time/string (or published kosa-epoch))]
+    ;; TODO: this requires its own type, but the mobile app doesn't support
+    ;;       that yet. -sd
+    {:type "stacked_inspiration"
+     :id (:crux.db/id card)
+     :published_at date
+     :created_at date
+     :updated_at date
+     :header "Daily Doha"
+     :bookmarkable true
+     :shareable true
+     :text (:doha/doha card)
      :image {:url "/uploads/kuti-d54d85868f2963a4efee91e5c86e1679-bodhi-leaf.jpg"}}))
 
 (defn stacked-inspiration->json [card]
@@ -91,6 +128,8 @@
         (map pali-word->json (pali-word-db/list))
         (map words-of-buddha->fake-json (words-of-buddha-db/list))
         (map words-of-buddha->json (words-of-buddha-db/list))
+        (map doha->fake-json (doha-db/list))
+        (map doha->json (doha-db/list))
         (map stacked-inspiration->json (stacked-inspiration-db/list)))))
 
 (defn today [req]
