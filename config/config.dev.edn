@@ -33,6 +33,12 @@
          :offset-seconds 1
          :period-seconds 5
          :job-fn kosa.mobile.today.looped-words-of-buddha.publish-job/run-job!
+         :enabled false}
+
+        {:job-name :txt-publisher-doha
+         :offset-seconds 1
+         :period-seconds 5
+         :job-fn kosa.mobile.today.looped-doha.publish-job/run-job!
          :enabled false}]
 
  :supported-languages ["en" "es" "fr" "it" "lt" "pt" "sr" "zh"]
