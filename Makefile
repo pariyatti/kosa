@@ -117,3 +117,6 @@ run: ##@Development Start a development server
 repl: ##@Development Start a Clojure REPL
 	$(info Run `(start!)` in the REPL to start the server.)
 	lein repl
+
+run-prod: ##@Production Start a production server
+	lein run -- -sf config/config.prod.edn
