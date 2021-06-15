@@ -13,6 +13,9 @@
     (mailer/send-alert (format "Kuti.job '%s' failed:\n\n%s" job-name e))
     :continue-schedule))
 
+;; TODO: Should we consider cron-style recurring events instead, so they are more
+;;       consistent, regardless of when the server was started? -sd
+;;       https://github.com/ivarref/recurring-cup
 (defn load-job [{:keys [job-name offset-seconds period-seconds job-fn enabled]}]
   (when-not enabled
     ;; please excuse the Java-style guard
