@@ -104,6 +104,9 @@ db-txt-buddha: ##@Development Add Looped Words of Buddha
 db-txt-doha: ##@Development Add Looped Dohas
 	lein db-txt-doha
 
+db-migrate-prod: ##@Development Migrate up
+	lein db-migrate prod
+
 test: ##@Development Run tests with lein
 #lein run -- -mf config/config.test.edn
 	lein test

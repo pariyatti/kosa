@@ -29,8 +29,18 @@
                                         :sync?       true}}
           :crux.lucene/lucene-store {:db-dir "data/test/lucene-dir"}}}
 
-  ;; :crux-prod {:type :crux, :conf xyz}
-  }
+  :crux-prod
+  {:type :crux
+   :conf {:crux/tx-log {:kv-store {:crux/module crux.rocksdb/->kv-store
+	                                 :db-dir      "data/prod/tx-log"
+                                   :sync?       true}}
+	        :crux/document-store {:kv-store {:crux/module crux.rocksdb/->kv-store
+	                                         :db-dir      "data/prod/doc-store"
+                                           :sync?       true}}
+          :crux/index-store {:kv-store {:crux/module crux.rocksdb/->kv-store
+	                                      :db-dir      "data/prod/index-store"
+                                        :sync?       true}}
+          :crux.lucene/lucene-store {:db-dir "data/prod/lucene-dir"}}}}
 
  :environments {:dev [{:db       :crux-dev
                        :migrator :crux-mig
@@ -38,6 +48,8 @@
                 :test [{:db       :crux-test
                         :migrator :crux-mig
                         :seed     :crux-seed}]
-                ;; :prod [{:db :crux-prod, :migrator :crux-mig}]
-                }
-}
+                :prod [{:db       :crux-prod
+                        :migrator :crux-mig
+                        :seed     :crux-seed}]}
+
+ }
