@@ -26,21 +26,21 @@
          :offset-seconds 1
          :period-seconds 86400 ;; 24 hrs
          :job-fn kosa.mobile.today.looped-pali-word.publish-job/run-job!
-         :enabled true}
+         :enabled false}
 
         {:job-name :txt-publisher-words-of-buddha
          :offset-seconds 1
          :period-seconds 86400 ;; 24 hrs
          :job-fn kosa.mobile.today.looped-words-of-buddha.publish-job/run-job!
-         :enabled true}
+         :enabled false}
 
         {:job-name :txt-publisher-doha
          :offset-seconds 1
          :period-seconds 86400 ;; 24 hrs
          :job-fn kosa.mobile.today.looped-doha.publish-job/run-job!
-         :enabled true}]
+         :enabled false}]
 
- :supported-languages ["en" "es" "fr" "it" "pt" "sr" "zh"]
+ :supported-languages ["en" "es" "fr" "it" "lt" "pt" "sr" "zh"]
 
  :txt-feeds {:pali-word [{:language "en"
                           :file "txt/pali/pali_words_one_loop.txt"}]
