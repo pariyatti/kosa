@@ -68,6 +68,12 @@ journalctl -u kosa-app --since="30 min ago"
 journalctl -u kosa-app > this-is-a-real-txt-file.log
 ```
 
+View Caddy logs similarly:
+
+```sh
+sudo journalctl -u caddy
+```
+
 ## How it works?
 
 We'll be using ansible to setup our machines, and do incremental updates.
