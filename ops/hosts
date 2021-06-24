@@ -3,3 +3,6 @@ kosa.oxal.org ansible_python_interpreter=/usr/bin/python3
 
 kosa-sandbox.pariyatti.org ansible_python_interpreter=/usr/bin/python3
 kosa.pariyatti.org ansible_python_interpreter=/usr/bin/python3
+
+kosa-sandbox.pariyatti.app ansible_python_interpreter=/usr/bin/python3
+kosa.pariyatti.app ansible_python_interpreter=/usr/bin/python3
