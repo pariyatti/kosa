@@ -59,6 +59,14 @@ After the server has been provisioned, we use this command to deploy Kosa:
 ansible-playbook --limit "kosa-staging.pariyatti.app" -i hosts deploy.yml
 ```
 
+## Troubleshooting
+
+You can view logs with:
+
+```sh
+journalctl -u kosa-app --since="30 min ago"
+journalctl -u kosa-app > this-is-a-real-txt-file.log
+```
 
 ## How it works?
 
