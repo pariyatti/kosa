@@ -15,6 +15,7 @@ app_dir: "{{ repo_dir }}"
 
 env_file: "{{ srv_dir }}/.env"
 pre_deploy_cmd: "ops/pre_deploy"
+migrate_cmd: "ops/migrate"
 
 app_env_vars:
   var_name: "var_value"

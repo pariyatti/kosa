@@ -63,7 +63,7 @@
         - app daemon reload
         - app restart
 
-    - name: make sure app server is running
+    - name: ensure kosa is running
       systemd: name={{ app_name }} state=started enabled=yes
       become: yes
 
@@ -97,11 +97,25 @@
       npm:
         path: "{{ app_dir }}"
 
-    - name: build css / js production assets pipeline
+    - name: stop kosa
+      systemd: name={{ app_name }} state=stopped
+      become: yes
+
+    - name: install deps, build css / js production assets pipeline
       tags: code
       command: "{{ pre_deploy_cmd }}"
       args:
         chdir: "{{ app_dir }}"
+
+    - name: migrate crux database
+      tags: code
+      command: "{{ migrate_cmd }}"
+      args:
+        chdir: "{{ app_dir }}"
+
+    - name: start kosa
+      systemd: name={{ app_name }} state=started enabled=yes
+      become: yes
 
   handlers:
     - name: caddy daemon reload
