@@ -27,8 +27,8 @@
                  [http-kit "2.5.3"]
                  [com.draines/postal "2.0.4"]
                  ;; web:
-                 [pro.juxt.clojars-mirrors.ring/ring-core "1.9.2"]
-                 ;; [ring/ring-core "1.8.2"]
+                 ;; [pro.juxt.clojars-mirrors.ring/ring-core "1.9.2"]
+                 [ring/ring-core "1.9.2"]
                  [ring/ring-jetty-adapter "1.9.3"]
                  [ring/ring-json "0.5.1"]
                  [ring-logger "1.0.1"]
