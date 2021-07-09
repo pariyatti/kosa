@@ -17,7 +17,9 @@
    :authfn used with Buddy backends. Not strictly necessary, but probably
    less confusing in the future."
   ([{:keys [uri]}]
-   (or (re-matches #"^/api.*" uri)
+   (or (= "/" uri)
+       (re-matches #"^/login.*" uri)
+       (re-matches #"^/api.*" uri)
        (re-matches #"^/ping.*" uri)))
   ([req _authdata]
    (always-allow? req)))

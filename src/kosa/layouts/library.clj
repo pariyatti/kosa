@@ -5,14 +5,15 @@
             [kosa.layouts.shared.head :as head]
             [kosa.layouts.shared.header :as header]))
 
-(defn app [title & content]
+(defn app [req title & content]
   (h/html5 {:lang "en"
             :encoding "UTF-8"}
            (head/render
             [:title (str "Pariyatti Library - " title)])
 
            [:body
-            (header/render "Pariyatti Library" "/library"
+            (header/render req
+                           "Pariyatti Library" "/library"
                            "Pariyatti Mobile Admin" "/mobile")
             [:div {:class "main-container"}
            ;; TODO: pass a flash map

@@ -1,4 +1,4 @@
-(ns kosa.layouts.mobile
+(ns kosa.layouts.auth
   (:require [hiccup.page :as h]
             [kosa.layouts.shared.flash :as flash]
             [kosa.layouts.shared.footer :as footer]
@@ -9,12 +9,12 @@
   (h/html5 {:lang "en"
             :encoding "UTF-8"}
            (head/render
-            [:title (str "Pariyatti Mobile - " title)])
+            [:title (str "Pariyatti Kosa - " title)])
 
            [:body
             (header/render req
-                           "Pariyatti Mobile Admin" "/mobile"
-                           "Pariyatti Library" "/library")
+                           "Pariyatti Kosa" "/"
+                           nil nil)
             [:div {:class "main-container"}
              ;; TODO: pass a flash map
              (flash/render {})
