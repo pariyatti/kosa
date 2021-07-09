@@ -30,16 +30,4 @@
             [:a.link {:href (v/index-path req :pali-words)}
              "Manage Cards"]
             [:a.btn.btn-primary {:href (v/new-path req :pali-words)}
-             "Create Card"]]]
-
-          [:div {:class "page-heading"}
-           [:div {:class "header-and-link"}
-            [:h1 {:class "page-header"} "Import Data"]
-            [:span {:class "page-subtitle"} "Import card data directly from raw files."]]]
-
-          [:ul {:class "card-types"}
-           [:li {:class "card-type"}
-            [:h3 "Daily Words of the Buddha"]
-            [:p ""]
-            [:a.btn.btn-primary #_{:href (v/new-path req :import)}
-             "Import TXT File"]]]]))
+             "Create Card"]]]]))
