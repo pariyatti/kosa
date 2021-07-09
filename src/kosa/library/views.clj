@@ -3,7 +3,7 @@
             [kosa.views :as v]))
 
 (defn index [req]
-  (l/app "Home"
+  (l/app req "Home"
          [:div {:class "section-all-artefacts"}
 
           [:div {:class "page-heading"}

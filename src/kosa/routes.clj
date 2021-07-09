@@ -4,6 +4,7 @@
             [kosa.library.artefacts.image.handler :as image-handler]
             [kosa.library.artefacts.image.spec]
             [kosa.api.handler :as api-handler]
+            [kosa.auth.handler :as auth-handler]
             [kosa.mobile.handler]
             [kosa.mobile.today.pali-word.handler :as pali-word-handler]
             [kosa.mobile.today.pali-word.spec]
@@ -17,7 +18,8 @@
             [reitit.dev.pretty :as pretty]
             [ring.util.response :as resp]
             [kosa.middleware.validation :refer [wrap-spec-validation]]
-            [kosa.middleware]))
+            [kosa.middleware]
+            [buddy.auth :as auth]))
 
 (defn pong [_request]
   (resp/response "pong"))
@@ -45,13 +47,17 @@
 (def router
   (rr/router
    ["/" [["" {:name    ::root
-              :handler (fn [req] (redirect "/mobile"))}]
+              :handler (fn [req] (if (auth/authenticated? req)
+                                   (redirect "/mobile")
+                                   (redirect "/login")))}]
          ["ping" {:name    ::ping
                   :handler pong}]
          ["api/v1/today.json" {:name    :kosa.routes.api/today
                                :handler api-handler/today}]
          ["api/v1/search.json" {:name    :kosa.routes.api/search
                                 :handler api-handler/search}]
+         ["login" {:name    ::login
+                   :handler auth-handler/login}]
 
          ["library" [["" {:name    ::library-index
                           :handler kosa.library.handler/index}]

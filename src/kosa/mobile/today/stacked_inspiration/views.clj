@@ -22,7 +22,7 @@
     [:li {:class "card-action-link"} "Destroy"]]])
 
 (defn index [req cards]
-  (p/app "Stacked Inspiration Card Index"
+  (p/app req "Stacked Inspiration Card Index"
    [:p {:id "notice"}
     "&lt;%= notice %&gt;"]
    [:div {:class "page-heading"}
@@ -51,7 +51,7 @@
                        :height "128"}]]]]]))
 
 (defn show [req card]
-  (p/app "Show Stacked Inspiration Card"
+  (p/app req "Show Stacked Inspiration Card"
          (show* card)
          [:ul {:class "card-action-links"}
            [:li {:class "card-action-link"} "Edit"]
@@ -82,7 +82,7 @@
     (f/submit-button {:name "submit"} "Save")]])
 
 (defn new [req]
-  (p/app "New Stacked Inspiration Card"
+  (p/app req "New Stacked Inspiration Card"
    [:div {:class "page-heading"}
     [:div {:class "breadcrumb"}
      [:a {:href (v/index-path req :mobile)}

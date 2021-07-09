@@ -23,7 +23,7 @@
     [:li {:class "card-action-link"} "Destroy"]]])
 
 (defn index [req cards]
-  (p/app "Pali Word Card Index"
+  (p/app req "Pali Word Card Index"
    [:p {:id "notice"}
     "&lt;%= notice %&gt;"]
    [:div {:class "page-heading"}
@@ -51,7 +51,7 @@
        [:td (second t)]])]))
 
 (defn show [req card]
-  (p/app "Show Pali Word Card"
+  (p/app req "Show Pali Word Card"
          (show* card)
          [:ul {:class "card-action-links"}
            [:li {:class "card-action-link"} "Edit"]
@@ -98,7 +98,7 @@
 )
 
 (defn new [req]
-  (p/app "New Pali Word Card"
+  (p/app req "New Pali Word Card"
    [:div {:class "page-heading"}
     [:div {:class "breadcrumb"}
      [:a {:href (v/index-path req :mobile)}

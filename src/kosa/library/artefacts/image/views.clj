@@ -29,7 +29,7 @@
      "&nbsp;Create Image Artefact"]]])
 
 (defn index [req images]
-  (l/app "Image Artefacts"
+  (l/app req "Image Artefacts"
          [:div {:class "section-all-artefacts"}
           (index-header req)
           [:div {:class "artefacts-wrapper"}
@@ -54,7 +54,7 @@
     (f/submit-button {:name "submit"} "Save")]])
 
 (defn new [req]
-  (l/app "New Image Artefact"
+  (l/app req "New Image Artefact"
          (header req "New Image Artefact"
                  [{:path (v/index-path req :library)
                    :text "Library"}
@@ -79,7 +79,7 @@
      [:td (:original-url image)]]]))
 
 (defn show [req image]
-  (l/app "Show Image Artefact"
+  (l/app req "Show Image Artefact"
          (header req "Show Image Artefact"
                  [{:path (v/index-path req :library)
                    :text "Library"}
@@ -107,7 +107,7 @@
               (f/submit-button {:name "submit"} "Save")]))
 
 (defn edit [req image]
-  (l/app "Edit Image Artefact"
+  (l/app req "Edit Image Artefact"
          (header req "Edit Image Artefact"
                  [{:path (v/index-path req :library)
                    :text "Library"}
