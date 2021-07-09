@@ -4,8 +4,7 @@
             [buddy.hashers :as hashers]
             [buddy.auth.middleware :refer [wrap-authentication
                                            wrap-authorization]]
-            [kosa.middleware.auth-backends :as kosa-backends]
-            [kuti.support.debugging :refer [dbg]]))
+            [kosa.middleware.auth-backends :as kosa-backends]))
 
 ;; NOTE: `derive` uses a random salt by default and you will not
 ;;       get this same hash again if you recreate it from the password. -sd
@@ -56,7 +55,6 @@
 
 (defn basic-auth-middleware [handler]
   (fn [request]
-    (dbg "always allow? (basic auth)" (always-allow? request))
     (if (or (always-allow? request)
             (authenticated? request))
       (handler request)
