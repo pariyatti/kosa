@@ -105,6 +105,7 @@ db-txt-doha: ##@Development Add Looped Dohas
 	lein db-txt-doha
 
 db-migrate-prod: ##@Development Migrate up
+	rm -rf ./data/prod/index-store
 	lein db-migrate prod
 
 test: ##@Development Run tests with lein
