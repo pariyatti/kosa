@@ -17,6 +17,8 @@
 
     - name: clone txt files from private repo
       tags: code
+      environment:
+        GIT_SSH_COMMAND: "ssh -i {{ DEPLOY_KEY_PATH }}"
       make:
         chdir: "{{ app_dir }}"
         target: "{{ seed_txt_clone_target }}"
