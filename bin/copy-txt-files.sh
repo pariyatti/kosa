@@ -11,6 +11,11 @@ set -e
         printf "'copy-txt-files.sh' must be run from Kosa root. Exiting.\n"
         exit 1
     fi
+    if [[ -z "${GIT_SSH_COMMAND}" ]]; then
+        printf "####\n"
+        printf "GIT_SSH_COMMAND is empty. Exiting.\n"
+        exit 1
+    fi
     printf "...sane.\n"
 
     #### Step 1: add github.com fingerprint ####
