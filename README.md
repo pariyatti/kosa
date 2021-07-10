@@ -17,7 +17,7 @@ Follow the instructions under [Development](https://github.com/pariyatti/kosa#de
 
 ## Deployment
 
-TODO: Move Ansible deployment from `kosa-rails` and adjust for Clojure + Crux.
+Follow the [Ops Readme](https://github.com/pariyatti/kosa/blob/master/ops/README.md).
 
 ## Development
 
@@ -36,6 +36,17 @@ Install `lein` as described [here](https://leiningen.org/#install)
 
 ### Install NPM
 Install `npm` (nodejs LTS) as described [here](https://nodejs.org/en/download/). Sorry.
+
+### Add Secrets
+
+Create a Gmail [app password](https://myaccount.google.com/apppasswords) and add the
+following file to `~/.kosa/secrets.edn` on your local machine:
+
+```clojure
+{:mailer {:user "YOUR_NAME@gmail.com"
+          :pass "GMAIL_APP_PASSWORD"
+          :default-options {:to "some-other@email.com"}}}
+```
 
 ### Build kosa
 

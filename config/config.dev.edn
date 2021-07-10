@@ -1,4 +1,4 @@
-{:secrets #include #join [#env HOME "/.kosa-secrets.edn"]
+{:secrets #include #join [#env HOME "/.kosa/secrets.edn"]
 
  :db-spec {:data-dir "data/dev/"
            :crux-http-port 9999}

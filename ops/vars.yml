@@ -1,6 +1,7 @@
 ansible_conf_dir: "."
 user_acc: kosa-user
-key_name: "kosa-key"
+key_dir: "~/.kosa"
+key_name: "kosa_key"
 DEPLOY_KEY_PATH: /home/{{ user_acc }}/.ssh/{{ key_name }}
 
 repo_name: kosa
@@ -16,7 +17,9 @@ app_dir: "{{ repo_dir }}"
 env_file: "{{ srv_dir }}/.env"
 pre_deploy_target: "init"
 migrate_target: "db-migrate-prod"
-seed_txt_target: "db-txt-prod"
+seed_txt_clean_target: "txt-clean"
+seed_txt_clone_target: "txt-clone"
+seed_txt_apply_target: "db-txt-prod"
 
 app_env_vars:
   var_name: "var_value"

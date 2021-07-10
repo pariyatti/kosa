@@ -5,21 +5,21 @@
     - vars.yml
 
   tasks:
-    # - name: copy priv key to server
-    #   copy:
-    #     src: "{{ ansible_conf_dir }}/{{ key_name }}"
-    #     dest: "{{ DEPLOY_KEY_PATH }}"
-    #     owner: "{{ user_acc }}"
-    #     group: "{{ user_acc }}"
-    #     mode: 0700
+    - name: copy priv key to server
+      copy:
+        src: "{{ key_dir }}/{{ key_name }}"
+        dest: "{{ DEPLOY_KEY_PATH }}"
+        owner: "{{ user_acc }}"
+        group: "{{ user_acc }}"
+        mode: 0600
 
-    # - name: copy pub key to server
-    #   copy:
-    #     src: "{{ ansible_conf_dir }}/{{ key_name }}.pub"
-    #     dest: "{{ DEPLOY_KEY_PATH }}.pub"
-    #     owner: "{{ user_acc }}"
-    #     group: "{{ user_acc }}"
-    #     mode: 0655
+    - name: copy pub key to server
+      copy:
+        src: "{{ key_dir }}/{{ key_name }}.pub"
+        dest: "{{ DEPLOY_KEY_PATH }}.pub"
+        owner: "{{ user_acc }}"
+        group: "{{ user_acc }}"
+        mode: 0644
 
     - name: ensure srv directory exists
       file:

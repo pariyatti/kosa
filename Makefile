@@ -36,6 +36,9 @@ icons:
 	cp node_modules/@clr/icons/clr-icons.min.js resources/public/js/clr-icons.min.js
 	rm -rf node_modules
 
+~/.kosa:
+	mkdir -p ~/.kosa
+
 tmp/storage:
 	mkdir -p tmp/storage
 
@@ -61,7 +64,7 @@ css-auto: ##@Development Rebuild CSS continuously (kinda broken?)
 cljs-auto: ##@Development Rebuild CLJS continuously
 	lein cljsbuild auto
 
-init: tmp/storage resources/storage tools deps assets ##@Setup Dev Setup
+init: ~/.kosa tmp/storage resources/storage tools deps assets ##@Setup Dev Setup
 
 txt-clean: ##@Setup Remove all TXT-related directories
 	rm -rf txt/pali   && mkdir -p txt/pali   && touch txt/pali/.keep

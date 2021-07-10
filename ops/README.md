@@ -17,11 +17,20 @@ sudo easy_install pip
 sudo pip install ansible --quiet
 ```
 
-### Install Ansible dependencies:
+### Install Ansible dependencies
 
 ``` sh
 ansible-galaxy collection install ansible.posix
 ```
+
+### Install Deploy Key
+
+To seed the database with "Looped" feeds, the server will require access
+to the private https://github.com/pariyatti/Daily_emails_RSS/ repo. A
+deploy key for this repo is provided in the `vault` under `Deployment` =>
+`~/.kosa/kosa_key` and `~/.kosa/kosa_key.pub`. Copy the contents of those
+secrets to files with those same names on your _local computer._ The
+Ansible scripts will use those local files to push the keys to the server.
 
 ## 2. One-time setup: provisioning servers
 
