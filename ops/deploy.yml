@@ -29,7 +29,7 @@
         group: "{{ user_acc }}"
       become: yes
 
-    - name: Clone/pull project repo
+    - name: clone/pull project repo
       tags: code
       git:
         repo: "{{ repo_url }}"
@@ -53,7 +53,7 @@
         - app daemon reload
         - app restart
 
-    - name: Update app service file
+    - name: update app service file
       tags: env
       template:
         src: "{{ app_name }}.service.j2"
@@ -103,15 +103,15 @@
 
     - name: install deps, build css / js production assets pipeline
       tags: code
-      command: "{{ pre_deploy_cmd }}"
-      args:
+      make:
         chdir: "{{ app_dir }}"
+        target: "{{ pre_deploy_target }}"
 
     - name: migrate crux database
       tags: code
-      command: "{{ migrate_cmd }}"
-      args:
+      make:
         chdir: "{{ app_dir }}"
+        target: "{{ migrate_target }}"
 
     - name: start kosa
       systemd: name={{ app_name }} state=started enabled=yes
