@@ -59,6 +59,15 @@ After the server has been provisioned, we use this command to deploy Kosa:
 ansible-playbook --limit "kosa-staging.pariyatti.app" -i hosts deploy.yml
 ```
 
+## 4. Seed Data (Looped TXTs)
+
+After Kosa is deployed the first time, we use this command to add seed data.
+It adds Looped `Pali Word`, `Words of Buddha`, and `Daily Doha` cards to the db:
+
+``` sh
+ansible-playbook --limit "kosa-staging.pariyatti.app" -i hosts seed_looped_txt.yml
+```
+
 ## Troubleshooting
 
 You can view logs with:

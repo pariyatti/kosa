@@ -104,9 +104,7 @@ db-txt-buddha: ##@Development Add Looped Words of Buddha
 db-txt-doha: ##@Development Add Looped Dohas
 	lein db-txt-doha
 
-db-migrate-prod: ##@Development Migrate up
-	rm -rf ./data/prod/index-store
-	lein db-migrate prod
+db-txt-all: db-txt-pali db-txt-buddha db-txt-doha ##@Development Add all (3x) looped cards
 
 test: ##@Development Run tests with lein
 #lein run -- -mf config/config.test.edn
@@ -127,6 +125,15 @@ run: ##@Development Start a development server
 repl: ##@Development Start a Clojure REPL
 	$(info Run `(start!)` in the REPL to start the server.)
 	lein repl
+
+db-migrate-prod: ##@Production Migrate up
+	rm -rf ./data/prod/index-store
+	lein db-migrate prod
+
+db-txt-prod: ##@Production Add all (3x) looped cards
+	lein db-txt-pali   prod
+	lein db-txt-buddha prod
+	lein db-txt-doha   prod
 
 run-prod: ##@Production Start a production server
 	lein run -- -sf config/config.prod.edn

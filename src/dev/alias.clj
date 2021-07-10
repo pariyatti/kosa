@@ -6,32 +6,32 @@
             [kosa.mobile.today.looped-doha.txt :as doha-txt]
             [dev.repl]))
 
+(defn get-ingest-fn [card-type]
+  (get {:pali-word       pali-txt/ingest
+        :words-of-buddha buddha-txt/ingest
+        :doha            doha-txt/ingest} (keyword card-type)))
+
+(defn ingest!
+  "Ingest a TXT file."
+  [conf card-type]
+  (log/info (format "Starting server before ingesting %s..." card-type))
+  (dev.repl/start! (dev.repl/get-conf conf))
+  (log/info (format "Ingesting %s..." card-type))
+  (doseq [txt (-> config/config :txt-feeds (get card-type))]
+    ((get-ingest-fn card-type) (:file txt) (:language txt)))
+  (dev.repl/stop!))
+
 (defn ingest-txt-pali!
   "Ingest a Pali Word TXT file."
-  []
-  (log/info "Starting server before ingesting pali words...")
-  (dev.repl/start!)
-  (log/info "Ingesting pali words ... don't forget to start server first.")
-  (doseq [txt (-> config/config :txt-feeds :pali-word)]
-    (pali-txt/ingest (:file txt) (:language txt)))
-  (dev.repl/stop!))
+  ([] (ingest-txt-pali! :dev))
+  ([conf] (ingest! conf :pali-word)))
 
 (defn ingest-txt-buddha!
   "Ingest a Words of Buddha TXT file."
-  []
-  (log/info "Starting server before ingesting words of buddha...")
-  (dev.repl/start!)
-  (log/info "Ingesting words of buddha ... don't forget to start server first.")
-  (doseq [txt (-> config/config :txt-feeds :words-of-buddha)]
-    (buddha-txt/ingest (:file txt) (:language txt)))
-  (dev.repl/stop!))
+  ([] (ingest-txt-buddha! :dev))
+  ([conf] (ingest! conf :words-of-buddha)))
 
 (defn ingest-txt-doha!
   "Ingest a Doha TXT file."
-  []
-  (log/info "Starting server before ingesting dohas...")
-  (dev.repl/start!)
-  (log/info "Ingesting dohas ... don't forget to start server first.")
-  (doseq [txt (-> config/config :txt-feeds :doha)]
-    (doha-txt/ingest (:file txt) (:language txt)))
-  (dev.repl/stop!))
+  ([] (ingest-txt-doha! :dev))
+  ([conf] (ingest! conf :doha)))

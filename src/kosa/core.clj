@@ -38,6 +38,7 @@
             :wrap-in))
 
 (defn start [opts]
+  {:pre [(not (nil? opts))]}
   (log/info (format "Starting the server with options: %s" opts))
   (-> (mount/with-args opts)
       (mount/only #{#'config/config

@@ -16,6 +16,11 @@
 
 (def dev-opts {:options {:config-file "config/config.dev.edn"}})
 (def test-opts {:options {:config-file "config/config.test.edn"}})
+(def prod-opts {:options {:config-file "config/config.prod.edn"}})
+(defn get-conf [conf]
+  (get {:dev  dev-opts
+        :test test-opts
+        :prod prod-opts} (keyword conf)))
 
 (defn start!
   "Behaves like `-main` and provides default dev command line opts."

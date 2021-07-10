@@ -1,0 +1,20 @@
+---
+- hosts: app
+  remote_user: "{{ user_acc }}"
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: stop kosa
+      systemd: name={{ app_name }} state=stopped
+      become: yes
+
+    - name: seed (3x looped txt card types) crux database
+      tags: code
+      make:
+        chdir: "{{ app_dir }}"
+        target: "{{ seed_txt_target }}"
+
+    - name: start kosa
+      systemd: name={{ app_name }} state=started enabled=yes
+      become: yes
