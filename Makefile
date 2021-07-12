@@ -131,6 +131,7 @@ repl: ##@Development Start a Clojure REPL
 
 db-migrate-prod: ##@Production Migrate up
 	rm -rf ./data/prod/index-store
+	rm -rf ./data/prod/lucene-dir
 	lein db-migrate prod
 
 db-txt-prod: ##@Production Add all (3x) looped cards
