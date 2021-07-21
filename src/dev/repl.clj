@@ -10,6 +10,7 @@
             [mount.core :as mount]
             [kosa.library.artefacts.image.db :as image]
             [kosa.mobile.today.looped-pali-word.txt :as txt]
+            [crux.api :as x]
             [clojure.tools.logging :as log]))
 
 (def joplin-config (*load-config* "joplin/config.edn"))
@@ -56,3 +57,6 @@
 
 (defn seed! []
   (joplin.repl/seed joplin-config :dev))
+
+(defn node []
+  (kuti.record.core/get-crux-node))

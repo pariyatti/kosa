@@ -17,6 +17,8 @@
 (def timestamp-keys #{:created-at :updated-at :published-at})
 
 (def crux-node)
+(defn get-crux-node []
+  crux-node)
 
 (defn- data-dir []
   (get-in config/config [:db-spec :data-dir]))
