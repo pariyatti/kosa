@@ -47,10 +47,10 @@
     "Daily Doha")
 
   (parse [_ txt lang]
-    (let [marker (get {"en" "Listen"
-                       "lt" "Klausytis"
-                       "pt" "Escute o áudio"
-                       "zh" "聆聽"} lang)
+    (let [marker (get {"eng" "Listen"
+                       "lit" "Klausytis"
+                       "por" "Escute o áudio"
+                       "zho-hant" "聆聽"} lang)
           m (str marker ": ")]
       (->> (txt/split-file txt)
            (map strings/trim!)
@@ -71,7 +71,7 @@
     {})
 
   (download-attachments! [_ lang e]
-    (if (= "en" lang)
+    (if (= "eng" lang)
       (let [file (open-uri/download-uri! (:looped-doha/audio-url e))]
         (storage/attach! e :looped-doha/audio-attachment file))
       e)))

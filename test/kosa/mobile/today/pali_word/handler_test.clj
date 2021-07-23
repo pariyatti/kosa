@@ -23,7 +23,7 @@
   (let [audio {:url "/audio/path"}
         translations [{:crux.db/id (uuid)
                        :translation translation
-                       :language "en"}]]
+                       :language "eng"}]]
     {:crux.db/id (uuid)
      :kuti/type :pali-word
      :pali-word/updated-at time-fixtures/win95
@@ -47,7 +47,7 @@
     (let [params {:type "pali_word",
                   :header "Pali Word",
                   :pali "rani",
-                  :language ["hi" "en" "cn"],
+                  :language ["hin" "eng" "zho-hans"],
                   :translation ["rani" "queen" "wx"],
                   :submit "Save"}
           req {:params params
@@ -55,14 +55,14 @@
           response (pali-word-handler/create req)
           uuid (-> response :headers (get "Location") (clojure.string/split #"\/") last)
           doc (db/get uuid)]
-      (is (= [["hi" "rani"] ["en" "queen"] ["cn" "wx"]]
+      (is (= [["hin" "rani"] ["eng" "queen"] ["zho-hans" "wx"]]
              (:pali-word/translations doc)))))
 
   (testing "Saves params to db"
     (let [params {:type "pali_word",
                   :header "Pali Word",
                   :pali "rani",
-                  :language ["hi" "en" "cn"],
+                  :language ["hin" "eng" "zho-hans"],
                   :translation ["rani" "queen" "wx"],
                   :submit "Save"}
           req {:params params
@@ -71,5 +71,5 @@
           uuid (-> response :headers (get "Location") (clojure.string/split #"\/") last)
           doc (db/get uuid)]
       ;; TODO: ignore datetimes and assert on the entire doc
-      (is (= [["hi" "rani"] ["en" "queen"] ["cn" "wx"]]
+      (is (= [["hin" "rani"] ["eng" "queen"] ["zho-hans" "wx"]]
              (:pali-word/translations doc))))))

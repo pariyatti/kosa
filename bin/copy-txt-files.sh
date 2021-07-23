@@ -52,24 +52,24 @@ set -e
 
     printf "Copying Pali Word files...\n"
     mkdir -p $KOSA/txt/pali
-    cp $RSS/pwad/pali_words_one_loop.txt $KOSA/txt/pali/pali_words_one_loop.txt
+    cp $RSS/pwad/pali_words_one_loop.txt $KOSA/txt/pali/pali_words_one_loop_eng.txt
 
     printf "Copying Words of Buddha files...\n"
     mkdir -p $KOSA/txt/buddha
-    cp $RSS/dwob/daily_words_one_loop.txt         $KOSA/txt/buddha/daily_words_one_loop.txt
-    cp $RSS/dwob/daily_words_one_loop_espanol.txt $KOSA/txt/buddha/daily_words_one_loop_es.txt
-    cp $RSS/dwob/daily_words_one_loop_fr.txt      $KOSA/txt/buddha/daily_words_one_loop_fr.txt
-    cp $RSS/dwob/daily_words_one_loop_it.txt      $KOSA/txt/buddha/daily_words_one_loop_it.txt
-    cp $RSS/dwob/daily_words_one_loop_pt-br.txt   $KOSA/txt/buddha/daily_words_one_loop_pt.txt
-    cp $RSS/dwob/daily_words_one_loop_sr.txt      $KOSA/txt/buddha/daily_words_one_loop_sr.txt
-    cp $RSS/dwob/daily_words_one_loop_chinese.txt $KOSA/txt/buddha/daily_words_one_loop_zh.txt
+    cp $RSS/dwob/daily_words_one_loop.txt         $KOSA/txt/buddha/daily_words_one_loop_eng.txt
+    cp $RSS/dwob/daily_words_one_loop_espanol.txt $KOSA/txt/buddha/daily_words_one_loop_spa.txt
+    cp $RSS/dwob/daily_words_one_loop_fr.txt      $KOSA/txt/buddha/daily_words_one_loop_fra.txt
+    cp $RSS/dwob/daily_words_one_loop_it.txt      $KOSA/txt/buddha/daily_words_one_loop_ita.txt
+    cp $RSS/dwob/daily_words_one_loop_pt-br.txt   $KOSA/txt/buddha/daily_words_one_loop_por.txt
+    cp $RSS/dwob/daily_words_one_loop_sr.txt      $KOSA/txt/buddha/daily_words_one_loop_srp.txt
+    cp $RSS/dwob/daily_words_one_loop_chinese.txt $KOSA/txt/buddha/daily_words_one_loop_zho-hant.txt
 
     printf "Copying Doha files...\n"
     mkdir -p $KOSA/txt/dohas
-    cp $RSS/dohas/daily_dohas_one_loop.txt            $KOSA/txt/dohas/daily_dohas_one_loop.txt
-    cp $RSS/dohas/daily_dohas_one_loop_lithuanian.txt $KOSA/txt/dohas/daily_dohas_one_loop_lt.txt
-    cp $RSS/dohas/daily_dohas_one_loop_pt-br.txt      $KOSA/txt/dohas/daily_dohas_one_loop_pt.txt
-    cp $RSS/dohas/daily_dohas_one_loop_chinese.txt    $KOSA/txt/dohas/daily_dohas_one_loop_zh.txt
+    cp $RSS/dohas/daily_dohas_one_loop.txt            $KOSA/txt/dohas/daily_dohas_one_loop_eng.txt
+    cp $RSS/dohas/daily_dohas_one_loop_lithuanian.txt $KOSA/txt/dohas/daily_dohas_one_loop_lit.txt
+    cp $RSS/dohas/daily_dohas_one_loop_pt-br.txt      $KOSA/txt/dohas/daily_dohas_one_loop_por.txt
+    cp $RSS/dohas/daily_dohas_one_loop_chinese.txt    $KOSA/txt/dohas/daily_dohas_one_loop_zho-hant.txt
 
     printf "...done.\n\n"
 

@@ -34,14 +34,14 @@
 
 (deftest fields-mapped-from-lambda
   (testing "executes a lambda from mapping list"
-    (let [params {:language ["en" "fr" "hi"]
+    (let [params {:language ["eng" "fra" "hin"]
                   :translation ["cat" "chat" "बिल्ली"]}
           doc (sut/params->doc params
                                [[:translations
                                  #(map vector (:language %) (:translation %))]])]
-      (is (= [["en" "cat"]
-              ["fr" "chat"]
-              ["hi" "बिल्ली"]]
+      (is (= [["eng" "cat"]
+              ["fra" "chat"]
+              ["hin" "बिल्ली"]]
              (:translations doc))))))
 
 (deftest docs-with-type

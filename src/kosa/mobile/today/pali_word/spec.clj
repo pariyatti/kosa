@@ -16,7 +16,7 @@
 (s/def :pali-word.audio/url (s/and string? #(-> % clojure.string/blank? not)))
 (s/def :pali-word/audio (s/keys :req-un [:pali-word.audio/url]))
 
-(s/def :translations/language (s/and string? #(contains? #{"hi" "en"} %)))
+(s/def :translations/language (s/and string? #(contains? #{"hin" "eng"} %)))
 (s/def :translations/translation (s/and string? #(-> % clojure.string/blank? not)))
 (s/def :translations/id uuid?)
 (s/def :pali-word/translations

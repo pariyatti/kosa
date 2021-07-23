@@ -21,18 +21,18 @@
 (deftest ingesting-txt-file
   (testing "inserts entries into db"
     (let [f (file-fixtures/file "pali_word_raw.txt")]
-      (sut/ingest f "en")
+      (sut/ingest f "eng")
       (is (= 3 (count (db/list)))))))
 
 (deftest merging-new-entities
   (testing "ignore identical entities"
     (db/save! (model/looped-pali-word
                {:looped-pali-word/pali "suriya"
-                :looped-pali-word/translations [["en" "sun"]]
+                :looped-pali-word/translations [["eng" "sun"]]
                 :looped-pali-word/published-at (time/parse "2008-01-01")}))
     (looped/db-insert! i (model/looped-pali-word
                     {:looped-pali-word/pali "suriya"
-                     :looped-pali-word/translations [["en" "sun"]]
+                     :looped-pali-word/translations [["eng" "sun"]]
                      :looped-pali-word/published-at (time/parse "2012-01-01")}))
     (let [suriya (db/find-all :looped-pali-word/pali "suriya")]
       (is (= 1 (count  suriya)))
@@ -42,30 +42,30 @@
   (testing "merge additional languages if merged is not identical"
     (db/save! (model/looped-pali-word
                {:looped-pali-word/pali "canda"
-                :looped-pali-word/translations [["en" "moon"]
-                                                ["hi" "चंद"]]
+                :looped-pali-word/translations [["eng" "moon"]
+                                                ["hin" "चंद"]]
                 :looped-pali-word/published-at (time/parse "2008-01-01")}))
     (looped/db-insert! i (model/looped-pali-word
                     {:looped-pali-word/pali "canda"
-                     :looped-pali-word/translations [["fr" "lune"]
-                                                     ["es" "luna"]]
+                     :looped-pali-word/translations [["fra" "lune"]
+                                                     ["spa" "luna"]]
                      :looped-pali-word/published-at (time/parse "2012-01-01")}))
     (let [canda (db/find-all :looped-pali-word/pali "canda")]
       (is (= 1 (count  canda)))
-      (is (= [["en" "moon"]
-              ["hi" "चंद"]
-              ["fr" "lune"]
-              ["es" "luna"]]
+      (is (= [["eng" "moon"]
+              ["hin" "चंद"]
+              ["fra" "lune"]
+              ["spa" "luna"]]
              (-> canda first :looped-pali-word/translations))))))
 
 (deftest indexing
   (testing "index auto-increments"
     (looped/db-insert! i (model/looped-pali-word
                     {:looped-pali-word/pali "tara"
-                     :looped-pali-word/translations [["en" "star"]]}))
+                     :looped-pali-word/translations [["eng" "star"]]}))
     (looped/db-insert! i (model/looped-pali-word
                     {:looped-pali-word/pali "kujagaha"
-                     :looped-pali-word/translations [["en" "mars"]]}))
+                     :looped-pali-word/translations [["eng" "mars"]]}))
     (let [tara (db/find-all :looped-pali-word/pali "tara")
           kujagaha (db/find-all :looped-pali-word/pali "kujagaha")]
       (is (= 1 (- (-> kujagaha first :looped-pali-word/index)

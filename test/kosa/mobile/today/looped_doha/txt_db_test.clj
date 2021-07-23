@@ -26,18 +26,18 @@
 (deftest ingesting-txt-file
   (testing "inserts entries into db"
     (let [f (file-fixtures/file "doha_raw.txt")]
-      (sut/ingest f "en")
+      (sut/ingest f "eng")
       (is (= 2 (count (db/list)))))))
 
 (deftest merging-entities
   (testing "ignore identical entities"
     (db/save! (model/looped-doha
                {:looped-doha/doha "Dukhī dekha karuṇā jage, "
-                :looped-doha/translations [["en" "Seeing the wretched, may compassion arise;"]]
+                :looped-doha/translations [["eng" "Seeing the wretched, may compassion arise;"]]
                 :looped-doha/published-at (time/parse "2008-01-01")}))
     (looped/db-insert! i (model/looped-doha
                           {:looped-doha/doha "Dukhī dekha karuṇā jage, "
-                           :looped-doha/translations [["en" "Seeing the wretched, may compassion arise;"]]
+                           :looped-doha/translations [["eng" "Seeing the wretched, may compassion arise;"]]
                            :looped-doha/published-at (time/parse "2012-01-01")}))
     (let [dukhi (db/find-all :looped-doha/doha "Dukhī dekha karuṇā jage, ")]
       (is (= 1 (count dukhi)))
@@ -47,30 +47,30 @@
   (testing "merge additional languages if merged is not identical"
     (db/save! (model/looped-doha
                {:looped-doha/doha "Barase barakhā samaya para, "
-                :looped-doha/translations [["en" "May the rains fall in due season, "]
-                                           ["hi" "बारिशें बरखा समय पर,"]]
+                :looped-doha/translations [["eng" "May the rains fall in due season, "]
+                                           ["hin" "बारिशें बरखा समय पर,"]]
                 :looped-doha/published-at (time/parse "2008-01-01")}))
     (looped/db-insert! i (model/looped-doha
                        {:looped-doha/doha "Barase barakhā samaya para, "
-                        :looped-doha/translations [["lt" "Tegul lietus lyja laiku, "]
-                                                   ["pt" "Que as chuvas caiam na estação devida,"]]
+                        :looped-doha/translations [["lit" "Tegul lietus lyja laiku, "]
+                                                   ["por" "Que as chuvas caiam na estação devida,"]]
                         :looped-doha/published-at (time/parse "2012-01-01")}))
     (let [barase (db/find-all :looped-doha/doha "Barase barakhā samaya para, ")]
       (is (= 1 (count  barase)))
-      (is (= [["en" "May the rains fall in due season, "]
-              ["hi" "बारिशें बरखा समय पर,"]
-              ["lt" "Tegul lietus lyja laiku, "]
-              ["pt" "Que as chuvas caiam na estação devida,"]]
+      (is (= [["eng" "May the rains fall in due season, "]
+              ["hin" "बारिशें बरखा समय पर,"]
+              ["lit" "Tegul lietus lyja laiku, "]
+              ["por" "Que as chuvas caiam na estação devida,"]]
              (-> barase first :looped-doha/translations))))))
 
 (deftest indexing
   (testing "index auto-increments"
     (looped/db-insert! i (model/looped-doha
                        {:looped-doha/doha "Barase barakhā samaya para, "
-                        :looped-doha/translations [["en" "May the rains fall in due season, "]]}))
+                        :looped-doha/translations [["eng" "May the rains fall in due season, "]]}))
     (looped/db-insert! i (model/looped-doha
                        {:looped-doha/doha "Dukhī dekha karuṇā jage, "
-                        :looped-doha/translations [["en" "Seeing the wretched, may compassion arise;"]]}))
+                        :looped-doha/translations [["eng" "Seeing the wretched, may compassion arise;"]]}))
     (let [barase (db/find-all :looped-doha/doha "Barase barakhā samaya para, ")
           dukhi (db/find-all :looped-doha/doha "Dukhī dekha karuṇā jage, ")]
       (is (= 1 (- (-> dukhi first :looped-doha/index)
@@ -80,10 +80,10 @@
   (testing "index does not increment if index already exists for card"
     (looped/db-insert! i (model/looped-doha
                        {:looped-doha/doha "Dukhī dekha karuṇā jage, "
-                        :looped-doha/translations [["en" "Seeing the wretched, may compassion arise;"]]}))
+                        :looped-doha/translations [["eng" "Seeing the wretched, may compassion arise;"]]}))
     (looped/db-insert! i (model/looped-doha
                        {:looped-doha/doha "Dukhī dekha karuṇā jage, "
-                        :looped-doha/translations [["pt" "Vendo o sofredor, que a compaixão surja;"]]}))
+                        :looped-doha/translations [["por" "Vendo o sofredor, que a compaixão surja;"]]}))
     (let [voca (db/find-all :looped-doha/doha "Dukhī dekha karuṇā jage, ")]
       (is (= 0 (-> voca first :looped-doha/index))))))
 
@@ -94,7 +94,7 @@
                  nil
                  :looped-doha/audio-url
                  (URI. "http://download.pariyatti.org/dohas/100_Doha.mp3")})
-          e (looped/download-attachments! i "en" card)]
+          e (looped/download-attachments! i "eng" card)]
       (is (= "100_Doha.mp3"
              (-> e :looped-doha/audio-attachment :attm/filename)))
       (is (= 424645

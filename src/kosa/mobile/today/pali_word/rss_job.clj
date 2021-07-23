@@ -26,7 +26,7 @@
   (let [feeds (-> config/config :rss-feeds :pali-word)
         ;; NOTE: currently, the Pali Word feed only exists for English
         url (->> feeds
-                 (filter #(= "en" (:language %)))
+                 (filter #(= "eng" (:language %)))
                  first
                  :url)
         result (parse-url url
@@ -70,7 +70,7 @@
               [pali english] (split-pali-english pali-english)
               original-url (:uri entry)]
     {:pali-word/pali pali
-     :pali-word/translations [["en" english]]
+     :pali-word/translations [["eng" english]]
      :pali-word/original-pali pali-english
      :pali-word/original-url (URI. original-url)
      :pali-word/published-at (time/instant published-date)}))

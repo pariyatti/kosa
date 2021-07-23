@@ -18,7 +18,7 @@
   (testing "publishes a new words-of-buddha card from looped template"
     (loop-db/save! (model/looped-words-of-buddha
                     {:looped-words-of-buddha/words "tara"
-                     :looped-words-of-buddha/translations [["en" "star"]]}))
+                     :looped-words-of-buddha/translations [["eng" "star"]]}))
     (sut/run-job! nil)
     (let [tara (buddha-db/find-all :words-of-buddha/words "tara")]
       (is (= 1 (count tara))))))
@@ -31,7 +31,7 @@
   (testing "ignores a looped card it has already published"
     (loop-db/save! (model/looped-words-of-buddha
                     {:looped-words-of-buddha/words "abaddha"
-                     :looped-words-of-buddha/translations [["en" "unfettered"]]}))
+                     :looped-words-of-buddha/translations [["eng" "unfettered"]]}))
     (sut/run-job! nil)
     (sut/run-job! nil)
     (let [card (buddha-db/find-all :words-of-buddha/words "abaddha")]
@@ -42,7 +42,7 @@
     (time/freeze-clock! (time/parse "2005-05-01"))
     (loop-db/save! (model/looped-words-of-buddha
                     {:looped-words-of-buddha/words "abhaya"
-                     :looped-words-of-buddha/translations [["en" "fearless"]]}))
+                     :looped-words-of-buddha/translations [["eng" "fearless"]]}))
     (sut/run-job! nil)
     (time/freeze-clock! (time/parse "2005-06-02"))
     (sut/run-job! nil)
@@ -55,16 +55,16 @@
   (testing "publishes the Nth card from the 'perl epoch' on 2005-04-29"
     (loop-db/save! (model/looped-words-of-buddha
                     {:looped-words-of-buddha/words "canda"
-                     :looped-words-of-buddha/translations [["en" "moon"]]}))
+                     :looped-words-of-buddha/translations [["eng" "moon"]]}))
     (loop-db/save! (model/looped-words-of-buddha
                     {:looped-words-of-buddha/words "suriya"
-                     :looped-words-of-buddha/translations [["en" "sun"]]}))
+                     :looped-words-of-buddha/translations [["eng" "sun"]]}))
     (loop-db/save! (model/looped-words-of-buddha
                     {:looped-words-of-buddha/words "kujagaha"
-                     :looped-words-of-buddha/translations [["en" "mars"]]}))
+                     :looped-words-of-buddha/translations [["eng" "mars"]]}))
     (loop-db/save! (model/looped-words-of-buddha
                     {:looped-words-of-buddha/words "medini"
-                     :looped-words-of-buddha/translations [["en" "earth"]]}))
+                     :looped-words-of-buddha/translations [["eng" "earth"]]}))
     (time/freeze-clock! (time/parse "2005-04-30"))
     (sut/run-job! nil)
     (let [all (buddha-db/list)]

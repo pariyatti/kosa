@@ -7,7 +7,7 @@
 (deftest parsing
   (testing "can shred pali/english, separated by em-dash"
     (is (= {:pali-word/pali "kuti"
-            :pali-word/translations [["en" "hut"]]
+            :pali-word/translations [["eng" "hut"]]
             :pali-word/original-pali "kuti — hut"
             :pali-word/original-url (URI. "https://ignored")
             :pali-word/published-at (time/instant "2021-02-09T16:11:01.000Z")}
@@ -17,7 +17,7 @@
 
   (testing "tolerates RSS entries which are missing the em-dash"
     (is (= {:pali-word/pali "kuti = hut"
-            :pali-word/translations [["en" ""]]
+            :pali-word/translations [["eng" ""]]
             :pali-word/original-pali "kuti = hut"
             :pali-word/original-url (URI. "https://ignored")
             :pali-word/published-at (time/instant "2021-02-09T16:11:01.000Z")}
@@ -27,7 +27,7 @@
 
   (testing "parses the published UTC date into a local date"
     (is (= {:pali-word/pali "kuti = hut"
-            :pali-word/translations [["en" ""]]
+            :pali-word/translations [["eng" ""]]
             :pali-word/original-pali "kuti = hut"
             :pali-word/original-url (URI. "https://ignored")
             :pali-word/published-at (time/instant "2021-02-09T16:11:01.000Z")}

@@ -90,8 +90,8 @@ Card (type = 'pali_word')
     "audio_url": "http://download.pariyatti.org/pali/vipassisu.m.mp3",
     "pali": "vipassisuṃ",
     "translations":
-        [{"language": "en", "translation": "insight"},
-         {"language": "hi", "translation": " विशेष प्रकार से देखना"}]}
+        [{"language": "eng", "translation": "insight"},
+         {"language": "hin", "translation": " विशेष प्रकार से देखना"}]}
 
 ```
 
@@ -106,12 +106,12 @@ TODO
 ```
 /api/artefacts/audiobook/1
 
-=> {"id": 123, "title": "content-type": "audio/mpeg", "language": "en",
+=> {"id": 123, "title": "content-type": "audio/mpeg", "language": "eng",
     "Curbing Anger, Spreading Love", "author": "Bhikkhu Visuddhacara", "url": "https://pariyatti.org/anger.mp3"}
 
 /api/artefacts/book/1
 
-=> {"id": 123, "language": "en",
+=> {"id": 123, "language": "eng",
     "title": "The Elimination of Anger", "author": "Ven. K. Piyatissa Thera", "url": "https://store.pariyatti.org/Anger"}
 ```
 
@@ -129,7 +129,7 @@ TODO
 => {"id": 123, "type": "words_of_the_buddha",
     "sutta_reference": "Dhammapada 17.223",
     "pali": "Akkodhena jine kodhaṃ;\nasādhuṃ sādhunā jine;\njine kadariyaṃ dānena;\nsaccenālikavādinaṃ.",
-    "translation_language": "en",
+    "translation_language": "eng",
     "translation": "Overcome the angry by non-anger;\novercome the wicked by goodness;\novercome the miser by generosity;\novercome the liar by truth."
     "audio_url": "http://download.pariyatti.org/dwob/dhammapada_17_223.mp3"}
 

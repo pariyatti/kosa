@@ -17,46 +17,46 @@
            :root    "tmp/storage"
            :path    "/uploads"}
 
- :supported-languages ["en" "es" "fr" "it" "lt" "pt" "sr" "zh"]
+ :supported-languages ["eng" "spa" "fra" "ita" "lit" "por" "srp" "zho-hans" "zho-hant" "cmn" "yue" "hak" "nan"]
 
- :txt-feeds {:pali-word [{:language "en"
-                          :file "txt/pali/pali_words_one_loop.txt"}]
-             :words-of-buddha [{:language "en"
-                                :file "txt/buddha/daily_words_one_loop.txt"}
-                               {:language "es"
-                                :file "txt/buddha/daily_words_one_loop_es.txt"}
-                               {:language "fr"
-                                :file "txt/buddha/daily_words_one_loop_fr.txt"}
-                               {:language "it"
-                                :file "txt/buddha/daily_words_one_loop_it.txt"}
-                               {:language "pt"
-                                :file "txt/buddha/daily_words_one_loop_pt.txt"}
-                               {:language "sr"
-                                :file "txt/buddha/daily_words_one_loop_sr.txt"}
-                               {:language "zh"
-                                :file "txt/buddha/daily_words_one_loop_zh.txt"}]
-             :doha [{:language "en"
-                     :file "txt/doha/daily_dohas_one_loop.txt"}
-                    {:language "lt"
-                     :file "txt/doha/daily_dohas_one_loop_lt.txt"}
-                    {:language "pt"
-                     :file "txt/doha/daily_dohas_one_loop_pt.txt"}
-                    {:language "zh"
-                     :file "txt/doha/daily_dohas_one_loop_zh.txt"}]}
+ :txt-feeds {:pali-word [{:language "eng"
+                          :file "txt/pali/pali_words_one_loop_eng.txt"}]
+             :words-of-buddha [{:language "eng"
+                                :file "txt/buddha/daily_words_one_loop_eng.txt"}
+                               {:language "spa"
+                                :file "txt/buddha/daily_words_one_loop_spa.txt"}
+                               {:language "fra"
+                                :file "txt/buddha/daily_words_one_loop_fra.txt"}
+                               {:language "ita"
+                                :file "txt/buddha/daily_words_one_loop_ita.txt"}
+                               {:language "por"
+                                :file "txt/buddha/daily_words_one_loop_por.txt"}
+                               {:language "srp"
+                                :file "txt/buddha/daily_words_one_loop_srp.txt"}
+                               {:language "zho-hant"
+                                :file "txt/buddha/daily_words_one_loop_zho-hant.txt"}]
+             :doha [{:language "eng"
+                     :file "txt/doha/daily_dohas_one_loop_eng.txt"}
+                    {:language "lit"
+                     :file "txt/doha/daily_dohas_one_loop_lit.txt"}
+                    {:language "por"
+                     :file "txt/doha/daily_dohas_one_loop_por.txt"}
+                    {:language "zho-hant"
+                     :file "txt/doha/daily_dohas_one_loop_zho-hant.txt"}]}
 
- :rss-feeds {:pali-word [{:language "en"
+ :rss-feeds {:pali-word [{:language "eng"
                           :url "https://download.pariyatti.org/pwad/pali_words.xml"}]
-             :words-of-buddha [{:language "en"
+             :words-of-buddha [{:language "eng"
                                 :url "https://rss.pariyatti.org/dwob_english.rss"}
-                               {:language "es"
+                               {:language "spa"
                                 :url "https://rss.pariyatti.org/dwob_spanish.rss"}
-                               {:language "fr"
+                               {:language "fra"
                                 :url "https://rss.pariyatti.org/dwob_french.rss"}
-                               {:language "it"
+                               {:language "ita"
                                 :url "https://rss.pariyatti.org/dwob_italian.rss"}
-                               {:language "pt"
+                               {:language "por"
                                 :url "https://rss.pariyatti.org/dwob_portuguese.rss"}
-                               {:language "sr"
+                               {:language "srp"
                                 :url "https://rss.pariyatti.org/dwob_serbian.rss"}
-                               {:language "zh"
+                               {:language "zho-hant"
                                 :url "https://rss.pariyatti.org/dwob_chinese.rss"}]}}

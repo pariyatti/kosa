@@ -6,6 +6,8 @@
             [kosa.layouts.shared.header :as header]))
 
 (defn app [req title & content]
+  ;; IANA cannot use 3-char language codes for English:
+  ;; http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
   (h/html5 {:lang "en"
             :encoding "UTF-8"}
            (head/render

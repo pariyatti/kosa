@@ -18,7 +18,7 @@
   (testing "publishes a new pali word card from looped template"
     (loop-db/save! (model/looped-pali-word
                     {:looped-pali-word/pali "tara"
-                     :looped-pali-word/translations [["en" "star"]]}))
+                     :looped-pali-word/translations [["eng" "star"]]}))
     (sut/run-job! nil)
     (let [tara (pali-db/find-all :pali-word/pali "tara")]
       (is (= 1 (count tara))))))
@@ -31,7 +31,7 @@
   (testing "ignores a looped card it has already published"
     (loop-db/save! (model/looped-pali-word
                     {:looped-pali-word/pali "abaddha"
-                     :looped-pali-word/translations [["en" "unfettered"]]}))
+                     :looped-pali-word/translations [["eng" "unfettered"]]}))
     (sut/run-job! nil)
     (sut/run-job! nil)
     (let [card (pali-db/find-all :pali-word/pali "abaddha")]
@@ -42,7 +42,7 @@
     (time/freeze-clock! (time/parse "2005-05-01"))
     (loop-db/save! (model/looped-pali-word
                     {:looped-pali-word/pali "abhaya"
-                     :looped-pali-word/translations [["en" "fearless"]]}))
+                     :looped-pali-word/translations [["eng" "fearless"]]}))
     (sut/run-job! nil)
     (time/freeze-clock! (time/parse "2005-06-02"))
     (sut/run-job! nil)
@@ -55,16 +55,16 @@
   (testing "publishes the Nth card from the 'perl epoch' on 2005-04-29"
     (loop-db/save! (model/looped-pali-word
                     {:looped-pali-word/pali "canda"
-                     :looped-pali-word/translations [["en" "moon"]]}))
+                     :looped-pali-word/translations [["eng" "moon"]]}))
     (loop-db/save! (model/looped-pali-word
                     {:looped-pali-word/pali "suriya"
-                     :looped-pali-word/translations [["en" "sun"]]}))
+                     :looped-pali-word/translations [["eng" "sun"]]}))
     (loop-db/save! (model/looped-pali-word
                     {:looped-pali-word/pali "kujagaha"
-                     :looped-pali-word/translations [["en" "mars"]]}))
+                     :looped-pali-word/translations [["eng" "mars"]]}))
     (loop-db/save! (model/looped-pali-word
                     {:looped-pali-word/pali "medini"
-                     :looped-pali-word/translations [["en" "earth"]]}))
+                     :looped-pali-word/translations [["eng" "earth"]]}))
     (time/freeze-clock! (time/parse "2005-04-30"))
     (sut/run-job! nil)
     (let [all (pali-db/list)]

@@ -12,9 +12,9 @@
     (let [f (file-fixtures/file "pali_word_raw.txt")
           txt (slurp f)]
       (is (= [{:looped-pali-word/pali "vimutti"
-               :looped-pali-word/translations [["en" "freedom, release, deliverance, emancipation, liberation"]]}
+               :looped-pali-word/translations [["eng" "freedom, release, deliverance, emancipation, liberation"]]}
               {:looped-pali-word/pali "kataññū"
-               :looped-pali-word/translations [["en" "kata + ññū = what is done + knowing, acknowledging what has been done (to, for one), grateful"]]}
+               :looped-pali-word/translations [["eng" "kata + ññū = what is done + knowing, acknowledging what has been done (to, for one), grateful"]]}
               {:looped-pali-word/pali "tarati"
-               :looped-pali-word/translations [["en" "to cross [a river], to surmount, overcome [the great flood of life, desire, ignorance], to get to the other side, to cross over, as in crossing the ocean of suffering"]]}]
-             (looped/parse i txt "en"))))))
+               :looped-pali-word/translations [["eng" "to cross [a river], to surmount, overcome [the great flood of life, desire, ignorance], to get to the other side, to cross over, as in crossing the ocean of suffering"]]}]
+             (looped/parse i txt "eng"))))))

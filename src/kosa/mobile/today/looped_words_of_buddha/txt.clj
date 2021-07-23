@@ -59,13 +59,13 @@
     "Words of Buddha")
 
   (parse [_ txt lang]
-    (let [marker (get {"en" "Listen"
-                       "es" "Escuchar"
-                       "fr" "Ecouter " ;; NOTE: yes, it contains a space
-                       "it" "Ascolta"
-                       "pt" "Ouça"
-                       "sr" "Slušaj"
-                       "zh" "Listen"} lang)
+    (let [marker (get {"eng" "Listen"
+                       "spa" "Escuchar"
+                       "fra" "Ecouter " ;; NOTE: yes, it contains a space
+                       "ita" "Ascolta"
+                       "por" "Ouça"
+                       "srp" "Slušaj"
+                       "zho-hant" "Listen"} lang)
           m (str marker ": ")]
       (->> (txt/split-file txt)
            (map strings/trim!)
@@ -83,7 +83,7 @@
                      words)))
 
   (citations [_ new]
-    (if (= "en" (-> new :looped-words-of-buddha/translations first first))
+    (if (= "eng" (-> new :looped-words-of-buddha/translations first first))
       (select-keys new [:looped-words-of-buddha/citepali
                         :looped-words-of-buddha/citepali-url
                         :looped-words-of-buddha/citebook
@@ -91,7 +91,7 @@
       {}))
 
   (download-attachments! [_ lang e]
-    (if (= "en" lang)
+    (if (= "eng" lang)
       (let [file (open-uri/download-uri! (:looped-words-of-buddha/audio-url e))]
         (storage/attach! e :looped-words-of-buddha/audio-attachment file))
       e)))

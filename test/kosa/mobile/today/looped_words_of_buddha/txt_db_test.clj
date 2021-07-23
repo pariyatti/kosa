@@ -26,18 +26,18 @@
 (deftest ingesting-txt-file
   (testing "inserts entries into db"
     (let [f (file-fixtures/file "words_of_buddha_raw.txt")]
-      (sut/ingest f "en")
+      (sut/ingest f "eng")
       (is (= 3 (count (db/list)))))))
 
 (deftest merging-entities
   (testing "ignore identical entities"
     (db/save! (model/looped-words-of-buddha
                {:looped-words-of-buddha/words "Manopubbaṅgamā dhammā,"
-                :looped-words-of-buddha/translations [["en" "Mind precedes all phenomena,"]]
+                :looped-words-of-buddha/translations [["eng" "Mind precedes all phenomena,"]]
                 :looped-words-of-buddha/published-at (time/parse "2008-01-01")}))
     (looped/db-insert! i (model/looped-words-of-buddha
                           {:looped-words-of-buddha/words "Manopubbaṅgamā dhammā,"
-                           :looped-words-of-buddha/translations [["en" "Mind precedes all phenomena,"]]
+                           :looped-words-of-buddha/translations [["eng" "Mind precedes all phenomena,"]]
                            :looped-words-of-buddha/published-at (time/parse "2012-01-01")}))
     (let [mano (db/find-all :looped-words-of-buddha/words "Manopubbaṅgamā dhammā,")]
       (is (= 1 (count mano)))
@@ -47,20 +47,20 @@
   (testing "merge additional languages if merged is not identical"
     (db/save! (model/looped-words-of-buddha
                {:looped-words-of-buddha/words "Māvoca pharusaṃ kañci,"
-                :looped-words-of-buddha/translations [["en" "Speak not harshly to anyone,"]
-                                                      ["hi" "किसी से कटुता से न बोलें,"]]
+                :looped-words-of-buddha/translations [["eng" "Speak not harshly to anyone,"]
+                                                      ["hin" "किसी से कटुता से न बोलें,"]]
                 :looped-words-of-buddha/published-at (time/parse "2008-01-01")}))
     (looped/db-insert! i (model/looped-words-of-buddha
                        {:looped-words-of-buddha/words "Māvoca pharusaṃ kañci,"
-                        :looped-words-of-buddha/translations [["fr" "Ne parlez pas durement à qui que ce soit,"]
-                                                              ["es" "No hables agresivamente a nadie;"]]
+                        :looped-words-of-buddha/translations [["fra" "Ne parlez pas durement à qui que ce soit,"]
+                                                              ["spa" "No hables agresivamente a nadie;"]]
                         :looped-words-of-buddha/published-at (time/parse "2012-01-01")}))
     (let [voca (db/find-all :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
       (is (= 1 (count  voca)))
-      (is (= [["en" "Speak not harshly to anyone,"]
-              ["hi" "किसी से कटुता से न बोलें,"]
-              ["fr" "Ne parlez pas durement à qui que ce soit,"]
-              ["es" "No hables agresivamente a nadie;"]]
+      (is (= [["eng" "Speak not harshly to anyone,"]
+              ["hin" "किसी से कटुता से न बोलें,"]
+              ["fra" "Ne parlez pas durement à qui que ce soit,"]
+              ["spa" "No hables agresivamente a nadie;"]]
              (-> voca first :looped-words-of-buddha/translations))))))
 
 (deftest citations
@@ -68,7 +68,7 @@
     (db/save! (model/looped-words-of-buddha
                #:looped-words-of-buddha
                {:words "Māvoca pharusaṃ kañci,"
-                :translations [["en" "Speak not harshly to anyone,"]]
+                :translations [["eng" "Speak not harshly to anyone,"]]
                 :citepali "Dhammapada 10.133"
                 :citepali-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul9.xml#para133")
                 :citebook "The Dhammapada: The Buddha's Path of Wisdom, translated from Pāli by Acharya Buddharakkhita"
@@ -78,7 +78,7 @@
     (looped/db-insert! i (model/looped-words-of-buddha
                        #:looped-words-of-buddha
                        {:words "Māvoca pharusaṃ kañci,"
-                        :translations [["es" "No hables agresivamente a nadie;"]]
+                        :translations [["spa" "No hables agresivamente a nadie;"]]
                         :citepali "Dhammapada 10.133"
                         :citepali-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul9.xml#para133")
                         :citebook "Dhammapada, traducción de Bhikkhu Nandisena, México, Dhammodaya Ediciones"
@@ -93,7 +93,7 @@
     (db/save! (model/looped-words-of-buddha
                #:looped-words-of-buddha
                {:words "Manopubbaṅgamā dhammā,"
-                :translations [["es" "La mente precede todo fenómeno,"]]
+                :translations [["spa" "La mente precede todo fenómeno,"]]
                 :citepali "Dhammapada 1.1, 1.2"
                 :citepali-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul0.xml#para1")
                 :citebook "Resumen De Las Charlas del Curso de Diez Dias"
@@ -103,7 +103,7 @@
     (looped/db-insert! i (model/looped-words-of-buddha
                        #:looped-words-of-buddha
                        {:words "Manopubbaṅgamā dhammā,"
-                        :translations [["en" "Mind precedes all phenomena,"]]
+                        :translations [["eng" "Mind precedes all phenomena,"]]
                         :citepali "Dhammapada 1.1, 1.2"
                         :citepali-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul0.xml#para1")
                         :citebook "The Discourse Summaries by S.N. Goenka"
@@ -118,10 +118,10 @@
   (testing "index auto-increments"
     (looped/db-insert! i (model/looped-words-of-buddha
                        {:looped-words-of-buddha/words "Manopubbaṅgamā dhammā,"
-                        :looped-words-of-buddha/translations [["en" "Mind precedes all phenomena,"]]}))
+                        :looped-words-of-buddha/translations [["eng" "Mind precedes all phenomena,"]]}))
     (looped/db-insert! i (model/looped-words-of-buddha
                        {:looped-words-of-buddha/words "Māvoca pharusaṃ kañci,"
-                        :looped-words-of-buddha/translations [["en" "Speak not harshly to anyone,"]]}))
+                        :looped-words-of-buddha/translations [["eng" "Speak not harshly to anyone,"]]}))
     (let [mano (db/find-all :looped-words-of-buddha/words "Manopubbaṅgamā dhammā,")
           voca (db/find-all :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
       (is (= 1 (- (-> voca first :looped-words-of-buddha/index)
@@ -131,10 +131,10 @@
   (testing "index does not increment if index already exists for card"
     (looped/db-insert! i (model/looped-words-of-buddha
                        {:looped-words-of-buddha/words "Māvoca pharusaṃ kañci,"
-                        :looped-words-of-buddha/translations [["en" "Speak not harshly to anyone,"]]}))
+                        :looped-words-of-buddha/translations [["eng" "Speak not harshly to anyone,"]]}))
     (looped/db-insert! i (model/looped-words-of-buddha
                        {:looped-words-of-buddha/words "Māvoca pharusaṃ kañci,"
-                        :looped-words-of-buddha/translations [["fr" "Ne parlez pas durement à qui que ce soit,"]]}))
+                        :looped-words-of-buddha/translations [["fra" "Ne parlez pas durement à qui que ce soit,"]]}))
     (let [voca (db/find-all :looped-words-of-buddha/words "Māvoca pharusaṃ kañci,")]
       (is (= 0 (-> voca first :looped-words-of-buddha/index))))))
 
@@ -145,7 +145,7 @@
                  nil
                  :looped-words-of-buddha/audio-url
                  (URI. "http://download.pariyatti.org/dwob/sutta_nipata_3_710.mp3")})
-          e (looped/download-attachments! i "en" card)]
+          e (looped/download-attachments! i "eng" card)]
       (is (= "sutta_nipata_3_710.mp3"
              (-> e :looped-words-of-buddha/audio-attachment :attm/filename)))
       (is (= 184645

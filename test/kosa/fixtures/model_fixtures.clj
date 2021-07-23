@@ -8,7 +8,7 @@
           :pali-word/original-pali "tiṇṇa"
           :pali-word/original-url (URI. "")
           :pali-word/translations
-          [["en" "gone through, overcome, one who has attained nibbāna"]]}
+          [["eng" "gone through, overcome, one who has attained nibbāna"]]}
          pw))
 
 (defn looped-pali-word [pw]
@@ -16,7 +16,7 @@
           :looped-pali-word/original-pali "tiṇṇa"
           :looped-pali-word/original-url (URI. "")
           :looped-pali-word/translations
-          [["en" "gone through, overcome, one who has attained nibbāna"]]}
+          [["eng" "gone through, overcome, one who has attained nibbāna"]]}
          pw))
 
 (defn audio-attachment [aud]
@@ -40,7 +40,7 @@
           :words "Tumhehi kiccamātappaṃ;\nAkkhātāro Tathāgatā.\nPaṭipannā pamokkhanti\njhāyino mārabandhanā."
           :audio-attachment (audio-attachment {})
           :audio-url (URI. "http://download.pariyatti.org/dwob/dhammapada_20_276.mp3")
-          :translations [["en" "You have to do your own work;\nEnlightened Ones will only show the way.\nThose who practise meditation\nwill free themselves from the chains of death."]]
+          :translations [["eng" "You have to do your own work;\nEnlightened Ones will only show the way.\nThose who practise meditation\nwill free themselves from the chains of death."]]
           :citepali "Dhammapada 20.276"
           :citepali-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul19.xml#para276")
           :citebook "The Discourse Summaries by S.N. Goenka"
@@ -54,5 +54,5 @@
           :doha "Dasoṅ diśāṇa ke sabhī, \nprāṇī sukhiyā hoṅya. \nNirabhaya hoṅ, nirabaira hoṅ, \nsabhī nirāmaya hoṅya."
           :audio-attachment (audio-attachment {})
           :audio-url (URI. "http://download.pariyatti.org/dohas/117a_Doha.mp3")
-          :translations [["en" "In the ten directions, \nmay beings be happy, \nwithout fear or enmity; \nmay all be freed of ills. \n\n–S.N. Goenka"]]}
+          :translations [["eng" "In the ten directions, \nmay beings be happy, \nwithout fear or enmity; \nmay all be freed of ills. \n\n–S.N. Goenka"]]}
          doha))

@@ -18,7 +18,7 @@
   (testing "publishes a new doha card from looped template"
     (loop-db/save! (model/looped-doha
                     {:looped-doha/doha "tara"
-                     :looped-doha/translations [["en" "star"]]}))
+                     :looped-doha/translations [["eng" "star"]]}))
     (sut/run-job! nil)
     (let [tara (doha-db/find-all :doha/doha "tara")]
       (is (= 1 (count tara))))))
@@ -31,7 +31,7 @@
   (testing "ignores a looped card it has already published"
     (loop-db/save! (model/looped-doha
                     {:looped-doha/doha "abaddha"
-                     :looped-doha/translations [["en" "unfettered"]]}))
+                     :looped-doha/translations [["eng" "unfettered"]]}))
     (sut/run-job! nil)
     (sut/run-job! nil)
     (let [card (doha-db/find-all :doha/doha "abaddha")]
@@ -42,7 +42,7 @@
     (time/freeze-clock! (time/parse "2005-05-01"))
     (loop-db/save! (model/looped-doha
                     {:looped-doha/doha "abhaya"
-                     :looped-doha/translations [["en" "fearless"]]}))
+                     :looped-doha/translations [["eng" "fearless"]]}))
     (sut/run-job! nil)
     (time/freeze-clock! (time/parse "2005-06-02"))
     (sut/run-job! nil)
@@ -55,16 +55,16 @@
   (testing "publishes the Nth card from the 'perl epoch' on 2005-04-29"
     (loop-db/save! (model/looped-doha
                     {:looped-doha/doha "canda"
-                     :looped-doha/translations [["en" "moon"]]}))
+                     :looped-doha/translations [["eng" "moon"]]}))
     (loop-db/save! (model/looped-doha
                     {:looped-doha/doha "suriya"
-                     :looped-doha/translations [["en" "sun"]]}))
+                     :looped-doha/translations [["eng" "sun"]]}))
     (loop-db/save! (model/looped-doha
                     {:looped-doha/doha "kujagaha"
-                     :looped-doha/translations [["en" "mars"]]}))
+                     :looped-doha/translations [["eng" "mars"]]}))
     (loop-db/save! (model/looped-doha
                     {:looped-doha/doha "medini"
-                     :looped-doha/translations [["en" "earth"]]}))
+                     :looped-doha/translations [["eng" "earth"]]}))
     (time/freeze-clock! (time/parse "2005-04-30"))
     (sut/run-job! nil)
     (let [all (doha-db/list)]
