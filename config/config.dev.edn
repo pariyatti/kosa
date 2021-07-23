@@ -41,10 +41,207 @@
          :job-fn kosa.mobile.today.looped-doha.publish-job/run-job!
          :enabled false}]
 
+ :language-meta {"afr" {:iso-639-1-code "af"
+                        :iso-639-2-name "Afrikaans"
+                        :native         "Afrikaans"}
+                 "amh" {:iso-639-1-code "am"
+                        :iso-639-2-name "Amharic"
+                        :native         "አማርኛ (Amârıñâ)"}
+                 "ara" {:iso-639-1-code "ar"
+                        :iso-639-2-name "Arabic"
+                        :native         "العَرَبِيَّة (al'Arabiyyeẗ)"}
+                 "ben" {:iso-639-1-code "bn"
+                        :iso-639-2-name "Bengali"
+                        :native         "বাংলা (Bāŋlā)"}
+                 "bul" {:iso-639-1-code "bg"
+                        :iso-639-2-name "Bulgarian"
+                        :native         "български език (bălgarski ezik)"}
+                 "ces" {:iso-639-1-code "cs"
+                        :iso-639-2-name "Czech"
+                        :native         "čeština"}
+                 "dan" {:iso-639-1-code "da"
+                        :iso-639-2-name "Danish"
+                        :native         "dansk"}
+                 "eng" {:iso-639-1-code "en"
+                        :iso-639-2-name "English"
+                        :native         "English"}
+                 "fin" {:iso-639-1-code "fi"
+                        :iso-639-2-name "Finnish"
+                        :native         "suomen kieli"}
+                 "fra" {:iso-639-1-code "fr"
+                        :iso-639-2-name "French"
+                        :native         "français"}
+                 "deu" {:iso-639-1-code "de"
+                        :iso-639-2-name "German"
+                        :native         "Deutsch"}
+                 "ell" {:iso-639-1-code "el"
+                        :iso-639-2-name "Greek"
+                        :native         "Νέα Ελληνικά (Néa Ellêniká)"}
+                 "guj" {:iso-639-1-code "gu"
+                        :iso-639-2-name "Gujarati"
+                        :native         "ગુજરાતી (Gujarātī)"}
+                 "hak" {:iso-639-1-code "zh"
+                        :iso-639-2-name "Hakka"
+                        :native         "客家話"}
+                 "heb" {:iso-639-1-code "he"
+                        :iso-639-2-name "Hebrew"
+                        :native         "עברית ('Ivriyþ)"}
+                 "hin" {:iso-639-1-code "hi"
+                        :iso-639-2-name "Hindi"
+                        :native         "हिन्दी (Hindī)"}
+                 "hun" {:iso-639-1-code "hu"
+                        :iso-639-2-name "Hungarian"
+                        :native         "magyar nyelv"}
+                 "ind" {:iso-639-1-code "id"
+                        :iso-639-2-name "Indonesian"
+                        :native         "bahasa Indonesia"}
+                 "ita" {:iso-639-1-code "it"
+                        :iso-639-2-name "Italian"
+                        :native         "italiano"}
+                 "jpn" {:iso-639-1-code "ja"
+                        :iso-639-2-name "Japanese"
+                        :native         "日本語"}
+                 "kan" {:iso-639-1-code "kn"
+                        :iso-639-2-name "Kannada"
+                        :native         "ಕನ್ನಡ"}
+                 "khm" {:iso-639-1-code "km"
+                        :iso-639-2-name "Khmer"
+                        :native         "ភាសាខ្មែរ"}
+                 "kor" {:iso-639-1-code "ko"
+                        :iso-639-2-name "Korean"
+                        :native         "한국어"}
+                 "lav" {:iso-639-1-code "lv"
+                        :iso-639-2-name "Latvian"
+                        :native         "Latviešu valoda"}
+                 "lbj" {:iso-639-1-code "zz" ;; non-existent
+                        :iso-639-2-name "Ladakhi"
+                        :native         "ལ་དྭགས་སྐད་"}
+                 "lit" {:iso-639-1-code "lt"
+                        :iso-639-2-name "Lithuanian"
+                        :native         "lietuvių kalba"}
+                 "mal" {:iso-639-1-code "ml"
+                        :iso-639-2-name "Malayalam"
+                        :native         "മലയാളം"}
+                 "cmn" {:iso-639-1-code "zh"
+                        :iso-639-2-name "Mandarin"
+                        :native         "中文"}
+                 "mar" {:iso-639-1-code "mr"
+                        :iso-639-2-name "Marathi"
+                        :native         "मराठी"}
+                 "mnw" {:iso-639-1-code "zz" ;; non-existent
+                        :iso-639-2-name "Mon"
+                        :native         "ဘာသာမန်"}
+                 "mon" {:iso-639-1-code "mn"
+                        :iso-639-2-name "Mongolian"
+                        :native         "монгол хэл"}
+                 "mya" {:iso-639-1-code "my"
+                        :iso-639-2-name "Burmese"
+                        :native         "မြန်မာစာ (Mrãmācā)"}
+                 "nan" {:iso-639-1-code "zh"
+                        :iso-639-2-name "Taiwanese"
+                        :native         "臺語"}
+                 "nep" {:iso-639-1-code "ne"
+                        :iso-639-2-name "Nepali"
+                        :native         "नेपाली"}
+                 "new" {:iso-639-1-code "zz"
+                        :iso-639-2-name "Newari"
+                        :native         "नेपाल भाषा"}
+                 "nld" {:iso-639-1-code "nl"
+                        :iso-639-2-name "Dutch"
+                        :native         "Nederlands"}
+                 "nor" {:iso-639-1-code "no"
+                        :iso-639-2-name "Norwegian"
+                        :native         "norsk"}
+                 "ori" {:iso-639-1-code "or"
+                        :iso-639-2-name "Oriya"
+                        :native         "ଓଡ଼ିଆ"}
+                 "fas" {:iso-639-1-code "fa"
+                        :iso-639-2-name "Persian (Farsi)"
+                        :native         "فارسی"}
+                 "pol" {:iso-639-1-code "pl"
+                        :iso-639-2-name "Polish"
+                        :native         "polski"}
+                 "por" {:iso-639-1-code "pt"
+                        :iso-639-2-name "Portuguese"
+                        :native         "português"}
+                 "pan" {:iso-639-1-code "pa"
+                        :iso-639-2-name "Punjabi"
+                        :native         "ਪੰਜਾਬੀ"}
+                 "raj" {:iso-639-1-code "zz" ;; non-existent
+                        :iso-639-2-name "Rajasthani"
+                        :native         "राजस्थानी"}
+                 "ron" {:iso-639-1-code "ro"
+                        :iso-639-2-name "Romanian"
+                        :native         "română"}
+                 "rus" {:iso-639-1-code "ru"
+                        :iso-639-2-name "Russian"
+                        :native         "русский"}
+                 "srp" {:iso-639-1-code "sr"
+                        :iso-639-2-name "Serbian"
+                        :native         "српски"}
+                 "hbs" {:iso-639-1-code "zz"
+                        :iso-639-2-name "Serbo-Croatian"
+                        :native         "српскохрватски / хрватскосрпски"}
+                 "shn" {:iso-639-1-code "zz"
+                        :iso-639-2-name "Shan"
+                        :native         "ၵႂၢမ်းတႆးယႂ်"}
+                 "sin" {:iso-639-1-code "si"
+                        :iso-639-2-name "Sinhala"
+                        :native         "සිංහල"}
+                 "slv" {:iso-639-1-code "sl"
+                        :iso-639-2-name "Slovenian"
+                        :native         "slovenščina"}
+                 "snd" {:iso-639-1-code "sd"
+                        :iso-639-2-name "Sindhi"
+                        :native         "سنڌي"}
+                 "spa" {:iso-639-1-code "es"
+                        :iso-639-2-name "Spanish"
+                        :native         "español"}
+                 "swa" {:iso-639-1-code "sw"
+                        :iso-639-2-name "Swahili"
+                        :native         "Kiswahili"}
+                 "swe" {:iso-639-1-code "sv"
+                        :iso-639-2-name "Swedish"
+                        :native         "svenska"}
+                 "tam" {:iso-639-1-code "ta"
+                        :iso-639-2-name "Tamil"
+                        :native         "தமிழ்"}
+                 "tel" {:iso-639-1-code "te"
+                        :iso-639-2-name "Telugu"
+                        :native         "తెలుగు"}
+                 "tgl" {:iso-639-1-code "tl"
+                        :iso-639-2-name "Tagalog"
+                        :native         "Tagalog"}
+                 "tha" {:iso-639-1-code "th"
+                        :iso-639-2-name "Thai"
+                        :native         "ภาษาไทย"}
+                 "tur" {:iso-639-1-code "tr"
+                        :iso-639-2-name "Turkish"
+                        :native         "Türkçe"}
+                 "vie" {:iso-639-1-code "vi"
+                        :iso-639-2-name "Vietnamese"
+                        :native         "Tiếng Việt"}
+                 "yue" {:iso-639-1-code "zh"
+                        :iso-639-2-name "Cantonese"
+                        :native         "廣東話"}
+
+                 "zho-hans" {:iso-639-1-code "zh"
+                             :iso-639-2-name "Simplified Chinese"
+                             :native         "简化字"}
+                 "zho-hant" {:iso-639-1-code "zh"
+                             :iso-639-2-name "Traditional Chinese"
+                             :native         "繁體字"}}
 
  ;; https://iso639-3.sil.org/code/zho
  ;; "zho" "cmn" "yue" "hak" "nan"
- :supported-languages ["afr" "eng" "spa" "fra" "ita" "lit" "por" "srp" "zho-hans" "zho-hant" "cmn" "yue" "hak" "nan"]
+ :supported-languages ["afr" "amh" "ara" "ben" "bul" "ces" "cmn" "dan" "eng" "fin"
+                       "fra" "deu" "ell" "fas" "guj" "hak" "heb" "hin" "hun" "ind"
+                       "ita" "jpn" "kan" "khm" "kor" "lav" "lbj" "lit" "mal" "mar"
+                       "mnw" "mon" "mya" "nan" "nep" "new" "nld" "nor" "ori" "pol"
+                       "por" "pan" "raj" "ron" "rus" "srp" "hbs" "shn" "sin" "slv"
+                       "snd" "spa" "swa" "swe" "tam" "tel" "tgl" "tha" "tur" "vie"
+                       "yue"
+                       "zho-hans" "zho-hant"]
 
  :txt-feeds {:pali-word [{:language "eng"
                           :file "txt/pali/pali_words_one_loop_eng.txt"}]
