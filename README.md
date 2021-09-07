@@ -28,6 +28,12 @@ Install OpenJDK 11 for:
 - [Mac OS](https://gist.github.com/deobald/00b16090a932c793379cae6422206491)
 - Linux: `sudo apt-get install openjdk-11-jdk`
 
+WARNING: If you install a newer JDK (16+, in particular) you may run into build failures when you attempt to run the tests.
+You will see an error something like this:
+`Could not open ConcurrentHashMap.table field - falling back to LRU caching. Use '--add-opens java.base/java.util.concurrent=ALL-UNNAMED' to use the second-chance cache.`
+You can still use JDK 16 and above, but you will need to enable some reflection that has been closed down in newer versions.
+Follow the instructions in this thread: https://github.com/juxt/crux/issues/1462
+
 ### Install Clojure
 Install `clojure` as described [here](https://www.clojure.org/guides/getting_started)
 
@@ -67,7 +73,7 @@ cd kosa
 make help # see all the build commands
 make init # setup your system
 
-make test # run the tests
+make test # run the tests (did you install JDK 11?)
 
 make db-clean      # delete any old db files you might have
 make db-migrate    # install db schema
