@@ -103,7 +103,8 @@
   :repl-options {:init-ns dev.repl}
   :profiles {:uberjar {:aot      :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"
-                                  "-Dclojure.tools.logging.factory=clojure.tools.logging.impl/slf4j-factory"]}
+                                  "-Dclojure.tools.logging.factory=clojure.tools.logging.impl/slf4j-factory"
+                                  "--illegal-access=permit"]}
              :dev     {:dependencies [[org.clojure/test.check "1.1.0"]]
                        :resource-paths ["config/dev"]}}
 
