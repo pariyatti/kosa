@@ -20,7 +20,7 @@
 
 (defn untemplate [e]
   (let [index-kw (find-first #(= (name %) "index") (keys e))]
-    (dissoc e :crux.db/id index-kw)))
+    (dissoc e :xt/id index-kw)))
 
 (defn dup-rename [ns kw]
   (keyword (name ns) (name kw)))

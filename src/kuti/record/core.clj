@@ -1,8 +1,8 @@
 (ns kuti.record.core
   (:refer-clojure :exclude [get list])
   (:require [clojure.java.io :as io]
-            [crux.api :as crux]
-            [crux.rocksdb :as rocks]
+            [xtdb.api :as xt]
+            [xtdb.rocksdb :as rocks]
             [kosa.config :as config]
             [kuti.support.types :as types]
             [kuti.support.debugging :refer :all]
@@ -13,47 +13,47 @@
             [kuti.support.time :as time]
             [clojure.string :as clojure.string]))
 
-(def meta-keys #{:crux.db/id :kuti/type})
+(def meta-keys #{:xt/id :kuti/type})
 (def timestamp-keys #{:created-at :updated-at :published-at})
 
-(def crux-node)
-(defn get-crux-node []
-  crux-node)
+(def xtdb-node)
+(defn get-xtdb-node []
+  xtdb-node)
 
 (defn- data-dir []
   (get-in config/config [:db-spec :data-dir]))
 
-(defn- crux-http-port []
-  (get-in config/config [:db-spec :crux-http-port]))
+(defn- xtdb-http-port []
+  (get-in config/config [:db-spec :xtdb-http-port]))
 
-(defn start-crux! []
+(defn start-xtdb! []
   (letfn [(kv-store [dir]
-            {:kv-store {:crux/module 'crux.rocksdb/->kv-store
+            {:kv-store {:xtdb/module 'xtdb.rocksdb/->kv-store
 	                      :db-dir      (io/file (data-dir) dir)
                         :sync?       true}})]
-    (crux/start-node
-     {:crux/tx-log              (kv-store "tx-log")
-	    :crux/document-store      (kv-store "doc-store")
-      :crux/index-store         (kv-store "index-store")
-      :crux.lucene/lucene-store {:db-dir (path-join (data-dir) "lucene-dir")}
-      :crux.http-server/server  {:port (crux-http-port)}})))
+    (xt/start-node
+     {:xtdb/tx-log              (kv-store "tx-log")
+	    :xtdb/document-store      (kv-store "doc-store")
+      :xtdb/index-store         (kv-store "index-store")
+      :xtdb.lucene/lucene-store {:db-dir (path-join (data-dir) "lucene-dir")}
+      :xtdb.http-server/server  {:port (xtdb-http-port)}})))
 
-(defn stop-crux! []
-  (.close crux-node))
+(defn stop-xtdb! []
+  (.close xtdb-node))
 
-(defstate crux-node
-  :start (start-crux!)
-  :stop  (stop-crux!))
+(defstate xtdb-node
+  :start (start-xtdb!)
+  :stop  (stop-xtdb!))
 
 (defn transact! [node txns & [error-msg]]
   (let [tx (->> txns
-                (crux/submit-tx node)
-                (crux/await-tx node))]
-    (when-not (crux/tx-committed? node tx)
+                (xt/submit-tx node)
+                (xt/await-tx node))]
+    (when-not (xt/tx-committed? node tx)
       (throw (Exception. error-msg)))))
 
 (defn get* [id]
-  (crux/entity (crux/db crux-node) id))
+  (xt/entity (xt/db xtdb-node) id))
 
 (defn get [id]
   (get* (->uuid id)))
@@ -62,12 +62,12 @@
   (assoc e (types/typify e :updated-at) (time/now)))
 
 (defn put-async* [datum]
-  (crux/submit-tx crux-node [[:crux.tx/put datum]]))
+  (xt/submit-tx xtdb-node [[::xt/put datum]]))
 
 (defn put-prepare [raw]
-  (let [old-id (:crux.db/id raw)]
+  (let [old-id (:xt/id raw)]
     (-> raw
-        (assoc :crux.db/id (if old-id
+        (assoc :xt/id (if old-id
                              (->uuid old-id)
                              (uuid))))))
 
@@ -93,31 +93,31 @@
         raw (select-keys e all-keys)
         doc (put-prepare raw)
         tx  (put-async* doc)]
-    (assoc tx :crux.db/id (:crux.db/id doc))))
+    (assoc tx :xt/id (:xt/id doc))))
 
 (defn put [e restricted-keys]
   (let [tx   (put-async e restricted-keys)
-        _    (crux/await-tx crux-node tx)
-        card (get (:crux.db/id tx))]
+        _    (xt/await-tx xtdb-node tx)
+        card (get (:xt/id tx))]
     card))
 
 (defn delete-async
   "Try not to use me unless you absolutely have to. Prefer `delete` (syncronous)."
   [e]
-  (let [id (:crux.db/id e)]
-    (crux/submit-tx crux-node [[:crux.tx/delete id]])))
+  (let [id (:xt/id e)]
+    (xt/submit-tx xtdb-node [[::xt/delete id]])))
 
 (defn delete [e]
   (let [tx   (delete-async e)
-        _    (crux/await-tx crux-node tx)
+        _    (xt/await-tx xtdb-node tx)
         deleted e]
     deleted))
 
 (defn q
   ([q]
-   (crux/q (crux/db crux-node) q))
+   (xt/q (xt/db xtdb-node) q))
   ([q param]
-   (crux/q (crux/db crux-node) q param)))
+   (xt/q (xt/db xtdb-node) q param)))
 
 (defn reify-results
   ([getter r]
@@ -125,18 +125,18 @@
 
 (defn query-raw
   ([q]
-   (->> (crux/q (crux/db crux-node) q)
+   (->> (xt/q (xt/db xtdb-node) q)
         (reify-results get*)))
   ([q param]
-   (->> (crux/q (crux/db crux-node) q param)
+   (->> (xt/q (xt/db xtdb-node) q param)
         (reify-results get*))))
 
 (defn query
   ([q]
-   (->> (crux/q (crux/db crux-node) q)
+   (->> (xt/q (xt/db xtdb-node) q)
         (reify-results get)))
   ([q param]
-   (->> (crux/q (crux/db crux-node) q param)
+   (->> (xt/q (xt/db xtdb-node) q param)
         (reify-results get))))
 
 (defn list

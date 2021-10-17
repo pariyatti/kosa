@@ -48,17 +48,17 @@
       (let [resp (sut/search {:params {:q "bodhi"}})
             resp (assoc resp :body (vec (doall (:body resp))))
             resp (-> resp
-                     (assoc-in  [:body 0 :crux.db/id] nil)
-                     (assoc-in  [:body 0 :image-artefact/image-attachment :crux.db/id] nil))
+                     (assoc-in  [:body 0 :xt/id] nil)
+                     (assoc-in  [:body 0 :image-artefact/image-attachment :xt/id] nil))
             expected {:status 200,
                       :headers {},
-                      :body [{:crux.db/id nil
+                      :body [{:xt/id nil
                               :kuti/type :image-artefact,
                               :image-artefact/updated-at @time/clock,
                               :image-artefact/published-at @time/clock,
                               :image-artefact/original-url (URI. "")
                               :image-artefact/searchables "bodhi with raindrops jpg bodhi-with-raindrops.jpg",
-                              :image-artefact/image-attachment {:crux.db/id nil
+                              :image-artefact/image-attachment {:xt/id nil
                                                                 :kuti/type :attm
                                                                 :attm/updated-at @time/clock
                                                                 :attm/key "a2e0d5505185beb708ac5edaf4fc4d20",

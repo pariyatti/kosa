@@ -1,9 +1,10 @@
 {:secrets #include #join [#env HOME "/.kosa/secrets.edn"]
 
  :db-spec {:data-dir "data/test/"
-           :crux-http-port 9876}
+           :xtdb-http-port 9876}
 
- :mailer {:host "smtp.gmail.com"
+ :mailer {:enabled false
+          :host "smtp.gmail.com"
           :ssl true
           :user #ref [:secrets :mailer :user]
           :pass #ref [:secrets :mailer :pass]

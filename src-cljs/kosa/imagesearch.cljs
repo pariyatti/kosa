@@ -25,7 +25,7 @@
          :height 100}])
 
 (defn choose-image [img]
-  (reset! selected-image {:crux.db/id (-> img :image-artefact/image-attachment :crux.db/id)
+  (reset! selected-image {:xt/id (-> img :image-artefact/image-attachment :xt/id)
                           :url (-> img :image-artefact/image-attachment :attm/url)}))
 
 (def form-template

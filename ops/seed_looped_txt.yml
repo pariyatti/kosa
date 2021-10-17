@@ -23,7 +23,7 @@
         chdir: "{{ app_dir }}"
         target: "{{ seed_txt_clone_target }}"
 
-    - name: seed (3x looped txt card types) crux database
+    - name: seed (3x looped txt card types) xtdb database
       tags: code
       make:
         chdir: "{{ app_dir }}"

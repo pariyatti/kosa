@@ -1,5 +1,5 @@
-(ns joplin.migrators.crux.20210403000000-add-pali-word
-  (:require [joplin.crux.database :as d]
+(ns joplin.migrators.xtdb.20210403000000-add-pali-word
+  (:require [joplin.xtdb.database :as d]
             [kuti.record.schema :as schema]))
 
 (defn up [db]

@@ -1,9 +1,10 @@
 {:secrets #include #join [#env HOME "/.kosa/secrets.edn"]
 
  :db-spec {:data-dir "data/prod"
-           :crux-http-port 9999}
+           :xtdb-http-port 9999}
 
- :mailer {:host "localhost"
+ :mailer {:enabled true
+          :host "localhost"
           ;; revisit: https://serverfault.com/questions/999521/cannot-get-sendmail-to-work-on-ubuntu-18-04-3-lts-x64-on-digitalocean-droplet
           :ssl true
           :default-options {:from    "no-reply@pariyatti.app"

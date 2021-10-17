@@ -1,5 +1,5 @@
-(ns joplin.migrators.crux.20210422000000-add-looped-pali-word
-  (:require [joplin.crux.database :as d]
+(ns joplin.migrators.xtdb.20210422000000-add-looped-pali-word
+  (:require [joplin.xtdb.database :as d]
             [kuti.support.debugging :refer :all]
             [kuti.record.schema :as schema]))
 

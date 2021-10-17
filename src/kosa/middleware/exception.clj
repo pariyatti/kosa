@@ -1,7 +1,8 @@
 (ns kosa.middleware.exception
   (:require [clojure.pprint :refer [pprint]]
             [reitit.ring.middleware.exception :as exception]
-            [kuti.mailer :as mailer]))
+            [kuti.mailer :as mailer]
+            [kosa.config :as config]))
 
 (derive ::error ::exception)
 (derive ::failure ::exception)
@@ -18,7 +19,8 @@
               ;;       cheshire seems to fail in encoding the full ex-data map.
               :data (ex-data exception)
               :uri (:uri request)}]
-    (mailer/send-alert (<-pp body))
+    (when (-> config/config :mailer :enabled)
+      (mailer/send-alert (<-pp body)))
     {:status 500
      :body (assoc body :data (str (ex-data exception)))}))
 

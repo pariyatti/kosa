@@ -1,5 +1,5 @@
-(ns joplin.migrators.crux.20210511000000-add-looped-words-of-buddha
-  (:require [joplin.crux.database :as d]
+(ns joplin.migrators.xtdb.20210511000000-add-looped-words-of-buddha
+  (:require [joplin.xtdb.database :as d]
             [kuti.support.debugging :refer :all]
             [kuti.record.schema :as schema]))
 

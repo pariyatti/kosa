@@ -1,8 +1,8 @@
-(ns joplin.migrators.crux.20210402000000-add-image-artefacts
-  (:require [crux.api :as x]
+(ns joplin.migrators.xtdb.20210402000000-add-image-artefacts
+  (:require [xtdb.api :as xt]
             [kuti.record.schema :as schema]
             [kuti.support.debugging :refer :all]
-            [joplin.crux.database :as d]
+            [joplin.xtdb.database :as d]
             [tick.alpha.api :as t]))
 
 (defn up [db]

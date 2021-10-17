@@ -41,12 +41,12 @@
                  [buddy/buddy-core    "1.10.1"]
                  [buddy/buddy-auth    "3.0.1"]
                  [buddy/buddy-hashers "1.8.1"]
-                 [pro.juxt.crux/crux-core        "1.17.1"]
-                 [pro.juxt.crux/crux-rocksdb     "1.17.1"]
-                 [pro.juxt.crux/crux-lucene      "1.17.1"]
-                 [pro.juxt.crux/crux-http-server "1.17.1"]
+                 [com.xtdb/xtdb-core        "1.19.0"]
+                 [com.xtdb/xtdb-rocksdb     "1.19.0"]
+                 [com.xtdb/xtdb-lucene      "1.19.0"]
+                 [com.xtdb/xtdb-http-server "1.19.0"]
                  [joplin.core "0.3.11"]
-                 [org.pariyatti/joplin.crux "0.0.3"]
+                 [org.pariyatti/joplin.xtdb "0.0.4-SNAPSHOT"]
 
                  ;; clojurescript
                  [org.clojure/clojurescript "1.10.191"]
@@ -63,7 +63,7 @@
 
   :middleware [lein-git-down.plugin/inject-properties]
   :repositories [["public-github" {:url "git://github.com"}]]
-  :git-down {org.pariyatti/joplin.crux {:coordinates pariyatti/joplin.crux}}
+  :git-down {org.pariyatti/joplin.xtdb {:coordinates pariyatti/joplin.xtdb}}
 
   :scss {:builds
          {:development {:source-dir "resources/scss/"
@@ -90,21 +90,21 @@
   :main ^:skip-aot kosa.core
   :target-path "target/%s"
 
-  :aliases {"db-migrate"    ["run" "-m" "joplin.crux.alias/migrate"  "joplin/config.edn"]
-            "db-seed"       ["run" "-m" "joplin.crux.alias/seed"     "joplin/config.edn"]
-            "db-rollback"   ["run" "-m" "joplin.crux.alias/rollback" "joplin/config.edn"]
-            "db-reset"      ["run" "-m" "joplin.crux.alias/reset"    "joplin/config.edn"]
-            "db-pending"    ["run" "-m" "joplin.crux.alias/pending"  "joplin/config.edn"]
-            "db-create"     ["run" "-m" "joplin.crux.alias/create"   "joplin/config.edn" "dev" "crux-dev"]
+  :aliases {"db-migrate"    ["run" "-m" "joplin.xtdb.alias/migrate"  "joplin/config.edn"]
+            "db-seed"       ["run" "-m" "joplin.xtdb.alias/seed"     "joplin/config.edn"]
+            "db-rollback"   ["run" "-m" "joplin.xtdb.alias/rollback" "joplin/config.edn"]
+            "db-reset"      ["run" "-m" "joplin.xtdb.alias/reset"    "joplin/config.edn"]
+            "db-pending"    ["run" "-m" "joplin.xtdb.alias/pending"  "joplin/config.edn"]
+            "db-create"     ["run" "-m" "joplin.xtdb.alias/create"   "joplin/config.edn" "dev" "xtdb-dev"]
             "db-txt-pali"   ["run" "-m" "dev.alias/ingest-txt-pali!"]
             "db-txt-buddha" ["run" "-m" "dev.alias/ingest-txt-buddha!"]
             "db-txt-doha"   ["run" "-m" "dev.alias/ingest-txt-doha!"]}
 
   :repl-options {:init-ns dev.repl}
+  :jvm-opts ["--add-opens=java.base/java.util.concurrent=ALL-UNNAMED"]
   :profiles {:uberjar {:aot      :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"
-                                  "-Dclojure.tools.logging.factory=clojure.tools.logging.impl/slf4j-factory"
-                                  "--illegal-access=permit"]}
+                                  "-Dclojure.tools.logging.factory=clojure.tools.logging.impl/slf4j-factory"]}
              :dev     {:dependencies [[org.clojure/test.check "1.1.0"]]
                        :resource-paths ["config/dev"]}}
 

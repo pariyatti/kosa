@@ -11,7 +11,7 @@
 
 (defn ->image-doc [p]
   (-> p
-      (c/params->doc [:crux.db/id])
+      (c/params->doc [:xt/id])
       (assoc :image-artefact/original-url (URI. ""))
       (storage/attach! :image-artefact/image-attachment (:file p))))
 

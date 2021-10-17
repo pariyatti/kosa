@@ -19,7 +19,7 @@
   [handler]
   (fn [request]
     (if-let [id (-> request :path-params :id)]
-      (handler (assoc-in request [:params :crux.db/id] id))
+      (handler (assoc-in request [:params :xt/id] id))
       (handler request))))
 
 (def path-params

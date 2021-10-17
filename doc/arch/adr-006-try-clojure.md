@@ -12,7 +12,7 @@ The reasoning behind the move to Clojure is three-fold:
 
 ## Decision
 
-We've been experimenting with moving Kosa from Ruby to a JVM language and it's been going well. Our "experiment" is more or less simply to re-implement what we have in Ruby in Clojure (and to stop and reconsider the move if we run into issues along the way). That experiment is in the `kosa-crux` repository on GitHub. All of @varunpai 's design work and the vast majority of our deployment infrastructure (Ansible scripts) can move from the Ruby codebase wholesale, without any rework. I won't call the experiment a success until we've implemented the major components which exist in the Ruby codebase, but we feel quite close and nothing has slowed development down so far. When we reach that point, we'll start implementing the v1 features the Ruby code lacks: RSS feed parsing, daily doha / dwob cards, etc.
+We've been experimenting with moving Kosa from Ruby to a JVM language and it's been going well. Our "experiment" is more or less simply to re-implement what we have in Ruby in Clojure (and to stop and reconsider the move if we run into issues along the way). That experiment is in the `kosa-crvx` repository on GitHub. All of @varunpai 's design work and the vast majority of our deployment infrastructure (Ansible scripts) can move from the Ruby codebase wholesale, without any rework. I won't call the experiment a success until we've implemented the major components which exist in the Ruby codebase, but we feel quite close and nothing has slowed development down so far. When we reach that point, we'll start implementing the v1 features the Ruby code lacks: RSS feed parsing, daily doha / dwob cards, etc.
 
 ## Status
 
@@ -21,5 +21,5 @@ Pending.
 ## Consequences
 
 1. Clojure is a more friendly language for developers and has a wider community of willing volunteers.
-2. Clojure is a better language to work with both Neo4j (if we choose that database) and Crux (which we are currently evaluating in parallel).
+2. Clojure is a better language to work with both Neo4j (if we choose that database) and XTDB (which we are currently evaluating in parallel).
 3. Clojure libraries required in the Pariyatti library are much less burdensome than the equivalent Ruby libraries.

@@ -38,7 +38,7 @@
     (is (thrown-with-msg? java.lang.AssertionError
                           #"Some keys did not match specified :kuti/type. :updated-on, :published-on, :user/name, :address/street"
                           (sut/save! {:kuti/type :essay
-                                      :crux.db/id 123
+                                      :xt/id 123
                                       :updated-on (time/now)
                                       :published-on (time/now)
                                       :user/name "Vikram"
@@ -68,7 +68,7 @@
                 :doge/breed "Shiba"}]
       (is (= doge
              (dissoc (sut/save! doge)
-                     :crux.db/id :doge/updated-at)))))
+                     :xt/id :doge/updated-at)))))
 
   (testing "saves doc with correctly-typed keys"
     (let [_ (sut/add-type :essay [:essay/title :essay/bookmarked])
@@ -77,12 +77,12 @@
           saved (sut/save! {:kuti/type        :essay
                             :essay/title      "Strength of the Record"
                             :essay/bookmarked true})
-          found (rec/get (:crux.db/id saved))]
+          found (rec/get (:xt/id saved))]
       (is (= {:kuti/type        :essay
               :essay/updated-at @time/clock
               :essay/title      "Strength of the Record"
               :essay/bookmarked true}
-             (dissoc found :crux.db/id)))))
+             (dissoc found :xt/id)))))
 
   (testing "rejects doc with missing keys"
     (let [_ (sut/add-type :test [:test/bp :test/hr :test/record-date])
@@ -203,7 +203,7 @@
                                                       (biginteger Long/MAX_VALUE))})))))
 
   ;; NOTE: `:db:type/ref` is intentionally elided.
-  ;;       Crux refs are implicit and can be of any type.
+  ;;       XTDB refs are implicit and can be of any type.
 
   (testing "handles strings"
     (let [_ (sut/add-type :book [:book/author])

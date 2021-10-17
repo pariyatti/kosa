@@ -61,7 +61,7 @@
   ([req type action]
    (path-for req (qualify req type action)))
   ([req type action obj]
-   (path-for req (qualify req type action) (:crux.db/id obj))))
+   (path-for req (qualify req type action) (:xt/id obj))))
 
 (defn index-path   [req type] (path* req type :index))
 (defn create-path  [req type] (path* req type :create))

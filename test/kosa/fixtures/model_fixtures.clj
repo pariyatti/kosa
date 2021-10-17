@@ -21,7 +21,7 @@
 
 (defn audio-attachment [aud]
   (merge {:kuti/type :attm,
-          ;; :crux.db/id #uuid "da982712-4753-4939-a912-b582adc598c1"
+          ;; :xt/id #uuid "da982712-4753-4939-a912-b582adc598c1"
           :attm/byte-size 183810,
           :attm/content-type "audio/mpeg",
           :attm/filename "dhammapada_20_276.mp3",

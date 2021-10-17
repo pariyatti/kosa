@@ -79,13 +79,13 @@
     (testing "new path"
       (is (= "/users/new" (sut/new-path request :users))))
     (testing "show path"
-      (is (= "/users/1234" (sut/show-path request :users {:crux.db/id "1234"}))))
+      (is (= "/users/1234" (sut/show-path request :users {:xt/id "1234"}))))
     (testing "update path"
-      (is (= "/users/1234" (sut/update-path request :users {:crux.db/id "1234"}))))
+      (is (= "/users/1234" (sut/update-path request :users {:xt/id "1234"}))))
     (testing "destroy path"
-      (is (= "/users/1234" (sut/destroy-path request :users {:crux.db/id "1234"}))))
+      (is (= "/users/1234" (sut/destroy-path request :users {:xt/id "1234"}))))
     (testing "edit path"
-      (is (= "/users/1234/edit" (sut/edit-path request :users {:crux.db/id "1234"})))))
+      (is (= "/users/1234/edit" (sut/edit-path request :users {:xt/id "1234"})))))
 
   (let [router-with-colliding-aliases (rr/router [["/thing/:id" {:name    :kosa.views/thing-show
                                                                  :aliases [:kosa.views/thing-destroy]

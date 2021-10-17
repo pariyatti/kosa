@@ -45,9 +45,9 @@
       (let [local-file (sut/file (:leaf-attachment doc2))]
         (is (= 13468 (.length local-file)))))
 
-    (testing "records the attachment in Crux"
-      (let [attachment (kuti.record/get (-> doc2 :leaf-attachment :crux.db/id))]
-        (is (not (nil? (:crux.db/id attachment))))
+    (testing "records the attachment in XTDB"
+      (let [attachment (kuti.record/get (-> doc2 :leaf-attachment :xt/id))]
+        (is (not (nil? (:xt/id attachment))))
         (is (= {:kuti/type :attm
                 :attm/updated-at @time/clock
                 :attm/key "a2e0d5505185beb708ac5edaf4fc4d20"
@@ -58,7 +58,7 @@
                 :attm/byte-size 13468
                 :attm/checksum "ca20bbfbea75755b1059ff2cd64bd6d3"
                 :attm/identified true}
-               (dissoc attachment :crux.db/id)))))))
+               (dissoc attachment :xt/id)))))))
 
 (deftest collapse-and-expand
   (let [params-w-2-attm {:type :double
@@ -74,8 +74,8 @@
         doc (-> (c/params->doc params-w-2-attm [:type])
                 (sut/attach! :double/leaf-attachment (:leaf-file params-w-2-attm))
                 (sut/attach! :double/bodhi-attachment (:bodhi-file params-w-2-attm)))
-        leaf-attachment-id (-> doc :double/leaf-attachment :crux.db/id)
-        bodhi-attachment-id (-> doc :double/bodhi-attachment :crux.db/id)
+        leaf-attachment-id (-> doc :double/leaf-attachment :xt/id)
+        bodhi-attachment-id (-> doc :double/bodhi-attachment :xt/id)
         collapsed (sut/collapse-all doc)]
 
     (testing "collapses all attachments"
@@ -116,8 +116,8 @@
                  :attm/key "a2e0d5505185beb708ac5edaf4fc4d20"
                  :attm/url "/uploads/kuti-a2e0d5505185beb708ac5edaf4fc4d20-bodhi_with_whitespace.jpg"}}
                (-> expanded
-                   (dissoc-in [:double/leaf-attachment :crux.db/id])
-                   (dissoc-in [:double/bodhi-attachment :crux.db/id]))))))))
+                   (dissoc-in [:double/leaf-attachment :xt/id])
+                   (dissoc-in [:double/bodhi-attachment :xt/id]))))))))
 
 ;; ***************************
 ;; ActiveStorage Blob Columns:

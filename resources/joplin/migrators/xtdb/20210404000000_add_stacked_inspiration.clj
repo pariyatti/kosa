@@ -1,5 +1,5 @@
-(ns joplin.migrators.crux.20210404000000-add-stacked-inspiration
-  (:require [joplin.crux.database :as d]
+(ns joplin.migrators.xtdb.20210404000000-add-stacked-inspiration
+  (:require [joplin.xtdb.database :as d]
             [kuti.record.schema :as schema]))
 
 (defn up [db]

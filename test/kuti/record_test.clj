@@ -1,6 +1,6 @@
 (ns kuti.record-test
   (:require [clojure.test :refer :all :exclude [time]]
-            [crux.api]
+            [xtdb.api :as xt]
             [kuti.support.debugging :refer :all]
             [kuti.support.time :as time]
             [kuti.support.digest :refer [->uuid]]
@@ -14,7 +14,7 @@
   record-fixtures/load-states
   time-fixtures/freeze-clock)
 
-(def record {:crux.db/id (->uuid "3291d680-0d70-4940-914d-35413e261115")
+(def record {:xt/id (->uuid "3291d680-0d70-4940-914d-35413e261115")
              :record     "vinyl"
              :artist     "The Who"})
 
@@ -33,7 +33,7 @@
 (deftest db-insert-operations
   (testing "Can insert a raw datum"
     (let [tx (core/put-async* record)]
-      (crux.api/await-tx core/crux-node tx)
+      (xt/await-tx core/xtdb-node tx)
       (is (= record (sut/get "3291d680-0d70-4940-914d-35413e261115")))))
 
   (testing "put returns the record inserted"
@@ -43,8 +43,8 @@
 
   (testing "put generates a new id"
     (let [inserted (sut/put record-without-id [:country :state :city :population])]
-      (is (= record-without-id (dissoc inserted :crux.db/id)))
-      (is (not (nil? (:crux.db/id inserted))))))
+      (is (= record-without-id (dissoc inserted :xt/id)))
+      (is (not (nil? (:xt/id inserted))))))
 
   (testing "put barfs on badly-formed documents"
     (is (thrown-with-msg? java.lang.Exception #"Extra fields ':superfluous-field' found during put."
@@ -58,7 +58,7 @@
           new-record      (-> record
                               (assoc :artist "the kinks" :song "Lola"))
           inserted-record (core/put-async* new-record)]
-      (crux.api/await-tx core/crux-node inserted-record)
+      (xt/await-tx core/xtdb-node inserted-record)
       (is (= new-record
              (sut/get "3291d680-0d70-4940-914d-35413e261115")))))
 
@@ -68,7 +68,7 @@
           updated (sut/put (update created :population #(+ % 5555)) required-fields)]
       (is (= 1234 (:population created)))
       (is (= 6789 (:population updated)))
-      (is (= (:crux.db/id created) (:crux.db/id updated))))))
+      (is (= (:xt/id created) (:xt/id updated))))))
 
 (deftest db-list
   (testing "lists by :kuti/type and :[type]/updated-at"

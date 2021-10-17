@@ -1,6 +1,6 @@
 # kosa [m.]: _store-room; treasury_
 
-Library and Mobile services written in Clojure + Crux.
+Library and Mobile services written in Clojure + XTDB.
 
 
 ## Mobile App API
@@ -32,7 +32,7 @@ WARNING: If you install a newer JDK (16+, in particular) you may run into build 
 You will see an error something like this:
 `Could not open ConcurrentHashMap.table field - falling back to LRU caching. Use '--add-opens java.base/java.util.concurrent=ALL-UNNAMED' to use the second-chance cache.`
 You can still use JDK 16 and above, but you will need to enable some reflection that has been closed down in newer versions.
-Follow the instructions in this thread: https://github.com/juxt/crux/issues/1462
+Follow the instructions in this thread: https://github.com/xtdb/xtdb/issues/1462
 
 ### Install Clojure
 Install `clojure` as described [here](https://www.clojure.org/guides/getting_started)
@@ -90,14 +90,23 @@ make run           # run the server (or)
 make repl          # run the server interactively
 ```
 
-To add sample data from a REPL:
+### Try it out
+
+**To add sample data from a REPL:**
 
 ```clojure
 dev.repl> (migrate)
 dev.repl> (seed)
 ```
 
-Once you have run these, close the REPL and restart it or your Crux node will be locked. Migrations work from the command line but seeding does not at the moment.
+Once you have run these, close the REPL and restart it or your XTDB node will be locked. Migrations work from the command line but seeding does not at the moment.
+
+**To login:**
+
+```
+username: admin
+password: <found in the KeePass vault>
+```
 
 ## Design Wireframes
 

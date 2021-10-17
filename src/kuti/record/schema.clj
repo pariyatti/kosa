@@ -1,5 +1,6 @@
 (ns kuti.record.schema
   (:require [clojure.set :refer [difference]]
+            [xtdb.api :as xt]
             [kuti.record.core :as core]
             [kuti.support.digest :refer [uuid]]
             [kuti.support.time :as time]
@@ -71,7 +72,7 @@
    :db.type/inst    java.time.Instant
    :db.type/keyword clojure.lang.Keyword
    :db.type/long    java.lang.Long
-   ;; :db.type/ref  nil ;; refs in Crux are implicit so this is not implemented
+   ;; :db.type/ref  nil ;; refs in XTDB are implicit so this is not implemented
    :db.type/string  java.lang.String
    :db.type/symbol  clojure.lang.Symbol
    :db.type/tuple   clojure.lang.PersistentVector
@@ -116,36 +117,36 @@
 
 (defn add-type
   ([t attrs]
-   (add-type core/crux-node t attrs))
+   (add-type core/xtdb-node t attrs))
   ([node t attrs]
    (core/transact! node
-                   [[:crux.tx/put
-                     {:crux.db/id      t
+                   [[::xt/put
+                     {:xt/id      t
                       :db.entity/type  t
                       :db.entity/attrs attrs}]])))
 
 (defn remove-type
   ([t]
-   (remove-type core/crux-node t))
+   (remove-type core/xtdb-node t))
   ([node t]
    (core/transact! node
-                   [[:crux.tx/delete t]])))
+                   [[::xt/delete t]])))
 
 (defn add-schema
   ([attr value-type]
-   (add-schema core/crux-node attr value-type))
+   (add-schema core/xtdb-node attr value-type))
   ([node attr value-type]
-   (core/transact! node [[:crux.tx/put
-                          {:crux.db/id   attr
+   (core/transact! node [[::xt/put
+                          {:xt/id   attr
                            :db/ident     attr
                            :db/valueType value-type}]])))
 
 (defn remove-schema
   ([s]
-   (remove-schema core/crux-node s))
+   (remove-schema core/xtdb-node s))
   ([node s]
    (core/transact! node
-                   [[:crux.tx/delete s]])))
+                   [[::xt/delete s]])))
 
 (defn save! [e]
   (assert (contains? e :kuti/type) ":kuti/type key expected.")

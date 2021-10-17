@@ -5,12 +5,12 @@
             [kosa.server :as server]
             [kuti.support.debugging :refer :all]
             [joplin.repl]
-            [joplin.crux.database] ;; required for joplin to work
+            [joplin.xtdb.database] ;; required for joplin to work
             [joplin.alias :refer [*load-config*]]
             [mount.core :as mount]
             [kosa.library.artefacts.image.db :as image]
             [kosa.mobile.today.looped-pali-word.txt :as txt]
-            [crux.api :as x]
+            [xtdb.api :as xt]
             [clojure.tools.logging :as log]))
 
 (def joplin-config (*load-config* "joplin/config.edn"))
@@ -59,4 +59,4 @@
   (joplin.repl/seed joplin-config :dev))
 
 (defn node []
-  (kuti.record.core/get-crux-node))
+  (kuti.record.core/get-xtdb-node))

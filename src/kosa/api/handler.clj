@@ -17,11 +17,11 @@
 (def kosa-epoch "2020-12-12T00:00:00.000Z")
 
 (defn pali-word->json [word]
-  ;; TODO: how much of the Crux entity do we just want to hand over verbatim?
+  ;; TODO: how much of the XTDB entity do we just want to hand over verbatim?
   (let [published (:pali-word/published-at word)
         date (time/string (or published kosa-epoch))]
     {:type "pali_word"
-     :id (:crux.db/id word)
+     :id (:xt/id word)
      :published_at date
      :created_at date
      :updated_at date
@@ -42,7 +42,7 @@
   (let [published (:words-of-buddha/published-at card)
         date (time/string (or published kosa-epoch))]
     {:type "words_of_buddha"
-     :id (:crux.db/id card)
+     :id (:xt/id card)
      :published_at date
      :created_at date
      :updated_at date
@@ -66,7 +66,7 @@
     ;; TODO: this requires its own type, but the mobile app doesn't support
     ;;       that yet. -sd
     {:type "stacked_inspiration"
-     :id (:crux.db/id card)
+     :id (:xt/id card)
      :published_at date
      :created_at date
      :updated_at date
@@ -81,7 +81,7 @@
   (let [published (:doha/published-at card)
         date (time/string (or published kosa-epoch))]
     {:type "doha"
-     :id (:crux.db/id card)
+     :id (:xt/id card)
      :published_at date
      :created_at date
      :updated_at date
@@ -99,7 +99,7 @@
     ;; TODO: this requires its own type, but the mobile app doesn't support
     ;;       that yet. -sd
     {:type "stacked_inspiration"
-     :id (:crux.db/id card)
+     :id (:xt/id card)
      :published_at date
      :created_at date
      :updated_at date
@@ -113,7 +113,7 @@
   (let [published (:stacked-inspiration/published-at card)
         date (time/string (or published kosa-epoch))]
     {:type "stacked_inspiration"
-     :id (:crux.db/id card)
+     :id (:xt/id card)
      :published_at date
      :created_at date
      :updated_at date

@@ -1,5 +1,5 @@
-(ns joplin.migrators.crux.20210401000000-add-attachments
-  (:require [joplin.crux.database :as d]
+(ns joplin.migrators.xtdb.20210401000000-add-attachments
+  (:require [joplin.xtdb.database :as d]
             [kuti.record.schema :as schema]))
 
 (defn up [db]

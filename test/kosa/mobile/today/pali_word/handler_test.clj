@@ -21,10 +21,10 @@
   "TODO: Should probably use the spec generators for this"
   [word translation]
   (let [audio {:url "/audio/path"}
-        translations [{:crux.db/id (uuid)
+        translations [{:xt/id (uuid)
                        :translation translation
                        :language "eng"}]]
-    {:crux.db/id (uuid)
+    {:xt/id (uuid)
      :kuti/type :pali-word
      :pali-word/updated-at time-fixtures/win95
      :pali-word/published-at (time/now)

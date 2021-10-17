@@ -34,7 +34,7 @@
   [:img {:src (-> img :video-attachment :url) :width 100 :height 100}])
 
 (defn choose-video [img]
-  (reset! selected-video {:crux.db/id (-> img :video-attachment :crux.db/id)
+  (reset! selected-video {:xt/id (-> img :video-attachment :xt/id)
                            :url (-> img :video-attachment :url)}))
 
 

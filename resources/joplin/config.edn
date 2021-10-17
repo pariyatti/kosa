@@ -1,55 +1,55 @@
-{:migrators {:crux-mig "resources/joplin/migrators/crux"}
+{:migrators {:xtdb-mig "resources/joplin/migrators/xtdb"}
 
- :seeds {:crux-seed "kosa.seeds.crux/run"}
+ :seeds {:xtdb-seed "kosa.seeds.xtdb/run"}
 
  :databases
- {:crux-dev
-  {:type :crux
-   :conf {:crux/tx-log {:kv-store {:crux/module crux.rocksdb/->kv-store
+ {:xtdb-dev
+  {:type :xtdb
+   :conf {:xtdb/tx-log {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store
 	                                 :db-dir      "data/dev/tx-log"
                                    :sync?       true}}
-	        :crux/document-store {:kv-store {:crux/module crux.rocksdb/->kv-store
+	        :xtdb/document-store {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store
 	                                         :db-dir      "data/dev/doc-store"
                                            :sync?       true}}
-          :crux/index-store {:kv-store {:crux/module crux.rocksdb/->kv-store
+          :xtdb/index-store {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store
 	                                      :db-dir      "data/dev/index-store"
                                         :sync?       true}}
-          :crux.lucene/lucene-store {:db-dir "data/dev/lucene-dir"}}}
+          :xtdb.lucene/lucene-store {:db-dir "data/dev/lucene-dir"}}}
 
-  :crux-test
-  {:type :crux
-   :conf {:crux/tx-log {:kv-store {:crux/module crux.rocksdb/->kv-store
+  :xtdb-test
+  {:type :xtdb
+   :conf {:xtdb/tx-log {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store
 	                                 :db-dir      "data/test/tx-log"
                                    :sync?       true}}
-	        :crux/document-store {:kv-store {:crux/module crux.rocksdb/->kv-store
+	        :xtdb/document-store {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store
 	                                         :db-dir      "data/test/doc-store"
                                            :sync?       true}}
-          :crux/index-store {:kv-store {:crux/module crux.rocksdb/->kv-store
+          :xtdb/index-store {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store
 	                                      :db-dir      "data/test/index-store"
                                         :sync?       true}}
-          :crux.lucene/lucene-store {:db-dir "data/test/lucene-dir"}}}
+          :xtdb.lucene/lucene-store {:db-dir "data/test/lucene-dir"}}}
 
-  :crux-prod
-  {:type :crux
-   :conf {:crux/tx-log {:kv-store {:crux/module crux.rocksdb/->kv-store
+  :xtdb-prod
+  {:type :xtdb
+   :conf {:xtdb/tx-log {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store
 	                                 :db-dir      "data/prod/tx-log"
                                    :sync?       true}}
-	        :crux/document-store {:kv-store {:crux/module crux.rocksdb/->kv-store
+	        :xtdb/document-store {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store
 	                                         :db-dir      "data/prod/doc-store"
                                            :sync?       true}}
-          :crux/index-store {:kv-store {:crux/module crux.rocksdb/->kv-store
+          :xtdb/index-store {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store
 	                                      :db-dir      "data/prod/index-store"
                                         :sync?       true}}
-          :crux.lucene/lucene-store {:db-dir "data/prod/lucene-dir"}}}}
+          :xtdb.lucene/lucene-store {:db-dir "data/prod/lucene-dir"}}}}
 
- :environments {:dev [{:db       :crux-dev
-                       :migrator :crux-mig
-                       :seed     :crux-seed}]
-                :test [{:db       :crux-test
-                        :migrator :crux-mig
-                        :seed     :crux-seed}]
-                :prod [{:db       :crux-prod
-                        :migrator :crux-mig
-                        :seed     :crux-seed}]}
+ :environments {:dev [{:db       :xtdb-dev
+                       :migrator :xtdb-mig
+                       :seed     :xtdb-seed}]
+                :test [{:db       :xtdb-test
+                        :migrator :xtdb-mig
+                        :seed     :xtdb-seed}]
+                :prod [{:db       :xtdb-prod
+                        :migrator :xtdb-mig
+                        :seed     :xtdb-seed}]}
 
  }

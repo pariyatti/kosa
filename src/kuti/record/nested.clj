@@ -20,7 +20,7 @@
 
 (defn collapse-one [doc attr]
   (let [inner (get doc attr)
-        inner-id (:crux.db/id inner)]
+        inner-id (:xt/id inner)]
     (-> doc
         (assoc (field->id attr) (or inner-id
                                     (digest/null-uuid)))

@@ -42,7 +42,7 @@
   (log/info (format "Starting the server with options: %s" opts))
   (-> (mount/with-args opts)
       (mount/only #{#'config/config
-                    #'db-core/crux-node
+                    #'db-core/xtdb-node
                     #'storage-core/service-config
                     #'job/jobs
                     #'server/server})

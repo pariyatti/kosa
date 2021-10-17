@@ -107,7 +107,7 @@
         chdir: "{{ app_dir }}"
         target: "{{ pre_deploy_target }}"
 
-    - name: migrate crux database
+    - name: migrate xtdb database
       tags: code
       make:
         chdir: "{{ app_dir }}"

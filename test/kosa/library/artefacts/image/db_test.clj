@@ -44,10 +44,10 @@
    (clean-ids obj nil))
   ([obj innards]
    (let [top-clean (dissoc obj
-                           :crux.db/id
+                           :xt/id
                            :image-artefact/image-attachment-id)]
      (if innards
-       (update-in top-clean innards dissoc :crux.db/id)
+       (update-in top-clean innards dissoc :xt/id)
        top-clean))))
 
 (deftest attachment-acceptance-tests
@@ -61,9 +61,9 @@
 
     (testing "On insert, flattens Image Artefacts into (1) artefact and (2) attachment"
       (let [img (sut/save! image-artefact2)
-            img-found (kuti.record/get (:crux.db/id img))
+            img-found (kuti.record/get (:xt/id img))
             attachment-found (kuti.record/get (:image-artefact/image-attachment-id img-found))]
-        (is (= #{:crux.db/id
+        (is (= #{:xt/id
                  :kuti/type
                  :image-artefact/updated-at
                  :image-artefact/published-at
@@ -81,7 +81,7 @@
                             (assoc image-attachment
                                    :attm/url "/uploads/kuti-a2e0d5505185beb708ac5edaf4fc4d20-bodhi-with-raindrops.jpg"))
             img (sut/save! image-artefact2)
-            img-found (sut/get (:crux.db/id img))
+            img-found (sut/get (:xt/id img))
             img-no-ids (clean-ids img-found [:image-artefact/image-attachment])]
         (is (= expected img-no-ids))))
 

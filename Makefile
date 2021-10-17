@@ -49,20 +49,20 @@ resources/storage:
 tools: sass icons
 
 deps: ##@Development Run `lein deps`
-	lein deps
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein deps
 
 assets: ##@Development Rebuild web assets (CSS, CLJS)
-	lein scss :development once
-	lein cljsbuild once
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein scss :development once
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein cljsbuild once
 
 css: ##@Development Rebuild CSS manually
-	lein scss :development once
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein scss :development once
 
 css-auto: ##@Development Rebuild CSS continuously (kinda broken?)
-	lein scss :development auto
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein scss :development auto
 
 cljs-auto: ##@Development Rebuild CLJS continuously
-	lein cljsbuild auto
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein cljsbuild auto
 
 init: ~/.kosa tmp/storage resources/storage tools deps assets ##@Setup Dev Setup
 
@@ -76,11 +76,11 @@ txt-clone: ##@Setup Copy TXT files from private repo
 	./bin/copy-txt-files.sh
 
 routes: ##@Development Display HTTP routes
-	lein run -- --routes -f config/config.dev.edn
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein run -- --routes -f config/config.dev.edn
 
 db-create: ##@Development Create a migrator: make db-create name=xyz
 ifdef name
-	lein db-create $(name)
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-create $(name)
 else
 	echo "'name' was not defined."
 endif
@@ -91,53 +91,53 @@ db-clean: ##@Development Erase local db
 	rm -rf resources/storage/*
 
 db-migrate: ##@Development Migrate up
-	lein db-migrate dev
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-migrate dev
 
 db-seed: ##@Development Add sample data
-	lein db-seed dev
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-seed dev
 
 db-reset: db-clean db-migrate db-seed ##@Development Clean, Migrate, Seed.
 
 db-txt-pali: ##@Development Add Looped Pali Words
-	lein db-txt-pali
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-txt-pali
 
 db-txt-buddha: ##@Development Add Looped Words of Buddha
-	lein db-txt-buddha
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-txt-buddha
 
 db-txt-doha: ##@Development Add Looped Dohas
-	lein db-txt-doha
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-txt-doha
 
 db-txt-all: db-txt-pali db-txt-buddha db-txt-doha ##@Development Add all (3x) looped cards
 
 test: ##@Development Run tests with lein
 #lein run -- -mf config/config.test.edn
-	lein test
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein test
 
 test-unit: ##@Development Run unit tests with lein
-	lein test :unit
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein test :unit
 
 test-integration: ##@Development Run integration tests with lein
-	lein test :integration
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein test :integration
 
 t: ##@Development Run 1 test: `make t TEST=your.test.ns-test`
-	lein test :only ${TEST}
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein test :only ${TEST}
 
 run: ##@Development Start a development server
-	lein run -- -sf config/config.dev.edn
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein run -- -sf config/config.dev.edn
 
 repl: ##@Development Start a Clojure REPL
 	$(info Run `(start!)` in the REPL to start the server.)
-	lein repl
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein repl
 
 db-migrate-prod: ##@Production Migrate up
 	rm -rf ./data/prod/index-store
 	rm -rf ./data/prod/lucene-dir
-	lein db-migrate prod
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-migrate prod
 
 db-txt-prod: ##@Production Add all (3x) looped cards
-	lein db-txt-pali   prod
-	lein db-txt-buddha prod
-	lein db-txt-doha   prod
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-txt-pali   prod
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-txt-buddha prod
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-txt-doha   prod
 
 run-prod: ##@Production Start a production server
-	lein run -- -sf config/config.prod.edn
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein run -- -sf config/config.prod.edn

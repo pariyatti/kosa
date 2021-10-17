@@ -18,7 +18,7 @@
           list-query '{:find [?e ?v ?a ?s]
                        :in [?match]
 	                     :where [[(wildcard-text-search ?match) [[?e ?v ?a ?s]]]
-	                             [?e :crux.db/id]
+	                             [?e :xt/id]
                                [?e :kuti/type :image-artefact]]}
           raw-images (record/query list-query matcher)]
       (log/info (format "searching for '%s'" matcher))

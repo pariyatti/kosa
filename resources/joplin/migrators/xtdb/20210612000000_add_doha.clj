@@ -1,5 +1,5 @@
-(ns joplin.migrators.crux.20210612000000-add-doha
-  (:require [joplin.crux.database :as d]
+(ns joplin.migrators.xtdb.20210612000000-add-doha
+  (:require [joplin.xtdb.database :as d]
             [kuti.support.debugging :refer :all]
             [kuti.record.schema :as schema]))
 
