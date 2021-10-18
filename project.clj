@@ -46,7 +46,7 @@
                  [com.xtdb/xtdb-lucene      "1.19.0"]
                  [com.xtdb/xtdb-http-server "1.19.0"]
                  [joplin.core "0.3.11"]
-                 [org.pariyatti/joplin.xtdb "0.0.4-SNAPSHOT"]
+                 [org.pariyatti/joplin.xtdb "0.0.4"]
 
                  ;; clojurescript
                  [org.clojure/clojurescript "1.10.191"]
