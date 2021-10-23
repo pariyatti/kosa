@@ -3,7 +3,7 @@ set -e
 
 (
     #### Step 0: sanity ####
-    printf "\nStep 0: Sanity check..."
+    printf "\nStep 0: Sanity check...\n"
     KOSA=$(dirname "$0")/..
     if [ "$KOSA" != "./bin/.." ]
     then
@@ -12,10 +12,14 @@ set -e
         exit 1
     fi
     if [[ -z "${GIT_SSH_COMMAND}" ]]; then
+        printf "\n####\n"
         printf "####\n"
-        printf "GIT_SSH_COMMAND is empty. Exiting.\n"
+        printf "WARNING: GIT_SSH_COMMAND is empty. \n"
         printf "Set GIT_SSH_COMMAND with: 'GIT_SSH_COMMAND=\"ssh -i ~/.ssh/id_rsa\"'.\n"
-        exit 1
+        printf "####\n"
+        printf "####\n\n"
+        printf "Attempting to set GIT_SSH_COMMAND now...\n"
+        export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa"
     fi
     printf "...sane.\n"
 
