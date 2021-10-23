@@ -84,7 +84,8 @@ make txt-clone     # copy TXT input files for looped cards (optional)
                    # note that this command only works if you have
                    # access to the private repo described above
 make db-txt-pali   # add looped pali word cards (optional)
-make db-txt-buddha # add looped pali word cards (optional)
+make db-txt-buddha # add looped buddha word cards (optional)
+make db-txt-doha   # add looped doha word cards (optional)
 
 make run           # run the server (or)
 make repl          # run the server interactively
