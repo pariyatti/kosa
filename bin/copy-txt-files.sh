@@ -14,6 +14,7 @@ set -e
     if [[ -z "${GIT_SSH_COMMAND}" ]]; then
         printf "####\n"
         printf "GIT_SSH_COMMAND is empty. Exiting.\n"
+        printf "Set GIT_SSH_COMMAND with: 'GIT_SSH_COMMAND=\"ssh -i ~/.ssh/id_rsa\"'.\n"
         exit 1
     fi
     printf "...sane.\n"
