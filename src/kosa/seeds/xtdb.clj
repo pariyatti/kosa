@@ -43,6 +43,19 @@
    :attm/metadata "",
    :attm/byte-size 27100})
 
+(def mp3-attachment
+  {:xt/id #uuid "f63417b2-1404-4eb5-81dd-017b8f86db64"
+   :kuti/type :attm,
+   :attm/byte-size 323712,
+   :attm/content-type "audio/mpeg",
+   :attm/filename "dhammapada_23_333.mp3"
+   :attm/metadata "",
+   :attm/updated-at #time/instant "2021-12-07T07:18:28.150485Z",
+   :attm/checksum "b5d7f875bd2324e40ce991add4d5e4f5",
+   :attm/service-name :disk,
+   :attm/identified true,
+   :attm/key "968ed1ab715dbb71262b27161f6202f8"})
+
 (defn copy-attachments! []
   (doseq [a [leaf-attachment raindrop-attachment buddha-attachment]]
     (io/copy (io/file (path-join "resources/joplin/seed-attachments"
@@ -100,7 +113,38 @@
                           :pali-word/pali "kosa"
                           :pali-word/translations [["eng" "store-room; treasury"]]
                           :pali-word/updated-at #time/instant "2021-03-21T01:47:36.547349Z"
-                          :pali-word/published-at #time/instant "2021-03-21T01:47:36.547349Z"}]]]
+                          :pali-word/published-at #time/instant "2021-03-21T01:47:36.547349Z"}]
+
+               ;; TODO: put an `audio-attachment` to find in the UI
+
+               [::xt/put mp3-attachment]
+
+               [::xt/put {:xt/id #uuid "99be175d-f0bd-47d6-83b9-3ecce030c699"
+                          :kuti/type :words-of-buddha
+                          :words-of-buddha/shareable true
+                          :words-of-buddha/bookmarkable true
+                          :words-of-buddha/original-words "Susukhaṃ vata jīvāma,
+verinesu averino.
+Verinesu manussesu,
+viharāma averino."
+                          :words-of-buddha/original-url (URI. "")
+                          :words-of-buddha/words "Susukhaṃ vata jīvāma,
+verinesu averino.
+Verinesu manussesu,
+viharāma averino."
+                          :words-of-buddha/audio-attachment-id #uuid "f63417b2-1404-4eb5-81dd-017b8f86db64"
+                          :words-of-buddha/audio-url "http://download.pariyatti.org/dwob/dhammapada_15_197.mp3"
+                          :words-of-buddha/translations [["eng"
+                                                          "Happy indeed we live,
+friendly amidst the hostility.
+Amidst hostile people,
+we dwell free from hatred."]]
+                          :words-of-buddha/citepali "Dhammapada 15.197"
+                          :words-of-buddha/citepali-url "http://tipitaka.org/romn/cscd/s0502m.mul14.xml#para197"
+                          :words-of-buddha/citebook "The Dhammapada: The Buddha's Path of Wisdom, translated from Pāli by Acharya Buddharakkhita"
+                          :words-of-buddha/citebook-url "https://store.pariyatti.org/The-Dhammapada-The-Buddhas-Path-of-Wisdom-Pocket-Edition_p_6305.html"
+                          :words-of-buddha/updated-at #time/instant "2021-03-21T01:47:36.547349Z"
+                          :words-of-buddha/published-at #time/instant "2021-03-21T01:47:36.547349Z"}]]]
 
       (d/transact! node txs (format "Seed '%s' failed to apply." (ns-name *ns*)))
       (log/info "...done."))))
