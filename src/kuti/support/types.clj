@@ -25,11 +25,15 @@
 (defn dup-rename [ns kw]
   (keyword (name ns) (name kw)))
 
+(defn- not-attachment? [form]
+  (not= :attm (:kuti/type form)))
+
 (defn dup
   "[Dup]licate a model into a new ns."
   [e ns]
   (let [renamer (fn [form]
-                  (if (map? form)
+                  (if (and (map? form)
+                           (not-attachment? form))
                     (reduce-kv (fn [acc k v] (assoc acc (dup-rename ns k) v)) {} form)
                     form))]
     (-> (walk/postwalk renamer (-> e untypify untemplate))

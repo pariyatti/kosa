@@ -53,6 +53,8 @@
      :translations (map (fn [t] {:language (first t)
                                  :translation (second t)})
                         (:words-of-buddha/translations card))
+     :audio {:url (-> card :words-of-buddha/audio-attachment :attm/url)}
+     :audio-url    (:words-of-buddha/audio-url card)
      :citepali     (:words-of-buddha/citepali card)
      :citepali-url (:words-of-buddha/citepali-url card)
      :citebook     (:words-of-buddha/citebook card)
@@ -126,10 +128,10 @@
 (defn today-list []
   (vec (concat
         (map pali-word->json (pali-word-db/list))
-        (map words-of-buddha->fake-json (words-of-buddha-db/list))
+        ;; (map words-of-buddha->fake-json (words-of-buddha-db/list))
         (map words-of-buddha->json (words-of-buddha-db/list))
         (map doha->fake-json (doha-db/list))
-        (map doha->json (doha-db/list))
+        ;; (map doha->json (doha-db/list))
         (map stacked-inspiration->json (stacked-inspiration-db/list)))))
 
 (defn today [req]

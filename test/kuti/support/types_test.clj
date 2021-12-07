@@ -23,4 +23,19 @@
            (sut/dup {:kuti/type :zig
                      :zig/age 123
                      :zig/name "Smith"}
+                    :zag))))
+
+  (testing "does not overwrite nested types"
+    (is (= {:kuti/type :zag
+            :zag/age 123
+            :zag/name "Smith"
+            :zag/attachment {:kuti/type :attm
+                             :attachment/id 789
+                             :attachment/url "https://pariyatti.org/some.mp3"}}
+           (sut/dup {:kuti/type :zig
+                     :zig/age 123
+                     :zig/name "Smith"
+                     :zig/attachment {:kuti/type :attm
+                                      :attachment/id 789
+                                      :attachment/url "https://pariyatti.org/some.mp3"}}
                     :zag)))))
