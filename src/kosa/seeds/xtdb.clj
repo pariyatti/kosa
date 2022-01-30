@@ -134,11 +134,15 @@ Verinesu manussesu,
 viharāma averino."
                           :words-of-buddha/audio-attachment-id #uuid "f63417b2-1404-4eb5-81dd-017b8f86db64"
                           :words-of-buddha/audio-url "http://download.pariyatti.org/dwob/dhammapada_15_197.mp3"
-                          :words-of-buddha/translations [["eng"
-                                                          "Happy indeed we live,
-friendly amidst the hostility.
-Amidst hostile people,
-we dwell free from hatred."]]
+                          :words-of-buddha/translations [
+                                                         ["eng" "Happy indeed we live,\nfriendly amidst the hostility.\nAmidst hostile people,\nwe dwell free from hatred."]
+                                                         ["fra" "Heureux en vérité nous vivons,\nAmicaux au milieu de l’downloadilité.\nParmi les gens downloadiles,\nNous demeurons, libres de haine."]
+                                                         ["ita" "Certamente viviamo felici,\namichevoli tra gente ostile.\nTra gente ostile \ndimoriamo liberi dall’odio."]
+                                                         ["por" "Felizes, de fato, vivemos, \namigáveis entre os downloadis. \nEntre as pessoas downloadis \npermanecemos livres do ódio."]
+                                                         ["spa" "En verdad vivimos bien felices, \nsin odios entre los que odian. \nEntre los hombres que odian \nsin odios vivimos."]
+                                                         ["srp" "Ah kako srećni živimo \nbez mržnje, okruženi mrziteljima; \nmeđu ljudima punim mržnje, \nbez mržnje boravimo."]
+                                                         ["zho-hant" "我們的確生活愉快， \n在敵意的環境裡保持友善。 \n處在敵對者之中， \n我們毫無恨意地安住。 \n《南傳法句經 15.197》"]
+                                                         ]
                           :words-of-buddha/citepali "Dhammapada 15.197"
                           :words-of-buddha/citepali-url "http://tipitaka.org/romn/cscd/s0502m.mul14.xml#para197"
                           :words-of-buddha/citebook "The Dhammapada: The Buddha's Path of Wisdom, translated from Pāli by Acharya Buddharakkhita"
