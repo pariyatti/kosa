@@ -50,15 +50,17 @@
      :bookmarkable true
      :shareable true
      :words (:words-of-buddha/words card)
-     :translations (map (fn [t] {:language (first t)
+     :translations (map (fn [t] {:id (uuid)
+                                 :language (first t)
                                  :translation (second t)})
                         (:words-of-buddha/translations card))
      :audio {:url (-> card :words-of-buddha/audio-attachment :attm/url)}
-     :audio-url    (:words-of-buddha/audio-url card)
+     ;; TODO: `original_audio_url` instead?
+     :audio_url    (:words-of-buddha/audio-url card)
      :citepali     (:words-of-buddha/citepali card)
-     :citepali-url (:words-of-buddha/citepali-url card)
+     :citepali_url (:words-of-buddha/citepali-url card)
      :citebook     (:words-of-buddha/citebook card)
-     :citebook-url (:words-of-buddha/citebook-url card)
+     :citebook_url (:words-of-buddha/citebook-url card)
      ;; TODO: seed data?
      :image {:url "/uploads/kuti-d54d85868f2963a4efee91e5c86e1679-bodhi-leaf.jpg"}}))
 

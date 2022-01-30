@@ -10,6 +10,7 @@
                                                    :looped-words-of-buddha/original-url   ;; from *.pariyatti.org
                                                    :looped-words-of-buddha/words
                                                    :looped-words-of-buddha/audio-attachment-id
+                                                   ;; TODO: consider `original-audio-url` instead?
                                                    :looped-words-of-buddha/audio-url      ;; to *.pariyatti.org - mp3
                                                    :looped-words-of-buddha/translations
                                                    :looped-words-of-buddha/citepali
