@@ -127,12 +127,12 @@
 
 (defn today-list []
   (vec (concat
-        (map pali-word->json (pali-word-db/list))
+        #_(map pali-word->json (pali-word-db/list))
         ;; (map words-of-buddha->fake-json (words-of-buddha-db/list))
         (map words-of-buddha->json (words-of-buddha-db/list))
-        (map doha->fake-json (doha-db/list))
+        ;; (map doha->fake-json (doha-db/list))
         ;; (map doha->json (doha-db/list))
-        (map stacked-inspiration->json (stacked-inspiration-db/list)))))
+        #_(map stacked-inspiration->json (stacked-inspiration-db/list)))))
 
 (defn today [req]
   (resp/response (today-list)))
