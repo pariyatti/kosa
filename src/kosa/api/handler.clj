@@ -46,7 +46,7 @@
      :published_at date
      :created_at date
      :updated_at date
-     :header "Words of Buddha"
+     :header "Words of the Buddha"
      :bookmarkable true
      :shareable true
      :words (:words-of-buddha/words card)
@@ -121,7 +121,7 @@
      :published_at date
      :created_at date
      :updated_at date
-     :header "Inspiration"
+     :header (or (-> card :stacked-inspiration/header) "Inspiration of the Day")
      :bookmarkable true
      :shareable true
      :text (:stacked-inspiration/text card)
@@ -129,12 +129,12 @@
 
 (defn today-list []
   (vec (concat
-        #_(map pali-word->json (pali-word-db/list))
+        (map pali-word->json (pali-word-db/list))
         ;; (map words-of-buddha->fake-json (words-of-buddha-db/list))
         (map words-of-buddha->json (words-of-buddha-db/list))
         ;; (map doha->fake-json (doha-db/list))
         ;; (map doha->json (doha-db/list))
-        #_(map stacked-inspiration->json (stacked-inspiration-db/list)))))
+        (map stacked-inspiration->json (stacked-inspiration-db/list)))))
 
 (defn today [req]
   (resp/response (today-list)))

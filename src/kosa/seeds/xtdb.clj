@@ -7,8 +7,9 @@
             [joplin.xtdb.database :as d])
   (:import [java.net URI]))
 
+(def leaf-attachment-id #uuid "729755d4-e85f-43f7-9aa5-79c4ab6fbceb")
 (def leaf-attachment
-  {:xt/id #uuid "729755d4-e85f-43f7-9aa5-79c4ab6fbceb",
+  {:xt/id leaf-attachment-id
    :kuti/type :attm
    :attm/key "d54d85868f2963a4efee91e5c86e1679",
    :attm/service-name :disk,
@@ -19,8 +20,9 @@
    :attm/metadata "",
    :attm/byte-size 109334})
 
+(def raindrop-attachment-id #uuid "f7158192-42e7-4d96-be88-3144b9c1994e")
 (def raindrop-attachment
-  {:xt/id #uuid "f7158192-42e7-4d96-be88-3144b9c1994e",
+  {:xt/id raindrop-attachment-id
    :kuti/type :attm
    :attm/key "09d54922cf16064515a03c9168552462",
    :attm/service-name :disk,
@@ -31,8 +33,9 @@
    :attm/metadata "",
    :attm/byte-size 452474})
 
+(def buddha-attachment-id #uuid "b5d46c3f-da64-4881-9382-1ae3773d1a9c")
 (def buddha-attachment
-  {:xt/id #uuid "b5d46c3f-da64-4881-9382-1ae3773d1a9c"
+  {:xt/id buddha-attachment-id
    :kuti/type :attm
    :attm/key "cfb6470bc83d7cffe8d171485015d70f",
    :attm/service-name :disk,
@@ -95,11 +98,11 @@
 
                [::xt/put {:xt/id #uuid "52f55f79-598f-4b68-805e-0d511a9e3d87"
                           :kuti/type :stacked-inspiration
-                          :stacked-inspiration/header "Inspiration"
+                          :stacked-inspiration/header "Inspiration of the Day"
                           :stacked-inspiration/shareable true
                           :stacked-inspiration/bookmarkable true
-                          :stacked-inspiration/text "Mangal ho"
-                          :stacked-inspiration/image-attachment-id #uuid "b5d46c3f-da64-4881-9382-1ae3773d1a9c"
+                          :stacked-inspiration/text "\"We are shaped by our thoughts; we become what we think. When the mind is pure, joy follows like a shadow that never leaves.\""
+                          :stacked-inspiration/image-attachment-id leaf-attachment-id
                           :stacked-inspiration/updated-at #time/instant "2021-03-21T01:47:36.547349Z"
                           :stacked-inspiration/published-at #time/instant "2021-03-21T01:47:36.547349Z"}]
 
@@ -123,15 +126,9 @@
                           :kuti/type :words-of-buddha
                           :words-of-buddha/shareable true
                           :words-of-buddha/bookmarkable true
-                          :words-of-buddha/original-words "Susukhaṃ vata jīvāma,
-verinesu averino.
-Verinesu manussesu,
-viharāma averino."
+                          :words-of-buddha/original-words "Susukhaṃ vata jīvāma,\nverinesu averino.\nVerinesu manussesu,\nviharāma averino."
                           :words-of-buddha/original-url (URI. "")
-                          :words-of-buddha/words "Susukhaṃ vata jīvāma,
-verinesu averino.
-Verinesu manussesu,
-viharāma averino."
+                          :words-of-buddha/words "Susukhaṃ vata jīvāma,\nverinesu averino.\nVerinesu manussesu,\nviharāma averino."
                           :words-of-buddha/audio-attachment-id #uuid "f63417b2-1404-4eb5-81dd-017b8f86db64"
                           :words-of-buddha/audio-url "http://download.pariyatti.org/dwob/dhammapada_15_197.mp3"
                           :words-of-buddha/translations [
