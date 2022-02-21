@@ -9,6 +9,7 @@
                                  :doha/original-url   ;; from *.pariyatti.org
                                  :doha/doha
                                  :doha/audio-attachment-id
+                                 ;; TODO: should be `original-audio-url`
                                  :doha/audio-url      ;; to *.pariyatti.org - mp3
                                  :doha/translations
                                  :doha/published-at])

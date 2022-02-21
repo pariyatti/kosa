@@ -46,8 +46,9 @@
    :attm/metadata "",
    :attm/byte-size 27100})
 
-(def mp3-attachment
-  {:xt/id #uuid "f63417b2-1404-4eb5-81dd-017b8f86db64"
+(def buddha-mp3-attachment-id #uuid "f63417b2-1404-4eb5-81dd-017b8f86db64")
+(def buddha-mp3-attachment
+  {:xt/id buddha-mp3-attachment-id
    :kuti/type :attm,
    :attm/byte-size 323712,
    :attm/content-type "audio/mpeg",
@@ -58,6 +59,21 @@
    :attm/service-name :disk,
    :attm/identified true,
    :attm/key "968ed1ab715dbb71262b27161f6202f8"})
+
+(def doha-mp3-attachment-id #uuid "29d91967-1b06-4e3d-9e0a-9f20fa43775e")
+(def doha-mp3-attachment
+  {:xt/id doha-mp3-attachment-id
+   :kuti/type :attm,
+   :attm/byte-size 359127,
+   :attm/content-type "audio/mpeg",
+   :attm/filename "066_Doha.mp3"
+   :attm/metadata "",
+   :attm/updated-at #time/instant "2022-02-21T03:02:07.301087Z",
+   :attm/checksum "5cc1fe56d1479b71431144d86895739c",
+   :attm/service-name :disk,
+   :attm/identified true,
+   :attm/key "4010985eb9f5b5e26a4decf14139bd1e"})
+
 
 (defn copy-attachments! []
   (doseq [a [leaf-attachment raindrop-attachment buddha-attachment]]
@@ -120,7 +136,7 @@
 
                ;; TODO: put an `audio-attachment` to find in the UI
 
-               [::xt/put mp3-attachment]
+               [::xt/put buddha-mp3-attachment]
 
                [::xt/put {:xt/id #uuid "99be175d-f0bd-47d6-83b9-3ecce030c699"
                           :kuti/type :words-of-buddha
@@ -129,7 +145,7 @@
                           :words-of-buddha/original-words "Susukhaṃ vata jīvāma,\nverinesu averino.\nVerinesu manussesu,\nviharāma averino."
                           :words-of-buddha/original-url (URI. "")
                           :words-of-buddha/words "Susukhaṃ vata jīvāma,\nverinesu averino.\nVerinesu manussesu,\nviharāma averino."
-                          :words-of-buddha/audio-attachment-id #uuid "f63417b2-1404-4eb5-81dd-017b8f86db64"
+                          :words-of-buddha/audio-attachment-id buddha-mp3-attachment-id
                           :words-of-buddha/audio-url "http://download.pariyatti.org/dwob/dhammapada_15_197.mp3"
                           :words-of-buddha/translations [
                                                          ["eng" "Happy indeed we live,\nfriendly amidst the hostility.\nAmidst hostile people,\nwe dwell free from hatred."]
@@ -146,6 +162,23 @@
                           :words-of-buddha/citebook-url "https://store.pariyatti.org/The-Dhammapada-The-Buddhas-Path-of-Wisdom-Pocket-Edition_p_6305.html"
                           :words-of-buddha/updated-at #time/instant "2021-03-21T01:47:36.547349Z"
                           :words-of-buddha/published-at #time/instant "2021-03-21T01:47:36.547349Z"}]]]
+
+      [::xt/put doha-mp3-attachment]
+
+      [:xt/put {:xt/id #uuid "1a006024-5f92-4799-b18b-7e19173aa291"
+                :kuti/type :doha
+                :doha/original-doha "Duralabha jīvana manuja kā, \nduralabha Dharama milāpa. \nDhanya bhāga! donoṅ mile, \ndūra kareṅ bhava tāpa."
+                :doha/original-url ""
+                :doha/doha "Duralabha jīvana manuja kā, \nduralabha Dharama milāpa. \nDhanya bhāga! donoṅ mile, \ndūra kareṅ bhava tāpa."
+                :doha/audio-attachment-id doha-mp3-attachment-id
+                :doha/audio-url "http://download.pariyatti.org/dohas/066_Doha.mp3"
+                :doha/translations [
+                                    ["eng" "Rare is human life, \nrare to encounter the Dhamma. \nWe are fortunate to have both; \nlet us banish the torment of becoming. \n\n–S.N. Goenka"]
+                                    ["lit" "Žmogaus gyvenimas ¬– ypatingas,  \nPatirti Dhammą pasiseka ne kiekvienam. \nTurime abu, todėl esame laimingi, \nSunaikinkime tapsmo kančias. \n\n–S.N. Goenka"]
+                                    ["por" "Rara é a vida humana,\nraro é encontrar o Dhamma.\nSomos afortunados por ter ambos;\nvamos banir o tormento do vir a ser.\n\n–S.N. Goenka"]
+                                    ["zho-hant" "人身稀有，\n正法難遇。\n我們幸得兩者；\n願斷除輪迴的折磨。\n\n─葛印卡老師"]
+                                    ]
+                :doha/published-at #time/instant "2022-02-21T03:11:20.410897.000Z"}]
 
       (d/transact! node txs (format "Seed '%s' failed to apply." (ns-name *ns*)))
       (log/info "...done."))))

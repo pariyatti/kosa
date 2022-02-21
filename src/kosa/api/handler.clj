@@ -29,7 +29,7 @@
      :bookmarkable true
      :shareable true
      :pali (:pali-word/pali word)
-     :translations (map (fn [t] {:id (uuid)
+     :translations (map (fn [t] {:id (uuid) ;; mobile app demands an id
                                  :language (first t)
                                  :translation (second t)})
                         (:pali-word/translations word))
@@ -64,22 +64,22 @@
      ;; TODO: seed data?
      :image {:url "/uploads/kuti-d54d85868f2963a4efee91e5c86e1679-bodhi-leaf.jpg"}}))
 
-(defn words-of-buddha->fake-json [card]
-  (let [published (:words-of-buddha/published-at card)
-        date (time/string (or published kosa-epoch))]
-    ;; TODO: this requires its own type, but the mobile app doesn't support
-    ;;       that yet. -sd
-    {:type "stacked_inspiration"
-     :id (:xt/id card)
-     :published_at date
-     :created_at date
-     :updated_at date
-     :header "Words of Buddha"
-     :bookmarkable true
-     :shareable true
-     :text (:words-of-buddha/words card)
-     ;; TODO: seed data?
-     :image {:url "/uploads/kuti-d54d85868f2963a4efee91e5c86e1679-bodhi-leaf.jpg"}}))
+;; (defn words-of-buddha->fake-json [card]
+;;   (let [published (:words-of-buddha/published-at card)
+;;         date (time/string (or published kosa-epoch))]
+;;     ;; TODO: this requires its own type, but the mobile app doesn't support
+;;     ;;       that yet. -sd
+;;     {:type "stacked_inspiration"
+;;      :id (:xt/id card)
+;;      :published_at date
+;;      :created_at date
+;;      :updated_at date
+;;      :header "Words of Buddha"
+;;      :bookmarkable true
+;;      :shareable true
+;;      :text (:words-of-buddha/words card)
+;;      ;; TODO: seed data?
+;;      :image {:url "/uploads/kuti-d54d85868f2963a4efee91e5c86e1679-bodhi-leaf.jpg"}}))
 
 (defn doha->json [card]
   (let [published (:doha/published-at card)
@@ -92,26 +92,30 @@
      :header "Daily Doha"
      :bookmarkable true
      :shareable true
+     :original_doha (:doha/original-doha card)
+     :original_url (:doha/original-url card)
+     :audio_url (:doha/audio-url card) ;; TODO: should be `original_audio_url`
      :doha (:doha/doha card)
-     :translations (map (fn [t] {:language (first t)
+     :translations (map (fn [t] {:id (uuid) ;; mobile app demands an id
+                                 :language (first t)
                                  :translation (second t)})
                         (:doha/translations card))}))
 
-(defn doha->fake-json [card]
-  (let [published (:doha/published-at card)
-        date (time/string (or published kosa-epoch))]
-    ;; TODO: this requires its own type, but the mobile app doesn't support
-    ;;       that yet. -sd
-    {:type "stacked_inspiration"
-     :id (:xt/id card)
-     :published_at date
-     :created_at date
-     :updated_at date
-     :header "Daily Doha"
-     :bookmarkable true
-     :shareable true
-     :text (:doha/doha card)
-     :image {:url "/uploads/kuti-d54d85868f2963a4efee91e5c86e1679-bodhi-leaf.jpg"}}))
+;; (defn doha->fake-json [card]
+;;   (let [published (:doha/published-at card)
+;;         date (time/string (or published kosa-epoch))]
+;;     ;; TODO: this requires its own type, but the mobile app doesn't support
+;;     ;;       that yet. -sd
+;;     {:type "stacked_inspiration"
+;;      :id (:xt/id card)
+;;      :published_at date
+;;      :created_at date
+;;      :updated_at date
+;;      :header "Daily Doha"
+;;      :bookmarkable true
+;;      :shareable true
+;;      :text (:doha/doha card)
+;;      :image {:url "/uploads/kuti-d54d85868f2963a4efee91e5c86e1679-bodhi-leaf.jpg"}}))
 
 (defn stacked-inspiration->json [card]
   (let [published (:stacked-inspiration/published-at card)
@@ -130,10 +134,8 @@
 (defn today-list []
   (vec (concat
         (map pali-word->json (pali-word-db/list))
-        ;; (map words-of-buddha->fake-json (words-of-buddha-db/list))
         (map words-of-buddha->json (words-of-buddha-db/list))
-        ;; (map doha->fake-json (doha-db/list))
-        ;; (map doha->json (doha-db/list))
+        (map doha->json (doha-db/list))
         (map stacked-inspiration->json (stacked-inspiration-db/list)))))
 
 (defn today [req]
