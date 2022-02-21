@@ -76,7 +76,11 @@
 
 
 (defn copy-attachments! []
-  (doseq [a [leaf-attachment raindrop-attachment buddha-attachment]]
+  (doseq [a [leaf-attachment
+             raindrop-attachment
+             buddha-attachment
+             buddha-mp3-attachment
+             doha-mp3-attachment]]
     (io/copy (io/file (path-join "resources/joplin/seed-attachments"
                                  (:attm/filename a)))
              (io/file (path-join "resources/storage/"
@@ -146,7 +150,7 @@
                           :words-of-buddha/original-url (URI. "")
                           :words-of-buddha/words "Susukhaṃ vata jīvāma,\nverinesu averino.\nVerinesu manussesu,\nviharāma averino."
                           :words-of-buddha/audio-attachment-id buddha-mp3-attachment-id
-                          :words-of-buddha/audio-url "http://download.pariyatti.org/dwob/dhammapada_15_197.mp3"
+                          :words-of-buddha/audio-url (URI. "http://download.pariyatti.org/dwob/dhammapada_15_197.mp3")
                           :words-of-buddha/translations [
                                                          ["eng" "Happy indeed we live,\nfriendly amidst the hostility.\nAmidst hostile people,\nwe dwell free from hatred."]
                                                          ["fra" "Heureux en vérité nous vivons,\nAmicaux au milieu de l’downloadilité.\nParmi les gens downloadiles,\nNous demeurons, libres de haine."]
@@ -157,28 +161,30 @@
                                                          ["zho-hant" "我們的確生活愉快， \n在敵意的環境裡保持友善。 \n處在敵對者之中， \n我們毫無恨意地安住。 \n《南傳法句經 15.197》"]
                                                          ]
                           :words-of-buddha/citepali "Dhammapada 15.197"
-                          :words-of-buddha/citepali-url "http://tipitaka.org/romn/cscd/s0502m.mul14.xml#para197"
+                          :words-of-buddha/citepali-url (URI. "http://tipitaka.org/romn/cscd/s0502m.mul14.xml#para197")
                           :words-of-buddha/citebook "The Dhammapada: The Buddha's Path of Wisdom, translated from Pāli by Acharya Buddharakkhita"
-                          :words-of-buddha/citebook-url "https://store.pariyatti.org/The-Dhammapada-The-Buddhas-Path-of-Wisdom-Pocket-Edition_p_6305.html"
+                          :words-of-buddha/citebook-url (URI. "https://store.pariyatti.org/The-Dhammapada-The-Buddhas-Path-of-Wisdom-Pocket-Edition_p_6305.html")
                           :words-of-buddha/updated-at #time/instant "2021-03-21T01:47:36.547349Z"
-                          :words-of-buddha/published-at #time/instant "2021-03-21T01:47:36.547349Z"}]]]
+                          :words-of-buddha/published-at #time/instant "2021-03-21T01:47:36.547349Z"}]
 
-      [::xt/put doha-mp3-attachment]
+               [::xt/put doha-mp3-attachment]
 
-      [:xt/put {:xt/id #uuid "1a006024-5f92-4799-b18b-7e19173aa291"
-                :kuti/type :doha
-                :doha/original-doha "Duralabha jīvana manuja kā, \nduralabha Dharama milāpa. \nDhanya bhāga! donoṅ mile, \ndūra kareṅ bhava tāpa."
-                :doha/original-url ""
-                :doha/doha "Duralabha jīvana manuja kā, \nduralabha Dharama milāpa. \nDhanya bhāga! donoṅ mile, \ndūra kareṅ bhava tāpa."
-                :doha/audio-attachment-id doha-mp3-attachment-id
-                :doha/audio-url "http://download.pariyatti.org/dohas/066_Doha.mp3"
-                :doha/translations [
-                                    ["eng" "Rare is human life, \nrare to encounter the Dhamma. \nWe are fortunate to have both; \nlet us banish the torment of becoming. \n\n–S.N. Goenka"]
-                                    ["lit" "Žmogaus gyvenimas ¬– ypatingas,  \nPatirti Dhammą pasiseka ne kiekvienam. \nTurime abu, todėl esame laimingi, \nSunaikinkime tapsmo kančias. \n\n–S.N. Goenka"]
-                                    ["por" "Rara é a vida humana,\nraro é encontrar o Dhamma.\nSomos afortunados por ter ambos;\nvamos banir o tormento do vir a ser.\n\n–S.N. Goenka"]
-                                    ["zho-hant" "人身稀有，\n正法難遇。\n我們幸得兩者；\n願斷除輪迴的折磨。\n\n─葛印卡老師"]
-                                    ]
-                :doha/published-at #time/instant "2022-02-21T03:11:20.410897.000Z"}]
+               [::xt/put {:xt/id #uuid "1a006024-5f92-4799-b18b-7e19173aa291"
+                          :kuti/type :doha
+                          :doha/original-doha "Duralabha jīvana manuja kā, \nduralabha Dharama milāpa. \nDhanya bhāga! donoṅ mile, \ndūra kareṅ bhava tāpa."
+                          :doha/original-url (URI. "")
+                          :doha/doha "Duralabha jīvana manuja kā, \nduralabha Dharama milāpa. \nDhanya bhāga! donoṅ mile, \ndūra kareṅ bhava tāpa."
+                          :doha/audio-attachment-id doha-mp3-attachment-id
+                          :doha/audio-url (URI. "http://download.pariyatti.org/dohas/066_Doha.mp3")
+                          :doha/translations [
+                                              ["eng" "Rare is human life, \nrare to encounter the Dhamma. \nWe are fortunate to have both; \nlet us banish the torment of becoming. \n\n–S.N. Goenka"]
+                                              ["lit" "Žmogaus gyvenimas ¬– ypatingas,  \nPatirti Dhammą pasiseka ne kiekvienam. \nTurime abu, todėl esame laimingi, \nSunaikinkime tapsmo kančias. \n\n–S.N. Goenka"]
+                                              ["por" "Rara é a vida humana,\nraro é encontrar o Dhamma.\nSomos afortunados por ter ambos;\nvamos banir o tormento do vir a ser.\n\n–S.N. Goenka"]
+                                              ["zho-hant" "人身稀有，\n正法難遇。\n我們幸得兩者；\n願斷除輪迴的折磨。\n\n─葛印卡老師"]
+                                              ]
+                          :doha/updated-at #time/instant "2022-02-21T03:11:20.410897Z"
+                          :doha/published-at #time/instant "2022-02-21T03:11:20.410897Z"}]
+               ]]
 
       (d/transact! node txs (format "Seed '%s' failed to apply." (ns-name *ns*)))
       (log/info "...done."))))
