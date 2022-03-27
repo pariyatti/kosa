@@ -47,10 +47,12 @@
                     #'job/jobs
                     #'server/server})
       mount/start)
+  (println "Kosa started.")
   (log/info "Kosa started."))
 
 (defn stop []
   (mount/stop)
+  (println "Kosa stopped.")
   (log/info "Kosa stopped."))
 
 (defn load-config! [config-file]
