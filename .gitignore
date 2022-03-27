@@ -39,3 +39,7 @@ txt/pali/*.txt
 txt/buddha/*.txt
 txt/dohas/*.txt
 
+.terraform/
+*.tfstate
+terraform.plan
+*.tfstate.backup
