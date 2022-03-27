@@ -105,7 +105,7 @@
   :profiles {:uberjar {:aot      :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"
                                   "-Dclojure.tools.logging.factory=clojure.tools.logging.impl/slf4j-factory"]}
-             :prod    {:resource-paths ["config"]}
+             :prod    {:resource-paths ["config/prod"]}
              :dev     {:dependencies [[org.clojure/test.check "1.1.0"]]
                        :resource-paths ["config/dev"]}}
 
