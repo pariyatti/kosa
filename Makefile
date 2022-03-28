@@ -140,4 +140,4 @@ db-txt-prod: ##@Production Add all (3x) looped cards
 	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-txt-doha   prod
 
 run-prod: ##@Production Start a production server
-	XTDB_ENABLE_BYTEUTILS_SHA1=true lein run -- -sf config/config.prod.edn
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein with-profile prod run -- -sf config/config.prod.edn
