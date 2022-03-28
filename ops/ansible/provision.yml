@@ -85,3 +85,11 @@
         group: www-data
         state: directory
 
+    - name: Create Log Directory
+      file:
+        path: "{{ log_dir }}"
+        mode: u=rwx,g=rx,o=rx
+        recurse: yes
+        owner: "{{ user_acc }}"
+        group: www-data
+        state: directory

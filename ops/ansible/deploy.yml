@@ -12,6 +12,7 @@
         owner: "{{ user_acc }}"
         group: "{{ user_acc }}"
         mode: 0600
+      become: yes
 
     - name: copy pub key to server
       copy:
@@ -20,6 +21,7 @@
         owner: "{{ user_acc }}"
         group: "{{ user_acc }}"
         mode: 0644
+      become: yes
 
     - name: ensure srv directory exists
       file:
@@ -43,6 +45,7 @@
       notify:
         - app daemon reload
         - app restart
+      become: yes
 
     - name: update environment file
       tags: env
@@ -52,16 +55,17 @@
       notify:
         - app daemon reload
         - app restart
+      become: yes
 
     - name: update app service file
       tags: env
       template:
         src: "{{ app_name }}.service.j2"
         dest: /etc/systemd/system/{{ app_name }}.service
-      become: yes
       notify:
         - app daemon reload
         - app restart
+      become: yes
 
     - name: ensure kosa is running
       systemd: name={{ app_name }} state=started enabled=yes
@@ -96,6 +100,7 @@
       tags: code
       npm:
         path: "{{ app_dir }}"
+      become: yes
 
     - name: stop kosa
       systemd: name={{ app_name }} state=stopped
@@ -106,12 +111,14 @@
       make:
         chdir: "{{ app_dir }}"
         target: "{{ pre_deploy_target }}"
+      become: yes
 
     - name: migrate xtdb database
       tags: code
       make:
         chdir: "{{ app_dir }}"
         target: "{{ migrate_target }}"
+      become: yes
 
     - name: start kosa
       systemd: name={{ app_name }} state=started enabled=yes

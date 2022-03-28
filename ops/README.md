@@ -7,6 +7,12 @@ commands.
 
 ## 1. One-time setup: prereqs
 
+### Install Terraform
+
+Instructions at https://learn.hashicorp.com/tutorials/terraform/install-cli
+
+Prefer `brew` on MacOS and `apt-get` on Linux.
+
 ### Install the latest Ansible
 
 If you aren't sure which method to use to install Ansible, it is safest to
@@ -32,7 +38,16 @@ deploy key for this repo is provided in the `vault` under `Deployment` =>
 secrets to files with those same names on your _local computer._ The
 Ansible scripts will use those local files to push the keys to the server.
 
+### Configure AWS Access/Secret Keys
+
+```
+aws configure --profile pariyatti # or 'default', if pariyatti is the only AWS org you will access
+
+```
+
 ## 2. One-time setup: provisioning servers
+
+TODO: replace this step with "run terraform" :)
 
 Add your public SSH key to the DigitalOcean or Lightsail team **before**
 creating a box.
@@ -53,7 +68,7 @@ and Lightsail:
 Then provision the box:
 
 ``` sh
-ansible-playbook --limit "kosa-staging.pariyatti.app" -i hosts provision.yml
+ansible-playbook --become --limit "kosa-sandbox.pariyatti.app" -i hosts provision.yml
 ```
 
 Replace the `--limit` parameter with your target host. It is possible to provision
@@ -62,10 +77,19 @@ want to do that.
 
 ## 3. Deployment
 
-After the server has been provisioned, we use this command to deploy Kosa:
+### 3.a Install LightSail Key
+
+TODO: replace with automated process?
+
+1. Go to https://lightsail.aws.amazon.com/ls/webapp/home/instances
+2. Click on the instance you provisioned (or the instance previously provisioned)
+3. Under `Connect`, click "Download default key".
+Rename this key to `~/.kosa/LightsailDefaultKey.pem` on your local machine
+
+### 3.b Deploy Kosa
 
 ``` sh
-ansible-playbook --limit "kosa-staging.pariyatti.app" -i hosts deploy.yml
+ansible-playbook --become --limit "kosa-sandbox.pariyatti.app" -i hosts deploy.yml
 ```
 
 ## 4. Seed Data (Looped TXTs)
@@ -74,7 +98,7 @@ After Kosa is deployed the first time, we use this command to add seed data.
 It adds Looped `Pali Word`, `Words of Buddha`, and `Daily Doha` cards to the db:
 
 ``` sh
-ansible-playbook --limit "kosa-staging.pariyatti.app" -i hosts seed_looped_txt.yml
+ansible-playbook --become --limit "kosa-sandbox.pariyatti.app" -i hosts seed_looped_txt.yml
 ```
 
 ## Troubleshooting
