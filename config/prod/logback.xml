@@ -2,7 +2,7 @@
 <configuration>
   <appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-        <fileNamePattern>kosa-%d{yyyy-MM}.log</fileNamePattern>
+        <fileNamePattern>/var/log/kosa/kosa-%d{yyyy-MM}.log</fileNamePattern>
         <maxHistory>30</maxHistory>
         <totalSizeCap>15GB</totalSizeCap>
     </rollingPolicy>
