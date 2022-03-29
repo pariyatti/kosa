@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     aws = {
-      source  = "hashicorp/aws"
+      source = "hashicorp/aws"
     }
   }
 }
@@ -16,8 +16,8 @@ resource "aws_s3_bucket" "tf-state-bucket" {
   bucket = "pariyatti-tf-state-bucket"
 
   tags = {
-    Name        = "pariyatti-tf-state-bucket"
-    env = "production"
+    Name = "pariyatti-tf-state-bucket"
+    env  = "production"
   }
 }
 

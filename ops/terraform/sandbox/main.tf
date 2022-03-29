@@ -3,7 +3,7 @@ resource "aws_lightsail_instance" "kosa_sandbox" {
   name              = "kosa_sandbox"
   availability_zone = "us-east-1b"
   blueprint_id      = "ubuntu_20_04"
-  bundle_id         = "micro_2_0"
+  bundle_id         = "medium_2_0"
   tags = {
     env = "sandbox"
   }
@@ -30,23 +30,47 @@ resource "aws_lightsail_instance_public_ports" "kosa_sandbox_https" {
 }
 
 resource "null_resource" "ansible_config" {
+  triggers = {
+    cluster_instance_ids = aws_lightsail_instance.kosa_sandbox.arn
+  }
 
-provisioner "local-exec" {
+  provisioner "local-exec" {
     command = "cd ../../ansible && ansible-playbook --become --limit 'kosa-sandbox.pariyatti.app' -i hosts provision.yml"
   }
 }
 
 resource "null_resource" "ansible_deploy" {
+  depends_on = [
+    null_resource.ansible_config
+  ]
+  triggers = {
+    cluster_instance_ids = aws_lightsail_instance.kosa_sandbox.arn
+    build_number         = "${timestamp()}"
+  }
 
-provisioner "local-exec" {
+  provisioner "local-exec" {
     command = "cd ../../ansible && ansible-playbook --become --limit 'kosa-sandbox.pariyatti.app' -i hosts deploy.yml"
+  }
+}
+
+resource "null_resource" "ansible_seed_data" {
+  depends_on = [
+    null_resource.ansible_config,
+    null_resource.ansible_deploy
+  ]
+  triggers = {
+    cluster_instance_ids = aws_lightsail_instance.kosa_sandbox.arn
+  }
+
+  provisioner "local-exec" {
+    command = "cd ../../ansible &&ansible-playbook --become --limit 'kosa-sandbox.pariyatti.app' -i hosts seed_looped_txt.yml"
   }
 }
 
 # Update DNS pointer for kosa-sandbox.pariyatti.app
 
 data "aws_route53_zone" "app_domain" {
-  name         = "pariyatti.app"
+  name = "pariyatti.app"
 }
 
 resource "aws_route53_record" "kosa_sandbox_dns_record" {
