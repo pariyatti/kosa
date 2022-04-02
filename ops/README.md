@@ -32,11 +32,20 @@ ansible-galaxy collection install ansible.posix
 ### 1.d Install Deploy Key
 
 To seed the database with "Looped" feeds, the server will require access
-to the private https://github.com/pariyatti/Daily_emails_RSS/ repo. A
-deploy key for this repo is provided in the `vault` under `Deployment` =>
-`~/.kosa/kosa_key` and `~/.kosa/kosa_key.pub`. Copy the contents of those
-secrets to files with those same names on your _local computer._ The
-Ansible scripts will use those local files to push the keys to the server.
+to the private https://github.com/pariyatti/Daily_emails_RSS/ repo. 
+
+A deploy key for this repo is provided in the `vault` under `Deployment` =>
+`~/.kosa/kosa_key` and `~/.kosa/kosa_key.pub`. You can use keepassxc-cli to accomplish this, by running the following in the terminal:
+
+```sh
+keepassxc-cli show -a Notes pariyatti-devops.kdbx Deployment/~/.kosa/kosa_key.pub > ~/.kosa/kosa_key.pub
+
+keepassxc-cli show -a Notes pariyatti-devops.kdbx Deployment/~/.kosa/kosa_key > ~/.kosa/kosa_key
+```
+
+OR
+
+you can copy the contents of those secrets to files with those same names on your _local computer._ The Ansible scripts will use those local files to push the keys to the server.
 
 ### 1.e Configure AWS Access/Secret Keys
 
@@ -49,6 +58,15 @@ aws configure --profile pariyatti # or 'default', if pariyatti is the only AWS o
 
 TODO: replace with automated process?
 
+#### Via the terminal with AWS cli
+
+Please ensure that `jq` is available on your machine.
+
+```sh
+aws lightsail --output=json download-default-key-pair | jq -r '.privateKeyBase64' > ~/.kosa/LightsailDefaultKey.pem && chmod 400 ~/.kosa/LightsailDefaultKey.pem
+```
+
+#### Via the AWS console
 1. Go to https://lightsail.aws.amazon.com/ls/webapp/home/instances
 2. Click on the instance you provisioned (or the instance previously provisioned)
 3. Under `Connect`, click "Download default key".
