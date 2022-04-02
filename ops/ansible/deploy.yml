@@ -5,6 +5,10 @@
     - vars.yml
 
   tasks:
+    - name: Update all packages to their latest version
+      apt:
+        name: "*"
+        state: latest
     - name: copy priv key to server
       copy:
         src: "{{ key_dir }}/{{ key_name }}"

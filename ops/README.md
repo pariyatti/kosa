@@ -116,6 +116,8 @@ Please ensure that you have the correct credentials configured in terminal for l
 aws sts get-caller-identity
 ```
 
+Currently the terraform statefile is stored within a S3 bucket names `pariyatti-tf-state-bucket` that is accessible via the pariyatti AWS account credentials.
+
 Following three commands that are usually run in directories containing the terraform files:
 
 ```sh
