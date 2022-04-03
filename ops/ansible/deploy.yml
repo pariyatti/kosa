@@ -60,6 +60,15 @@
         - app daemon reload
         - app restart
       become: yes
+    
+    - name: Recursively change ownership of srv directory
+      ansible.builtin.file:
+        path: "{{ srv_dir }}"
+        state: directory
+        recurse: yes
+        owner: "{{ user_acc }}"
+        group: "{{ user_acc }}"
+      become: yes
 
     - name: update app service file
       tags: env
