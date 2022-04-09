@@ -32,7 +32,7 @@ ansible-galaxy collection install ansible.posix
 ### 1.d Install Deploy Key
 
 To seed the database with "Looped" feeds, the server will require access
-to the private https://github.com/pariyatti/Daily_emails_RSS/ repo. 
+to the private https://github.com/pariyatti/Daily_emails_RSS/ repo.
 
 A deploy key for this repo is provided in the `vault` under `Deployment` =>
 `~/.kosa/kosa_key` and `~/.kosa/kosa_key.pub`. You can use keepassxc-cli to accomplish this, by running the following in the terminal:
@@ -144,8 +144,9 @@ terraform plan -out=terraform.plan
 terraform apply "terraform.plan"
 ```
 
-**Note:** Running terraform plan and apply on existing server will result in execution of ansible playbook `deploy.yml`. This is managed via dynamically updating the `build_number` to timestamp() in the triggers.
+**Note:** Running terraform plan and apply for a new server will create a DNS entry that does not resolve by the time Ansible runs, which will cause it to fail. As a workaround, temporarily set your local DNS resolution to '8.8.8.8'.
 
+**Note:** Running terraform plan and apply on existing server will result in execution of ansible playbook `deploy.yml`. This is managed via dynamically updating the `build_number` to timestamp() in the triggers.
 
 ## Troubleshooting
 

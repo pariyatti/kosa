@@ -9,6 +9,8 @@
       apt:
         name: "*"
         state: latest
+      become: yes
+
     - name: copy priv key to server
       copy:
         src: "{{ key_dir }}/{{ key_name }}"
@@ -60,7 +62,7 @@
         - app daemon reload
         - app restart
       become: yes
-    
+
     - name: Recursively change ownership of srv directory
       ansible.builtin.file:
         path: "{{ srv_dir }}"
@@ -125,6 +127,7 @@
         chdir: "{{ app_dir }}"
         target: "{{ pre_deploy_target }}"
       become: yes
+      become_user: "{{ user_acc }}"
 
     - name: migrate xtdb database
       tags: code
@@ -132,6 +135,7 @@
         chdir: "{{ app_dir }}"
         target: "{{ migrate_target }}"
       become: yes
+      become_user: "{{ user_acc }}"
 
     - name: start kosa
       systemd: name={{ app_name }} state=started enabled=yes

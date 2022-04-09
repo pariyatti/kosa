@@ -24,6 +24,10 @@ resource "aws_lightsail_instance_public_ports" "kosa_server_ports" {
 }
 
 resource "null_resource" "ansible_config" {
+  depends_on = [
+    aws_route53_record.kosa_server_dns_record,
+    time_sleep.wait_60_seconds
+  ]
   triggers = {
     cluster_instance_ids = aws_lightsail_instance.kosa_server.arn
   }
@@ -43,7 +47,7 @@ resource "null_resource" "ansible_deploy" {
   }
 
   provisioner "local-exec" {
-    command = "cd ../../ansible && ansible-playbook --become --limit ${var.server_name}.pariyatti.app -i hosts deploy.yml"
+    command = "cd ../../ansible && ansible-playbook --limit ${var.server_name}.pariyatti.app -i hosts deploy.yml"
   }
 }
 
@@ -57,7 +61,7 @@ resource "null_resource" "ansible_seed_data" {
   }
 
   provisioner "local-exec" {
-    command = "cd ../../ansible && ansible-playbook --become --limit ${var.server_name}.pariyatti.app -i hosts seed_looped_txt.yml"
+    command = "cd ../../ansible && ansible-playbook --limit ${var.server_name}.pariyatti.app -i hosts seed_looped_txt.yml"
   }
 }
 
@@ -71,8 +75,14 @@ resource "aws_route53_record" "kosa_server_dns_record" {
   zone_id = data.aws_route53_zone.app_domain.zone_id
   name    = "${var.server_name}.${data.aws_route53_zone.app_domain.name}"
   type    = "A"
-  ttl     = "300"
+  ttl     = "30"
   records = [aws_lightsail_instance.kosa_server.public_ip_address]
 }
 
+resource "time_sleep" "wait_60_seconds" {
+  depends_on = [
+    aws_route53_record.kosa_server_dns_record
+  ]
 
+  create_duration = "60s"
+}

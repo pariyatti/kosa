@@ -22,7 +22,6 @@
         state: present
         filename: caddy-stable
 
-    
     - name: Update all packages to their latest version
       apt:
         name: "*"
@@ -46,6 +45,7 @@
           - "npm"
           - "leiningen"
           - "tmux"
+          - "acl"
         update-cache: yes
 
     - name: Make sure we have a 'wheel' group
@@ -71,6 +71,8 @@
         append: true
         create_home: true
         shell: /bin/bash
+
+    # TODO: copy authorized_keys from ubuntu user to kosa-user
 
     - name: Set authorized keys taken from url
       ansible.posix.authorized_key:
