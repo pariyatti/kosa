@@ -21,7 +21,6 @@ pom.xml.asc
 *.log
 *.swp
 
-resources/public/uploads/*
 resources/storage/*
 resources/public/css/main.css.map
 resources/public/css/audiences.css*
