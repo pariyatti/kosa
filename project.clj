@@ -28,12 +28,12 @@
                  [com.draines/postal "2.0.4"]
                  ;; web:
                  ;; [pro.juxt.clojars-mirrors.ring/ring-core "1.9.2"]
-                 [ring/ring-core "1.9.2"]
-                 [ring/ring-jetty-adapter "1.9.3"]
+                 [ring/ring-core "1.9.5"]
+                 [ring/ring-jetty-adapter "1.9.5"]
                  [ring/ring-json "0.5.1"]
                  [ring-logger "1.0.1"]
-                 [metosin/reitit "0.5.6"]
-                 [metosin/muuntaja "0.6.7"]
+                 [metosin/reitit "0.5.18"]
+                 [metosin/muuntaja "0.6.8"]
                  [metosin/jsonista "0.2.7"] ;; force version: reitit / muuntaja dep
                  [hiccup "2.0.0-alpha2"]
                  [remus "0.2.1"]

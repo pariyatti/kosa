@@ -23,16 +23,20 @@ Follow the [Ops Readme](https://github.com/pariyatti/kosa/blob/master/ops/README
 
 ### Install Java
 
-Install OpenJDK 11 for:
+Kosa will work with any Java 11 or higher. Java 17 is the latest LTS, and is preferred.
+
+Install OpenJDK 17 for:
 
 - [Mac OS](https://gist.github.com/deobald/00b16090a932c793379cae6422206491)
-- Linux: `sudo apt-get install openjdk-11-jdk`
+- Linux: `sudo apt-get install openjdk-17-jdk`
 
-WARNING: If you install a newer JDK (16+, in particular) you may run into build failures when you attempt to run the tests.
-You will see an error something like this:
-`Could not open ConcurrentHashMap.table field - falling back to LRU caching. Use '--add-opens java.base/java.util.concurrent=ALL-UNNAMED' to use the second-chance cache.`
-You can still use JDK 16 and above, but you will need to enable some reflection that has been closed down in newer versions.
-Follow the instructions in this thread: https://github.com/xtdb/xtdb/issues/1462
+WARNING: https://github.com/xtdb/xtdb/issues/1462 may cause:
+
+```
+Could not open ConcurrentHashMap.table field - falling back to LRU caching. Use '--add-opens java.base/java.util.concurrent=ALL-UNNAMED' to use the second-chance cache.
+```
+
+Use Java as executed in the Makefile to avoid this.
 
 ### Install Clojure
 Install `clojure` as described [here](https://www.clojure.org/guides/getting_started)
