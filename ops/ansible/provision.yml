@@ -22,6 +22,11 @@
         state: present
         filename: caddy-stable
 
+    - name: Update all packages to their latest version
+      apt:
+        name: "*"
+        state: latest
+
     - name: Install packages
       apt:
         name:
@@ -31,7 +36,7 @@
           - "curl"
           - "htop"
           - "rlwrap"
-          - "openjdk-11-jdk"
+          - "openjdk-17-jdk"
           - "debian-keyring"
           - "debian-archive-keyring"
           - "apt-transport-https"
@@ -39,6 +44,8 @@
           - "nodejs"
           - "npm"
           - "leiningen"
+          - "tmux"
+          - "acl"
         update-cache: yes
 
     - name: Make sure we have a 'wheel' group
@@ -65,6 +72,8 @@
         create_home: true
         shell: /bin/bash
 
+    # TODO: copy authorized_keys from ubuntu user to kosa-user
+
     - name: Set authorized keys taken from url
       ansible.posix.authorized_key:
         user: "{{ user_acc }}"
@@ -85,3 +94,11 @@
         group: www-data
         state: directory
 
+    - name: Create Log Directory
+      file:
+        path: "{{ log_dir }}"
+        mode: u=rwx,g=rx,o=rx
+        recurse: yes
+        owner: "{{ user_acc }}"
+        group: www-data
+        state: directory

@@ -64,7 +64,9 @@ css-auto: ##@Development Rebuild CSS continuously (kinda broken?)
 cljs-auto: ##@Development Rebuild CLJS continuously
 	XTDB_ENABLE_BYTEUTILS_SHA1=true lein cljsbuild auto
 
-init: ~/.kosa tmp/storage resources/storage tools deps assets ##@Setup Dev Setup
+init-dirs: ~/.kosa tmp/storage resources/storage
+
+init: init-dirs tools deps assets ##@Setup Dev Setup
 
 txt-clean: ##@Setup Remove all TXT-related directories
 	rm -rf txt/pali   && mkdir -p txt/pali   && touch txt/pali/.keep
@@ -96,7 +98,7 @@ db-migrate: ##@Development Migrate up
 db-seed: ##@Development Add sample data
 	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-seed dev
 
-db-reset: db-clean db-migrate db-seed ##@Development Clean, Migrate, Seed.
+db-reset: db-clean init-dirs db-migrate db-seed ##@Development Clean, Migrate, Seed.
 
 db-txt-pali: ##@Development Add Looped Pali Words
 	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-txt-pali

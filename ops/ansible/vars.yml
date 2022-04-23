@@ -13,6 +13,7 @@ app_name: kosa-app
 srv_dir: "/srv/{{ user_acc }}"
 repo_dir: "{{ srv_dir }}/{{ repo_name }}"
 app_dir: "{{ repo_dir }}"
+log_dir: "/var/log/kosa"
 
 env_file: "{{ srv_dir }}/.env"
 pre_deploy_target: "init"

@@ -1,0 +1,4 @@
+{{ inventory_hostname }} {
+    root * {{ app_dir }}/resources/public
+    reverse_proxy localhost:3000
+}
