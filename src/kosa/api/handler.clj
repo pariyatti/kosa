@@ -6,7 +6,8 @@
             [kosa.mobile.today.words-of-buddha.db :as words-of-buddha-db]
             [kosa.mobile.today.doha.db :as doha-db]
             [kosa.mobile.today.stacked-inspiration.db :as stacked-inspiration-db]
-            [ring.util.response :as resp]))
+            [ring.util.response :as resp]
+            [clojure.tools.logging :as log]))
 
 (defn search [req]
   (let [text (-> req :params :q)
@@ -105,5 +106,14 @@
         (map doha->json (doha-db/list))
         (map stacked-inspiration->json (stacked-inspiration-db/list)))))
 
+(defn paginate [cards limit offset]
+  (vec (take limit (drop offset cards))))
+
+(defn today-paginated [req]
+  (let [{{:keys [limit offset]} :params} req]
+    (if (and limit offset)
+      (paginate (today-list) (parse-long limit) (parse-long offset))
+      (today-list))))
+
 (defn today [req]
-  (resp/response (today-list)))
+  (resp/response (today-paginated req)))
