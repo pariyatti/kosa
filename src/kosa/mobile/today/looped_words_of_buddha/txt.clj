@@ -42,7 +42,7 @@
                          (str/join "\n\n"))]
     (merge
      #:looped-words-of-buddha{:words (first v)
-                              :audio-url (->audio-url audio-url)
+                              :original-audio-url (->audio-url audio-url)
                               :translations [[lang translation]]}
      cite-block)))
 
@@ -92,7 +92,7 @@
 
   (download-attachments! [_ lang e]
     (if (= "eng" lang)
-      (let [file (open-uri/download-uri! (:looped-words-of-buddha/audio-url e))]
+      (let [file (open-uri/download-uri! (:looped-words-of-buddha/original-audio-url e))]
         (storage/attach! e :looped-words-of-buddha/audio-attachment file))
       e)))
 

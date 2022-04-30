@@ -8,10 +8,9 @@
     (schema/add-type node :looped-words-of-buddha [:looped-words-of-buddha/index
                                                    :looped-words-of-buddha/original-words ;; from *.pariyatti.org - a long string
                                                    :looped-words-of-buddha/original-url   ;; from *.pariyatti.org
+                                                   :looped-words-of-buddha/original-audio-url      ;; to *.pariyatti.org - mp3
                                                    :looped-words-of-buddha/words
                                                    :looped-words-of-buddha/audio-attachment-id
-                                                   ;; TODO: consider `original-audio-url` instead?
-                                                   :looped-words-of-buddha/audio-url      ;; to *.pariyatti.org - mp3
                                                    :looped-words-of-buddha/translations
                                                    :looped-words-of-buddha/citepali
                                                    :looped-words-of-buddha/citepali-url
@@ -19,18 +18,18 @@
                                                    :looped-words-of-buddha/citebook-url      ;; to store.pariyatti.org
                                                    :looped-words-of-buddha/published-at])
 
-    (schema/add-schema node :looped-words-of-buddha/index          :db.type/long)
-    (schema/add-schema node :looped-words-of-buddha/original-words :db.type/string)
-    (schema/add-schema node :looped-words-of-buddha/original-url   :db.type/uri)
-    (schema/add-schema node :looped-words-of-buddha/words          :db.type/string)
-    (schema/add-schema node :looped-words-of-buddha/audio-attachment-id  :db.type/uuid)
-    (schema/add-schema node :looped-words-of-buddha/audio-url      :db.type/uri)
-    (schema/add-schema node :looped-words-of-buddha/translations   :db.type/tuple)
-    (schema/add-schema node :looped-words-of-buddha/citepali       :db.type/string)
-    (schema/add-schema node :looped-words-of-buddha/citepali-url   :db.type/uri)
-    (schema/add-schema node :looped-words-of-buddha/citebook    :db.type/string)
-    (schema/add-schema node :looped-words-of-buddha/citebook-url      :db.type/uri)
-    (schema/add-schema node :looped-words-of-buddha/published-at   :db.type/inst)
+    (schema/add-schema node :looped-words-of-buddha/index               :db.type/long)
+    (schema/add-schema node :looped-words-of-buddha/original-words      :db.type/string)
+    (schema/add-schema node :looped-words-of-buddha/original-url        :db.type/uri)
+    (schema/add-schema node :looped-words-of-buddha/original-audio-url  :db.type/uri)
+    (schema/add-schema node :looped-words-of-buddha/words               :db.type/string)
+    (schema/add-schema node :looped-words-of-buddha/audio-attachment-id :db.type/uuid)
+    (schema/add-schema node :looped-words-of-buddha/translations        :db.type/tuple)
+    (schema/add-schema node :looped-words-of-buddha/citepali            :db.type/string)
+    (schema/add-schema node :looped-words-of-buddha/citepali-url        :db.type/uri)
+    (schema/add-schema node :looped-words-of-buddha/citebook            :db.type/string)
+    (schema/add-schema node :looped-words-of-buddha/citebook-url        :db.type/uri)
+    (schema/add-schema node :looped-words-of-buddha/published-at        :db.type/inst)
     (d/close!)))
 
 (defn down [db]
@@ -39,9 +38,9 @@
     (schema/remove-schema node :looped-words-of-buddha/index)
     (schema/remove-schema node :looped-words-of-buddha/original-words)
     (schema/remove-schema node :looped-words-of-buddha/original-url)
+    (schema/remove-schema node :looped-words-of-buddha/original-audio-url)
     (schema/remove-schema node :looped-words-of-buddha/words)
     (schema/remove-schema node :looped-words-of-buddha/audio-attachment-id)
-    (schema/remove-schema node :looped-words-of-buddha/audio-url)
     (schema/remove-schema node :looped-words-of-buddha/translations)
     (schema/remove-schema node :looped-words-of-buddha/citepali)
     (schema/remove-schema node :looped-words-of-buddha/citepali-url)

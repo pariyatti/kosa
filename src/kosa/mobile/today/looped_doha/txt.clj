@@ -31,7 +31,7 @@
                          (str/join "\n\n"))]
     #:looped-doha
     {:doha (first v)
-     :audio-url (->audio-url audio-url)
+     :original-audio-url (->audio-url audio-url)
      :translations [[lang translation]]}))
 
 (deftype DohaIngester []
@@ -72,7 +72,7 @@
 
   (download-attachments! [_ lang e]
     (if (= "eng" lang)
-      (let [file (open-uri/download-uri! (:looped-doha/audio-url e))]
+      (let [file (open-uri/download-uri! (:looped-doha/original-audio-url e))]
         (storage/attach! e :looped-doha/audio-attachment file))
       e)))
 

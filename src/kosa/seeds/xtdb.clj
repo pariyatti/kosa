@@ -150,7 +150,7 @@
                           :words-of-buddha/original-url (URI. "")
                           :words-of-buddha/words "Susukhaṃ vata jīvāma,\nverinesu averino.\nVerinesu manussesu,\nviharāma averino."
                           :words-of-buddha/audio-attachment-id buddha-mp3-attachment-id
-                          :words-of-buddha/audio-url (URI. "http://download.pariyatti.org/dwob/dhammapada_15_197.mp3")
+                          :words-of-buddha/original-audio-url (URI. "http://download.pariyatti.org/dwob/dhammapada_15_197.mp3")
                           :words-of-buddha/translations [
                                                          ["eng" "Happy indeed we live,\nfriendly amidst the hostility.\nAmidst hostile people,\nwe dwell free from hatred."]
                                                          ["fra" "Heureux en vérité nous vivons,\nAmicaux au milieu de l’downloadilité.\nParmi les gens downloadiles,\nNous demeurons, libres de haine."]
@@ -175,7 +175,7 @@
                           :doha/original-url (URI. "")
                           :doha/doha "Duralabha jīvana manuja kā, \nduralabha Dharama milāpa. \nDhanya bhāga! donoṅ mile, \ndūra kareṅ bhava tāpa."
                           :doha/audio-attachment-id doha-mp3-attachment-id
-                          :doha/audio-url (URI. "http://download.pariyatti.org/dohas/066_Doha.mp3")
+                          :doha/original-audio-url (URI. "http://download.pariyatti.org/dohas/066_Doha.mp3")
                           :doha/translations [
                                               ["eng" "Rare is human life, \nrare to encounter the Dhamma. \nWe are fortunate to have both; \nlet us banish the torment of becoming. \n\n–S.N. Goenka"]
                                               ["lit" "Žmogaus gyvenimas ¬– ypatingas,  \nPatirti Dhammą pasiseka ne kiekvienam. \nTurime abu, todėl esame laimingi, \nSunaikinkime tapsmo kančias. \n\n–S.N. Goenka"]

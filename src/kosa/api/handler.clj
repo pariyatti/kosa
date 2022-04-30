@@ -56,8 +56,7 @@
                                  :translation (second t)})
                         (:words-of-buddha/translations card))
      :audio {:url (-> card :words-of-buddha/audio-attachment :attm/url)}
-     ;; TODO: `original_audio_url` instead?
-     :audio_url    (:words-of-buddha/audio-url card)
+     :original_audio_url    (:words-of-buddha/original-audio-url card)
      :citepali     (:words-of-buddha/citepali card)
      :citepali_url (:words-of-buddha/citepali-url card)
      :citebook     (:words-of-buddha/citebook card)
@@ -78,7 +77,7 @@
      :shareable true
      :original_doha (:doha/original-doha card)
      :original_url (:doha/original-url card)
-     :audio_url (:doha/audio-url card) ;; TODO: should be `original_audio_url`
+     :original_audio_url (:doha/original-audio-url card)
      :doha (:doha/doha card)
      :translations (map (fn [t] {:id (uuid) ;; mobile app demands an id
                                  :language (first t)

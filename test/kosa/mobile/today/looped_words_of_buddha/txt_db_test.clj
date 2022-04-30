@@ -143,7 +143,7 @@
     (let [card (model/looped-words-of-buddha
                 {:looped-words-of-buddha/audio-attachment
                  nil
-                 :looped-words-of-buddha/audio-url
+                 :looped-words-of-buddha/original-audio-url
                  (URI. "http://download.pariyatti.org/dwob/sutta_nipata_3_710.mp3")})
           e (looped/download-attachments! i "eng" card)]
       (is (= "sutta_nipata_3_710.mp3"

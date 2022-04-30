@@ -92,7 +92,7 @@
     (let [card (model/looped-doha
                 {:looped-doha/audio-attachment
                  nil
-                 :looped-doha/audio-url
+                 :looped-doha/original-audio-url
                  (URI. "http://download.pariyatti.org/dohas/100_Doha.mp3")})
           e (looped/download-attachments! i "eng" card)]
       (is (= "100_Doha.mp3"
