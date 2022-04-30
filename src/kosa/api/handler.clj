@@ -64,23 +64,6 @@
      ;; TODO: seed data?
      :image {:url "/uploads/kuti-d54d85868f2963a4efee91e5c86e1679-bodhi-leaf.jpg"}}))
 
-;; (defn words-of-buddha->fake-json [card]
-;;   (let [published (:words-of-buddha/published-at card)
-;;         date (time/string (or published kosa-epoch))]
-;;     ;; TODO: this requires its own type, but the mobile app doesn't support
-;;     ;;       that yet. -sd
-;;     {:type "stacked_inspiration"
-;;      :id (:xt/id card)
-;;      :published_at date
-;;      :created_at date
-;;      :updated_at date
-;;      :header "Words of Buddha"
-;;      :bookmarkable true
-;;      :shareable true
-;;      :text (:words-of-buddha/words card)
-;;      ;; TODO: seed data?
-;;      :image {:url "/uploads/kuti-d54d85868f2963a4efee91e5c86e1679-bodhi-leaf.jpg"}}))
-
 (defn doha->json [card]
   (let [published (:doha/published-at card)
         date (time/string (or published kosa-epoch))]
@@ -100,22 +83,6 @@
                                  :language (first t)
                                  :translation (second t)})
                         (:doha/translations card))}))
-
-;; (defn doha->fake-json [card]
-;;   (let [published (:doha/published-at card)
-;;         date (time/string (or published kosa-epoch))]
-;;     ;; TODO: this requires its own type, but the mobile app doesn't support
-;;     ;;       that yet. -sd
-;;     {:type "stacked_inspiration"
-;;      :id (:xt/id card)
-;;      :published_at date
-;;      :created_at date
-;;      :updated_at date
-;;      :header "Daily Doha"
-;;      :bookmarkable true
-;;      :shareable true
-;;      :text (:doha/doha card)
-;;      :image {:url "/uploads/kuti-d54d85868f2963a4efee91e5c86e1679-bodhi-leaf.jpg"}}))
 
 (defn stacked-inspiration->json [card]
   (let [published (:stacked-inspiration/published-at card)
