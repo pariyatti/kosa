@@ -20,7 +20,8 @@
    (or (= "/" uri)
        (re-matches #"^/login.*" uri)
        (re-matches #"^/api.*" uri)
-       (re-matches #"^/ping.*" uri)))
+       (re-matches #"^/ping.*" uri)
+       (re-matches #"^/status.*" uri)))
   ([req _authdata]
    (always-allow? req)))
 

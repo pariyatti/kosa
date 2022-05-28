@@ -45,6 +45,9 @@
   :start (start-xtdb!)
   :stop  (stop-xtdb!))
 
+(defn status []
+  (xtdb.api/status xtdb-node))
+
 (defn transact! [node txns & [error-msg]]
   (let [tx (->> txns
                 (xt/submit-tx node)

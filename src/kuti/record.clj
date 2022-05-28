@@ -4,6 +4,9 @@
             [kuti.record.publishing :as publishing])
   (:refer-clojure :exclude [get list]))
 
+(defn status []
+  (core/status))
+
 (defn timestamp [e]
   (core/timestamp e))
 

@@ -45,6 +45,7 @@
       :not-acceptable     (constantly {:status 406, :body "406: Not Acceptable."})}))))
 
 (def router
+  "auth exceptions are hard-coded in `kosa.middleware.auth/always-allow?`"
   (rr/router
    ["/" [["" {:name    ::root
               :handler (fn [req] (if (auth/authenticated? req)
@@ -52,6 +53,8 @@
                                    (redirect "/login")))}]
          ["ping" {:name    ::ping
                   :handler pong}]
+         ["status" {:name    ::status
+                    :handler api-handler/status}]
          ["api/v1/today.json" {:name    :kosa.routes.api/today
                                :handler api-handler/today}]
          ["api/v1/search.json" {:name    :kosa.routes.api/search
