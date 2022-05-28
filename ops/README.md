@@ -163,6 +163,12 @@ View Caddy logs similarly:
 sudo journalctl -u caddy
 ```
 
+## Monitoring
+
+We have an `#alerts` channel on Discord which receives alerts via Webhook.
+To add a new webhook, a Discord user must have the Admin role. Currently,
+Steven Deobald, Tanmay Balwa, and Brihas Sarathy have the Admin role.
+
 ## How it works?
 
 We'll be using ansible to setup our machines, and do incremental updates.
