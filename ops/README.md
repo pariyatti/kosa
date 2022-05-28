@@ -72,6 +72,12 @@ aws lightsail --output=json download-default-key-pair | jq -r '.privateKeyBase64
 3. Under `Connect`, click "Download default key".
 Rename this key to `~/.kosa/LightsailDefaultKey.pem` on your local machine
 
+### 1.g Enable automatic snapshots for lightsail
+
+Currently the terraform AWS provider lacks the ability to configure this and hence we are relying on a simple boto3 script that can be run once to enable/check automatic snapshots for all the lightsail instances in us-east-1 region.
+
+Refer to [scripts/aws_lightsail/README.md](scripts/aws_lightsail/README.md) for more details
+
 ## 2. Provisioning servers (DIY)
 
 Add your public SSH key to the DigitalOcean or Lightsail team **before**
