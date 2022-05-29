@@ -39,6 +39,9 @@ icons:
 ~/.kosa:
 	mkdir -p ~/.kosa
 
+~/.kosa/secrets.edn:
+	echo "{:mailer {:user \"YOUR_NAME@gmail.com\"\n          :pass \"GMAIL_APP_PASSWORD\"\n          :default-options {:to \"some-other@email.com\"}}}" > ~/.kosa/secrets.edn
+
 tmp/storage:
 	mkdir -p tmp/storage
 
@@ -66,7 +69,7 @@ cljs-auto: ##@Development Rebuild CLJS continuously
 
 init-dirs: ~/.kosa tmp/storage resources/storage
 
-init: init-dirs tools deps assets ##@Setup Dev Setup
+init: init-dirs ~/.kosa/secrets.edn tools deps assets ##@Setup Dev Setup
 
 txt-clean: ##@Setup Remove all TXT-related directories
 	rm -rf txt/pali   && mkdir -p txt/pali   && touch txt/pali/.keep

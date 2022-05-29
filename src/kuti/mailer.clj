@@ -1,6 +1,7 @@
 (ns kuti.mailer
   (:require [postal.core :as postal]
-            [kosa.config :as config]))
+            [kosa.config :as config]
+            [clojure.tools.logging :as log]))
 
 (defn send-mail
   "Sends a mail using the `postal` map format.
@@ -20,4 +21,7 @@
   "Sends an alert, assuming :from, :to, and :subject
    are already set by config in [:mailer :default-options]."
   [body]
-  (send-mail {:body body}))
+  (try
+    (send-mail {:body body})
+    (catch Throwable e
+      (log/error (str "Error while sending mail: " e)))))

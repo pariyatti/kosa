@@ -9,7 +9,8 @@
             [kosa.mobile.today.doha.db :as doha-db]
             [kosa.mobile.today.stacked-inspiration.db :as stacked-inspiration-db]
             [ring.util.response :as resp]
-            [clojure.tools.logging :as log]))
+            [clojure.tools.logging :as log]
+            [kuti.mailer :as mailer]))
 
 (defn status [_request]
   (let [test-url "http://download.pariyatti.org/dohas/001_Doha.mp3"
@@ -17,8 +18,16 @@
                    (open-uri/download-uri! test-url)
                    (catch clojure.lang.ExceptionInfo e
                      e))
-        node-status (record/status)]
+        node-status (record/status)
+        mailer-status (try
+                        (mailer/send-mail {:to "devnull@pariyatti.org"
+                                           :subject "Kosa Status Check"
+                                           :body "Kosa Status Check. Please Ignore this."})
+                        (catch Throwable e
+                          e))]
     (resp/response {:timestamp (time/now)
+                    :mailer {:mailer-status mailer-status
+                             :mailer-ok (not (instance? Throwable mailer-status))}
                     :xtdb-node-status (assoc node-status
                                              :node-ok (int? (:xtdb.kv/size node-status)))
                     :pariyatti-dot-org {:test-url test-url

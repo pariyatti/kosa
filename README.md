@@ -50,7 +50,7 @@ Install `npm` (nodejs LTS) as described [here](https://nodejs.org/en/download/).
 ### Add Secrets
 
 Create a Gmail [app password](https://myaccount.google.com/apppasswords) and add the
-following file to `~/.kosa/secrets.edn` on your local machine:
+following to `~/.kosa/secrets.edn` on your local machine:
 
 ```clojure
 {:mailer {:user "YOUR_NAME@gmail.com"
