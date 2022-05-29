@@ -33,7 +33,7 @@ resource "null_resource" "ansible_config" {
   }
 
   provisioner "local-exec" {
-    command = "cd ../../ansible && ansible-playbook --become --limit ${var.server_name}.pariyatti.app -i hosts provision.yml"
+    command = "cd ../../ansible && ansible-playbook --become --extra-vars @secrets.yml --vault-password-file ~/.kosa/ansible-password --limit ${var.server_name}.pariyatti.app -i hosts provision.yml"
   }
 }
 
@@ -47,7 +47,7 @@ resource "null_resource" "ansible_deploy" {
   }
 
   provisioner "local-exec" {
-    command = "cd ../../ansible && ansible-playbook --limit ${var.server_name}.pariyatti.app -i hosts deploy.yml"
+    command = "cd ../../ansible && ansible-playbook --extra-vars @secrets.yml --vault-password-file ~/.kosa/ansible-password --limit ${var.server_name}.pariyatti.app -i hosts deploy.yml"
   }
 }
 
@@ -61,7 +61,7 @@ resource "null_resource" "ansible_seed_data" {
   }
 
   provisioner "local-exec" {
-    command = "cd ../../ansible && ansible-playbook --limit ${var.server_name}.pariyatti.app -i hosts seed_looped_txt.yml"
+    command = "cd ../../ansible && ansible-playbook --extra-vars @secrets.yml --vault-password-file ~/.kosa/ansible-password --limit ${var.server_name}.pariyatti.app -i hosts seed_looped_txt.yml"
   }
 }
 

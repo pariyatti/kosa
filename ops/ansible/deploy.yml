@@ -5,6 +5,12 @@
     - vars.yml
 
   tasks:
+    - name: Announce deploy to the Discord channel
+      community.general.discord:
+        webhook_id: "980507364417499146"
+        webhook_token: "{{ deploy_discord_webhook_token }}"
+        content: "Kosa deploy started for {{ inventory_hostname }}"
+
     - name: Update all packages to their latest version
       apt:
         name: "*"
@@ -141,6 +147,12 @@
     - name: start kosa
       systemd: name={{ app_name }} state=started enabled=yes
       become: yes
+
+    - name: Announce deploy completion to the Discord channel
+      community.general.discord:
+        webhook_id: "980507364417499146"
+        webhook_token: "{{ deploy_discord_webhook_token }}"
+        content: "Kosa deploy finished for {{ inventory_hostname }}"
 
   handlers:
     - name: caddy daemon reload
