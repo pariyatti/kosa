@@ -55,7 +55,9 @@ following to `~/.kosa/secrets.edn` on your local machine:
 ```clojure
 {:mailer {:user "YOUR_NAME@gmail.com"
           :pass "GMAIL_APP_PASSWORD"
-          :default-options {:to "some-other@email.com"}}}
+          :default-options {:to "some-other@email.com"
+                            :tls true
+                            :port 587}}}
 ```
 
 ### Build kosa

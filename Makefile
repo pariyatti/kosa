@@ -40,7 +40,7 @@ icons:
 	mkdir -p ~/.kosa
 
 ~/.kosa/secrets.edn:
-	echo "{:mailer {:user \"YOUR_NAME@gmail.com\"\n          :pass \"GMAIL_APP_PASSWORD\"\n          :default-options {:to \"some-other@email.com\"}}}" > ~/.kosa/secrets.edn
+	echo "{:mailer {:user \"YOUR_NAME@gmail.com\"\n          :pass \"GMAIL_APP_PASSWORD\"\n          :default-options {:to \"some-other@email.com\"\n                            :tls true\n                            :port 587}}}" > ~/.kosa/secrets.edn
 
 tmp/storage:
 	mkdir -p tmp/storage
