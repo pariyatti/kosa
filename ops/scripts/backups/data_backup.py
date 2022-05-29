@@ -31,6 +31,13 @@ def discord_send_message(message):
 
 
 def is_service_running(service_name="kosa-app.service"):
+    """Checks if a systemd service is running using shell command systemctl
+
+    :param service_name: name of the service, defaults to "kosa-app.service"
+    :type service_name: str, optional
+    :return: Returns True if service is running, false otherwise 
+    :rtype: bool
+    """
     try:
         cmd = ["systemctl", "status", service_name]
         completed = subprocess.run(cmd, capture_output=True, text=True, check=True)
@@ -46,6 +53,11 @@ def is_service_running(service_name="kosa-app.service"):
 
 
 def stop_service(service_name="kosa-app.service"):
+    """Stops a systemd service using shell command systemctl
+
+    :param service_name: name of the service, defaults to "kosa-app.service"
+    :type service_name: str, optional
+    """
     if not is_root():
         logging.error("This function requires super user privileges")
         sys.exit(1)
@@ -60,6 +72,11 @@ def stop_service(service_name="kosa-app.service"):
 
 
 def start_service(service_name="kosa-app.service"):
+    """Stops a systemd service using shell command systemctl
+
+    :param service_name: name of the service, defaults to "kosa-app.service"
+    :type service_name: str, optional
+    """
     if not is_root():
         logging.error("This function requires super user privileges")
         sys.exit(1)
