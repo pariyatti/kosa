@@ -1,38 +1,16 @@
 (ns kosa.api.handler
   (:require [kuti.support.time :as time]
             [kuti.support.digest :refer [uuid]]
-            [kuti.record :as record]
-            [kuti.storage.open-uri :as open-uri]
             [kosa.library.artefacts.image.db :as image-db]
             [kosa.mobile.today.pali-word.db :as pali-word-db]
             [kosa.mobile.today.words-of-buddha.db :as words-of-buddha-db]
             [kosa.mobile.today.doha.db :as doha-db]
             [kosa.mobile.today.stacked-inspiration.db :as stacked-inspiration-db]
-            [ring.util.response :as resp]
-            [clojure.tools.logging :as log]
-            [kuti.mailer :as mailer]))
+            [kosa.api.status :as api-status]
+            [ring.util.response :as resp]))
 
 (defn status [_request]
-  (let [test-url "http://download.pariyatti.org/dohas/001_Doha.mp3"
-        test-res (try
-                   (open-uri/download-uri! test-url)
-                   (catch clojure.lang.ExceptionInfo e
-                     e))
-        node-status (record/status)
-        mailer-status (try
-                        (mailer/send-mail {:to "devnull@pariyatti.org"
-                                           :subject "Kosa Status Check"
-                                           :body "Kosa Status Check. Please Ignore this."})
-                        (catch Throwable e
-                          e))]
-    (resp/response {:timestamp (time/now)
-                    :mailer {:mailer-status mailer-status
-                             :mailer-ok (not (instance? Throwable mailer-status))}
-                    :xtdb-node-status (assoc node-status
-                                             :node-ok (int? (:xtdb.kv/size node-status)))
-                    :pariyatti-dot-org {:test-url test-url
-                                        :test-file test-res
-                                        :test-ok (not (instance? Throwable test-res))}})))
+  (resp/response (api-status/get)))
 
 (defn search [req]
   (let [text (-> req :params :q)
