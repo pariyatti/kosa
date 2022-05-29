@@ -52,6 +52,7 @@
         - app daemon reload
         - app restart
       become: yes
+      become_user: "{{ user_acc }}"
 
     - name: update environment file
       tags: env

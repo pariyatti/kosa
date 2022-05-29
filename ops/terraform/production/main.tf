@@ -9,6 +9,16 @@ module "kosa-production" {
   }
 }
 
+module "production-backup-bucket" {
+  source = "../modules/backup_s3_bucket"
+
+  bucket_name = "kosa-production-data-backup"
+  bucket_tags = {
+    env = "production"
+    purpose = "xtdb backup/static files backup"
+  }
+}
+
 output "instance_ip_addr" {
   value = module.kosa-production.instance_ip_addr
 }
@@ -19,4 +29,16 @@ output "instance_public_ip_addr" {
 
 output "instance_public_domain_name" {
   value = module.kosa-production.instance_public_domain_name
+}
+
+output "backup_bucket_domain_name" {
+  value = module.production-backup-bucket.bucket_domain_name
+}
+
+output "backup_bucket_id" {
+  value = module.production-backup-bucket.bucket_id
+}
+
+output "backup_bucket_arn" {
+  value = module.production-backup-bucket.bucket_arn
 }
