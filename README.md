@@ -60,6 +60,12 @@ following to `~/.kosa/secrets.edn` on your local machine:
                             :port 587}}}
 ```
 
+Add the Ansible password from the KeePass Vault to:
+
+```
+~/.kosa/ansible-password
+```
+
 ### Build kosa
 
 If you intend to use the "looped cards" (Pali Word a Day, Daily Words

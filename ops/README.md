@@ -16,7 +16,7 @@ Prefer `brew` on MacOS and `apt-get` on Linux.
 ### 1.b Install the latest Ansible
 
 If you aren't sure which method to use to install Ansible, it is safest to
-install it through `pip`:
+install it through `pip`. As always, Python _itself_ is best installed with [`pyenv`](https://github.com/pyenv/pyenv#installation).
 
 ``` sh
 sudo easy_install pip
@@ -168,6 +168,21 @@ View Caddy logs similarly:
 ```sh
 sudo journalctl -u caddy
 ```
+
+## Developing
+
+To add a new secret/password to Ansible, decide what you want the variable to
+be called when referenced in Ansible scripts (`YOUR_DESIRED_VARIABLE_NAME`) and
+choose a password (`YOUR_NEW_PASSWORD`). The contents of `~/.kosa/ansible-password`
+are in the vault, if you have not already created this file.
+
+```sh
+cp ~/.kosa/ansible-password > a_password_file
+ansible-vault encrypt_string --vault-password-file a_password_file 'YOUR_NEW_PASSWORD' --name 'YOUR_DESIRED_VARIABLE_NAME'
+```
+
+Copy the results into `kosa/ops/ansible/secrets.yml`
+
 
 ## Monitoring
 
