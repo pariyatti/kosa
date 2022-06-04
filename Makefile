@@ -24,7 +24,7 @@ help: ##@Miscellaneous Show this help.
 # Hidden@Setup Sass
 sass:
 	$(info Installing Sass...)
-	sudo npm install -g sass
+	sudo npm install -g sass@1.51.0
 
 # Hidden@Setup Clarity Icons
 icons:
