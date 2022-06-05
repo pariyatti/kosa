@@ -11,18 +11,27 @@ response = client.get_instances()
 
 instances = response["instances"]
 
+
+def enable_autosnapshot(instance_name):
+    response = client.enable_add_on(
+        resourceName=instance_name,
+        addOnRequest={
+            "addOnType": "AutoSnapshot",
+            "autoSnapshotAddOnRequest": {"snapshotTimeOfDay": "08:00"},
+        },
+    )
+    print("Automatic backups have been enabled for %s" % instance_name)
+    return response
+
+
 for instance in instances:
     instance_name = instance["name"]
-    for addon in instance["addOns"]:
-        if addon["name"] == "AutoSnapshot":
-            if addon["status"] == "Enabled":
-                print("Automatic backups already enabled for %s" % instance_name)
-            else:
-                response = client.enable_add_on(
-                    resourceName=instance["name"],
-                    addOnRequest={
-                        "addOnType": "AutoSnapshot",
-                        "autoSnapshotAddOnRequest": {"snapshotTimeOfDay": "08:00"},
-                    },
-                )
-                print("Automatic backups have been enabled for %s" % instance_name)
+    try:
+        for addon in instance["addOns"]:
+            if addon["name"] == "AutoSnapshot":
+                if addon["status"] == "Enabled":
+                    print("Automatic backups already enabled for %s" % instance_name)
+                else:
+                    response = enable_autosnapshot(instance_name)
+    except:
+        response = enable_autosnapshot(instance_name)
