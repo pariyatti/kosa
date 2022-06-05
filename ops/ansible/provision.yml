@@ -46,6 +46,8 @@
           - "leiningen"
           - "tmux"
           - "acl"
+          - "awscli"
+          - "pipenv"
         update-cache: yes
 
     - name: Make sure we have a 'wheel' group

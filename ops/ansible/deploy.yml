@@ -148,6 +148,38 @@
       systemd: name={{ app_name }} state=started enabled=yes
       become: yes
 
+    - name: Adding the aws access key id in the bashrc file
+      lineinfile:
+        path: "/root/.bashrc"
+        state: present
+        line: "export AWS_ACCESS_KEY_ID={{ backup_creds_id }}"
+      become: yes
+
+    - name: Adding the aws secret access key in the bashrc file
+      lineinfile:
+        path: "/root/.bashrc"
+        state: present
+        line: "export AWS_SECRET_ACCESS_KEY={{ backup_creds_key }}"
+      become: yes
+
+    - name: Adding the discord webhook url in the bashrc file
+      lineinfile:
+        path: "/root/.bashrc"
+        state: present
+        line: "export DISCORD_WEBHOOK_URL={{ discord_webhook_url }}"
+      become: yes
+
+    - name: Create a cron file for backup under /etc/cron.d
+      ansible.builtin.cron:
+        name: s3 backup
+        weekday: "3"
+        minute: "0"
+        hour: "12"
+        user: root
+        job: "python3 /srv/kosa-user/kosa/ops/scripts/backups/run.sh"
+        cron_file: ansible_s3-backup
+      become: yes
+
     - name: Announce deploy completion to the Discord channel
       community.general.discord:
         webhook_id: "980507364417499146"
