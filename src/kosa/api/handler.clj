@@ -28,7 +28,7 @@
         date (time/string (or published kosa-epoch))]
     {:type "pali_word"
      :id id
-     :url (url-for req :kosa.routes.api/show-pali-words id)
+     :url (url-for req :kosa.routes.api/show-pali-word id)
      :published_at date
      :created_at date
      :updated_at date
@@ -45,11 +45,13 @@
      ;;       be aware that :looped-pali-word never has an audio file. -sd
      :audio {:url ""}}))
 
-(defn words-of-buddha->json [card]
-  (let [published (:words-of-buddha/published-at card)
+(defn words-of-buddha->json [req card]
+  (let [id (:xt/id card)
+        published (:words-of-buddha/published-at card)
         date (time/string (or published kosa-epoch))]
     {:type "words_of_buddha"
-     :id (:xt/id card)
+     :id id
+     :url (url-for req :kosa.routes.api/show-words-of-buddha id)
      :published_at date
      :created_at date
      :updated_at date
@@ -70,11 +72,13 @@
      ;; TODO: seed data?
      :image {:url "/uploads/kuti-d54d85868f2963a4efee91e5c86e1679-bodhi-leaf.jpg"}}))
 
-(defn doha->json [card]
-  (let [published (:doha/published-at card)
+(defn doha->json [req card]
+  (let [id (:xt/id card)
+        published (:doha/published-at card)
         date (time/string (or published kosa-epoch))]
     {:type "doha"
-     :id (:xt/id card)
+     :id id
+     :url (url-for req :kosa.routes.api/show-doha id)
      :published_at date
      :created_at date
      :updated_at date
@@ -90,11 +94,13 @@
                                  :translation (second t)})
                         (:doha/translations card))}))
 
-(defn stacked-inspiration->json [card]
-  (let [published (:stacked-inspiration/published-at card)
+(defn stacked-inspiration->json [req card]
+  (let [id (:xt/id card)
+        published (:stacked-inspiration/published-at card)
         date (time/string (or published kosa-epoch))]
     {:type "stacked_inspiration"
-     :id (:xt/id card)
+     :id id
+     :url (url-for req :kosa.routes.api/show-stacked-inspiration id)
      :published_at date
      :created_at date
      :updated_at date
@@ -107,9 +113,9 @@
 (defn today-list [req]
   (vec (concat
         (map (partial pali-word->json req) (pali-word-db/list))
-        (map words-of-buddha->json (words-of-buddha-db/list))
-        (map doha->json (doha-db/list))
-        (map stacked-inspiration->json (stacked-inspiration-db/list)))))
+        (map (partial words-of-buddha->json req) (words-of-buddha-db/list))
+        (map (partial doha->json req) (doha-db/list))
+        (map (partial stacked-inspiration->json req) (stacked-inspiration-db/list)))))
 
 (defn paginate [cards limit offset]
   (vec (take limit (drop offset cards))))

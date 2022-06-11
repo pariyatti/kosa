@@ -38,6 +38,12 @@
       (resp/response (views/show req card))
       (resp/not-found "Card not found in database."))))
 
+(defn show-json [req]
+  (let [card (-> req :params :xt/id db/get)]
+    (if card
+      (resp/response card)
+      (resp/not-found "Stacked Inspiration card not found."))))
+
 (defn list [_request]
   (resp/response
    (db/list)))

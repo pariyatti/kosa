@@ -58,8 +58,14 @@
 
          ["api/v1/today.json" {:name    :kosa.routes.api/today
                                :handler api-handler/today}]
-         ["api/v1/today/pali-words/{id}.json" {:name :kosa.routes.api/show-pali-words
+         ["api/v1/today/pali-words/{id}.json" {:name :kosa.routes.api/show-pali-word
                                                :get kosa.mobile.today.pali-word.handler/show-json}]
+         ["api/v1/today/words-of-buddha/{id}.json" {:name :kosa.routes.api/show-words-of-buddha
+                                                    :get kosa.mobile.today.words-of-buddha.handler/show-json}]
+         ["api/v1/today/doha/{id}.json" {:name :kosa.routes.api/show-doha
+                                         :get kosa.mobile.today.doha.handler/show-json}]
+         ["api/v1/today/stacked-inspiration/{id}.json" {:name :kosa.routes.api/show-stacked-inspiration
+                                                        :get kosa.mobile.today.stacked-inspiration.handler/show-json}]
 
          ["api/v1/search.json" {:name    :kosa.routes.api/search
                                 :handler api-handler/search}]
