@@ -39,10 +39,10 @@
        (str "It looks like your card wasn't saved? 'db/put' returned nil.")))))
 
 (defn show [req]
-  (let [card (-> req :path-params :id pali-word-db/get)]
+  (let [card (-> req :params :xt/id pali-word-db/get)]
     (if card
       (resp/response (views/show req card))
-      (resp/response "Card not found in database."))))
+      (resp/not-found "Card not found in database."))))
 
 (defn show-json [req]
   (let [card (-> req :params :xt/id pali-word-db/get)]
