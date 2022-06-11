@@ -1,6 +1,7 @@
 (ns kosa.api.handler
   (:require [kuti.support.time :as time]
             [kuti.support.digest :refer [uuid]]
+            [kuti.dispatch.routing :refer [url-for]]
             [kosa.library.artefacts.image.db :as image-db]
             [kosa.mobile.today.pali-word.db :as pali-word-db]
             [kosa.mobile.today.words-of-buddha.db :as words-of-buddha-db]
@@ -20,12 +21,14 @@
 
 (def kosa-epoch "2020-12-12T00:00:00.000Z")
 
-(defn pali-word->json [word]
+(defn pali-word->json [req word]
   ;; TODO: how much of the XTDB entity do we just want to hand over verbatim?
-  (let [published (:pali-word/published-at word)
+  (let [id (:xt/id word)
+        published (:pali-word/published-at word)
         date (time/string (or published kosa-epoch))]
     {:type "pali_word"
-     :id (:xt/id word)
+     :id id
+     :url (url-for req :kosa.routes.api/show-pali-words id)
      :published_at date
      :created_at date
      :updated_at date
@@ -101,9 +104,9 @@
      :text (:stacked-inspiration/text card)
      :image {:url (-> card :stacked-inspiration/image-attachment :attm/url)}}))
 
-(defn today-list []
+(defn today-list [req]
   (vec (concat
-        (map pali-word->json (pali-word-db/list))
+        (map (partial pali-word->json req) (pali-word-db/list))
         (map words-of-buddha->json (words-of-buddha-db/list))
         (map doha->json (doha-db/list))
         (map stacked-inspiration->json (stacked-inspiration-db/list)))))
@@ -115,7 +118,7 @@
   (let [{{:keys [limit offset]} :params} req]
     (if (and limit offset)
       (paginate (today-list) (parse-long limit) (parse-long offset))
-      (today-list))))
+      (today-list req))))
 
 (defn today [req]
   (resp/response (today-paginated req)))

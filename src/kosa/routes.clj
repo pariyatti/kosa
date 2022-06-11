@@ -58,7 +58,7 @@
 
          ["api/v1/today.json" {:name    :kosa.routes.api/today
                                :handler api-handler/today}]
-         ["api/v1/today/pali-words/{id}.json" {:name ::show
+         ["api/v1/today/pali-words/{id}.json" {:name :kosa.routes.api/show-pali-words
                                                :get kosa.mobile.today.pali-word.handler/show-json}]
 
          ["api/v1/search.json" {:name    :kosa.routes.api/search
