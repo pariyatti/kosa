@@ -1,6 +1,6 @@
-(ns kosa.views-test
+(ns kuti.dispatch.routing-test
   (:require [clojure.test :refer :all]
-            [kosa.views :as sut]
+            [kuti.dispatch.routing :as sut]
             [reitit.ring :as rr]))
 
 (defn index-stub [_])
@@ -56,37 +56,6 @@
     (testing "Finds alias from second route"
       (is (= "/users" (sut/path-for request :kosa.views/users-create 123)))))
 
-  (let [router7 (rr/router ["/" [["users" {:name    :kosa.views/users-index
-                                           :aliases [:kosa.views/users-create]
-                                           :get     index-stub
-                                           :create  create-stub}]
-                                 ["users/new" {:name :kosa.views/users-new
-                                               :get new-stub}]
-                                 ["users/:id" {:name    :kosa.views/users-show
-                                               :aliases [:kosa.views/users-update
-                                                         :kosa.views/users-destroy]
-                                               :get     show-stub
-                                               :put     update-stub
-                                               :delete  destroy-stub}]
-                                 ["users/:id/edit" {:name :kosa.views/users-edit
-                                                    :get  edit-stub}]]]
-                           {:conflicts nil})
-        request {:reitit.core/router router7}]
-    (testing "index path"
-      (is (= "/users" (sut/index-path request :users))))
-    (testing "create path"
-      (is (= "/users" (sut/create-path request :users))))
-    (testing "new path"
-      (is (= "/users/new" (sut/new-path request :users))))
-    (testing "show path"
-      (is (= "/users/1234" (sut/show-path request :users {:xt/id "1234"}))))
-    (testing "update path"
-      (is (= "/users/1234" (sut/update-path request :users {:xt/id "1234"}))))
-    (testing "destroy path"
-      (is (= "/users/1234" (sut/destroy-path request :users {:xt/id "1234"}))))
-    (testing "edit path"
-      (is (= "/users/1234/edit" (sut/edit-path request :users {:xt/id "1234"})))))
-
   (let [router-with-colliding-aliases (rr/router [["/thing/:id" {:name    :kosa.views/thing-show
                                                                  :aliases [:kosa.views/thing-destroy]
                                                                  :get     show-stub
@@ -100,3 +69,40 @@
     (testing "Barfs (at runtime, sorry) if duplicate aliases are detected"
       (is (thrown-with-msg? java.lang.Exception #"Alias ':kosa.views/thing-destroy' is colliding."
                             (sut/path-for request :kosa.views/thing-destroy 123))))))
+
+(deftest urls
+  (let [router (rr/router ["/" [["users" {:name :kosa.views/users-index
+                                          :get  index-stub}]]])
+        request {:reitit.core/router router
+                 :server-name "kosa.pariyatti.app"
+                 :server-port 443
+                 :scheme :https
+                 :protocol "HTTP/2"}]
+    ;; based on ring spec: https://github.com/ring-clojure/ring/blob/master/SPEC
+    (testing "re-assembles full https URLs"
+      (is (= "https://kosa.pariyatti.app/users"
+             (sut/url-for request :kosa.views/users-index)))))
+
+  (let [router (rr/router ["/" [["users" {:name :kosa.views/users-index
+                                          :get  index-stub}]]])
+        request {:reitit.core/router router
+                 :server-name "kosa-sandbox.pariyatti.app"
+                 :server-port 80
+                 :scheme :http
+                 :protocol "HTTP/1.1"}]
+    ;; based on ring spec: https://github.com/ring-clojure/ring/blob/master/SPEC
+    (testing "re-assembles full http URLs"
+      (is (= "http://kosa-sandbox.pariyatti.app/users"
+             (sut/url-for request :kosa.views/users-index)))))
+
+  (let [router (rr/router ["/" [["users" {:name :kosa.views/users-index
+                                          :get  index-stub}]]])
+        request {:reitit.core/router router
+                 :server-name "localhost"
+                 :server-port 8888
+                 :scheme :http
+                 :protocol "HTTP/1.1"}]
+    ;; based on ring spec: https://github.com/ring-clojure/ring/blob/master/SPEC
+    (testing "re-assembles full http URLs"
+      (is (= "http://localhost:8888/users"
+             (sut/url-for request :kosa.views/users-index))))))
