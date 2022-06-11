@@ -55,10 +55,15 @@
                   :handler pong}]
          ["status" {:name    ::status
                     :handler api-handler/status}]
+
          ["api/v1/today.json" {:name    :kosa.routes.api/today
                                :handler api-handler/today}]
+         ["api/v1/today/pali-words/{id}.json" {:name ::show
+                                               :get kosa.mobile.today.pali-word.handler/show-json}]
+
          ["api/v1/search.json" {:name    :kosa.routes.api/search
                                 :handler api-handler/search}]
+
          ["login" {:name    ::login
                    :handler auth-handler/login}]
 

@@ -44,6 +44,12 @@
       (resp/response (views/show req card))
       (resp/response "Card not found in database."))))
 
+(defn show-json [req]
+  (let [card (-> req :params :xt/id pali-word-db/get)]
+    (if card
+      (resp/response card)
+      (resp/not-found "Pali Word card not found."))))
+
 (defn list [_request]
   (resp/response
    (pali-word-db/list)))
