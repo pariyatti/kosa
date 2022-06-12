@@ -19,6 +19,17 @@ log_formatter = logging.Formatter(
 )
 file_handler.setFormatter(log_formatter)
 logging.getLogger().addHandler(file_handler)
+logging.getLogger().setLevel(logging.INFO)
+
+s3_bucket_name = os.environ["BACKUP_S3_BUCKET"]
+if s3_bucket_name is None:
+    logging.error("BACKUP_S3_BUCKET environment variable not set")
+    sys.exit(1)
+else:
+    if "sandbox" in s3_bucket_name:
+        kosa_env = "sandbox"
+    elif "production" in s3_bucket_name:
+        kosa_env = "production"
 
 
 def is_root():
@@ -33,7 +44,7 @@ def discord_send_message(message):
     """
     discord_url = os.environ["DISCORD_WEBHOOK_URL"]
     webhook = Webhook.from_url(url=discord_url, adapter=RequestsWebhookAdapter())
-    webhook.send(message)
+    webhook.send(kosa_env + ": " + message)
 
 
 def is_service_running(service_name="kosa-app.service"):
@@ -118,9 +129,13 @@ def sync_all(bucket_name):
 
 def main():
     discord_send_message("Manual S3 backups starting")
+    logging.info("Manual S3 backups starting")
     stop_service()
-    sync_all(os.environ["BACKUP_S3_BUCKET"])
+    logging.info("Kosa backend stopped")
+    sync_all(s3_bucket_name)
+    logging.info("S3 sync complete")
     start_service()
+    logging.info("Kosa backend started")
     discord_send_message("Manual S3 backups finished")
 
 
