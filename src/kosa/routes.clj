@@ -8,6 +8,8 @@
             [kosa.mobile.handler]
             [kosa.mobile.today.pali-word.handler :as pali-word-handler]
             [kosa.mobile.today.pali-word.spec]
+            [kosa.mobile.today.words-of-buddha.handler]
+            [kosa.mobile.today.doha.handler]
             [kosa.mobile.today.stacked-inspiration.handler :as stacked-inspiration-handler]
             [kosa.mobile.today.stacked-inspiration.spec]
             [kuti.dispatch :refer [resources]]
