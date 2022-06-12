@@ -1,4 +1,4 @@
 [app]
 
-kosa-sandbox.pariyatti.app ansible_python_interpreter=/usr/bin/python3 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.kosa/LightsailDefaultKey.pem
-kosa.pariyatti.app         ansible_python_interpreter=/usr/bin/python3 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.kosa/LightsailDefaultKey.pem
+kosa-sandbox.pariyatti.app ansible_python_interpreter=/usr/bin/python3 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.kosa/LightsailDefaultKey.pem ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+kosa.pariyatti.app ansible_python_interpreter=/usr/bin/python3 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.kosa/LightsailDefaultKey.pem ansible_ssh_extra_args='-o StrictHostKeyChecking=no'

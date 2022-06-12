@@ -150,6 +150,15 @@ terraform plan -out=terraform.plan
 terraform apply "terraform.plan"
 ```
 
+If you need to destro the lightsail instance and re-create it, depending on the environment, you command could be one of the following:
+```
+terraform destroy -target module.kosa-production
+
+or
+
+terraform destroy -target module.kosa-sandbox
+```
+
 **Note:** Running terraform plan and apply for a new server will create a DNS entry that does not resolve by the time Ansible runs, which will cause it to fail. As a workaround, temporarily set your local DNS resolution to '8.8.8.8'.
 
 **Note:** Running terraform plan and apply on existing server will result in execution of ansible playbook `deploy.yml`. This is managed via dynamically updating the `build_number` to timestamp() in the triggers.

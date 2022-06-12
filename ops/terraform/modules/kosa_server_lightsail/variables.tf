@@ -31,3 +31,9 @@ variable "ports" {
   type        = list(number)
   description = "The ingress TCP ports to open"
 }
+
+variable "user_data" {
+  type        = string
+  default     = ""
+  description = "The user data to be passed to the VMs"
+}
