@@ -16,6 +16,16 @@
         name: "*"
         state: latest
       become: yes
+    
+    - name: Check if reboot required
+      stat:
+        path: /var/run/reboot-required
+      register: reboot_required_file
+
+    - name: Reboot if required
+      reboot:
+      when: reboot_required_file.stat.exists == true
+      become: yes
 
     - name: copy priv key to server
       copy:
@@ -176,14 +186,14 @@
         minute: "0"
         hour: "12"
         user: root
-        job: "python3 /srv/kosa-user/kosa/ops/scripts/backups/run.sh"
+        job: "/srv/kosa-user/kosa/ops/scripts/backups/run.sh"
         cron_file: ansible_s3-backup
       become: yes
 
     - name: Announce deploy completion to the Discord channel
       community.general.discord:
         webhook_id: "980507364417499146"
-        webhook_token: "{{ deploy_discord_webhook_token }}"
+        webhook_token: "{{ discord_deploy_webhook_token }}"
         content: "Kosa deploy finished for {{ inventory_hostname }}"
 
   handlers:
