@@ -7,6 +7,11 @@ module "kosa-sandbox" {
   server_tags = {
     env = "sandbox"
   }
+  user_data = <<EOF
+#! /bin/bash
+echo "export BACKUP_S3_BUCKET=kosa-sandbox-data-backup" | sudo tee -a /root/.bashrc
+echo "sandbox" | tee /tmp/kosa_env_name
+EOF
 }
 
 module "sandbox-backup-bucket" {
@@ -14,7 +19,7 @@ module "sandbox-backup-bucket" {
 
   bucket_name = "kosa-sandbox-data-backup"
   bucket_tags = {
-    env = "sandbox"
+    env     = "sandbox"
     purpose = "xtdb backup/static files backup"
   }
 }

@@ -7,6 +7,11 @@ module "kosa-production" {
   server_tags = {
     env = "production"
   }
+  user_data = <<EOF
+#! /bin/bash
+echo "export BACKUP_S3_BUCKET=kosa-production-data-backup" | sudo tee -a /root/.bashrc
+echo "production" | tee /tmp/kosa_env_name
+EOF
 }
 
 module "production-backup-bucket" {
@@ -14,7 +19,7 @@ module "production-backup-bucket" {
 
   bucket_name = "kosa-production-data-backup"
   bucket_tags = {
-    env = "production"
+    env     = "production"
     purpose = "xtdb backup/static files backup"
   }
 }

@@ -8,7 +8,7 @@
     - name: Announce deploy to the Discord channel
       community.general.discord:
         webhook_id: "980507364417499146"
-        webhook_token: "{{ deploy_discord_webhook_token }}"
+        webhook_token: "{{ discord_deploy_webhook_token }}"
         content: "Kosa deploy started for {{ inventory_hostname }}"
 
     - name: Update all packages to their latest version
@@ -166,7 +166,7 @@
       lineinfile:
         path: "/root/.bashrc"
         state: present
-        line: "export DISCORD_WEBHOOK_URL={{ discord_webhook_url }}"
+        line: "export DISCORD_WEBHOOK_URL={{ discord_backup_webhook_url }}"
       become: yes
 
     - name: Create a cron file for backup under /etc/cron.d

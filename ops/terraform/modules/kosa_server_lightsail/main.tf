@@ -5,6 +5,7 @@ resource "aws_lightsail_instance" "kosa_server" {
   blueprint_id      = var.server_blueprint_id
   bundle_id         = var.server_size
   tags              = var.server_tags
+  user_data         = var.user_data
 }
 
 resource "aws_lightsail_instance_public_ports" "kosa_server_ports" {
