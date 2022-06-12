@@ -110,9 +110,9 @@ def sync_dir_bucket(dir_path, bucket_path):
 def sync_all(bucket_name):
     local_paths = ["/srv/kosa-user/kosa/data", "/srv/kosa-user/kosa/resources/storage"]
     today = datetime.now()
-    s3_path = bucket_name + "/" + today.strftime("%Y%m%d%h")
+    s3_path = bucket_name + "/" + today.strftime("%Y%m%d%H")
     for local_path in local_paths:
-        bucket_path = s3_path + "/" + os.path.basename(local_path)
+        bucket_path = "s3://" + s3_path + "/" + os.path.basename(local_path)
         sync_dir_bucket(local_path, bucket_path)
 
 
