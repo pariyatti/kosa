@@ -18,6 +18,7 @@
               ;;       of splatting the entire thing into a string, but somewhere
               ;;       cheshire seems to fail in encoding the full ex-data map.
               :data (ex-data exception)
+              :stacktrace (vec (map str (.getStackTrace exception)))
               :uri (:uri request)}]
     (when (-> config/config :mailer :enabled)
       (mailer/send-alert (<-pp body)))
