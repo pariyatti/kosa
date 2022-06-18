@@ -24,6 +24,16 @@ module "sandbox-backup-bucket" {
   }
 }
 
+module "route53-healthcheck" {
+  source = "../modules/kosa_monitoring"
+
+  topic_name = "kosa-sandbox-healthcheck"
+  server_url = "kosa-sandbox.pariyatti.app"
+  server_tags = {
+    env = "sandbox"
+  }
+}
+
 output "instance_ip_addr" {
   value = module.kosa-sandbox.instance_ip_addr
 }
@@ -48,3 +58,6 @@ output "backup_bucket_arn" {
   value = module.sandbox-backup-bucket.bucket_arn
 }
 
+output "route53_healthcheck_id" {
+  value = module.route53-healthcheck.healthcheck_id
+}
