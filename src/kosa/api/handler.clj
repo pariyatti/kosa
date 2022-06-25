@@ -111,11 +111,13 @@
      :image {:url (-> card :stacked-inspiration/image-attachment :attm/url)}}))
 
 (defn today-list [req]
-  (vec (concat
+  (->> (concat
         (map (partial pali-word->json req) (pali-word-db/list))
         (map (partial words-of-buddha->json req) (words-of-buddha-db/list))
         (map (partial doha->json req) (doha-db/list))
-        (map (partial stacked-inspiration->json req) (stacked-inspiration-db/list)))))
+        (map (partial stacked-inspiration->json req) (stacked-inspiration-db/list)))
+       (vec)
+       (sort-by :published_at #(compare (time/parse %2) (time/parse %1)))))
 
 (defn paginate [cards limit offset]
   (vec (take limit (drop offset cards))))
