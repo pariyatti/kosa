@@ -5,6 +5,9 @@
     - vars.yml
 
   tasks:
+    - name: Wait for newly created system to become reachable
+      wait_for_connection:
+      
     - name: Add an Apt signing key for Caddy
       ansible.builtin.apt_key:
         url: https://dl.cloudsmith.io/public/caddy/stable/gpg.key
