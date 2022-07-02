@@ -22,7 +22,7 @@ resource "aws_route53_health_check" "kosa_healthcheck" {
 
 
 resource "aws_cloudwatch_metric_alarm" "kosa_healthcheck_failed" {
-  alarm_name          = format("%s_healthcheck_failed", var.server_url)
+  alarm_name          = format("%s_healthcheck", var.server_url)
   namespace           = "AWS/Route53"
   metric_name         = "HealthCheckStatus"
   comparison_operator = "LessThanThreshold"
