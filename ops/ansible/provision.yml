@@ -6,7 +6,7 @@
 
   tasks:
     - name: Wait for newly created system to become reachable
-      wait_for_connection:
+      ansible.builtin.wait_for_connection:
         timeout: 600
     - name: Add an Apt signing key for Caddy
       ansible.builtin.apt_key:
