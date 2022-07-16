@@ -4,12 +4,15 @@
             [kuti.storage.open-uri :as open-uri]
             [kuti.record :as record]
             [kuti.support.time :as time]
-            [kuti.mailer :as mailer]))
+            [kuti.mailer :as mailer]
+            [clojure.java.io :as io]))
 
 (defn get []
   (let [test-url "http://download.pariyatti.org/dohas/001_Doha.mp3"
         test-res (try
-                   (open-uri/download-uri! test-url)
+                   (-> (open-uri/download-uri! test-url)
+                       (clojure.core/get :tempfile)
+                       (io/delete-file))
                    (catch clojure.lang.ExceptionInfo e
                      e))
         node-status (try
