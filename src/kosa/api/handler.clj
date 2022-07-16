@@ -82,7 +82,7 @@
      :published_at date
      :created_at date
      :updated_at date
-     :header "Daily Doha"
+     :header "Daily Dhamma Verse"
      :bookmarkable true
      :shareable true
      :original_doha (:doha/original-doha card)
