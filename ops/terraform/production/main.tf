@@ -24,6 +24,16 @@ module "production-backup-bucket" {
   }
 }
 
+module "route53-healthcheck" {
+  source = "../modules/kosa_monitoring"
+
+  topic_name = "kosa-production-healthcheck"
+  server_url = "kosa.pariyatti.app"
+  server_tags = {
+    env = "production"
+  }
+}
+
 output "instance_ip_addr" {
   value = module.kosa-production.instance_ip_addr
 }
