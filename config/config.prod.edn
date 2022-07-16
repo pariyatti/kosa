@@ -3,12 +3,9 @@
  :db-spec {:data-dir "data/prod"
            :xtdb-http-port 9999}
 
- :mailer {:enabled true
-          :host "localhost"
-          ;; revisit: https://serverfault.com/questions/999521/cannot-get-sendmail-to-work-on-ubuntu-18-04-3-lts-x64-on-digitalocean-droplet
-          :ssl true
-          :default-options {:from    "no-reply@pariyatti.app"
-                            :to      "webmaster@pariyatti.org"
+ :mailer {:sendgrid-api-key #ref [:secrets :mailer :sendgrid-api-key]
+          :default-options {:from "no-reply@pariyatti.app"
+                            :to   "app@pariyatti.org"
                             :subject "Pariyatti Kosa: Alert"}}
 
  :port 3000

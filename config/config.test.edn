@@ -3,11 +3,7 @@
  :db-spec {:data-dir "data/test/"
            :xtdb-http-port 9876}
 
- :mailer {:enabled false
-          :host "smtp.gmail.com"
-          :ssl true
-          :user #ref [:secrets :mailer :user]
-          :pass #ref [:secrets :mailer :pass]
+ :mailer {:sendgrid-api-key #ref [:secrets :mailer :sendgrid-api-key]
           :default-options {:from "no-reply@pariyatti.app"
                             :to #ref [:secrets :mailer :default-options :to]
                             :subject "Pariyatti Kosa: Alert"}}

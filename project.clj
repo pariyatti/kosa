@@ -25,7 +25,7 @@
                  [babashka/fs "0.0.3"]
                  ;; networking:
                  [http-kit "2.5.3"]
-                 [com.draines/postal "2.0.5"]
+                 [camdez/sendgrid "0.2.0"]
                  ;; web:
                  ;; [pro.juxt.clojars-mirrors.ring/ring-core "1.9.2"]
                  [ring/ring-core "1.9.5"]

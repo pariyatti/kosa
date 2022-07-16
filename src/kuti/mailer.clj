@@ -1,27 +1,30 @@
 (ns kuti.mailer
-  (:require [postal.core :as postal]
+  (:require [sendgrid.core :as sg]
             [kosa.config :as config]
             [clojure.tools.logging :as log]))
 
+(defn add-trailing-newlines [s]
+  (str s "\n\n---"))
+
 (defn send-mail
-  "Sends a mail using the `postal` map format.
+  "Sends a mail using the `camdez/sendgrid` map format.
 
   {:from    \"no-reply@pariyatti.org\"
    :to      \"webmaster@pariyatti.org\"
    :subject \"Pariyatti Kosa: Alert\"
-   :body    \"Processing of some job failed.\"}"
+   :text    \"Processing of some job failed.\"}"
   [email]
   (let [mailer-config (-> config/config :mailer)
-        msg (merge (:default-options mailer-config) email)]
-    (if (= "localhost" (:host mailer-config))
-      (postal/send-message msg)
-      (postal/send-message mailer-config msg))))
+        api-key {:api-key (:sendgrid-api-key mailer-config)}
+        msg (merge (:default-options mailer-config)
+                   (update-in email [:text] add-trailing-newlines))]
+    (sg/send-email api-key msg)))
 
 (defn send-alert
   "Sends an alert, assuming :from, :to, and :subject
    are already set by config in [:mailer :default-options]."
-  [body]
+  [text]
   (try
-    (send-mail {:body body})
+    (send-mail {:text text})
     (catch Throwable e
       (log/error (str "Error while sending mail: " e)))))
