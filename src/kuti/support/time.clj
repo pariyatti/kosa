@@ -72,6 +72,15 @@
       s
       (clojure.string/replace s #"Z$" ".000Z"))))
 
+(defn to-8601-string
+  "Force the `yyyy-MM-dd'T'HH:mm:ssSSS'Z' format."
+  [time]
+  (let [inst (t/instant time)
+        s (str inst)]
+    (if (= 24 (count s))
+      s
+      (clojure.string/replace s #"Z$" "000Z"))))
+
 (defn days-between [old new]
   (t/days (t/between (parse (str old))
                      (parse (str new)))))

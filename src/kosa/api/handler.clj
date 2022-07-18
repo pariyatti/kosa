@@ -25,7 +25,7 @@
   ;; TODO: how much of the XTDB entity do we just want to hand over verbatim?
   (let [id (:xt/id word)
         published (:pali-word/published-at word)
-        date (time/string (or published kosa-epoch))]
+        date (time/to-8601-string (or published kosa-epoch))]
     {:type "pali_word"
      :id id
      :url (url-for req :kosa.routes.api/show-pali-word id)
@@ -48,7 +48,7 @@
 (defn words-of-buddha->json [req card]
   (let [id (:xt/id card)
         published (:words-of-buddha/published-at card)
-        date (time/string (or published kosa-epoch))]
+        date (time/to-8601-string (or published kosa-epoch))]
     {:type "words_of_buddha"
      :id id
      :url (url-for req :kosa.routes.api/show-words-of-buddha id)
@@ -75,7 +75,7 @@
 (defn doha->json [req card]
   (let [id (:xt/id card)
         published (:doha/published-at card)
-        date (time/string (or published kosa-epoch))]
+        date (time/to-8601-string (or published kosa-epoch))]
     {:type "doha"
      :id id
      :url (url-for req :kosa.routes.api/show-doha id)
@@ -97,7 +97,7 @@
 (defn stacked-inspiration->json [req card]
   (let [id (:xt/id card)
         published (:stacked-inspiration/published-at card)
-        date (time/string (or published kosa-epoch))]
+        date (time/to-8601-string (or published kosa-epoch))]
     {:type "stacked_inspiration"
      :id id
      :url (url-for req :kosa.routes.api/show-stacked-inspiration id)
