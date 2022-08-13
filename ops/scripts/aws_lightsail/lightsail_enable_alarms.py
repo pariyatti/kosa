@@ -52,8 +52,6 @@ def enable_metrics(instance_name, force_update=False):
     existing_alarms = client.get_alarms(monitoredResourceName=instance_name)
     if existing_alarms["alarms"] and not force_update:
         print("Metrics already enabled for %s" % instance_name)
-        enable_instance_status_alarm(instance_name)
-        enable_cpu_utilization_alarm(instance_name)
     else:
         enable_instance_status_alarm(instance_name)
         enable_cpu_utilization_alarm(instance_name)

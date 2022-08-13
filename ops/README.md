@@ -18,14 +18,14 @@ Prefer `brew` on MacOS and `apt-get` on Linux.
 If you aren't sure which method to use to install Ansible, it is safest to
 install it through `pip`. As always, Python _itself_ is best installed with [`pyenv`](https://github.com/pyenv/pyenv#installation).
 
-``` sh
+```sh
 sudo easy_install pip
 sudo pip install ansible --quiet
 ```
 
 ### 1.c Install Ansible dependencies
 
-``` sh
+```sh
 ansible-galaxy collection install ansible.posix
 ```
 
@@ -67,16 +67,21 @@ aws lightsail --output=json download-default-key-pair | jq -r '.privateKeyBase64
 ```
 
 #### Via the AWS console
+
 1. Go to https://lightsail.aws.amazon.com/ls/webapp/home/instances
 2. Click on the instance you provisioned (or the instance previously provisioned)
 3. Under `Connect`, click "Download default key".
-Rename this key to `~/.kosa/LightsailDefaultKey.pem` on your local machine
+   Rename this key to `~/.kosa/LightsailDefaultKey.pem` on your local machine
 
-### 1.g Enable automatic snapshots for lightsail
+### 1.g Enable automatic snapshots and metrics alarms for lightsail
 
-Currently the terraform AWS provider lacks the ability to configure this and hence we are relying on a simple boto3 script that can be run once (manually) to enable/check automatic snapshots for all the lightsail instances in us-east-1 region.
+Currently the terraform AWS provider lacks the ability to configure this and hence we are relying on a simple set of boto3 scripts that are run at time of creation of instances using terraform to enable/check automatic snapshots/metrics alarms for all the lightsail instances in us-east-1 region.
 
 Refer to [scripts/aws_lightsail/README.md](scripts/aws_lightsail/README.md) for more details
+
+### 1.h Update txt files in server
+
+An infrequent update that can be needed is of the looped txt records. This is typically going to be when the upstream repo has changes and new pali contributions are added. This can be done manually by setting `update_txt_files = 0` to `update_txt_files = 1` in `main.tf` in sandbox and production environments terraform directory. Please do ensure you revert the value to 0 after you have applied the terraform changes in the specific environment. In the default branch we would prefer having the value set to 0 at all times as setting it 1 increases the code deployment time.
 
 ## 2. Provisioning servers (DIY)
 
@@ -98,7 +103,7 @@ and Lightsail:
 
 ### 2.a Provision pre-requisites:
 
-``` sh
+```sh
 ansible-playbook --become --limit "kosa-sandbox.pariyatti.app" -i hosts provision.yml
 ```
 
@@ -108,7 +113,7 @@ want to do that.
 
 ### 2.b Deploy Kosa
 
-``` sh
+```sh
 ansible-playbook --become --limit "kosa-sandbox.pariyatti.app" -i hosts deploy.yml
 ```
 
@@ -119,7 +124,7 @@ ansible-playbook --become --limit "kosa-sandbox.pariyatti.app" -i hosts deploy.y
 After Kosa is deployed the first time, we use this command to add seed data.
 It adds Looped `Pali Word`, `Words of Buddha`, and `Daily Doha` cards to the db:
 
-``` sh
+```sh
 ansible-playbook --become --limit "kosa-sandbox.pariyatti.app" -i hosts seed_looped_txt.yml
 ```
 
@@ -129,10 +134,9 @@ Terraform server setup files can be used to provision the server boxes and run t
 
 It covers:
 
-* Creating the appropriate Ubuntu 20.04 LTS Lightsail VM
-* Updating the DNS records in AWS Route 53 to the newly provisioned resource's IP address
-* Running ansible configuration management playbooks to configure and deploy the kosa app
-
+- Creating the appropriate Ubuntu 20.04 LTS Lightsail VM
+- Updating the DNS records in AWS Route 53 to the newly provisioned resource's IP address
+- Running ansible configuration management playbooks to configure and deploy the kosa app
 
 Please ensure that you have the correct credentials configured in terminal for lightsail deployment. To verify run:
 
@@ -151,6 +155,7 @@ terraform apply "terraform.plan"
 ```
 
 If you need to destro the lightsail instance and re-create it, depending on the environment, you command could be one of the following:
+
 ```
 terraform destroy -target module.kosa-production
 
@@ -191,7 +196,6 @@ ansible-vault encrypt_string --vault-password-file a_password_file 'YOUR_NEW_PAS
 ```
 
 Copy the results into `kosa/ops/ansible/secrets.yml`
-
 
 ## Monitoring
 

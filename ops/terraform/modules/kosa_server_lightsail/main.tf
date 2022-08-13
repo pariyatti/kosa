@@ -66,6 +66,18 @@ resource "null_resource" "ansible_seed_data" {
   }
 }
 
+resource "null_resource" "ansible_update_data" {
+  depends_on = [
+    null_resource.ansible_config,
+    null_resource.ansible_deploy
+  ]
+  count = var.update_txt_files
+
+  provisioner "local-exec" {
+    command = "cd ../../ansible && ansible-playbook --extra-vars @secrets.yml --vault-password-file ~/.kosa/ansible-password --limit ${var.server_name}.pariyatti.app -i hosts update_looped_txt.yml"
+  }
+}
+
 # Update DNS pointer for kosa-server to <name>.pariyatti.app
 
 data "aws_route53_zone" "app_domain" {
@@ -78,6 +90,19 @@ resource "aws_route53_record" "kosa_server_dns_record" {
   type    = "A"
   ttl     = "30"
   records = [aws_lightsail_instance.kosa_server.public_ip_address]
+}
+
+resource "null_resource" "lightsail_python_scripts" {
+  depends_on = [
+    null_resource.ansible_seed_data
+  ]
+  triggers = {
+    cluster_instance_ids = aws_lightsail_instance.kosa_server.arn
+  }
+
+  provisioner "local-exec" {
+    command = "cd ../../scripts/aws_lightsail && ./run_lightsail_scripts.sh"
+  }
 }
 
 resource "time_sleep" "wait_60_seconds" {
