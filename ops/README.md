@@ -183,6 +183,15 @@ View Caddy logs similarly:
 sudo journalctl -u caddy
 ```
 
+Query XTDB with curl. Use `http`, not `https` since you are on the local box (inside Caddy):
+
+```s
+curl -g \
+     -X GET \
+     -H "Accept: application/edn" \
+     "http://localhost:9999/_xtdb/query?query-edn={%3Afind+[e]+%3Awhere+[[e+%3Alooped-pali-word/pali+\"abaddha\"]]}"
+```
+
 ## Developing
 
 To add a new secret/password to Ansible, decide what you want the variable to
