@@ -7,6 +7,10 @@
             [kuti.mailer :as mailer]
             [clojure.java.io :as io]))
 
+(defn ok? [status]
+  (not (or (instance? Throwable status)
+           (instance? clojure.lang.ExceptionInfo status))))
+
 (defn get []
   (let [test-url "http://download.pariyatti.org/dohas/001_Doha.mp3"
         test-res (try
@@ -28,9 +32,9 @@
 
     {:timestamp (time/now)
      :mailer-status {:mailer-status (str mailer-status)
-                     :mailer-ok (not (instance? Throwable mailer-status))}
+                     :mailer-ok (ok? mailer-status)}
      :xtdb-status (assoc node-status
                          :xtdb-ok (int? (:xtdb.kv/size node-status)))
      :pariyatti-status {:test-url test-url
                         :test-file test-res
-                        :pariyatti-ok (not (instance? Throwable test-res))}}))
+                        :pariyatti-ok (ok? test-res)}}))
