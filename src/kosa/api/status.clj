@@ -25,8 +25,9 @@
                                            :body "Kosa Status Check. Please Ignore this."})
                         (catch Throwable e
                           e))]
+
     {:timestamp (time/now)
-     :mailer-status {:mailer-status mailer-status
+     :mailer-status {:mailer-status (str mailer-status)
                      :mailer-ok (not (instance? Throwable mailer-status))}
      :xtdb-status (assoc node-status
                          :xtdb-ok (int? (:xtdb.kv/size node-status)))
