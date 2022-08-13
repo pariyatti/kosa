@@ -21,6 +21,7 @@ migrate_target: "db-migrate-prod"
 seed_txt_clean_target: "txt-clean"
 seed_txt_clone_target: "txt-clone"
 seed_txt_apply_target: "db-txt-prod"
+update_txt_apply_target: "db-txt-prod"
 
 app_env_vars:
   var_name: "var_value"

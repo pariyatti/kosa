@@ -37,3 +37,9 @@ variable "user_data" {
   default     = ""
   description = "The user data to be passed to the VMs"
 }
+
+variable "update_txt_files" {
+  type        = number
+  default     = 0
+  description = "Manually set to 1 to update the txt files"
+}

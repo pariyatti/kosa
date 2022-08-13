@@ -4,6 +4,9 @@ module "kosa-sandbox" {
 
   server_name = "kosa-sandbox"
   ports       = [80, 443, 22]
+
+  # Manually set to 1 to update the txt files
+  update_txt_files = 0
   server_tags = {
     env = "sandbox"
   }
