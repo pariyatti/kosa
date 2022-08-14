@@ -179,6 +179,14 @@
         line: "export DISCORD_WEBHOOK_URL={{ discord_backup_webhook_url }}"
       become: yes
 
+    - name: Updating the sendgrid api key in configuration
+      ansible.builtin.replace:
+        path: "/home/{{ user_acc }}/.kosa/secrets.edn"
+        regexp: "YOUR.API-KEY"
+        replace: "{{ kosa_sendgrid_api_key }}"
+      become: yes
+      become_user: "{{ user_acc }}"
+
     - name: Comment out non-interactive return
       lineinfile:
         path: "/root/.bashrc"
