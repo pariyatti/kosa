@@ -39,8 +39,10 @@ icons:
 ~/.kosa:
 	mkdir -p ~/.kosa
 
-~/.kosa/secrets.edn:
+~/.kosa/secrets.edn: FORCE
 	echo "{:mailer {:sendgrid-api-key \"YOUR.API-KEY\"\n          :default-options {:to \"some-other@email.com\"}}}" > ~/.kosa/secrets.edn
+
+FORCE: ;
 
 ~/.kosa/ansible-password:
 	echo "REPLACE_ME_WITH_PASSWORD" > ~/.kosa/ansible-password
