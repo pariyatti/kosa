@@ -12,6 +12,8 @@
             [kosa.mobile.today.doha.handler]
             [kosa.mobile.today.stacked-inspiration.handler :as stacked-inspiration-handler]
             [kosa.mobile.today.stacked-inspiration.spec]
+            [kosa.mobile.today.donation.handler :as donation-handler]
+            [kosa.mobile.today.donation.spec]
             [kuti.dispatch :refer [resources]]
             [kuti.dispatch.json :as dispatch-json]
             [muuntaja.core :as m]
@@ -68,6 +70,8 @@
                                          :get kosa.mobile.today.doha.handler/show-json}]
          ["api/v1/today/stacked-inspiration/{id}.json" {:name :kosa.routes.api/show-stacked-inspiration
                                                         :get kosa.mobile.today.stacked-inspiration.handler/show-json}]
+         ["api/v1/today/donation/{id}.json" {:name :kosa.routes.api/show-donation
+                                             :get kosa.mobile.today.donation.handler/show-json}]
 
          ["api/v1/search.json" {:name    :kosa.routes.api/search
                                 :handler api-handler/search}]
@@ -82,7 +86,8 @@
          ["mobile" [["" {:name    ::mobile-index
                          :handler kosa.mobile.handler/index}]
                     ["/today/" (resources :pali-words
-                                          :stacked-inspirations)]]]]]
+                                          :stacked-inspirations
+                                          :donations)]]]]]
 
    ;; CRUD resources conflict between /new and /:id
    ;; consider {:conflicting true} instead

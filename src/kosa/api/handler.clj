@@ -7,6 +7,7 @@
             [kosa.mobile.today.words-of-buddha.db :as words-of-buddha-db]
             [kosa.mobile.today.doha.db :as doha-db]
             [kosa.mobile.today.stacked-inspiration.db :as stacked-inspiration-db]
+            [kosa.mobile.today.donation.db :as donation-db]
             [kosa.api.status :as api-status]
             [ring.util.response :as resp]))
 
@@ -110,12 +111,32 @@
      :text (:stacked-inspiration/text card)
      :image {:url (-> card :stacked-inspiration/image-attachment :attm/url)}}))
 
+(defn donation->json [req card]
+  (let [id (:xt/id card)
+        published (:donation/published-at card)
+        date (time/to-8601-string (or published kosa-epoch))]
+    {:type "donation"
+     :id id
+     :url (url-for req :kosa.routes.api/show-donation id)
+     :published_at date
+     :created_at date
+     :updated_at date
+     :header (or (-> card :donation/header) "Fundraiser")
+     :bookmarkable false
+     :shareable false
+     :title (:donation/title card)
+     :text (:donation/text card)
+     :button (:donation/button card)
+     ;; :image {:url (-> card :donation/image-attachment :attm/url)}
+     }))
+
 (defn today-list [req]
   (->> (concat
         (map (partial pali-word->json req) (pali-word-db/list))
         (map (partial words-of-buddha->json req) (words-of-buddha-db/list))
         (map (partial doha->json req) (doha-db/list))
-        (map (partial stacked-inspiration->json req) (stacked-inspiration-db/list)))
+        (map (partial stacked-inspiration->json req) (stacked-inspiration-db/list))
+        (map (partial donation->json req) (donation-db/list)))
        (vec)
        (sort-by :published_at #(compare (time/parse %2) (time/parse %1)))))
 
