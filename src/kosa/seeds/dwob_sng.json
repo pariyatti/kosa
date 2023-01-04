@@ -1,0 +1,61 @@
+
+{
+  "original_audio_url": "https://download.pariyatti.org/dwob/digha_nikaya_2_221.mp3",
+  "citepali": "Dīgha Nikāya 2.221",
+  "bookmarkable": true,
+  "words": "Aniccā vata saṅkhārā,\nuppādavayadhammino.\nUppajjitvā nirujjhanti,\ntesaṃ vūpasamo sukho.",
+  "type": "words_of_buddha",
+  "header": "Words of the Buddha",
+  "shareable": true,
+  "published_at": "2022-10-31T12:01:02.173180685000Z",
+  "citebook_url": "https://store.pariyatti.org/Discourse-Summaries_p_1650.html",
+  "updated_at": "2022-10-31T12:01:02.173180685000Z",
+  "citepali_url": "https://tipitaka.org/romn/cscd/s0102m.mul2.xml#para221",
+  "id": "605a160e-49e9-4de0-a025-d747adc0b253",
+  "url": "http://kosa.pariyatti.app/api/v1/today/words-of-buddha/605a160e-49e9-4de0-a025-d747adc0b253.json",
+  "citebook": "The Discourse Summaries by S.N. Goenka",
+  "image": {
+    "url": "/uploads/kuti-d54d85868f2963a4efee91e5c86e1679-bodhi-leaf.jpg"
+  },
+  "audio": {
+    "url": "/uploads/kuti-eef77fee0aa86be1164bdc39524cc73e-digha_nikaya_2_221.mp3"
+  },
+  "created_at": "2022-10-31T12:01:02.173180685000Z",
+  "translations": [
+    {
+      "id": "72cbed27-33df-4fe9-bc77-930e02597517",
+      "language": "eng",
+      "translation": "Impermanent truly are compound things,\nby nature arising and passing away.\nIf they arise and are extinguished,\ntheir eradication brings happiness."
+    },
+    {
+      "id": "d02ee9b6-8f42-426e-80d9-a518d796e133",
+      "language": "spa",
+      "translation": "Verdaderamente impermanentes son todas las cosas compuestas,\npor naturaleza surgiendo y desapareciendo.\nSi se manifiestan y son extinguidas,\nsu erradicación trae la felicidad."
+    },
+    {
+      "id": "e96bf0e9-8d95-433e-96da-0701626d2822",
+      "language": "fra",
+      "translation": "Impermanentes véritablement sont les choses composées,\nPar nature apparaissant et disparaissant.\nSi elles apparaissent et sont éteintes,\nLeur éradication apporte le bonheur."
+    },
+    {
+      "id": "2029c373-1a48-4b10-bf53-a5397712baa2",
+      "language": "ita",
+      "translation": "Le cose composte sono veramente impermanenti,\nsorgono e passano per loro natura.\nSe quando sorgono vengono estinte,\nil loro sradicamento porta felicità."
+    },
+    {
+      "id": "956b1563-c606-4112-b0f8-7017b428a4ae",
+      "language": "por",
+      "translation": "Impermanentes, de fato, são todas as coisas compostas,\npor sua natureza surgindo e desaparecendo.\nSe surgem e são extintas,\nsua erradicação trará felicidade."
+    },
+    {
+      "id": "cda6de02-49a5-420c-b0b2-aebd22a94f76",
+      "language": "srp",
+      "translation": "Prolazne su sve stvorene stvari\npo svojoj prirodi se pojavljuju i prolaze.\nUkoliko se pojavljuju i iščeznu,\nnjihovo iskorenjivanje donosi sreću."
+    },
+    {
+      "id": "0b83ec88-da31-478e-8f32-0e3d240348c8",
+      "language": "zho-hant",
+      "translation": "和合的事物確是無常，\n生起又滅去是其本質。\n若生起後能徹底滅除，\n全然止息能帶來安樂。\n《長部 2.221》"
+    }
+  ]
+}

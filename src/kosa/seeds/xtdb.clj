@@ -167,6 +167,33 @@
                           :words-of-buddha/updated-at #time/instant "2021-03-21T01:47:36.547349Z"
                           :words-of-buddha/published-at #time/instant "2021-03-21T01:47:36.547349Z"}]
 
+               [::xt/put {:xt/id #uuid "605a160e-49e9-4de0-a025-d747adc0b253"
+                          :kuti/type :words-of-buddha
+                          :words-of-buddha/shareable true
+                          :words-of-buddha/bookmarkable true
+                          :words-of-buddha/original-words "Aniccā vata saṅkhārā,\nuppādavayadhammino.\nUppajjitvā nirujjhanti,\ntesaṃ vūpasamo sukho."
+                          :words-of-buddha/original-url (URI. "")
+                          :words-of-buddha/words "Aniccā vata saṅkhārā,\nuppādavayadhammino.\nUppajjitvā nirujjhanti,\ntesaṃ vūpasamo sukho."
+                          ;; this is actually incorrect, but this seed record is for testing SNG mp3s so it doesn't matter:
+                          :words-of-buddha/audio-attachment-id buddha-mp3-attachment-id
+                          ;; SNG equivalent: https://download.pariyatti.org/dwob/sng/dhammapada_20_277.mp3
+                          :words-of-buddha/original-audio-url (URI. "https://download.pariyatti.org/dwob/digha_nikaya_2_221.mp3")
+                          :words-of-buddha/translations [
+                                                         ["eng" "Impermanent truly are compound things,\nby nature arising and passing away.\nIf they arise and are extinguished,\ntheir eradication brings happiness."]
+                                                         ["fra" "Impermanentes véritablement sont les choses composées,\nPar nature apparaissant et disparaissant.\nSi elles apparaissent et sont éteintes,\nLeur éradication apporte le bonheur."]
+                                                         ["ita" "Le cose composte sono veramente impermanenti,\nsorgono e passano per loro natura.\nSe quando sorgono vengono estinte,\nil loro sradicamento porta felicità."]
+                                                         ["por" "Impermanentes, de fato, são todas as coisas compostas,\npor sua natureza surgindo e desaparecendo.\nSe surgem e são extintas,\nsua erradicação trará felicidade."]
+                                                         ["spa" "Verdaderamente impermanentes son todas las cosas compuestas,\npor naturaleza surgiendo y desapareciendo.\nSi se manifiestan y son extinguidas,\nsu erradicación trae la felicidad."]
+                                                         ["srp" "Prolazne su sve stvorene stvari\npo svojoj prirodi se pojavljuju i prolaze.\nUkoliko se pojavljuju i iščeznu,\nnjihovo iskorenjivanje donosi sreću."]
+                                                         ["zho-hant" "和合的事物確是無常，\n生起又滅去是其本質。\n若生起後能徹底滅除，\n全然止息能帶來安樂。\n《長部 2.221》"]
+                                                         ]
+                          :words-of-buddha/citepali "Dīgha Nikāya 2.221"
+                          :words-of-buddha/citepali-url (URI. "https://tipitaka.org/romn/cscd/s0102m.mul2.xml#para221")
+                          :words-of-buddha/citebook "The Discourse Summaries by S.N. Goenka"
+                          :words-of-buddha/citebook-url (URI. "https://store.pariyatti.org/Discourse-Summaries_p_1650.html")
+                          :words-of-buddha/updated-at #time/instant "2022-07-18T12:01:03.160959070Z"
+                          :words-of-buddha/published-at #time/instant "2022-07-18T12:01:03.160959070Z"}]
+
                [::xt/put doha-mp3-attachment]
 
                [::xt/put {:xt/id #uuid "1a006024-5f92-4799-b18b-7e19173aa291"
