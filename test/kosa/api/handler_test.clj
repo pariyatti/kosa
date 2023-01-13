@@ -84,7 +84,7 @@
     (db/save! (m/stacked-inspiration
                {:stacked-inspiration/published-at #time/instant "2021-03-21T00:00:00.000000Z"}))
     (db/save! (m/pali-word
-               {:pali-word/published-at #time/instant "2021-04-22T00:00:00.000000Z"}))
+               {:pali-word/published-at #time/instant "2021-04-22T00:00:00Z"}))
     (db/save! (m/words-of-buddha-audio-attachment))
     (db/save! (m/words-of-buddha
                {:words-of-buddha/published-at #time/instant "2021-05-23T00:00:00.000000Z"}))

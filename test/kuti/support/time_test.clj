@@ -109,3 +109,16 @@
     (is (= 5
            (sut/days-between "1995-08-19"
                              (sut/now))))))
+
+(deftest conform-8601
+  (testing "ensures period char for 0-digit format returned from xtdb"
+    (is (= "2021-03-21T00:00:00.000Z"
+           (sut/to-8601-string #inst "2021-03-21T00:00:00Z"))))
+
+  (testing "ensures 3-digit ms for 6-digit format returned from xtdb"
+    (is (=  "2021-03-22T01:23:45.123Z"
+           (sut/to-8601-string #inst "2021-03-22T01:23:45.123456Z"))))
+
+  (testing "ensures period char for 9-digit format returned from xtdb"
+    (is (=  "2021-03-22T01:23:45.123Z"
+           (sut/to-8601-string #inst "2021-03-22T01:23:45.123456789Z")))))

@@ -2,7 +2,7 @@
   (:refer-clojure :exclude [time])
   (:require [tick.alpha.api :as t]
             [chime.core :as chime]
-            [clojure.string :as clojure.string]
+            [clojure.string :as s]
             [kuti.support.strings :refer [slice]])
   (:import [java.time LocalDate ZonedDateTime ZoneId]
            [java.time.chrono Era IsoEra IsoChronology]))
@@ -33,25 +33,25 @@
   [time]
   (t/instant time))
 
-(defn mask-str [s mask]
+(defn mask-str [sz mask]
   (apply str
-         (concat (seq s)
-                 (drop (count s) (seq mask)))))
+         (concat (seq sz)
+                 (drop (count sz) (seq mask)))))
 
-(defn includes-any? [s substrs]
+(defn includes-any? [sz substrs]
   (->> substrs
-       (map (partial clojure.string/includes? s))
+       (map (partial s/includes? sz))
        (some true?)))
 
 (defn parse
   "This fn intentionally does not understand local dates/times
    at all."
-  [s]
-  (when (or (includes-any? s ["[" "]"])
-            (re-matches #".*-\d\d:\d\d$" s))
+  [sz]
+  (when (or (includes-any? sz ["[" "]"])
+            (re-matches #".*-\d\d:\d\d$" sz))
     (throw (IllegalArgumentException. "Localized date-times not permitted.")))
-  (-> s
-      (clojure.string/replace #"Z" "")
+  (-> sz
+      (s/replace #"Z" "")
       (slice 0 23)
       (mask-str "0000-00-00T00:00:00.000Z")
       t/parse
@@ -60,26 +60,36 @@
 (defn parse-tz
   "Try to avoid this fn unless parsing external dates known to
    contain a timezone."
-  [s]
-  (t/parse s))
+  [sz]
+  (t/parse sz))
 
 (defn string
   "Force the `yyyy-MM-dd'T'HH:mm:ss.SSS'Z' format."
   [time]
   (let [inst (t/instant time)
-        s (str inst)]
-    (if (= 24 (count s))
-      s
-      (clojure.string/replace s #"Z$" ".000Z"))))
+        sz (str inst)]
+    (if (= 24 (count sz))
+      sz
+      (s/replace sz #"Z$" ".000Z"))))
+
+(def f8601-0 #"\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ")
+(def f8601-3 #"\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ")
+(def f8601-6 #"\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\d\d\d\dZ")
+(def f8601-9 #"\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\d\d\d\d\d\d\dZ")
 
 (defn to-8601-string
   "Force the `yyyy-MM-dd'T'HH:mm:ssSSS'Z' format."
   [time]
   (let [inst (t/instant time)
-        s (str inst)]
-    (if (= 24 (count s))
-      s
-      (clojure.string/replace s #"Z$" "000Z"))))
+        sz (str inst)]
+    (cond
+      (re-matches f8601-0 sz) (s/replace sz #"Z$" ".000Z")
+      (re-matches f8601-3 sz) sz
+      ;; technically 6-digit and 9-digit representations shouldn't be possible
+      ;; but we cover them anyway to be explicit about our intention:
+      (re-matches f8601-6 sz) (s/replace sz #"(\.\d\d\d)\d\d\dZ" "$1Z")
+      (re-matches f8601-9 sz) (s/replace sz #"(\.\d\d\d)\d\d\d\d\d\dZ" "$1Z")
+      :else sz)))
 
 (defn days-between [old new]
   (t/days (t/between (parse (str old))
