@@ -9,6 +9,11 @@
             [kuti.storage.open-uri :as open-uri])
   (:import [java.net URI]))
 
+(def doha-markers {"eng" "Listen"
+                   "lit" "Klausytis"
+                   "por" "Escute o áudio"
+                   "zho-hant" "聆聽"})
+
 (defn shred [marker entry]
   (->> (str/split entry (re-pattern marker))
        (map strings/trim!)
@@ -47,10 +52,7 @@
     "Daily Doha")
 
   (parse [_ txt lang]
-    (let [marker (get {"eng" "Listen"
-                       "lit" "Klausytis"
-                       "por" "Escute o áudio"
-                       "zho-hant" "聆聽"} lang)
+    (let [marker (get doha-markers lang)
           m (str marker ": ")]
       (->> (txt/split-file txt)
            (map strings/trim!)
@@ -80,4 +82,12 @@
   (txt/ingest (DohaIngester.) f lang))
 
 (defn validate []
-  true)
+  (doseq [card (db/list)]
+    (let [translations (:looped-doha/translations card)
+          diff {:actual-langs translations
+                :expected-langs (keys doha-markers)}]
+      (when (not= (count translations)
+                  (count doha-markers))
+        (throw (ex-info (str "TXT translation count did not match!\n\n"
+                             diff)
+                        diff))))))
