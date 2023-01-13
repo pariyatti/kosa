@@ -78,3 +78,6 @@
 
 (defn ingest [f lang]
   (txt/ingest (DohaIngester.) f lang))
+
+(defn validate []
+  true)

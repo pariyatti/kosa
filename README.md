@@ -71,7 +71,7 @@ Add the Ansible password from the KeePass Vault to:
 If you intend to use the "looped cards" (Pali Word a Day, Daily Words
 of the Buddha, or Daily Dohas), you will need access to the private
 repository containing the input files (https://github.com/pariyatti/Daily_emails_RSS)
-before you can run `make txt`, as explained below. Speak to Pariyatti Staff to
+before you can run `make txt-clone`, as explained below. Speak to Pariyatti Staff to
 obtain access. If you do not have access to these files, Kosa will still run
 without them.
 
@@ -92,9 +92,9 @@ make db-migrate    # install db schema
 make db-seed       # add some sample data (optional)
 
 make txt-clean     # completely reset TXT files (optional)
-make txt-clone     # copy TXT input files for looped cards (optional)
-                   # note that this command only works if you have
-                   # access to the private repo described above
+make txt-clone     # clone+copy TXT files for looped cards (optional)
+                   # NOTE: this command only works if you have
+                   #       access to the private repo described above
 make db-txt-pali   # add looped pali word cards (optional)
 make db-txt-buddha # add looped buddha word cards (optional)
 make db-txt-doha   # add looped doha word cards (optional)

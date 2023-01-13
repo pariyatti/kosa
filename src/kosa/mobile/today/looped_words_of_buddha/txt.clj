@@ -10,6 +10,14 @@
             [kuti.storage.open-uri :as open-uri])
   (:import [java.net URI]))
 
+(def dwob-markers {"eng" "Listen"
+                   "spa" "Escuchar"
+                   "fra" "Ecouter " ;; NOTE: yes, it contains a space
+                   "ita" "Ascolta"
+                   "por" "Ouça"
+                   "srp" "Slušaj"
+                   "zho-hant" "Listen"})
+
 (defn shred [marker entry]
   (->> (str/split entry (re-pattern marker))
        (map strings/trim!)
@@ -59,13 +67,7 @@
     "Words of Buddha")
 
   (parse [_ txt lang]
-    (let [marker (get {"eng" "Listen"
-                       "spa" "Escuchar"
-                       "fra" "Ecouter " ;; NOTE: yes, it contains a space
-                       "ita" "Ascolta"
-                       "por" "Ouça"
-                       "srp" "Slušaj"
-                       "zho-hant" "Listen"} lang)
+    (let [marker (get dwob-markers lang)
           m (str marker ": ")]
       (->> (txt/split-file txt)
            (map strings/trim!)
@@ -98,3 +100,14 @@
 
 (defn ingest [f lang]
   (txt/ingest (BuddhaIngester.) f lang))
+
+(defn validate []
+  (doseq [card (db/list)]
+    (let [translations (:looped-words-of-buddha/translations card)
+          diff {:actual-langs translations
+                :expected-langs (keys dwob-markers)}]
+      (when (not= (count translations)
+                  (count dwob-markers))
+        (throw (ex-info (str "TXT translation count did not match!\n\n"
+                             diff)
+                        diff))))))

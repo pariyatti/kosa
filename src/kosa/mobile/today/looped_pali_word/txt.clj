@@ -51,3 +51,6 @@
 
 (defn ingest [f lang]
   (txt/ingest (PaliIngester.) f lang))
+
+(defn validate []
+  true)
