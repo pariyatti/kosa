@@ -96,7 +96,17 @@
     (if (= "eng" lang)
       (let [file (open-uri/download-uri! (:looped-words-of-buddha/original-audio-url e))]
         (storage/attach! e :looped-words-of-buddha/audio-attachment file))
-      e)))
+      e))
+
+  (reconcile [_ lang txt-file-entry-count]
+    (let [db-count (count (db/list))
+          diff {:lang lang
+                :db-count db-count
+                :txt-count txt-file-entry-count}]
+      (when (not= txt-file-entry-count db-count)
+        (throw (ex-info (str "TXT file entry count did not match!\n\n"
+                             diff)
+                        diff))))))
 
 (defn ingest [f lang]
   (txt/ingest (BuddhaIngester.) f lang))

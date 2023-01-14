@@ -14,7 +14,8 @@
   (find-existing [this entry])
   (db-insert* [this entry])
   (citations [this entry])
-  (download-attachments! [this lang entry]))
+  (download-attachments! [this lang entry])
+  (reconcile [this lang txt-file-entry-count]))
 
 (defn db-insert! [ingester words-of-buddha]
   (let [entry-kw (entry-attr ingester)
@@ -44,5 +45,6 @@
         (log/info (format "Attempting insert of %s / %s" (+ n 1) entry-count))
         (-> entry
             attach!
-            insert!)))
+            insert!))
+      (reconcile ingester lang entry-count))
     (log/info (format "%s TXT: done ingesting file '%s' for lang '%s'" human f lang))))

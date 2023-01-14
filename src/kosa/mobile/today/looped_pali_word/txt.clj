@@ -47,7 +47,10 @@
     {})
 
   (download-attachments! [_ _lang e]
-    e))
+    e)
+
+  (reconcile [_ _lang _txt-file-entry-count]
+    true))
 
 (defn ingest [f lang]
   (txt/ingest (PaliIngester.) f lang))
