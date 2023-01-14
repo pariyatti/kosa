@@ -1,6 +1,9 @@
 name: kosa backend tests
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   kosa-tests:
