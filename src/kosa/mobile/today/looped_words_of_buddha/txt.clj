@@ -108,6 +108,9 @@
                              diff)
                         diff))))))
 
+(defn truncate! []
+  (db/truncate!))
+
 (defn ingest [f lang]
   (txt/ingest (BuddhaIngester.) f lang))
 

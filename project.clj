@@ -96,6 +96,7 @@
             "db-reset"      ["run" "-m" "joplin.xtdb.alias/reset"    "joplin/config.edn"]
             "db-pending"    ["run" "-m" "joplin.xtdb.alias/pending"  "joplin/config.edn"]
             "db-create"     ["run" "-m" "joplin.xtdb.alias/create"   "joplin/config.edn" "dev" "xtdb-dev"]
+            "db-txt-trunc"  ["run" "-m" "dev.alias/truncate-txt!"]
             "db-txt-pali"   ["run" "-m" "dev.alias/ingest-txt-pali!"]
             "db-txt-buddha" ["run" "-m" "dev.alias/ingest-txt-buddha!"]
             "db-txt-doha"   ["run" "-m" "dev.alias/ingest-txt-doha!"]}

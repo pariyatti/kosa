@@ -108,6 +108,9 @@ db-seed: ##@Development Add sample data
 
 db-reset: db-clean init-dirs db-migrate db-seed ##@Development Clean, Migrate, Seed.
 
+db-txt-trunc: ##@Development Delete all Looped records
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-txt-trunc
+
 db-txt-pali: ##@Development Add Looped Pali Words
 	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-txt-pali
 
@@ -149,6 +152,8 @@ db-txt-prod: ##@Production Add all (3x) looped cards
 	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-txt-buddha prod
 	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-txt-doha   prod
 
+db-txt-trunc-prod: ##@Production Delete all (3x) looped cards
+	XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-txt-trunc prod
+
 run-prod: ##@Production Start a production server
 	XTDB_ENABLE_BYTEUTILS_SHA1=true lein with-profile prod run -- -sf config/config.prod.edn
-

@@ -17,6 +17,19 @@
   (validate-fn)
   (dev.repl/stop!))
 
+(defn truncate!
+  [conf]
+  (log/info "Starting server before truncating all TXTs from db...")
+  (dev.repl/start! (dev.repl/get-conf conf))
+  (log/info "Deleting all Looped Pali Words...")
+  (pali-txt/truncate!)
+  (log/info "Deleting all Looped Dohas...")
+  (doha-txt/truncate!)
+  (log/info "Deleting all Looped Words of Buddha...")
+  (buddha-txt/truncate!)
+  (log/info "...done. Stopping Kosa.")
+  (dev.repl/stop!))
+
 (defn ingest-txt-pali!
   "Ingest a Pali Word TXT file."
   ([] (ingest-txt-pali! :dev))
@@ -31,3 +44,8 @@
   "Ingest a Doha TXT file."
   ([] (ingest-txt-doha! :dev))
   ([conf] (ingest! conf :doha doha-txt/ingest doha-txt/validate)))
+
+(defn truncate-txt!
+  "Completely remove all TXT 'looped' records."
+  ([] (truncate-txt! :dev))
+  ([conf] (truncate! conf)))

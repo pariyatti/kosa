@@ -52,6 +52,9 @@
   (reconcile [_ _lang _txt-file-entry-count]
     true))
 
+(defn truncate! []
+  (db/truncate!))
+
 (defn ingest [f lang]
   (txt/ingest (PaliIngester.) f lang))
 

@@ -151,3 +151,8 @@
                     :order-by '[[updated-at :desc]]
                     :in '[type]}]
     (query list-query type)))
+
+(defn truncate
+  [type]
+  (doseq [rec (list type)]
+    (delete rec)))

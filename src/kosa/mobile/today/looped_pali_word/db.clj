@@ -8,6 +8,9 @@
 (defn list []
   (record/list :looped-pali-word))
 
+(defn truncate! []
+  (record/truncate! :looped-pali-word))
+
 (defn find-all [attr param]
   (query/find-all :looped-pali-word attr param))
 

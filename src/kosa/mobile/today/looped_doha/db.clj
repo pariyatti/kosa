@@ -11,6 +11,9 @@
 (defn list []
   (map expand-all (record/list :looped-doha)))
 
+(defn truncate! []
+  (record/truncate! :looped-doha))
+
 (defn find-all [attr param]
   (query/find-all :looped-doha attr param))
 

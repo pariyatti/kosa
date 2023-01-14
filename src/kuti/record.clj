@@ -44,3 +44,6 @@
 
 (defn save! [e]
   (schema/save! e))
+
+(defn truncate! [type]
+  (core/truncate type))

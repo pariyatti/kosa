@@ -11,6 +11,9 @@
 (defn list []
   (map expand-all (record/list :looped-words-of-buddha)))
 
+(defn truncate! []
+  (record/truncate! :looped-words-of-buddha))
+
 (defn find-all [attr param]
   (query/find-all :looped-words-of-buddha attr param))
 

@@ -80,6 +80,20 @@
       (is (= [m1 m2]
              (sut/list :mouse))))))
 
+(deftest truncate
+  (testing "destroys all of one type"
+    (let [required-fields [:kuti/type :mouse/buttons :mouse/brand]
+          m0 (sut/put (sut/timestamp {:kuti/type :not-deleted
+                                      :not-deleted/name "hi2u"})
+                      [:kuti/type :not-deleted/name])
+          m1 (sut/put (sut/timestamp record-with-type1) required-fields)
+          m2 (sut/put (sut/timestamp record-with-type2) required-fields)]
+      (sut/truncate! :mouse)
+      (is (= []
+             (sut/list :mouse)))
+      (is (= [m0]
+             (sut/list :not-deleted))))))
+
 (deftest publish-dates
   (testing "can query by :[type]/published-at"
     (time/unfreeze-clock!)
