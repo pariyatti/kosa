@@ -10,6 +10,7 @@
 (deftype PaliPublisher []
   job/Publisher
   (type [_] :pali-word)
+  (offset [_] "08:11:02")
   (main-key [_] :pali-word/pali)
   (published-at-key [_] :pali-word/published-at)
   (looped-list [_] (loop-db/list))

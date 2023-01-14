@@ -10,6 +10,7 @@
 (deftype BuddhaPublisher []
   job/Publisher
   (type [_] :words-of-buddha)
+  (offset [_] "07:11:02")
   (main-key [_] :words-of-buddha/words)
   (published-at-key [_] :words-of-buddha/published-at)
   (looped-list [_] (loop-db/list))

@@ -52,7 +52,8 @@
     (sut/run-job! nil)
     (let [cards (doha-db/find-all :doha/doha "abhaya")]
       (is (= 2 (count cards)))
-      (is (= #{(time/parse "2005-05-01") (time/parse "2005-06-02")}
+      (is (= #{(time/parse "2005-05-01T17:11:02Z")
+               (time/parse "2005-06-02T17:11:02Z")}
              (set (map :doha/published-at cards)))))))
 
 (deftest scheduling-against-epoch
@@ -74,3 +75,15 @@
     (let [all (doha-db/list)]
       (is (= 1 (count all)))
       (is (= "suriya" (:doha/doha (first all)))))))
+
+(deftest publishes-at-9am-pst-same-day-utc
+  (testing "at the start of the day, UTC, pretends to publish at 9am PST that day"
+    (loop-db/save! (model/looped-doha
+                    {:looped-doha/doha "dassanena"
+                     :looped-doha/translations [["eng" "sight"]]}))
+    (time/freeze-clock! (time/parse "2012-07-30T00:00:01"))
+    (sut/run-job! nil)
+    (let [card (doha-db/find-all :doha/doha "dassanena")]
+      (is (= 1 (count card)))
+      (is (= (time/pst-to-utc (time/instant "2012-07-30T09:11:02Z"))
+             (:doha/published-at (first card)))))))

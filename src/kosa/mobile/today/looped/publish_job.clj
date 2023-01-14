@@ -22,6 +22,7 @@
 
 (defprotocol Publisher
   (type [this])
+  (offset [this])
   (main-key [this])
   (published-at-key [this])
   (looped-list [this])
@@ -29,14 +30,14 @@
   (entity-find [this card])
   (save! [this card]))
 
-(defn publish-time [now]
+(defn publish-time [pub now]
   (-> (time/extract-date now)
-      (time/at "07:11:02")
+      (time/at (offset pub))
       (time/to-no-timezone)
       (time/pst-to-utc)))
 
 (defn publish-nth [pub cc]
-  (let [pub-time (publish-time (time/now))
+  (let [pub-time (publish-time pub (time/now))
         idx (which-card pub-time cc)
         card (-> (looped-find pub idx)
                  first
@@ -46,13 +47,18 @@
         save-fn (partial save! pub)]
     (log/info (format "#### Today's %s is: %s" (type pub) (get card (main-key pub))))
     (if (or (empty? existing)
-            (< 0 (time/days-between (-> existing first published-at)
+            (< 2 (time/days-between (-> existing first published-at)
                                     pub-time)))
       (-> card
           (record/publish-at pub-time)
           save-fn)
-      (log/info (format "#### Ignoring. '%s' already exists." (get card (main-key pub)))))))
+      (log/info (format "#### Ignoring. '%s' already exists within a 2-day window." (get card (main-key pub)))))))
 
+;; TODO: there is an extremely annoying circular reference between this fn
+;;       and the other looped_* `publish_job.clj` files. This makes the
+;;       `publish_job_test.clj` tests annoying to run because you must
+;;       compile the job, then this file, then the job again. If you don't,
+;;       you will see a 'no method :type defined for Protocol' error. FIXME
 (defn run-job! [pub _]
   (log/info (format "#### Running looped %s publish job" (type pub)))
   (let [cc (count (looped-list pub))]

@@ -52,7 +52,8 @@
     (sut/run-job! nil)
     (let [cards (pali-db/find-all :pali-word/pali "abhaya")]
       (is (= 2 (count cards)))
-      (is (= #{(time/parse "2005-05-01") (time/parse "2005-06-02")}
+      (is (= #{(time/parse "2005-05-01T17:11:02Z")
+               (time/parse "2005-06-02T17:11:02Z")}
              (set (map :pali-word/published-at cards)))))))
 
 (deftest scheduling-against-epoch
@@ -74,3 +75,15 @@
     (let [all (pali-db/list)]
       (is (= 1 (count all)))
       (is (= "suriya" (:pali-word/pali (first all)))))))
+
+(deftest publishes-at-8am-pst-same-day-utc
+  (testing "at the start of the day, UTC, pretends to publish at 8am PST that day"
+    (loop-db/save! (model/looped-pali-word
+                    {:looped-pali-word/pali "dassanena"
+                     :looped-pali-word/translations [["eng" "sight"]]}))
+    (time/freeze-clock! (time/parse "2012-07-30T00:00:01"))
+    (sut/run-job! nil)
+    (let [card (pali-db/find-all :pali-word/pali "dassanena")]
+      (is (= 1 (count card)))
+      (is (= (time/pst-to-utc (time/instant "2012-07-30T08:11:02Z"))
+             (:pali-word/published-at (first card)))))))

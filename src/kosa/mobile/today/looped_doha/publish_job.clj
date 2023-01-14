@@ -10,6 +10,7 @@
 (deftype DohaPublisher []
   job/Publisher
   (type             [_]      :doha)
+  (offset           [_]      "09:11:02")
   (main-key         [_]      :doha/doha)
   (published-at-key [_]      :doha/published-at)
   (looped-list      [_]      (loop-db/list))

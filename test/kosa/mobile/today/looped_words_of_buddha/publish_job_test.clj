@@ -7,8 +7,7 @@
             [kosa.mobile.today.looped-words-of-buddha.publish-job :as sut]
             [kosa.mobile.today.looped-words-of-buddha.db :as loop-db]
             [kosa.mobile.today.words-of-buddha.db :as buddha-db]
-            [kuti.support.time :as time]
-            [tick.alpha.api :as t]))
+            [kuti.support.time :as time]))
 
 (use-fixtures :once
   storage-fixtures/set-service-config)
@@ -53,7 +52,8 @@
     (sut/run-job! nil)
     (let [cards (buddha-db/find-all :words-of-buddha/words "abhaya")]
       (is (= 2 (count cards)))
-      (is (= #{(time/parse "2005-05-01") (time/parse "2005-06-02")}
+      (is (= #{(time/parse "2005-05-01T17:11:02Z")
+               (time/parse "2005-06-02T17:11:02Z")}
              (set (map :words-of-buddha/published-at cards)))))))
 
 (deftest scheduling-against-epoch
@@ -85,5 +85,5 @@
     (sut/run-job! nil)
     (let [card (buddha-db/find-all :words-of-buddha/words "dassanena")]
       (is (= 1 (count card)))
-      (is (= (time/pst-to-utc (t/instant "2012-07-30T07:11:02Z"))
+      (is (= (time/pst-to-utc (time/instant "2012-07-30T07:11:02Z"))
              (:words-of-buddha/published-at (first card)))))))
