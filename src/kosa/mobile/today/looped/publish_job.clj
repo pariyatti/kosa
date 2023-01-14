@@ -27,26 +27,26 @@
   (entity-find [this card])
   (save! [this card]))
 
-(defn publish-nth [i n]
-  (let [idx (which-card (time/now) n)
-        card (-> (looped-find i idx)
+(defn publish-nth [pub cc]
+  (let [idx (which-card (time/now) cc)
+        card (-> (looped-find pub idx)
                  first
-                 (types/dup (type i)))
-        existing (entity-find i card)
-        published-at (published-at-key i)
-        save-fn (partial save! i)]
-    (log/info (format "#### Today's %s is: %s" (type i) (get card (main-key i))))
+                 (types/dup (type pub)))
+        existing (entity-find pub card)
+        published-at (published-at-key pub)
+        save-fn (partial save! pub)]
+    (log/info (format "#### Today's %s is: %s" (type pub) (get card (main-key pub))))
     (if (or (empty? existing)
             (< 0 (time/days-between (-> existing first published-at)
                                     (time/now))))
       (-> card
           record/republish
           save-fn)
-      (log/info (format "#### Ignoring. '%s' already exists." (get card (main-key i)))))))
+      (log/info (format "#### Ignoring. '%s' already exists." (get card (main-key pub)))))))
 
-(defn run-job! [i _]
-  (log/info (format "#### Running looped %s publish job" (type i)))
-  (let [n (count (looped-list i))]
-    (if (< 0 n)
-      (publish-nth i n)
-      (log/info (format "#### Zero looped %s found." (type i))))))
+(defn run-job! [pub _]
+  (log/info (format "#### Running looped %s publish job" (type pub)))
+  (let [cc (count (looped-list pub))]
+    (if (< 0 cc)
+      (publish-nth pub cc)
+      (log/info (format "#### Zero looped %s found." (type pub))))))
