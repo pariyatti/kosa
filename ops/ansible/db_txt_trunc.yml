@@ -1,0 +1,21 @@
+---
+- hosts: app
+  remote_user: "{{ user_acc }}"
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: stop kosa
+      systemd: name={{ app_name }} state=stopped
+      become: yes
+
+    - name: truncate db txt records in prod to repopulate records
+      tags: code
+      make:
+        chdir: "{{ app_dir }}"
+        target: "{{ seed_txt_trunc_target }}"
+      become: yes
+      become_user: "{{ user_acc }}"
+
+# There is an inherent assumption here that we would not want to re-run kosa until the txt
+# records have been repopulated. So, we choose to not restart the service as part of this execution.
