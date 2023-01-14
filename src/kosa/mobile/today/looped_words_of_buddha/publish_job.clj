@@ -1,4 +1,5 @@
 (ns kosa.mobile.today.looped-words-of-buddha.publish-job
+  (:refer-clojure :exclude [type])
   (:require [kosa.mobile.today.looped.publish-job :as job]
             [kosa.mobile.today.looped-words-of-buddha.db :as loop-db]
             [kosa.mobile.today.words-of-buddha.db :as buddha-db]))

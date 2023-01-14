@@ -9,6 +9,8 @@
   (record/collapse-all doc "attachment"))
 
 (defn url [attachment]
+  (assert (not (nil? (:path core/service-config)))
+          "Service config cannot be nil. Did you forget a test fixture?")
   (path-join (:path core/service-config)
              (core/attached-filename attachment)))
 

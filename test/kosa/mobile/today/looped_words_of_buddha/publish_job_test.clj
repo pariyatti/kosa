@@ -3,10 +3,15 @@
             [kuti.fixtures.record-fixtures :as record-fixtures]
             [kuti.fixtures.time-fixtures :as time-fixtures]
             [kosa.fixtures.model-fixtures :as model]
+            [kuti.fixtures.storage-fixtures :as storage-fixtures]
             [kosa.mobile.today.looped-words-of-buddha.publish-job :as sut]
             [kosa.mobile.today.looped-words-of-buddha.db :as loop-db]
             [kosa.mobile.today.words-of-buddha.db :as buddha-db]
-            [kuti.support.time :as time]))
+            [kuti.support.time :as time]
+            [tick.alpha.api :as t]))
+
+(use-fixtures :once
+  storage-fixtures/set-service-config)
 
 (use-fixtures :each
   time-fixtures/freeze-clock-1995
@@ -70,3 +75,15 @@
     (let [all (buddha-db/list)]
       (is (= 1 (count all)))
       (is (= "suriya" (:words-of-buddha/words (first all)))))))
+
+(deftest publishes-at-7am-pst-same-day-utc
+  (testing "at the start of the day, UTC, pretends to publish at 7am PST that day"
+    (loop-db/save! (model/looped-words-of-buddha
+                    {:looped-words-of-buddha/words "dassanena"
+                     :looped-words-of-buddha/translations [["eng" "sight"]]}))
+    (time/freeze-clock! (time/parse "2012-07-30T00:00:01"))
+    (sut/run-job! nil)
+    (let [card (buddha-db/find-all :words-of-buddha/words "dassanena")]
+      (is (= 1 (count card)))
+      (is (= (time/pst-to-utc (t/instant "2012-07-30T07:11:02Z"))
+             (:words-of-buddha/published-at (first card)))))))

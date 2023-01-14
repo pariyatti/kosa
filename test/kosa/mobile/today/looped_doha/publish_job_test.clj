@@ -3,10 +3,14 @@
             [kuti.fixtures.record-fixtures :as record-fixtures]
             [kuti.fixtures.time-fixtures :as time-fixtures]
             [kosa.fixtures.model-fixtures :as model]
+            [kuti.fixtures.storage-fixtures :as storage-fixtures]
             [kosa.mobile.today.looped-doha.publish-job :as sut]
             [kosa.mobile.today.looped-doha.db :as loop-db]
             [kosa.mobile.today.doha.db :as doha-db]
             [kuti.support.time :as time]))
+
+(use-fixtures :once
+  storage-fixtures/set-service-config)
 
 (use-fixtures :each
   time-fixtures/freeze-clock-1995

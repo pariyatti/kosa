@@ -70,7 +70,9 @@
 
   (testing "rejects localized date-times with offset"
     (is (thrown? IllegalArgumentException
-                 (sut/parse "2021-02-11T16:26:06.808-06:00")))))
+                 (sut/parse "2021-02-11T16:26:06.808-06:00")))
+    (is (thrown? IllegalArgumentException
+                 (sut/parse "2021-02-11T16:26:06.808+08:00")))))
 
 (deftest publishing-dates
   (testing "equates 300 BCE to the year -299"

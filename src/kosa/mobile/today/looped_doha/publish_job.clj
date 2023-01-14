@@ -1,4 +1,5 @@
 (ns kosa.mobile.today.looped-doha.publish-job
+  (:refer-clojure :exclude [type])
   (:require [kosa.mobile.today.looped.publish-job :as job]
             [kosa.mobile.today.looped-doha.db :as loop-db]
             [kosa.mobile.today.doha.db :as doha-db]))

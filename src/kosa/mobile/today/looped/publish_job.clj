@@ -3,7 +3,9 @@
   (:require [clojure.tools.logging :as log]
             [kuti.support.types :as types]
             [kuti.support.time :as time]
-            [kuti.record :as record]))
+            [kuti.record :as record]
+            [tick.alpha.api :as tick]
+            [clojure.string :as clojure.string]))
 
 ;; (def looped-card-count 220)
 ;; (def days-since-epoch (t/days (t/between (t/epoch) (t/now))))
@@ -27,8 +29,15 @@
   (entity-find [this card])
   (save! [this card]))
 
+(defn publish-time [now]
+  (-> (time/extract-date now)
+      (time/at "07:11:02")
+      (time/to-no-timezone)
+      (time/pst-to-utc)))
+
 (defn publish-nth [pub cc]
-  (let [idx (which-card (time/now) cc)
+  (let [pub-time (publish-time (time/now))
+        idx (which-card pub-time cc)
         card (-> (looped-find pub idx)
                  first
                  (types/dup (type pub)))
@@ -38,9 +47,9 @@
     (log/info (format "#### Today's %s is: %s" (type pub) (get card (main-key pub))))
     (if (or (empty? existing)
             (< 0 (time/days-between (-> existing first published-at)
-                                    (time/now))))
+                                    pub-time)))
       (-> card
-          record/republish
+          (record/publish-at pub-time)
           save-fn)
       (log/info (format "#### Ignoring. '%s' already exists." (get card (main-key pub)))))))
 

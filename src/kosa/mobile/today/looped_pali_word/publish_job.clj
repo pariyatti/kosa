@@ -1,4 +1,5 @@
 (ns kosa.mobile.today.looped-pali-word.publish-job
+  (:refer-clojure :exclude [type])
   (:require [kosa.mobile.today.looped.publish-job :as job]
             [kosa.mobile.today.looped-pali-word.db :as loop-db]
             [kosa.mobile.today.pali-word.db :as pali-db]))

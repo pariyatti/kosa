@@ -48,7 +48,8 @@
    at all."
   [sz]
   (when (or (includes-any? sz ["[" "]"])
-            (re-matches #".*-\d\d:\d\d$" sz))
+            (re-matches #".*-\d\d:\d\d$" sz)
+            (re-matches #".*\+\d\d:\d\d$" sz))
     (throw (IllegalArgumentException. "Localized date-times not permitted.")))
   (-> sz
       (s/replace #"Z" "")
@@ -95,6 +96,15 @@
   (t/days (t/between (parse (str old))
                      (parse (str new)))))
 
+(defn extract-date [inst]
+  (-> (str inst) (clojure.string/split #"T") first t/date))
+
+(defn at [d time]
+  (t/at d time))
+
+(defn to-utc [ldt]
+  (-> ldt (str "Z") (t/instant)))
+
 (defn schedule [offset-seconds period-seconds]
   (-> (chime/periodic-seq (t/>> (now) (t/new-duration offset-seconds :seconds))
                           (t/new-duration period-seconds :seconds))
@@ -132,3 +142,14 @@
 
 ;; NOTE: I'm not actually sure this is a great idea. -sd
 (defmethod date-time java.time.Instant [i] i)
+
+(defn to-no-timezone
+  "When publishing, cheat and treat UTC as if it were 'no timezone'."
+  [ldt]
+  (to-utc ldt))
+
+(defn pst-to-utc
+  "When publishing, use a 'no timezone' time at PST and shift into UTC."
+  [old]
+  (t/>> old
+        (t/new-duration 8 :hours)))
