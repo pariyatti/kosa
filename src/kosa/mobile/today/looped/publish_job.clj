@@ -37,6 +37,8 @@
       (time/pst-to-utc)))
 
 (defn publish-nth [pub cc]
+  ;; if you want to test yesterday's published card today, you can use:
+  ;; (tick/<< (time/now) (tick/new-duration 1 :days))
   (let [pub-time (publish-time pub (time/now))
         idx (which-card pub-time cc)
         card (-> (looped-find pub idx)

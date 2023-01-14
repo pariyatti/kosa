@@ -21,20 +21,20 @@
          :enabled false}
 
         {:job-name :txt-publisher-pali-word
-         :offset-seconds 1
-         :period-seconds 86400 ;; 24 hrs
+         :offset-seconds 10
+         :period-seconds 3600
          :job-fn kosa.mobile.today.looped-pali-word.publish-job/run-job!
          :enabled true}
 
         {:job-name :txt-publisher-words-of-buddha
-         :offset-seconds 1
-         :period-seconds 86400 ;; 24 hrs
+         :offset-seconds 10
+         :period-seconds 3600
          :job-fn kosa.mobile.today.looped-words-of-buddha.publish-job/run-job!
          :enabled true}
 
         {:job-name :txt-publisher-doha
-         :offset-seconds 1
-         :period-seconds 86400 ;; 24 hrs
+         :offset-seconds 10
+         :period-seconds 3600
          :job-fn kosa.mobile.today.looped-doha.publish-job/run-job!
          :enabled true}]
 

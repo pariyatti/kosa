@@ -5,7 +5,9 @@
    [kuti.support.time :as time]
    [kuti.mailer :as mailer]
    [kosa.config :as config]
-   [chime.core :as chime]))
+   [chime.core :as chime])
+  (:import
+   [java.time Instant]))
 
 (defn default-error-handler [job-name]
   (fn [e]
@@ -24,7 +26,9 @@
     (if-let [fn (resolve job-fn)]
       (do (log/info (format "#### Installing job: %s" job-name))
           (let [job (chime/chime-at
-                     (time/schedule offset-seconds period-seconds)
+                     (lazy-cat
+                      [(.plusSeconds (Instant/now) offset-seconds)]
+                      (time/schedule 0 period-seconds))
                      fn
                      {:error-handler (default-error-handler job-name)})]
             [job-name job]))
