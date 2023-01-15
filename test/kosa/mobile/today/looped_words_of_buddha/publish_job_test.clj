@@ -52,8 +52,8 @@
     (sut/run-job! nil)
     (let [cards (buddha-db/find-all :words-of-buddha/words "abhaya")]
       (is (= 2 (count cards)))
-      (is (= #{(time/parse "2005-05-01T17:11:02Z")
-               (time/parse "2005-06-02T17:11:02Z")}
+      (is (= #{(time/parse "2005-05-01T15:11:02Z")
+               (time/parse "2005-06-02T15:11:02Z")}
              (set (map :words-of-buddha/published-at cards)))))))
 
 (deftest scheduling-against-epoch
