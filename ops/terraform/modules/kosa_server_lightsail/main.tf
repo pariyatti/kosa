@@ -52,10 +52,30 @@ resource "null_resource" "ansible_deploy" {
   }
 }
 
-resource "null_resource" "ansible_seed_data" {
+# This resource doesn't need to run each time deployment happens.
+# It helps when we are trying to repopulate database for maintenance purposes only
+# So say you want to actually do it, taint the following two resources manually
+# terraform taint module.kosa-<env>.null_resource.ansible_trunc_data
+# terraform taint module.kosa-<env>.null_resource.ansible_seed_data
+resource "null_resource" "ansible_trunc_data" {
   depends_on = [
     null_resource.ansible_config,
     null_resource.ansible_deploy
+  ]
+  triggers = {
+    cluster_instance_ids = aws_lightsail_instance.kosa_server.arn
+  }
+
+  provisioner "local-exec" {
+    command = "cd ../../ansible && ansible-playbook --extra-vars @secrets.yml --vault-password-file ~/.kosa/ansible-password --limit ${var.server_name}.pariyatti.app -i hosts db_txt_trunc.yml"
+  }
+}
+
+resource "null_resource" "ansible_seed_data" {
+  depends_on = [
+    null_resource.ansible_config,
+    null_resource.ansible_deploy,
+    null_resource.ansible_trunc_data
   ]
   triggers = {
     cluster_instance_ids = aws_lightsail_instance.kosa_server.arn
