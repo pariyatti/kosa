@@ -2,7 +2,7 @@
 
 ![Kosa Backend Tests](https://github.com/pariyatti/kosa/actions/workflows/kosa-tests.yml/badge.svg)
 
-Library and Mobile services written in Clojure + XTDB.
+Pariyatti's Library and Mobile services.
 
 
 ## Mobile App API
