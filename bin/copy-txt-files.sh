@@ -5,8 +5,7 @@ set -e
     #### Step 0: sanity ####
     printf "\nStep 0: Sanity check...\n"
     KOSA=$(dirname "$0")/..
-    if [ "$KOSA" != "./bin/.." ]
-    then
+    if [ "$KOSA" != "./bin/.." ]; then
         printf "####\n"
         printf "'copy-txt-files.sh' must be run from Kosa root. Exiting.\n"
         exit 1
@@ -24,19 +23,17 @@ set -e
     printf "...sane.\n"
 
     #### Step 1: add github.com fingerprint ####
-    if grep -q "github.com" ~/.ssh/known_hosts
-    then
+    if grep -q "github.com" ~/.ssh/known_hosts; then
         echo "github.com fingerprint found in ~/.ssh/known_hosts already"
     else
-        echo 'github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==' >> ~/.ssh/known_hosts
+        echo 'github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=' >>~/.ssh/known_hosts
     fi
 
     #### Step 2: get RSS repo from github ####
     printf "\nStep 1: Get RSS repo from github...\n"
     printf "Leaving Kosa to git clone in /tmp...\n"
     pushd /tmp
-    if [ -d "daily_emails_rss_auto" ]
-    then
+    if [ -d "daily_emails_rss_auto" ]; then
         pushd daily_emails_rss_auto
         pwd
         git pull
@@ -61,28 +58,27 @@ set -e
 
     printf "Copying Words of Buddha files...\n"
     mkdir -p $KOSA/txt/buddha
-    cp $RSS/dwob/daily_words_one_loop.txt         $KOSA/txt/buddha/daily_words_one_loop_eng.txt
+    cp $RSS/dwob/daily_words_one_loop.txt $KOSA/txt/buddha/daily_words_one_loop_eng.txt
     cp $RSS/dwob/daily_words_one_loop_espanol.txt $KOSA/txt/buddha/daily_words_one_loop_spa.txt
-    cp $RSS/dwob/daily_words_one_loop_fr.txt      $KOSA/txt/buddha/daily_words_one_loop_fra.txt
-    cp $RSS/dwob/daily_words_one_loop_it.txt      $KOSA/txt/buddha/daily_words_one_loop_ita.txt
-    cp $RSS/dwob/daily_words_one_loop_pt-br.txt   $KOSA/txt/buddha/daily_words_one_loop_por.txt
-    cp $RSS/dwob/daily_words_one_loop_sr.txt      $KOSA/txt/buddha/daily_words_one_loop_srp.txt
+    cp $RSS/dwob/daily_words_one_loop_fr.txt $KOSA/txt/buddha/daily_words_one_loop_fra.txt
+    cp $RSS/dwob/daily_words_one_loop_it.txt $KOSA/txt/buddha/daily_words_one_loop_ita.txt
+    cp $RSS/dwob/daily_words_one_loop_pt-br.txt $KOSA/txt/buddha/daily_words_one_loop_por.txt
+    cp $RSS/dwob/daily_words_one_loop_sr.txt $KOSA/txt/buddha/daily_words_one_loop_srp.txt
     cp $RSS/dwob/daily_words_one_loop_chinese.txt $KOSA/txt/buddha/daily_words_one_loop_zho-hant.txt
 
     printf "Copying Doha files...\n"
     mkdir -p $KOSA/txt/dohas
-    cp $RSS/dohas/daily_dohas_one_loop.txt            $KOSA/txt/dohas/daily_dohas_one_loop_eng.txt
+    cp $RSS/dohas/daily_dohas_one_loop.txt $KOSA/txt/dohas/daily_dohas_one_loop_eng.txt
     cp $RSS/dohas/daily_dohas_one_loop_lithuanian.txt $KOSA/txt/dohas/daily_dohas_one_loop_lit.txt
-    cp $RSS/dohas/daily_dohas_one_loop_pt-br.txt      $KOSA/txt/dohas/daily_dohas_one_loop_por.txt
-    cp $RSS/dohas/daily_dohas_one_loop_chinese.txt    $KOSA/txt/dohas/daily_dohas_one_loop_zho-hant.txt
+    cp $RSS/dohas/daily_dohas_one_loop_pt-br.txt $KOSA/txt/dohas/daily_dohas_one_loop_por.txt
+    cp $RSS/dohas/daily_dohas_one_loop_chinese.txt $KOSA/txt/dohas/daily_dohas_one_loop_zho-hant.txt
 
     printf "...done.\n\n"
 
     #### Step 4: validate ####
     printf "\nStep 3: Validate that files were copied...\n"
     printf "Running 'tree txt'...\n"
-    if command -v tree &> /dev/null
-    then
+    if command -v tree &>/dev/null; then
         tree txt
     else
         printf "You do not have 'tree' installed.\n"
