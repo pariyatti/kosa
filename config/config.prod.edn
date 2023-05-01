@@ -14,13 +14,7 @@
            :root    "resources/storage/"
            :path    "/uploads"}
 
- :jobs [{:job-name :rss-poller-pali-word
-         :offset-seconds 1
-         :period-seconds 5
-         :job-fn kosa.mobile.today.pali-word.rss-job/run-job!
-         :enabled false}
-
-        {:job-name :txt-publisher-pali-word
+ :jobs [{:job-name :txt-publisher-pali-word
          :offset-seconds 10
          :period-seconds 3600
          :job-fn kosa.mobile.today.looped-pali-word.publish-job/run-job!

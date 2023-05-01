@@ -14,29 +14,23 @@
            :root    "resources/storage/"
            :path    "/uploads"}
 
- :jobs [{:job-name :rss-poller-pali-word
-         :offset-seconds 1
-         :period-seconds 5
-         :job-fn kosa.mobile.today.pali-word.rss-job/run-job!
-         :enabled false}
-
-        {:job-name :txt-publisher-pali-word
+ :jobs [{:job-name :txt-publisher-pali-word
          :offset-seconds 5
          :period-seconds 3600
          :job-fn kosa.mobile.today.looped-pali-word.publish-job/run-job!
-         :enabled false}
+         :enabled true}
 
         {:job-name :txt-publisher-words-of-buddha
          :offset-seconds 5
          :period-seconds 3600
          :job-fn kosa.mobile.today.looped-words-of-buddha.publish-job/run-job!
-         :enabled false}
+         :enabled true}
 
         {:job-name :txt-publisher-doha
          :offset-seconds 5
          :period-seconds 3600
          :job-fn kosa.mobile.today.looped-doha.publish-job/run-job!
-         :enabled false}]
+         :enabled true}]
 
  :language-meta {"afr" {:iso-639-1-code "af"
                         :iso-639-2-name "Afrikaans"
