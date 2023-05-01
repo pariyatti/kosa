@@ -1,6 +1,6 @@
 # kosa [m.]: _store-room; treasury_
 
-![Kosa Backend Tests](https://github.com/pariyatti/kosa/actions/workflows/kosa-tests.yml/badge.svg)
+[![Kosa Backend Tests](https://github.com/pariyatti/kosa/actions/workflows/kosa-tests.yml/badge.svg)](https://github.com/pariyatti/kosa/actions/)
 
 Pariyatti's Library and Mobile services.
 
