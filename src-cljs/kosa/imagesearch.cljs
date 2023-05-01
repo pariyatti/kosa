@@ -13,7 +13,7 @@
     (reset! results edn)))
 
 (defn result-source [text]
-  (-> (fetch/get "http://localhost:3000/api/v1/search.json"
+  (-> (fetch/get "/api/v1/search.json"
                  {:query-params {:q text}})
       (js/Promise.resolve)
       (.then #(reset-results %)))

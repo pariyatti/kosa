@@ -23,7 +23,7 @@
   (let [_ (.log js/console (str "searching: " text))
         _ (.log js/console (str "results = " @results))
         result (->
-                (fetch/get "http://localhost:3000/api/v1/search.json"
+                (fetch/get "/api/v1/search.json"
                            {:query-params {:q text}})
                 (js/Promise.resolve)
                 (.then #(reset-results %)))]
