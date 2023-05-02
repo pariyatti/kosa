@@ -111,6 +111,7 @@
                        :resource-paths ["config/dev"]}}
 
   :test-selectors {:default     (complement :integration)
+                   ;; unused at the moment:
                    :integration :integration
                    :database    :database
                    :unit        (fn [m & _]
