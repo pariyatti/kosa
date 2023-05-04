@@ -9,6 +9,7 @@ read -p "Please enter the target restore date (format example: 2023050312): " RE
 
 # Set up variables.
 USER=kosa-user
+LOCAL_BACKUP_DIR=/tmp/kosa-local-backup-$(date +%s)
 RESTORE_DIR=/tmp/kosa-restore
 BACKUP_BUCKET=kosa-production-data-backup
 APP_SERVICE=kosa-app.service
@@ -31,12 +32,13 @@ systemctl stop "$APP_SERVICE"
 # Print the status of the Kosa app service.
 systemctl status "$APP_SERVICE"
 
-# Remove the old data directory and move the restored data directory to its new location.
-rm -rf "/srv/$USER/kosa/data/"
+# Move current data to tmp backup and move the restored data directory to srv.
+mkdir -p "$LOCAL_BACKUP_DIR"
+mv "/srv/$USER/kosa/data/" "$LOCAL_BACKUP_DIR"
 mv data/ "/srv/$USER/kosa/"
 
-# Remove the old storage directory and move the restored storage directory to its new location.
-rm -rf "/srv/$USER/kosa/resources/storage"
+# Move current static storage directory to tmp backup and move the restored storage directory to srv.
+mv "/srv/$USER/kosa/resources/storage" "$LOCAL_BACKUP_DIR"
 mv storage/ "/srv/$USER/kosa/resources/"
 
 # Start the Kosa app service.
