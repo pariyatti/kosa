@@ -10,11 +10,11 @@ info:
 paths:
   /api/v1/today.json:
     get:
-      summary: Get daily inspirations
-      description: Returns daily inspirations including Dhamma verses, Pāli words, and Words of the Buddha.
+      summary: Get Daily Cards
+      description: Returns Daily Cards including Dhamma verses, Pāli words, and Words of the Buddha.
       responses:
         '200':
-          description: Daily inspirations
+          description: Daily Cards
           content:
             application/json:
               schema:
