@@ -6,7 +6,7 @@ import sys
 import logging
 from datetime import datetime
 
-from discord import Webhook, RequestsWebhookAdapter
+from discord import SyncWebhook
 
 log_path = "/var/log/kosa"
 file_name = "kosa-backups"
@@ -43,7 +43,7 @@ def discord_send_message(message):
     :type message: string
     """
     discord_url = os.environ["DISCORD_WEBHOOK_URL"]
-    webhook = Webhook.from_url(url=discord_url, adapter=RequestsWebhookAdapter())
+    webhook = SyncWebhook.from_url(url=discord_url)
     webhook.send(kosa_env + ": " + message)
 
 
