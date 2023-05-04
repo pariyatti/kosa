@@ -1,0 +1,441 @@
+openapi: 3.0.0
+servers:
+  - url: https://kosa-sandbox.pariyatti.app
+    description: Sandbox server
+info:
+  title: Kosa API
+  version: 0.9.0
+  license:
+    name: GNU Affero General Public License v3.0
+paths:
+  /api/v1/today.json:
+    get:
+      summary: Get daily inspirations
+      description: Returns daily inspirations including Dhamma verses, Pāli words, and Words of the Buddha.
+      responses:
+        '200':
+          description: Daily inspirations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    type:
+                      type: string
+                    header:
+                      type: string
+                    shareable:
+                      type: boolean
+                    bookmarkable:
+                      type: boolean
+                    published_at:
+                      type: string
+                      format: date-time
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+                    url:
+                      type: string
+                      format: uri
+                    original_url:
+                      type: string
+                      format: uri
+                    original_audio_url:
+                      type: string
+                      format: uri
+                    original_doha:
+                      type: string
+                    doha:
+                      type: string
+                    pali:
+                      type: string
+                    words:
+                      type: string
+                    citepali:
+                      type: string
+                    citebook:
+                      type: string
+                    citebook_url:
+                      type: string
+                      format: uri
+                    citepali_url:
+                      type: string
+                      format: uri
+                    image:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                    audio:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                    translations:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                          language:
+                            type: string
+                          translation:
+                            type: string
+  /api/v1/today/pali-words/{id}.json:
+    get:
+      summary: Get Pali Word by ID
+      operationId: getPaliWordById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Pali Word
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: pali_word
+                  id:
+                    type: string
+                    example: "example-id"
+                  url:
+                    type: string
+                    format: uri
+                    example: "https://api.example.com/api/v1/today/pali-words/example-id.json"
+                  published_at:
+                    type: string
+                    format: date-time
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  header:
+                    type: string
+                    example: "Pāli Word of the Day"
+                  bookmarkable:
+                    type: boolean
+                    example: true
+                  shareable:
+                    type: boolean
+                    example: true
+                  pali:
+                    type: string
+                    example: "Pāli example"
+                  translations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        language:
+                          type: string
+                          example: "English"
+                        translation:
+                          type: string
+                          example: "Translation example"
+                  audio:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                        example: ""
+  /api/v1/today/words-of-buddha/{id}.json:
+    get:
+      summary: Get Words of Buddha by ID
+      operationId: getWordsOfBuddhaById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Words of Buddha
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: words_of_buddha
+                  id:
+                    type: string
+                    example: "example-id"
+                  url:
+                    type: string
+                    format: uri
+                    example: "https://api.example.com/api/v1/today/words-of-buddha/example-id.json"
+                  published_at:
+                    type: string
+                    format: date-time
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  header:
+                    type: string
+                    example: "Words of the Buddha"
+                  bookmarkable:
+                    type: boolean
+                    example: true
+                  shareable:
+                    type: boolean
+                    example: true
+                  words:
+                    type: string
+                    example: "Example words"
+                  translations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        language:
+                          type: string
+                          example: "English"
+                        translation:
+                          type: string
+                          example: "Translation example"
+                  audio:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                        format: uri
+                        example: "https://api.example.com/audio/example.mp3"
+                  original_audio_url:
+                    type: string
+                    format: uri
+                    example: "https://original.example.com/original-audio.mp3"
+                  citepali:
+                    type: string
+                    example: "Cite Pāli example"
+                  citepali_url:
+                    type: string
+                    format: uri
+                    example: "https://citepali.example.com"
+                  citebook:
+                    type: string
+                    example: "Cite book example"
+                  citebook_url:
+                    type: string
+                    format: uri
+                    example: "https://citebook.example.com"
+                  image:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                        format: uri
+                        example: "/uploads/kuti-d54d85868f2963a4efee91e5c86e1679-bodhi-leaf.jpg"
+  /api/v1/today/doha/{id}.json:
+    get:
+      summary: Get Doha by ID
+      operationId: getDohaById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Doha
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: doha
+                  id:
+                    type: string
+                    example: "example-id"
+                  url:
+                    type: string
+                    format: uri
+                    example: "https://api.example.com/api/v1/today/doha/example-id.json"
+                  published_at:
+                    type: string
+                    format: date-time
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  header:
+                    type: string
+                    example: "Daily Dhamma Verse"
+                  bookmarkable:
+                    type: boolean
+                    example: true
+                  shareable:
+                    type: boolean
+                    example: true
+                  original_doha:
+                    type: string
+                    example: "Original Doha example"
+                  original_url:
+                    type: string
+                    format: uri
+                    example: "https://original.example.com/original-doha"
+                  original_audio_url:
+                    type: string
+                    format: uri
+                    example: "https://original.example.com/original-audio.mp3"
+                  doha:
+                    type: string
+                    example: "Doha example"
+                  translations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        language:
+                          type: string
+                          example: "English"
+                        translation:
+                          type: string
+                          example: "Translation example"
+  /api/v1/today/stacked-inspiration/{id}.json:
+    get:
+      summary: Get Stacked Inspiration by ID
+      operationId: getStackedInspirationById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Stacked Inspiration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: stacked_inspiration
+                  id:
+                    type: string
+                    example: "example-id"
+                  url:
+                    type: string
+                    format: uri
+                    example: "https://api.example.com/api/v1/today/stacked-inspiration/example-id.json"
+                  published_at:
+                    type: string
+                    format: date-time
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  header:
+                    type: string
+                    example: "Inspiration of the Day"
+                  bookmarkable:
+                    type: boolean
+                    example: true
+                  shareable:
+                    type: boolean
+                    example: true
+                  text:
+                    type: string
+                    example: "Inspiration text example"
+                  image:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                        format: uri
+                        example: "https://api.example.com/uploads/example-image.jpg"
+  /api/v1/search.json:
+    get:
+      summary: Search
+      operationId: search
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    example: 42
+                  page:
+                    type: integer
+                    example: 1
+                  per_page:
+                    type: integer
+                    example: 10
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                        id:
+                          type: string
+                        url:
+                          type: string
+                          format: uri
+                        published_at:
+                          type: string
+                          format: date-time
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+                        # Additional properties for specific types
