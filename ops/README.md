@@ -9,7 +9,7 @@ commands.
 
 ### 1.a Install Terraform
 
-Instructions at https://learn.hashicorp.com/tutorials/terraform/install-cli
+Instructions at <https://learn.hashicorp.com/tutorials/terraform/install-cli>
 
 Prefer `brew` on MacOS and `apt-get` on Linux.
 
@@ -32,7 +32,7 @@ ansible-galaxy collection install ansible.posix
 ### 1.d Install Deploy Key
 
 To seed the database with "Looped" feeds, the server will require access
-to the private https://github.com/pariyatti/Daily_emails_RSS/ repo.
+to the private <https://github.com/pariyatti/Daily_emails_RSS/> repo.
 
 A deploy key for this repo is provided in the `vault` under `Deployment` =>
 `~/.kosa/kosa_key` and `~/.kosa/kosa_key.pub`. You can use keepassxc-cli to accomplish this, by running the following in the terminal:
@@ -68,7 +68,7 @@ aws lightsail --output=json download-default-key-pair | jq -r '.privateKeyBase64
 
 #### Via the AWS console
 
-1. Go to https://lightsail.aws.amazon.com/ls/webapp/home/instances
+1. Go to <https://lightsail.aws.amazon.com/ls/webapp/home/instances>
 2. Click on the instance you provisioned (or the instance previously provisioned)
 3. Under `Connect`, click "Download default key".
    Rename this key to `~/.kosa/LightsailDefaultKey.pem` on your local machine
@@ -101,7 +101,7 @@ and Lightsail:
 * 4 TB transfer
 ```
 
-### 2.a Provision pre-requisites:
+### 2.a Provision pre-requisites
 
 ```sh
 ansible-playbook --become --limit "kosa-sandbox.pariyatti.app" -i hosts provision.yml
@@ -163,6 +163,15 @@ or
 
 terraform destroy -target module.kosa-sandbox
 ```
+
+Please note that the above command can fail because we enable addons that out are outside the terraform module at this point via python scripts and you receive
+
+```
+Code_: "InvalidParams",
+│   Message_: "You cannot delete the Instance <instance-name> with addons. Specify the forceDeleteAddons parameter to delete the Instance and its associated addons.
+```
+
+`aws lightsail delete-instance --instance-name kosa-sandbox --force-delete-add-ons`
 
 **Note:** Running terraform plan and apply for a new server will create a DNS entry that does not resolve by the time Ansible runs, which will cause it to fail. As a workaround, temporarily set your local DNS resolution to '8.8.8.8'.
 
