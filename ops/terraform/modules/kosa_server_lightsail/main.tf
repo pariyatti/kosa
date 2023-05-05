@@ -31,6 +31,7 @@ resource "null_resource" "ansible_config" {
   ]
   triggers = {
     cluster_instance_ids = aws_lightsail_instance.kosa_server.arn
+    file_checksum        = filemd5("../../ansible/provision.yml")
   }
 
   provisioner "local-exec" {

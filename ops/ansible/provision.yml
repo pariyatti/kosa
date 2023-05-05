@@ -50,8 +50,11 @@
           - "tmux"
           - "acl"
           - "awscli"
-          - "pipenv"
         update-cache: yes
+
+    - name: Install pipenv python package via pip
+      ansible.builtin.pip:
+        name: pipenv
 
     - name: Make sure we have a 'wheel' group
       group:
@@ -62,8 +65,8 @@
       lineinfile:
         dest: /etc/sudoers
         state: present
-        regexp: '^%wheel'
-        line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+        regexp: "^%wheel"
+        line: "%wheel ALL=(ALL) NOPASSWD: ALL"
         validate: visudo -cf %s
 
     - name: Create a new regular user with sudo privileges
