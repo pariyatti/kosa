@@ -2,7 +2,7 @@ version: '3'
 
 services:
   kosa-api:
-    build: .
+    image: pariyatti/kosa-dev:latest
     ports:
       - "3000:3000"
       - "9999:9999"

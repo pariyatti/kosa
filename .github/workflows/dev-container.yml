@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - 51-create-dev-docker-container
 
 env:
   IMAGE_NAME: kosa-dev
