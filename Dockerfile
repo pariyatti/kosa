@@ -28,16 +28,18 @@ RUN apt-get install -y curl \
 
 RUN npm install -g sass@1.51.0
 
-# Create a directory for the application
+# Create an empty directory for the application
 RUN mkdir /app
 
-# Copy project.clj into the Docker image to make it cachable
+# Copy single file project.clj into the Docker image
 COPY project.clj /app/
 
 # Set the working directory to /app
 WORKDIR /app
 
-# Install project dependencies using lein
+# Install project dependencies using lein before copying the code for caching
+# This container image layer is a fairly large one and we would like to rebuild it
+# little as possible. Hence, we copy the full codebase later.
 RUN XTDB_ENABLE_BYTEUTILS_SHA1=true lein deps
 
 # Copy the current directory into the container
