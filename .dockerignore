@@ -1,0 +1,19 @@
+# Ignore files and directories that are not needed for the Docker image
+target/
+classes/
+*.jar
+*.class
+/.cpcache/
+/.lein-deps-sum
+/.lein-failures
+/.lein-plugins/
+/.m2/
+/repl-port
+/.nrepl-port
+/.shadow-cljs/
+Dockerfile
+docker-compose.yml
+
+# Ignore the .git directory and its contents
+.git/
+ops/
