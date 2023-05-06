@@ -30,6 +30,10 @@ To run the container image in dev mode:
 
 This will pull the latest image from [Docker Hub](https://hub.docker.com/repository/docker/pariyatti/kosa-dev/tags?page=1&ordering=last_updated) and start kosa locally.
 
+If you are making changes locally and would like to test that in docker as well, there is a variant of docker-compose file that can be used as well:
+
+`docker-compose -f docker-compose-local.yml up`
+
 ## Development
 
 ### Install Java
