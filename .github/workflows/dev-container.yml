@@ -31,5 +31,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ${DOCKER_USERNAME}/${IMAGE_NAME}:latest
-            ${DOCKER_USERNAME}/${IMAGE_NAME}:${{ github.sha }}
+            ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
