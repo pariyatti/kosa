@@ -4,7 +4,6 @@
 
 Pariyatti's Library and Mobile services.
 
-
 ## Mobile App API
 
 The Pariyatti mobile app will consume the API as specified [here](https://github.com/pariyatti/kosa/blob/master/docs/api.md).
@@ -21,6 +20,16 @@ Follow the instructions under [Development](https://github.com/pariyatti/kosa#de
 
 Follow the [Ops Readme](https://github.com/pariyatti/kosa/blob/master/ops/README.md).
 
+## Quick Start
+
+To the kosa api in development mode, you can use docker-compose. Please note that it uses tcp ports 3000 and 9999 on localhost while running. If these are already occupied in your local machine, please adjust the docker-compose.yml ports locally.
+
+To run the container image in dev mode:
+
+`docker-compose up`
+
+This will pull the latest image from [Docker Hub](https://hub.docker.com/repository/docker/pariyatti/kosa-dev/tags?page=1&ordering=last_updated) and start kosa locally.
+
 ## Development
 
 ### Install Java
@@ -32,7 +41,7 @@ Install OpenJDK 17 for:
 - [Mac OS](https://gist.github.com/deobald/00b16090a932c793379cae6422206491)
 - Linux: `sudo apt-get install openjdk-17-jdk`
 
-WARNING: https://github.com/xtdb/xtdb/issues/1462 may cause:
+WARNING: <https://github.com/xtdb/xtdb/issues/1462> may cause:
 
 ```
 Could not open ConcurrentHashMap.table field - falling back to LRU caching. Use '--add-opens java.base/java.util.concurrent=ALL-UNNAMED' to use the second-chance cache.
@@ -41,12 +50,15 @@ Could not open ConcurrentHashMap.table field - falling back to LRU caching. Use 
 Use Java as executed in the Makefile to avoid this.
 
 ### Install Clojure
+
 Install `clojure` as described [here](https://www.clojure.org/guides/getting_started)
 
 ### Install Leinengen
+
 Install `lein` as described [here](https://leiningen.org/#install)
 
 ### Install NPM
+
 Install `npm` (nodejs LTS) as described [here](https://nodejs.org/en/download/). Sorry.
 
 ### Add Secrets
@@ -72,7 +84,7 @@ Add the Ansible password from the KeePass Vault to:
 
 If you intend to use the "looped cards" (Pali Word a Day, Daily Words
 of the Buddha, or Daily Dohas), you will need access to the private
-repository containing the input files (https://github.com/pariyatti/Daily_emails_RSS)
+repository containing the input files (<https://github.com/pariyatti/Daily_emails_RSS>)
 before you can run `make txt-clone`, as explained below. Speak to Pariyatti Staff to
 obtain access. If you do not have access to these files, Kosa will still run
 without them.
