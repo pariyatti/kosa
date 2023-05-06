@@ -50,6 +50,8 @@ RUN npm install @webcomponents/custom-elements@1.0.0 --save \
     && cp node_modules/@clr/icons/clr-icons.min.js resources/public/js/clr-icons.min.js \
     && rm -rf node_modules
 
+RUN mkdir -p ~/.kosa tmp/storage resources/storage
+
 RUN XTDB_ENABLE_BYTEUTILS_SHA1=true lein scss :development once \
 	&& XTDB_ENABLE_BYTEUTILS_SHA1=true lein cljsbuild once \
     && XTDB_ENABLE_BYTEUTILS_SHA1=true lein db-migrate dev \
