@@ -3,7 +3,7 @@ name: Docker Build and Push Dev Container
 on:
   push:
     branches:
-      - main
+      - master
 
 env:
   IMAGE_NAME: kosa-dev
