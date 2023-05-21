@@ -29,8 +29,8 @@ chown -R "$USER:$USER" storage/
 # Stop the Kosa app service.
 systemctl stop "$APP_SERVICE"
 
-# Print the status of the Kosa app service.
-systemctl status "$APP_SERVICE"
+# Print the status of the Kosa app service. This causes the script to exit sooner
+# systemctl status "$APP_SERVICE"
 
 # Move current data to tmp backup and move the restored data directory to srv.
 mkdir -p "$LOCAL_BACKUP_DIR"

@@ -30,3 +30,20 @@ resource "aws_s3_bucket_acl" "backup" {
   bucket = aws_s3_bucket.backup.id
   acl    = "private"
 }
+
+resource "aws_s3_bucket_lifecycle_configuration" "backup_lifecycle_configuration" {
+  rule {
+    id      = "delete_old_backups"
+    status  = "Enabled"
+
+    expiration {
+      days = 120
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = 120
+    }
+  }
+
+  bucket = aws_s3_bucket.backup.id
+}
