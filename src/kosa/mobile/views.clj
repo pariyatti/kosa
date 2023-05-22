@@ -9,7 +9,17 @@
            [:div {:class "header-and-link"}
             [:h1 {:class "page-header"} "Mobile App"]
             [:span {:class "page-subtitle"} "Use the links below to create and publish content to the Pariyatti mobile app."]]]
+
           [:ul {:class "card-types"}
+
+           [:li {:class "card-type"}
+            [:h3 "Donation Card"]
+            [:p "Donation Cards have an image, text, and a button allowing users to make a donation."]
+            [:a.link {:href (v/index-path req :donations)}
+             "Manage Cards"]
+            [:a.btn.btn-primary {:href (v/new-path req :donations)}
+             "Create Card"]]
+
            [:li {:class "card-type"}
             [:h3 "Overlay Inspiration Card"]
             [:p "An overlay inspiration card has an image and a text. This card is mainly used for quotes"]
