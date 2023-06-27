@@ -1,0 +1,120 @@
+module "download_pariyatti_route53_domain" {
+  source  = "terraform-aws-modules/route53/aws//modules/zones"
+  version = "~> 2.0"
+
+  zones = {
+    "download.pariyatti.org" = {
+      comment = "download.pariyatti.org (production)"
+      tags = {
+        env = "production"
+      }
+    }
+  }
+
+  tags = {
+    ManagedBy = "Terraform"
+  }
+}
+
+# Create download.pariyatti.org S3 bucket
+resource "aws_s3_bucket" "download_pariyatti_org_bucket" {
+  bucket = "download.pariyatti.org" # Change to your desired bucket name
+}
+
+# Create an ACM certificate for download.pariyatti.org
+# commented for now
+# resource "aws_acm_certificate" "download_pariyatti_org_certificate" {
+#   domain_name       = "download.pariyatti.org"
+#   validation_method = "DNS"
+
+#   tags = {
+#     Name = "download.pariyatti.org"
+#   }
+# }
+
+# Create a CloudFront origin access identity
+resource "aws_cloudfront_origin_access_identity" "download_pariyatti_org_oai" {
+  comment = "download.pariyatti.org-oai"
+}
+
+# Attach bucket policy to allow access to the OAI
+resource "aws_s3_bucket_policy" "download_pariyatti_org_bucket_policy" {
+  bucket = aws_s3_bucket.download_pariyatti_org_bucket.id
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Id": "S3BucketPolicy",
+  "Statement": [
+    {
+      "Sid": "AllowCloudFrontAccess",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${aws_cloudfront_origin_access_identity.download_pariyatti_org_oai.id}"
+      },
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::download.pariyatti.org/*"
+    }
+  ]
+}
+EOF
+}
+
+# Create a CloudFront distribution
+resource "aws_cloudfront_distribution" "download_pariyatti_org_distribution" {
+  origin {
+    domain_name = aws_s3_bucket.download_pariyatti_org_bucket.bucket_regional_domain_name
+    origin_id   = "S3-download-pariyatti-bucket"
+    s3_origin_config {
+      origin_access_identity = aws_cloudfront_origin_access_identity.download_pariyatti_org_oai.cloudfront_access_identity_path
+    }
+  }
+
+  enabled             = true
+  is_ipv6_enabled     = true
+  default_root_object = "index.html"
+
+  default_cache_behavior {
+    allowed_methods        = ["GET", "HEAD", "OPTIONS"]
+    cached_methods         = ["GET", "HEAD"]
+    target_origin_id       = "S3-download-pariyatti-bucket"
+    viewer_protocol_policy = "redirect-to-https"  
+
+    forwarded_values {
+      query_string = false
+      cookies {
+        forward = "none"
+      }
+    }
+  }
+
+  viewer_certificate {
+    cloudfront_default_certificate = true
+  }
+
+  # Switch to this once the certificate is provisoned
+  # viewer_certificate {
+  #   acm_certificate_arn = aws_acm_certificate.download_pariyatti_org_certificate.arn
+  #   ssl_support_method  = "sni-only"
+  # }
+
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
+    }
+  }
+
+  tags = {
+    Name = "download-pariyatti-org-distribution"
+  }
+}
+
+# Create a Route 53 record once the cert is configured for cloudfront
+# resource "aws_route53_record" "example_record" {
+#   zone_id = module.download_pariyatti_route53_domain.route53_zone_zone_id["download.pariyatti.org"]
+#   name    = "download.pariyatti.org"
+
+#   type    = "A"
+#   ttl     = "300"
+#   records = [aws_cloudfront_distribution.download_pariyatti_org_distribution.domain_name]
+# }
