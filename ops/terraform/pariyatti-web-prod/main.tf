@@ -1,21 +1,3 @@
-# module "download_pariyatti_route53_domain" {
-#   source  = "terraform-aws-modules/route53/aws//modules/zones"
-#   version = "~> 2.0"
-
-#   zones = {
-#     "download.pariyatti.org" = {
-#       comment = "download.pariyatti.org (production)"
-#       tags = {
-#         env = "production"
-#       }
-#     }
-#   }
-
-#   tags = {
-#     ManagedBy = "Terraform"
-#   }
-# }
-
 # Create download.pariyatti.org S3 bucket
 resource "aws_s3_bucket" "download_pariyatti_org_bucket" {
   bucket = "download.pariyatti.org" # Change to your desired bucket name
@@ -106,13 +88,3 @@ resource "aws_cloudfront_distribution" "download_pariyatti_org_distribution" {
     Name = "download-pariyatti-org-distribution"
   }
 }
-
-# Create a Route 53 record once the cert is configured for cloudfront
-# resource "aws_route53_record" "example_record" {
-#   zone_id = module.download_pariyatti_route53_domain.route53_zone_zone_id["download.pariyatti.org"]
-#   name    = "download.pariyatti.org"
-
-#   type    = "A"
-#   ttl     = "300"
-#   records = [aws_cloudfront_distribution.download_pariyatti_org_distribution.domain_name]
-# }
