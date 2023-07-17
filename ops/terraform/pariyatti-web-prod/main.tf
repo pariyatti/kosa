@@ -1,20 +1,20 @@
-module "download_pariyatti_route53_domain" {
-  source  = "terraform-aws-modules/route53/aws//modules/zones"
-  version = "~> 2.0"
+# module "download_pariyatti_route53_domain" {
+#   source  = "terraform-aws-modules/route53/aws//modules/zones"
+#   version = "~> 2.0"
 
-  zones = {
-    "download.pariyatti.org" = {
-      comment = "download.pariyatti.org (production)"
-      tags = {
-        env = "production"
-      }
-    }
-  }
+#   zones = {
+#     "download.pariyatti.org" = {
+#       comment = "download.pariyatti.org (production)"
+#       tags = {
+#         env = "production"
+#       }
+#     }
+#   }
 
-  tags = {
-    ManagedBy = "Terraform"
-  }
-}
+#   tags = {
+#     ManagedBy = "Terraform"
+#   }
+# }
 
 # Create download.pariyatti.org S3 bucket
 resource "aws_s3_bucket" "download_pariyatti_org_bucket" {
@@ -22,15 +22,14 @@ resource "aws_s3_bucket" "download_pariyatti_org_bucket" {
 }
 
 # Create an ACM certificate for download.pariyatti.org
-# commented for now
-# resource "aws_acm_certificate" "download_pariyatti_org_certificate" {
-#   domain_name       = "download.pariyatti.org"
-#   validation_method = "DNS"
+resource "aws_acm_certificate" "download_pariyatti_org_certificate" {
+  domain_name       = "download.pariyatti.org"
+  validation_method = "DNS"
 
-#   tags = {
-#     Name = "download.pariyatti.org"
-#   }
-# }
+  tags = {
+    Name = "download.pariyatti.org"
+  }
+}
 
 # Create a CloudFront origin access identity
 resource "aws_cloudfront_origin_access_identity" "download_pariyatti_org_oai" {
@@ -88,15 +87,14 @@ resource "aws_cloudfront_distribution" "download_pariyatti_org_distribution" {
     }
   }
 
+  # Switch to this once the certificate is provisoned
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn = aws_acm_certificate.download_pariyatti_org_certificate.arn
+    ssl_support_method  = "sni-only"
   }
 
-  # Switch to this once the certificate is provisoned
-  # viewer_certificate {
-  #   acm_certificate_arn = aws_acm_certificate.download_pariyatti_org_certificate.arn
-  #   ssl_support_method  = "sni-only"
-  # }
+  aliases = ["download.pariyatti.org"]
+
 
   restrictions {
     geo_restriction {
