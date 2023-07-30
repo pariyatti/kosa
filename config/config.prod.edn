@@ -57,21 +57,4 @@
                     {:language "por"
                      :file "txt/dohas/daily_dohas_one_loop_por.txt"}
                     {:language "zho-hant"
-                     :file "txt/dohas/daily_dohas_one_loop_zho-hant.txt"}]}
-
- :rss-feeds {:pali-word [{:language "eng"
-                          :url "https://download.pariyatti.org/pwad/pali_words.xml"}]
-             :words-of-buddha [{:language "eng"
-                                :url "https://rss.pariyatti.org/dwob_english.rss"}
-                               {:language "spa"
-                                :url "https://rss.pariyatti.org/dwob_spanish.rss"}
-                               {:language "fra"
-                                :url "https://rss.pariyatti.org/dwob_french.rss"}
-                               {:language "ita"
-                                :url "https://rss.pariyatti.org/dwob_italian.rss"}
-                               {:language "por"
-                                :url "https://rss.pariyatti.org/dwob_portuguese.rss"}
-                               {:language "srp"
-                                :url "https://rss.pariyatti.org/dwob_serbian.rss"}
-                               {:language "zho-hant"
-                                :url "https://rss.pariyatti.org/dwob_chinese.rss"}]}}
+                     :file "txt/dohas/daily_dohas_one_loop_zho-hant.txt"}]}}
