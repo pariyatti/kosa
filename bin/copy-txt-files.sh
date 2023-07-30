@@ -55,6 +55,7 @@ set -e
     printf "Copying Pali Word files...\n"
     mkdir -p $KOSA/txt/pali
     cp $RSS/pwad/pali_words_one_loop.txt $KOSA/txt/pali/pali_words_one_loop_eng.txt
+    cp $RSS/pwad/pali_words_one_loop_por.txt $KOSA/txt/pali/pali_words_one_loop_por.txt
 
     printf "Copying Words of Buddha files...\n"
     mkdir -p $KOSA/txt/buddha

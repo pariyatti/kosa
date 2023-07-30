@@ -17,7 +17,9 @@
  :supported-languages ["eng" "spa" "fra" "ita" "lit" "por" "srp" "zho-hans" "zho-hant" "cmn" "yue" "hak" "nan"]
 
  :txt-feeds {:pali-word [{:language "eng"
-                          :file "txt/pali/pali_words_one_loop_eng.txt"}]
+                          :file "txt/pali/pali_words_one_loop_eng.txt"}
+                         {:language "por"
+                          :file "txt/pali/pali_words_one_loop_por.txt"}]
              :words-of-buddha [{:language "eng"
                                 :file "txt/buddha/daily_words_one_loop_eng.txt"}
                                {:language "spa"
