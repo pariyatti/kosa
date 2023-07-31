@@ -39,4 +39,6 @@
         body (:body @resp)]
     (if body
       (copy-uri-stream filename temp-file body)
-      (retry-download-uri uri retries))))
+      (do
+        (log/debug (format "#### Body was empty. Response: %s" @resp))
+        (retry-download-uri uri retries)))))
