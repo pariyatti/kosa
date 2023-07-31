@@ -9,7 +9,8 @@
                           (sut/download-uri! "http://does-not-exist.pariyatti.org")))))
 
 ;; use to examine weird SSL Handshake failures coming from download.pariyatti.org
-#_(deftest inspect-broken-url
-  (testing "let us see"
-    (is (= "hi2u"
-           (sut/download-uri! "https://download.pariyatti.org/dwob/itivuttaka_1_17.mp3")))))
+(deftest avoid-ssl-handshake-failures-due-to-SNI
+  (testing "does not explode"
+    (is (= {:size 197811, :filename "itivuttaka_1_17.mp3", :content-type "audio/mpeg"}
+           (dissoc (sut/download-uri! "https://download.pariyatti.org/dwob/itivuttaka_1_17.mp3")
+                   :tempfile)))))
