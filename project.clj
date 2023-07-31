@@ -24,7 +24,7 @@
                  [jarohen/chime "0.3.2"]
                  [babashka/fs "0.0.3"]
                  ;; networking:
-                 [http-kit "2.5.3"]
+                 [http-kit "2.7.0"]
                  [camdez/sendgrid "0.2.0"]
                  ;; web:
                  ;; [pro.juxt.clojars-mirrors.ring/ring-core "1.9.2"]
