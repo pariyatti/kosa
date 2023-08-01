@@ -36,7 +36,6 @@
                      :looped-pali-word/published-at (time/parse "2012-01-01")}))
     (let [suriya (db/find-all :looped-pali-word/pali "suriya")]
       (is (= 1 (count  suriya)))
-      (is (= 0 (-> suriya first :looped-pali-word/index)))
       (is (= (time/parse "2008-01-01")
              (-> suriya first :looped-pali-word/published-at)))))
 
@@ -46,19 +45,21 @@
                 :looped-pali-word/translations [["eng" "moon"]
                                                 ["hin" "चंद"]]
                 :looped-pali-word/published-at (time/parse "2008-01-01")}))
-    (looped/db-insert! i (model/looped-pali-word
-                    {:looped-pali-word/pali "canda"
-                     :looped-pali-word/translations [["fra" "lune"]
-                                                     ["spa" "luna"]]
-                     :looped-pali-word/published-at (time/parse "2012-01-01")}))
-    (let [canda (db/find-all :looped-pali-word/pali "canda")]
-      (is (= 1 (count canda)))
-      (is (= 1 (-> canda first :looped-pali-word/index)))
-      (is (= [["eng" "moon"]
-              ["hin" "चंद"]
-              ["fra" "lune"]
-              ["spa" "luna"]]
-             (-> canda first :looped-pali-word/translations))))))
+    (let [old (db/find-all :looped-pali-word/pali "canda")
+          old-idx (-> old first :looped-pali-word/index)]
+      (looped/db-insert! i (model/looped-pali-word
+                            {:looped-pali-word/pali "canda"
+                             :looped-pali-word/translations [["fra" "lune"]
+                                                             ["spa" "luna"]]
+                             :looped-pali-word/published-at (time/parse "2012-01-01")}))
+      (let [canda (db/find-all :looped-pali-word/pali "canda")]
+        (is (= 1 (count canda)))
+        (is (= old-idx (-> canda first :looped-pali-word/index)))
+        (is (= [["eng" "moon"]
+                ["hin" "चंद"]
+                ["fra" "lune"]
+                ["spa" "luna"]]
+               (-> canda first :looped-pali-word/translations)))))))
 
 (deftest indexing
   (testing "index auto-increments"

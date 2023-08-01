@@ -18,7 +18,9 @@
 
 (defn save! [e]
   (let [idx (next-index :looped-pali-word)]
-    (log/info (format "Saving Looped Pali Word with index: %s" idx))
+    (log/info (format "Saving Looped Pali Word '%s' with index: %s"
+                      (:looped-pali-word/pali e)
+                      (or (:looped-pali-word/index e) idx)))
     (-> e
         (assoc :kuti/type :looped-pali-word)
         (assoc-unless :looped-pali-word/index idx)
