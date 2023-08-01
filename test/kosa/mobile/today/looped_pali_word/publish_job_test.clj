@@ -25,7 +25,18 @@
                      :looped-pali-word/translations [["eng" "star"]]}))
     (sut/run-job! nil)
     (let [tara (pali-db/find-all :pali-word/pali "tara")]
-      (is (= 1 (count tara))))))
+      (is (= 1 (count tara)))))
+
+  (testing "two translations"
+    (loop-db/save! (model/looped-pali-word
+                    {:looped-pali-word/pali "kosa"
+                     :looped-pali-word/translations
+                     [["eng" "storehouse"]
+                      ["por" "depósito"]]}))
+    (sut/run-job! nil)
+    (let [k (pali-db/find-all :pali-word/pali "kosa")]
+      (is (= 1 (count k)))
+      (is (= 2 (-> k first :pali-word/translations count))))))
 
 (deftest ignores-an-empty-collection-of-looped-cards
   (testing "nothing happens (including no errors)"

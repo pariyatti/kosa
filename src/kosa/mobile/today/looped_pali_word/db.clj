@@ -1,7 +1,9 @@
 (ns kosa.mobile.today.looped-pali-word.db
   (:refer-clojure :exclude [list get])
-  (:require [kuti.record :as record]
+  (:require [clojure.tools.logging :as log]
+            [kuti.record :as record]
             [kuti.record.query :as query]
+            [kuti.support :refer [assoc-unless]]
             [kuti.support.debugging :refer :all]
             [kosa.mobile.today.looped.db :refer [next-index]]))
 
@@ -15,12 +17,14 @@
   (query/find-all :looped-pali-word attr param))
 
 (defn save! [e]
-  (-> e
-      (assoc :kuti/type :looped-pali-word)
-      (assoc :looped-pali-word/index (next-index :looped-pali-word))
-      record/timestamp
-      record/publish
-      (record/save!)))
+  (let [idx (next-index :looped-pali-word)]
+    (log/info (format "Saving Looped Pali Word with index: %s" idx))
+    (-> e
+        (assoc :kuti/type :looped-pali-word)
+        (assoc-unless :looped-pali-word/index idx)
+        record/timestamp
+        record/publish
+        (record/save!))))
 
 (defn get [id]
   (record/get id))
