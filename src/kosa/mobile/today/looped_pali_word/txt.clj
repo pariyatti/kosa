@@ -7,6 +7,8 @@
             [kosa.mobile.today.looped-pali-word.db :as db])
   (:import [java.net URI]))
 
+(def langs ["eng" "por"])
+
 (defn shred [entry]
   (->> (str/split entry #"—")
        (map str/trim)
@@ -59,4 +61,12 @@
   (txt/ingest (PaliIngester.) f lang))
 
 (defn validate []
-  true)
+  (doseq [card (db/list)]
+    (let [translations (:looped-pali-word/translations card)
+          diff {:actual-langs translations
+                :expected-langs langs}]
+      (when (not= (count translations)
+                  (count langs))
+        (throw (ex-info (str "TXT translation count did not match!\n\n"
+                             diff)
+                        diff))))))
