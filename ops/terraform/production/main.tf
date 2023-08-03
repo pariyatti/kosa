@@ -7,8 +7,10 @@ module "kosa-production" {
 
   server_blueprint_id = "ubuntu_22_04"
 
-  # Manually set to 1 to update the txt files
-  update_txt_files = 0
+  # Manually set to true to update the txt files
+  update_txt_files = false
+  # Manually set to true to reseed the txt files
+  reseed_txt_files = false
   server_tags = {
     env = "production"
   }

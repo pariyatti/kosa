@@ -87,12 +87,25 @@ resource "null_resource" "ansible_seed_data" {
   }
 }
 
+# reseed_txt_files
+resource "null_resource" "ansible_reseed_txt_files" {
+  depends_on = [
+    null_resource.ansible_config,
+    null_resource.ansible_deploy
+  ]
+  count = var.reseed_txt_files && !var.update_txt_files ? 1 : 0
+
+  provisioner "local-exec" {
+    command = "cd ../../ansible && ansible-playbook --extra-vars @secrets.yml --vault-password-file ~/.kosa/ansible-password --limit ${var.server_name}.pariyatti.app -i hosts reseed_looped_txt.yml"
+  }
+}
+
 resource "null_resource" "ansible_update_data" {
   depends_on = [
     null_resource.ansible_config,
     null_resource.ansible_deploy
   ]
-  count = var.update_txt_files
+  count = var.update_txt_files && !var.reseed_txt_files ? 1:0
 
   provisioner "local-exec" {
     command = "cd ../../ansible && ansible-playbook --extra-vars @secrets.yml --vault-password-file ~/.kosa/ansible-password --limit ${var.server_name}.pariyatti.app -i hosts update_looped_txt.yml"
