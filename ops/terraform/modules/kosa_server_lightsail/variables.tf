@@ -39,7 +39,13 @@ variable "user_data" {
 }
 
 variable "update_txt_files" {
-  type        = number
-  default     = 0
-  description = "Manually set to 1 to update the txt files"
+  type        = bool
+  default     = false
+  description = "Manually set to 1 to update the txt files. At a time either this or reseed_txt_files should be set to 1"
+}
+
+variable "reseed_txt_files" {
+  type        = bool
+  default     = false
+  description = "Manually set to 1 to reseed the txt files. At a time either this or update_txt_files should be set to 1"
 }
