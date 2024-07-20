@@ -24,13 +24,13 @@
          :offset-seconds 5
          :period-seconds 3600
          :job-fn kosa.mobile.today.looped-words-of-buddha.publish-job/run-job!
-         :enabled true}
+         :enabled false}
 
         {:job-name :txt-publisher-doha
          :offset-seconds 5
          :period-seconds 3600
          :job-fn kosa.mobile.today.looped-doha.publish-job/run-job!
-         :enabled true}]
+         :enabled false}]
 
  :language-meta {"afr" {:iso-639-1-code "af"
                         :iso-639-2-name "Afrikaans"
